@@ -11,27 +11,12 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum;
 
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
-/**
- * @Type()
- */
-enum FieldType
+enum FieldType: string
 {
-    case ASSOCIATIVE_ARRAY;
-    case ARRAY;
-    case BOOLEAN;
-    case NUMBER;
-    case STRING;
-    case SELECT;
-
-    public static function fromInternalType(string $type): static
-    {
-        return match($type) {
-            'aarr' => static::ASSOCIATIVE_ARRAY,
-            'arr' => static::ARRAY,
-            'bool' => static::BOOLEAN,
-            'num' => static::NUMBER,
-            'str' => static::STRING,
-            'select' => static::SELECT,
-        };
-    }
+    case ASSOCIATIVE_ARRAY = 'aarr';
+    case NUMBER = 'num';
+    case ARRAY = 'arr';
+    case STRING = 'str';
+    case BOOLEAN = 'bool';
+    case SELECT = 'select';
 }
