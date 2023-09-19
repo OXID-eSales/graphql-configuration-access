@@ -17,27 +17,26 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
  */
 final class IntegerSetting
 {
-    private array $settingData;
-
-    public function __construct(array $settingData)
-    {
-        $this->settingData = $settingData;
-    }
+    public function __construct(
+        private string $name,
+        private string $description,
+        private string $value
+    ) {}
 
     /**
      * @Field()
      */
     public function getName(): string
     {
-        return (string)$this->settingData['OXVARNAME'];
+        return $this->name;
     }
-    
+
     /**
      * @Field()
      */
     public function getDescription(): string
     {
-        return (string)$this->settingData['DESCRIPTION'];
+        return $this->description;
     }
 
     /**
@@ -45,6 +44,6 @@ final class IntegerSetting
      */
     public function getValue(): string
     {
-        return (string)$this->settingData['OXVARVALUE'];
+        return $this->value;
     }
 }
