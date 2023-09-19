@@ -9,15 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\SourceType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
  * @Type()
  */
-final class Setting
+final class IntegerSetting
 {
     private array $settingData;
 
@@ -48,29 +46,5 @@ final class Setting
     public function getValue(): string
     {
         return (string)$this->settingData['OXVARVALUE'];
-    }
-
-    /**
-     * @Field()
-     */
-    public function getFieldType(): FieldType
-    {
-        return FieldType::fromInternalType($this->settingData['OXVARTYPE']);
-    }
-    
-    /**
-     * @Field()
-     */
-    public function getSourceType(): SourceType
-    {
-        return SourceType::fromSourceId($this->settingData['OXMODULE']);
-    }
-
-    /**
-     * @Field()
-     */
-    public function getSourceId(): string
-    {
-        return $this->settingData['OXMODULE'];
     }
 }
