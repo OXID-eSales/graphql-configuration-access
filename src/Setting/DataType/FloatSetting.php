@@ -20,7 +20,7 @@ final class FloatSetting
     public function __construct(
         private string $name,
         private string $description,
-        private string $value
+        private float $value
     ) {}
 
     /**
@@ -42,7 +42,7 @@ final class FloatSetting
     /**
      * @Field()
      */
-    public function getValue(): string
+    public function getValue(): float
     {
         return $this->value;
     }
