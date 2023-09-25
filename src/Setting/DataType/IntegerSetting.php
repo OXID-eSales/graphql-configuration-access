@@ -20,7 +20,7 @@ final class IntegerSetting
     public function __construct(
         private string $name,
         private string $description,
-        private string $value
+        private int $value
     ) {}
 
     /**
@@ -42,7 +42,7 @@ final class IntegerSetting
     /**
      * @Field()
      */
-    public function getValue(): string
+    public function getValue(): int
     {
         return $this->value;
     }

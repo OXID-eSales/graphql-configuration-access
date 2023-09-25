@@ -20,7 +20,7 @@ final class BooleanSetting
     public function __construct(
         private string $name,
         private string $description,
-        private string $value
+        private bool $value
         ) {}
 
     /**
@@ -42,7 +42,7 @@ final class BooleanSetting
     /**
      * @Field()
      */
-    public function getValue(): string
+    public function getValue(): bool
     {
         return $this->value;
     }
