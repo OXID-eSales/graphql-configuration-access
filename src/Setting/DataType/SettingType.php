@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
-use Symfony\Component\BrowserKit\Exception\UnexpectedValueException;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
+use UnexpectedValueException;
 
 /**
  * @Type()

@@ -9,7 +9,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\BrowserKit\Exception\UnexpectedValueException;
+use UnexpectedValueException;
 
 class SettingTest extends TestCase
 {
