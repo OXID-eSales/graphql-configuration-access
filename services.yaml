@@ -1,0 +1,29 @@
+imports:
+  - { resource: src/Setting/services.yaml }
+  - { resource: src/Shared/services.yaml }
+
+parameters:
+  oxidesales.graphqlconfigurationaccess.depends_on_modules: [ 'oe_graphql_base' ]
+
+services:
+
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\NamespaceMapper:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\NamespaceMapper
+    tags: [ 'graphql_namespace_mapper' ]
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\PermissionProvider:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\PermissionProvider
+    tags: [ 'graphql_permission_provider' ]
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\Authorization:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\Authorization
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Subscriber\BeforeModuleDeactivation:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Subscriber\BeforeModuleDeactivation
+    arguments: [ '%oxidesales.graphqlconfigurationaccess.depends_on_modules%' ]
+    tags: [ 'kernel.event_subscriber' ]
+    public: true

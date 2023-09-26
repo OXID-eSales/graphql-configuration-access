@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Base\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Service;
 
 use OxidEsales\GraphQL\Base\Framework\PermissionProviderInterface;
 

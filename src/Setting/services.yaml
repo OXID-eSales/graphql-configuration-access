@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller\:
+    resource: 'Controller/'
+    public: true
+
+# TODO: Change to interface
+  OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\:
+    resource: 'Service/'
+    public: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\:
+    resource: 'Infrastructure/'
+    public: true
