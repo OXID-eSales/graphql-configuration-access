@@ -9,14 +9,36 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum;
 
-use TheCodingMachine\GraphQLite\Annotations\Type;
 
-enum FieldType: string
+final class FieldType
 {
-    case ASSOCIATIVE_ARRAY = 'aarr';
-    case NUMBER = 'num';
-    case ARRAY = 'arr';
-    case STRING = 'str';
-    case BOOLEAN = 'bool';
-    case SELECT = 'select';
+    public const ASSOCIATIVE_ARRAY = 'aarr';
+    public const NUMBER = 'num';
+    public const ARRAY = 'arr';
+    public const STRING = 'str';
+    public const BOOLEAN = 'bool';
+    public const SELECT = 'select';
+
+    private static array $enums = [
+        self::ASSOCIATIVE_ARRAY,
+        self::NUMBER,
+        self::ARRAY,
+        self::STRING,
+        self::BOOLEAN,
+        self::SELECT
+    ];
+
+    static public function validateFieldType(string $type): bool
+    {
+        if (in_array($type, self::$enums)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    static public function getEnums(): array
+    {
+        return self::$enums;
+    }
 }
