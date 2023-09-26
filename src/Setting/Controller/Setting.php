@@ -20,10 +20,7 @@ final class Setting
     ){}
 
     /**
-     * @Query
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
+     * @Query()
      */
     public function getModuleSettingInteger(ID $name, string $moduleId): IntegerSetting
     {
