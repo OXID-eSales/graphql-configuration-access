@@ -7,3 +7,6 @@ REPLACE INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`,
 REPLACE INTO `oxgroups` (`OXID`, `OXRRID`, `OXACTIVE`, `OXTITLE`, `OXTITLE_1`, `OXTITLE_2`, `OXTITLE_3`, `OXTIMESTAMP`) VALUES
 ('oxidadmin',	9,	1,	'Shop-Admin',	'Store Administrator',	'',	'',	'2023-04-26 10:13:29'),
 ('oxidcustomer',	14,	1,	'Kunde',	'Customer',	'',	'',	'2023-04-26 10:13:29');
+
+INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`, `OXTIMESTAMP`) VALUES
+    ('9f1a3b09f9a9b03310448127c127fb33',	1,	'module:oe_graphql_configuration_access',	'iTestConfiguration',	'int',	'999',	'2023-01-31 09:52:22');

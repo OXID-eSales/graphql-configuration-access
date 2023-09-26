@@ -33,7 +33,7 @@ final class SettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                getModuleSettingInteger(name: "iTestConfiguration", moduleId: "oe_graphql_configuration_access") {
+                moduleSettingInteger(name: "iTestConfiguration", moduleId: "oe_graphql_configuration_access") {
                     name
                     value
                 }
