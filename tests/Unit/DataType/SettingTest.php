@@ -9,6 +9,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\BrowserKit\Exception\UnexpectedValueException;
 
 class SettingTest extends TestCase
 {
@@ -64,12 +65,20 @@ class SettingTest extends TestCase
 
     public function testSettingType(): void
     {
-        $settingType = new SettingType('coolSettingType', 'setting type description',
-            FieldType::BOOLEAN->value);
+        $settingType = new SettingType('coolSettingType', 'setting type description', FieldType::BOOLEAN);
 
         $this->assertSame('coolSettingType', $settingType->getName());
         $this->assertSame('setting type description', $settingType->getDescription());
         $this->assertSame( 'bool', $settingType->getType()
         );
+    }
+
+    public function testInvalidSettingType(): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The value "invalidType" is not a valid field type.
+Please use one of the following types: "'.implode('", "', FieldType::getEnums()).'".');
+
+        new SettingType('coolSettingType', 'setting type description', 'invalidType');
     }
 }
