@@ -9,23 +9,21 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ModuleSettingRepository implements RepositoryInterface
 {
     public function __construct(
-//        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        private ModuleSettingServiceInterface $moduleSettingService,
-//        private ContextInterface $context
+        private ModuleSettingServiceInterface $moduleSettingService
     ) {}
 
-    public function getIntegerSetting(ID $name, string $moduleId):IntegerSetting
+    public function getIntegerSetting(ID $name, string $moduleId): IntegerSetting
     {
-        $value = $this->moduleSettingService->getInteger($name->val(), $moduleId);
-        var_dump($value);
+        $name = $name->val();
+        $value = $this->moduleSettingService->getInteger($name, $moduleId);
+
+        return new IntegerSetting($name, '', $value);
     }
 }

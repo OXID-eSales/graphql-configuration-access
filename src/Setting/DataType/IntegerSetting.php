@@ -33,6 +33,7 @@ final class IntegerSetting
 
     /**
      * @Field()
+     * Todo: will be removed
      */
     public function getDescription(): string
     {
