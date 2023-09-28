@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-final class ModuleRepository
+final class ModuleSettingRepository implements RepositoryInterface
 {
     public function __construct(
 //        private ModuleConfigurationDaoInterface $moduleConfigurationDao,

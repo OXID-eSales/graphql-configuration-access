@@ -9,19 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleRepository as ModuleSettingRepository;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-final class Setting implements SettingInterface
+final class SettingService implements SettingServiceInterface
 {
 
     public function __construct(
         private ModuleSettingRepository $moduleSettingRepository
     ) {}
 
-    public function getModuleIntegerSetting(ID $name, $moduleId):IntegerSetting
+    public function getModuleIntegerSetting(ID $name, $moduleId): IntegerSetting
     {
-        $this->moduleSettingRepository->getIntegerSetting($name, $moduleId);
+        return $this->moduleSettingRepository->getIntegerSetting($name, $moduleId);
     }
 }
