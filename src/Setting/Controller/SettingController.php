@@ -21,6 +21,9 @@ final class SettingController
 
     /**
      * @Query()
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
      */
     public function getModuleSettingInteger(ID $name, string $moduleId): IntegerSetting
     {
