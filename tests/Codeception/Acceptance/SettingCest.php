@@ -13,9 +13,11 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDao;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
+use Codeception\Scenario;
 
 /**
  * @group setting
@@ -32,12 +34,19 @@ final class SettingCest extends BaseCest
 
     private const ADMIN_PASSWORD = 'admin';
 
-    private const TEST_MODULE_ID = 'awsomeModule';
+    private const TEST_MODULE_ID = 'awesomeModule';
 
-    public function _beforeSuite(array $settings): void
+    public function _before(AcceptanceTester $I, Scenario $scenario): void
     {
         $this->prepareConfiguration();
     }
+
+    public function _after(AcceptanceTester $I): void
+    {
+        $this->removeConfiguration(self::TEST_MODULE_ID);
+        parent::_after($I);
+    }
+
     public function testGetSettingNotAuthorized(AcceptanceTester $I): void
     {
         $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
@@ -79,10 +88,7 @@ final class SettingCest extends BaseCest
 
     private function prepareConfiguration(): void
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        /** @var ShopConfigurationDao $shopConfigurationDao */
-        $shopConfigurationDao = $container->get(ShopConfigurationDaoInterface::class);
-        $shopConfiguration = $shopConfigurationDao->get(1);
+        $shopConfiguration = $this->getShopConfiguration();
 
         $integerSetting = new Setting();
         $integerSetting
@@ -121,6 +127,29 @@ final class SettingCest extends BaseCest
             ->addModuleSetting($collectionSetting);
 
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
-        $shopConfigurationDao->save($shopConfiguration, 1);
+        $this->getShopConfigurationDao()->save($shopConfiguration,1);
+    }
+
+    private function removeConfiguration(string $moduleId): void
+    {
+        $shopConfiguration = $this->getShopConfiguration();
+        $shopConfiguration->deleteModuleConfiguration($moduleId);
+
+    }
+
+    private function getShopConfiguration(): ShopConfiguration
+    {
+        $shopConfigurationDao = $this->getShopConfigurationDao();
+        $shopConfiguration = $shopConfigurationDao->get(1);
+
+        return $shopConfiguration;
+    }
+
+    private function getShopConfigurationDao(): ShopConfigurationDao
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        /** @var ShopConfigurationDao $shopConfigurationDao */
+        $shopConfigurationDao = $container->get(ShopConfigurationDaoInterface::class);
+        return $shopConfigurationDao;
     }
 }
