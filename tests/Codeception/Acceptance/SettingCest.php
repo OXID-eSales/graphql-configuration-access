@@ -27,7 +27,7 @@ final class SettingCest extends BaseCest
 
     private const ADMIN_PASSWORD = 'admin';
 
-    public function testGetSettingNotAuthorized(AcceptanceTester $I): void
+    public function testGetIntegerSettingNotAuthorized(AcceptanceTester $I): void
     {
         $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
 
@@ -47,13 +47,52 @@ final class SettingCest extends BaseCest
         $I->assertSame('Cannot query field "moduleSettingInteger" on type "Query".', $errorMessage);
     }
 
-    public function testGetSettingAuthorized(AcceptanceTester $I): void
+    public function testGetIntegerSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
 
         $I->sendGQLQuery(
             'query{
                 moduleSettingInteger(name: "intSetting", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+    }
+
+    public function testGetFloatSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                moduleSettingFloat(name: "floatSetting", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "moduleSettingFloat" on type "Query".', $errorMessage);
+    }
+
+    public function testGetFloatSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                moduleSettingFloat(name: "floatSetting", moduleId: "'.$this->getTestModuleName().'") {
                     name
                     value
                 }
