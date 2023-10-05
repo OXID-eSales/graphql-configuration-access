@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServ
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-final class ModuleSettingRepository implements RepositoryInterface
+final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
 {
     public function __construct(
         private ModuleSettingServiceInterface $moduleSettingService
