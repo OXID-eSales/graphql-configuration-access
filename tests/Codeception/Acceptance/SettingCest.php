@@ -104,4 +104,82 @@ final class SettingCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
     }
+
+    public function testGetBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                moduleSettingBoolean(name: "boolSetting", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "moduleSettingBoolean" on type "Query".', $errorMessage);
+    }
+
+    public function testGetBooleanSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                moduleSettingBoolean(name: "boolSetting", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+    }
+
+    public function testGetStringSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                moduleSettingString(name: "stringSetting", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "moduleSettingString" on type "Query".', $errorMessage);
+    }
+
+    public function testGetStringSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                moduleSettingString(name: "stringSetting", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+    }
 }

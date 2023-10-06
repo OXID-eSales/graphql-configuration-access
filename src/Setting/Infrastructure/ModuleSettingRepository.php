@@ -10,8 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
@@ -34,5 +36,21 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $value = $this->moduleSettingService->getFloat($name, $moduleId);
 
         return new FloatSetting($name, '', $value);
+    }
+
+    public function getBooleanSetting(ID $name, string $moduleId): BooleanSetting
+    {
+        $name = $name->val();
+        $value = $this->moduleSettingService->getBoolean($name, $moduleId);
+
+        return new BooleanSetting($name, '', $value);
+    }
+
+    public function getStringSetting(ID $name, string $moduleId): StringSetting
+    {
+        $name = $name->val();
+        $value = $this->moduleSettingService->getString($name, $moduleId);
+
+        return new StringSetting($name, '', (string)$value);
     }
 }
