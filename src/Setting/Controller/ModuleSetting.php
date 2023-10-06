@@ -6,7 +6,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSetting as ModuleSettingService;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
@@ -17,7 +17,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 final class ModuleSetting
 {
     public function __construct(
-        private ModuleSettingService $settingService
+        private ModuleSettingServiceInterface $settingService
     ){}
 
     /**
