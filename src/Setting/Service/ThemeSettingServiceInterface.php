@@ -17,4 +17,11 @@ interface ThemeSettingServiceInterface
     public function getSelectSetting(ID $name, string $themeId): StringSetting;
     public function getCollectionSetting(ID $name, string $themeId): StringSetting;
     public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting;
+    public function changeIntegerSetting(ID $name, int $value, string $moduleId): IntegerSetting;
+    public function changeFloatSetting(ID $name, float $value, string $moduleId): FloatSetting;
+    public function changeBooleanSetting(ID $name, bool $value, string $moduleId): BooleanSetting;
+    public function changeStringSetting(ID $name, string $value, string $moduleId): StringSetting;
+    public function changeSelectSetting(ID $name, string $value, string $moduleId): StringSetting;
+    public function changeCollectionSetting(ID $name, string $value, string $moduleId): StringSetting;
+    public function changeAssocCollectionSetting(ID $name, string $value, string $moduleId): StringSetting;
 }

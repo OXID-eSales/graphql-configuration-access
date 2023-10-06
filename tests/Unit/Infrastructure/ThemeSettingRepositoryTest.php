@@ -4,12 +4,16 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 class ThemeSettingRepositoryTest extends UnitTestCase
@@ -18,10 +22,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('integerSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('123');
-        $basicContext = $this->getBasicContextMock();
-
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('123');
 
         $integer = $repository->getInteger($nameID, 'awesomeModule');
 
@@ -31,10 +32,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingInteger(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
@@ -44,10 +43,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetThemeSettingInvalidInteger(): void
     {
         $nameID = new ID('floatSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('1.23');
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
@@ -57,10 +54,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('floatSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
-        $basicContext = $this->getBasicContextMock();
-
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('1.23');
 
         $float = $repository->getFloat($nameID, 'awesomeModule');
 
@@ -70,10 +64,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingFloat(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
@@ -83,10 +75,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetThemeSettingInvalidFloat(): void
     {
         $nameID = new ID('intSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('123');
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('123');
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
@@ -97,10 +87,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('');
-        $basicContext = $this->getBasicContextMock();
-
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('');
 
         $boolean = $repository->getBoolean($nameID, 'awesomeModule');
 
@@ -111,10 +98,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1');
-        $basicContext = $this->getBasicContextMock();
-
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('1');
 
         $boolean = $repository->getBoolean($nameID, 'awesomeModule');
 
@@ -124,10 +108,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingBoolean(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a boolean configuration');
@@ -138,10 +120,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('stringSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('default');
-        $basicContext = $this->getBasicContextMock();
-
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('default');
 
         $string = $repository->getString($nameID, 'awesomeModule');
 
@@ -151,10 +130,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingString(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a string configuration');
@@ -165,10 +142,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('selectSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('select');
-        $basicContext = $this->getBasicContextMock();
-
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('select');
 
         $select = $repository->getSelect($nameID, 'awesomeModule');
 
@@ -178,10 +152,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingSelect(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a select configuration');
@@ -192,10 +164,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('arraySetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
-        $basicContext = $this->getBasicContextMock();
-
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
 
         $collection = $repository->getCollection($nameID, 'awesomeModule');
 
@@ -205,10 +174,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
@@ -220,10 +187,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $nameID = new ID('aarraySetting');
 
         $serializeArrayString = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($serializeArrayString);
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance($serializeArrayString);
 
         $assocCollection = $repository->getAssocCollection($nameID, 'awesomeModule');
 
@@ -233,17 +198,15 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingAssocCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock();
 
-        $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getThemeRepoInstance(false);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an associative collection configuration');
         $repository->getAssocCollection($nameID, 'awesomeModule');
     }
 
-    private function getBasicContextMock(int $shopId = 1): BasicContextInterface|MockObject
+    private function getBasicContextMock(int $shopId): BasicContextInterface|MockObject
     {
         $basicContext = $this->createMock(BasicContextInterface::class);
         $basicContext->expects($this->any())
@@ -272,5 +235,22 @@ class ThemeSettingRepositoryTest extends UnitTestCase
             ->method('create')
             ->willReturn($queryBuilder);
         return $queryBuilderFactory;
+    }
+
+    private function getThemeRepoInstance(string|bool $qbReturnedValue, int $shopId = 1): ThemeSettingRepositoryInterface
+    {
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($qbReturnedValue);
+        $shopConfigurationDao = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $shopSettingEncoder = $this->createMock(ShopSettingEncoderInterface::class);
+        $basicContext = $this->getBasicContextMock($shopId);
+
+        return new ThemeSettingRepository(
+            $queryBuilderFactory,
+            $shopConfigurationDao,
+            $eventDispatcher,
+            $shopSettingEncoder,
+            $basicContext
+        );
     }
 }

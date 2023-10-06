@@ -21,8 +21,8 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $nameID = new ID('integerSetting');
-        $integerSetting = $moduleRepository->getIntegerSetting($nameID, 'awesomeModule');
+        $name = new ID('integerSetting');
+        $integerSetting = $moduleRepository->getIntegerSetting($name, 'awesomeModule');
 
         $this->assertEquals($serviceIntegerSetting, $integerSetting);
     }
@@ -38,15 +38,15 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $nameID = new ID('floatSetting');
-        $floatSetting = $moduleRepository->getFloatSetting($nameID, 'awesomeModule');
+        $name = new ID('floatSetting');
+        $floatSetting = $moduleRepository->getFloatSetting($name, 'awesomeModule');
 
         $this->assertEquals($serviceFloatSetting, $floatSetting);
     }
 
     public function testGetModuleSettingBoolean(): void
     {
-        $serviceBooleanSetting = $this->getNegativBooleanSetting();
+        $serviceBooleanSetting = $this->getNegativeBooleanSetting();
 
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
@@ -55,8 +55,8 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $nameID = new ID('booleanSetting');
-        $booleanSetting = $moduleRepository->getBooleanSetting($nameID, 'awesomeModule');
+        $name = new ID('booleanSetting');
+        $booleanSetting = $moduleRepository->getBooleanSetting($name, 'awesomeModule');
 
         $this->assertEquals($serviceBooleanSetting, $booleanSetting);
     }
@@ -72,8 +72,8 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $nameID = new ID('stringSetting');
-        $stringSetting = $moduleRepository->getStringSetting($nameID, 'awesomeModule');
+        $name = new ID('stringSetting');
+        $stringSetting = $moduleRepository->getStringSetting($name, 'awesomeModule');
 
         $this->assertEquals($serviceStringSetting, $stringSetting);
     }
@@ -89,82 +89,82 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $nameID = new ID('arraySetting');
-        $collectionSetting = $moduleRepository->getCollectionSetting($nameID, 'awesomeModule');
+        $name = new ID('arraySetting');
+        $collectionSetting = $moduleRepository->getCollectionSetting($name, 'awesomeModule');
 
         $this->assertEquals($serviceCollectionSetting, $collectionSetting);
     }
 
     public function testChangeModuleSettingInteger(): void
     {
-        $nameID = new ID('intSetting');
+        $name = new ID('intSetting');
 
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveInteger')
-            ->with($nameID->val(), 123, 'awesomeModule');
+            ->with($name->val(), 123, 'awesomeModule');
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $moduleRepository->saveIntegerSetting($nameID, 123, 'awesomeModule');
+        $moduleRepository->saveIntegerSetting($name, 123, 'awesomeModule');
     }
 
     public function testChangeModuleSettingFloat(): void
     {
-        $nameID = new ID('floatSetting');
+        $name = new ID('floatSetting');
 
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveFloat')
-            ->with($nameID->val(), 1.23, 'awesomeModule');
+            ->with($name->val(), 1.23, 'awesomeModule');
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $moduleRepository->saveFloatSetting($nameID, 1.23, 'awesomeModule');
+        $moduleRepository->saveFloatSetting($name, 1.23, 'awesomeModule');
     }
 
     public function testChangeModuleSettingBoolean(): void
     {
-        $nameID = new ID('boolSetting');
+        $name = new ID('boolSetting');
         $value = false;
 
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveBoolean')
-            ->with($nameID->val(), $value, 'awesomeModule');
+            ->with($name->val(), $value, 'awesomeModule');
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $moduleRepository->saveBooleanSetting($nameID, $value, 'awesomeModule');
+        $moduleRepository->saveBooleanSetting($name, $value, 'awesomeModule');
     }
 
     public function testChangeModuleSettingString(): void
     {
-        $nameID = new ID('stringSetting');
+        $name = new ID('stringSetting');
         $value = 'default';
 
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveString')
-            ->with($nameID->val(), $value, 'awesomeModule');
+            ->with($name->val(), $value, 'awesomeModule');
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $moduleRepository->saveStringSetting($nameID, $value, 'awesomeModule');
+        $moduleRepository->saveStringSetting($name, $value, 'awesomeModule');
     }
 
     public function testChangeModuleSettingCollection(): void
     {
-        $nameID = new ID('boolSetting');
+        $name = new ID('boolSetting');
         $value = [3, 'interesting', 'values'];
 
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveCollection')
-            ->with($nameID->val(), $value, 'awesomeModule');
+            ->with($name->val(), $value, 'awesomeModule');
 
         $moduleRepository = new ModuleSettingRepository($moduleSettingService);
 
-        $moduleRepository->saveCollectionSetting($nameID, $value, 'awesomeModule');
+        $moduleRepository->saveCollectionSetting($name, $value, 'awesomeModule');
     }
 }
