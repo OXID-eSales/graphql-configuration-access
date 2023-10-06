@@ -64,6 +64,10 @@ final class SettingCest extends BaseCest
 
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['moduleSettingInteger'];
+        $I->assertSame('intSetting', $setting['name']);
+        $I->assertSame(123, $setting['value']);
     }
 
     public function testGetFloatSettingNotAuthorized(AcceptanceTester $I): void
@@ -103,6 +107,10 @@ final class SettingCest extends BaseCest
 
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['moduleSettingFloat'];
+        $I->assertSame('floatSetting', $setting['name']);
+        $I->assertSame(1.23, $setting['value']);
     }
 
     public function testGetBooleanSettingNotAuthorized(AcceptanceTester $I): void
@@ -142,6 +150,10 @@ final class SettingCest extends BaseCest
 
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['moduleSettingBoolean'];
+        $I->assertSame('boolSetting', $setting['name']);
+        $I->assertSame(false, $setting['value']);
     }
 
     public function testGetStringSettingNotAuthorized(AcceptanceTester $I): void
@@ -181,6 +193,10 @@ final class SettingCest extends BaseCest
 
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['moduleSettingString'];
+        $I->assertSame('stringSetting', $setting['name']);
+        $I->assertSame('default', $setting['value']);
     }
 
     public function testGetCollectionSettingNotAuthorized(AcceptanceTester $I): void
