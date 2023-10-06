@@ -42,4 +42,9 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
     {
         return $this->moduleSettingRepository->getStringSetting($name, $moduleId);
     }
+
+    public function getModuleCollectionSetting(ID $name, $moduleId): StringSetting
+    {
+        return $this->moduleSettingRepository->getCollectionSetting($name, $moduleId);
+    }
 }

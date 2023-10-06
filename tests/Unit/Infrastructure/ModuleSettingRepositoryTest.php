@@ -81,4 +81,21 @@ class ModuleSettingRepositoryTest extends TestCase
 
         $this->assertEquals($serviceStringSetting, $stringSetting);
     }
+
+    public function testGetModuleSettingCollection(): void
+    {
+        $serviceCollectionSetting = new StringSetting('arraySetting', '', '["nice","values"]');
+
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('getCollection')
+            ->willReturn(['nice', 'values']);
+
+        $moduleRepository = new ModuleSettingRepository($moduleSettingService);
+
+        $nameID = new ID('arraySetting');
+        $collectionSetting = $moduleRepository->getCollectionSetting($nameID, 'awesomeModule');
+
+        $this->assertEquals($serviceCollectionSetting, $collectionSetting);
+    }
 }

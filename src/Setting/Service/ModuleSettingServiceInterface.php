@@ -10,8 +10,9 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 interface ModuleSettingServiceInterface
 {
-    public function getModuleIntegerSetting(ID $name, $moduleId): IntegerSetting;
-    public function getModuleFloatSetting(ID $name, $moduleId): FloatSetting;
-    public function getModuleBooleanSetting(ID $name, $moduleId): BooleanSetting;
-    public function getModuleStringSetting(ID $name, $moduleId): StringSetting;
+    public function getModuleIntegerSetting(ID $name, string $moduleId): IntegerSetting;
+    public function getModuleFloatSetting(ID $name, string $moduleId): FloatSetting;
+    public function getModuleBooleanSetting(ID $name, string $moduleId): BooleanSetting;
+    public function getModuleStringSetting(ID $name, string $moduleId): StringSetting;
+    public function getModuleCollectionSetting(ID $name, string $moduleId): StringSetting;
 }

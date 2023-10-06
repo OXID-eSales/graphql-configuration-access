@@ -53,4 +53,12 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
 
         return new StringSetting($name, '', (string)$value);
     }
+
+    public function getCollectionSetting(ID $name, string $moduleId): StringSetting
+    {
+        $name = $name->val();
+        $value = $this->moduleSettingService->getCollection($name, $moduleId);
+
+        return new StringSetting($name, '', json_encode($value));
+    }
 }

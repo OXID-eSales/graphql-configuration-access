@@ -80,4 +80,21 @@ class ModuleSettingControllerTest extends TestCase
 
         $this->assertSame($serviceStringSetting, $stringSetting);
     }
+
+    public function testGetModuleSettingCollection(): void
+    {
+        $serviceCollectionSetting = new StringSetting('arraySetting', '', json_encode(['nice', 'values']));
+
+        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $settingService->expects($this->once())
+            ->method('getModuleCollectionSetting')
+            ->willReturn($serviceCollectionSetting);
+
+        $settingController = new ModuleSettingController($settingService);
+
+        $nameID = new ID('arraySetting');
+        $collectionSetting = $settingController->getModuleSettingCollection($nameID, 'awesomeModule');
+
+        $this->assertSame($serviceCollectionSetting, $collectionSetting);
+    }
 }
