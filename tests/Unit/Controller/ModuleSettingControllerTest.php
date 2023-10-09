@@ -93,4 +93,38 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $this->assertSame($serviceCollectionSetting, $collectionSetting);
     }
+
+    public function testChangeModuleSettingInteger(): void
+    {
+        $serviceIntegerSetting = $this->getIntegerSetting();
+
+        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $settingService->expects($this->once())
+            ->method('changeIntegerSetting')
+            ->willReturn($serviceIntegerSetting);
+
+        $settingController = new ModuleSettingController($settingService);
+
+        $nameID = new ID('intSetting');
+        $integerSetting = $settingController->changeModuleSettingInteger($nameID, 123, 'awesomeModule');
+
+        $this->assertSame($serviceIntegerSetting, $integerSetting);
+    }
+
+    public function testChangeModuleSettingFloat(): void
+    {
+        $serviceFloatSetting = $this->getFloatSetting();
+
+        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $settingService->expects($this->once())
+            ->method('changeFloatSetting')
+            ->willReturn($serviceFloatSetting);
+
+        $settingController = new ModuleSettingController($settingService);
+
+        $nameID = new ID('floatSetting');
+        $floatSetting = $settingController->changeModuleSettingFloat($nameID, 1.23, 'awesomeModule');
+
+        $this->assertSame($serviceFloatSetting, $floatSetting);
+    }
 }

@@ -241,4 +241,91 @@ final class SettingCest extends BaseCest
         $I->assertSame('arraySetting', $setting['name']);
         $I->assertSame('["nice","values"]', $setting['value']);
     }
+
+    public function testChangeIntegerSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingInteger(name: "intSetting", value: 124, moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeModuleSettingInteger" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeIntegerSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingInteger(name: "intSetting", value: 124, moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingInteger'];
+        $I->assertSame('intSetting', $setting['name']);
+        $I->assertSame(124, $setting['value']);
+    }
+
+    public function testChangeFloatSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingFloat(name: "floatSetting", value: 1.24, moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeModuleSettingFloat" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeFloatSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingFloat(name: "floatSetting", value: 1.24, moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingFloat'];
+        $I->assertSame('floatSetting', $setting['name']);
+        $I->assertSame(1.24, $setting['value']);
+    }
+
 }

@@ -94,4 +94,32 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $this->assertEquals($serviceCollectionSetting, $collectionSetting);
     }
+
+    public function testChangeModuleSettingInteger(): void
+    {
+        $nameID = new ID('intSetting');
+
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveInteger')
+            ->with($nameID->val(), 123, 'awesomeModule');
+
+        $moduleRepository = new ModuleSettingRepository($moduleSettingService);
+
+        $moduleRepository->saveIntegerSetting($nameID, 123, 'awesomeModule');
+    }
+
+    public function testChangeModuleSettingFloat(): void
+    {
+        $nameID = new ID('floatSetting');
+
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveFloat')
+            ->with($nameID->val(), 1.23, 'awesomeModule');
+
+        $moduleRepository = new ModuleSettingRepository($moduleSettingService);
+
+        $moduleRepository->saveFloatSetting($nameID, 1.23, 'awesomeModule');
+    }
 }
