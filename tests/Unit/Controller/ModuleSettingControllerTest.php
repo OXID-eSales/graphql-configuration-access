@@ -15,7 +15,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingService = $this->createMock(ModuleSettingServiceInterface::class);
         $settingService->expects($this->once())
-            ->method('getModuleIntegerSetting')
+            ->method('getIntegerSetting')
             ->willReturn($serviceIntegerSetting);
 
         $settingController = new ModuleSettingController($settingService);
@@ -32,7 +32,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingService = $this->createMock(ModuleSettingServiceInterface::class);
         $settingService->expects($this->once())
-            ->method('getModuleFloatSetting')
+            ->method('getFloatSetting')
             ->willReturn($serviceFloatSetting);
 
         $settingController = new ModuleSettingController($settingService);
@@ -49,7 +49,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingService = $this->createMock(ModuleSettingServiceInterface::class);
         $settingService->expects($this->once())
-            ->method('getModuleBooleanSetting')
+            ->method('getBooleanSetting')
             ->willReturn($serviceBooleanSetting);
 
         $settingController = new ModuleSettingController($settingService);
@@ -66,7 +66,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingService = $this->createMock(ModuleSettingServiceInterface::class);
         $settingService->expects($this->once())
-            ->method('getModuleStringSetting')
+            ->method('getStringSetting')
             ->willReturn($serviceStringSetting);
 
         $settingController = new ModuleSettingController($settingService);
@@ -83,7 +83,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingService = $this->createMock(ModuleSettingServiceInterface::class);
         $settingService->expects($this->once())
-            ->method('getModuleCollectionSetting')
+            ->method('getCollectionSetting')
             ->willReturn($serviceCollectionSetting);
 
         $settingController = new ModuleSettingController($settingService);

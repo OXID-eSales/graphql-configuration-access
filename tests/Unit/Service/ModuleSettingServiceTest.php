@@ -21,7 +21,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $settingService = new ModuleSettingService($repository);
 
         $nameID = new ID('integerSetting');
-        $integerSetting = $settingService->getModuleIntegerSetting($nameID, 'awesomeModule');
+        $integerSetting = $settingService->getIntegerSetting($nameID, 'awesomeModule');
 
         $this->assertSame($serviceIntegerSetting, $integerSetting);
     }
@@ -38,7 +38,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $settingService = new ModuleSettingService($repository);
 
         $nameID = new ID('floatSetting');
-        $floatSetting = $settingService->getModuleFloatSetting($nameID, 'awesomeModule');
+        $floatSetting = $settingService->getFloatSetting($nameID, 'awesomeModule');
 
         $this->assertSame($serviceFloatSetting, $floatSetting);
     }
@@ -55,7 +55,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $settingService = new ModuleSettingService($repository);
 
         $nameID = new ID('booleanSetting');
-        $booleanSetting = $settingService->getModuleBooleanSetting($nameID, 'awesomeModule');
+        $booleanSetting = $settingService->getBooleanSetting($nameID, 'awesomeModule');
 
         $this->assertSame($serviceBooleanSetting, $booleanSetting);
     }
@@ -72,7 +72,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $settingService = new ModuleSettingService($repository);
 
         $nameID = new ID('stringSetting');
-        $stringSetting = $settingService->getModuleStringSetting($nameID, 'awesomeModule');
+        $stringSetting = $settingService->getStringSetting($nameID, 'awesomeModule');
 
         $this->assertSame($serviceStringSetting, $stringSetting);
     }
@@ -89,7 +89,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $settingService = new ModuleSettingService($repository);
 
         $nameID = new ID('arraySetting');
-        $collectionSetting = $settingService->getModuleCollectionSetting($nameID, 'awesomeModule');
+        $collectionSetting = $settingService->getCollectionSetting($nameID, 'awesomeModule');
 
         $this->assertSame($serviceCollectionSetting, $collectionSetting);
     }
