@@ -27,7 +27,7 @@ final class ModuleSettingController
      */
     public function getModuleSettingInteger(ID $name, string $moduleId): IntegerSetting
     {
-        return $this->settingService->getModuleIntegerSetting($name, $moduleId);
+        return $this->settingService->getIntegerSetting($name, $moduleId);
     }
 
     /**
@@ -38,7 +38,7 @@ final class ModuleSettingController
      */
     public function getModuleSettingFloat(ID $name, string $moduleId): FloatSetting
     {
-        return $this->settingService->getModuleFloatSetting($name, $moduleId);
+        return $this->settingService->getFloatSetting($name, $moduleId);
     }
 
     /**
@@ -49,7 +49,7 @@ final class ModuleSettingController
      */
     public function getModuleSettingBoolean(ID $name, string $moduleId): BooleanSetting
     {
-        return $this->settingService->getModuleBooleanSetting($name, $moduleId);
+        return $this->settingService->getBooleanSetting($name, $moduleId);
     }
 
     /**
@@ -60,7 +60,7 @@ final class ModuleSettingController
      */
     public function getModuleSettingString(ID $name, string $moduleId): StringSetting
     {
-        return $this->settingService->getModuleStringSetting($name, $moduleId);
+        return $this->settingService->getStringSetting($name, $moduleId);
     }
 
     /**
@@ -71,6 +71,6 @@ final class ModuleSettingController
      */
     public function getModuleSettingCollection(ID $name, string $moduleId): StringSetting
     {
-        return $this->settingService->getModuleCollectionSetting($name, $moduleId);
+        return $this->settingService->getCollectionSetting($name, $moduleId);
     }
 }
