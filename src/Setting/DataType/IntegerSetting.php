@@ -11,6 +11,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType;
 
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @Type()
@@ -18,7 +19,7 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
 final class IntegerSetting
 {
     public function __construct(
-        private string $name,
+        private ID $name,
         private string $description,
         private int $value
     ) {}
@@ -26,7 +27,7 @@ final class IntegerSetting
     /**
      * @Field()
      */
-    public function getName(): string
+    public function getName(): ID
     {
         return $this->name;
     }

@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
+use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
 
 /**
@@ -22,7 +23,7 @@ final class SettingType
     private string $type;
 
     public function __construct(
-        private string $name,
+        private ID $name,
         private string $description,
         String $type
     ) {
@@ -39,7 +40,7 @@ Please use one of the following types: "'.implode('", "', FieldType::getEnums())
     /**
      * @Field()
      */
-    public function getName(): string
+    public function getName(): ID
     {
         return $this->name;
     }

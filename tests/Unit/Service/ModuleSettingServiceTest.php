@@ -2,20 +2,16 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-class ModuleSettingServiceTest extends TestCase
+class ModuleSettingServiceTest extends UnitTestCase
 {
     public function testGetModuleSettingInteger(): void
     {
-        $serviceIntegerSetting = new IntegerSetting('integerSetting', '', 123);
+        $serviceIntegerSetting = $this->getIntegerSetting();
 
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
@@ -32,7 +28,7 @@ class ModuleSettingServiceTest extends TestCase
 
     public function testGetModuleSettingFloat(): void
     {
-        $serviceFloatSetting = new FloatSetting('floatSetting', '', 1.23);
+        $serviceFloatSetting = $this->getFloatSetting();
 
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
@@ -49,7 +45,7 @@ class ModuleSettingServiceTest extends TestCase
 
     public function testGetModuleSettingBoolean(): void
     {
-        $serviceBooleanSetting = new BooleanSetting('booleanSetting', '', False);
+        $serviceBooleanSetting = $this->getBooleanSetting();
 
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
@@ -66,7 +62,7 @@ class ModuleSettingServiceTest extends TestCase
 
     public function testGetModuleSettingString(): void
     {
-        $serviceStringSetting = new StringSetting('stringSetting', '', 'default');
+        $serviceStringSetting = $this->getStringSetting();
 
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
@@ -83,7 +79,7 @@ class ModuleSettingServiceTest extends TestCase
 
     public function testGetModuleSettingCollection(): void
     {
-        $serviceCollectionSetting = new StringSetting('arraySetting', '', json_encode(['nice', 'values']));
+        $serviceCollectionSetting = $this->getCollectionSetting();
 
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
