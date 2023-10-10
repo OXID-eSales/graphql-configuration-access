@@ -74,4 +74,13 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
         return new StringSetting($name, '', $value);
     }
+
+    public function changeCollectionSetting(ID $name, string $value, string $moduleId):StringSetting
+    {
+        $arrayValue = json_decode($value, true);
+
+        $this->moduleSettingRepository->saveCollectionSetting($name, $arrayValue, $moduleId);
+
+        return new StringSetting($name, '', $value);
+    }
 }

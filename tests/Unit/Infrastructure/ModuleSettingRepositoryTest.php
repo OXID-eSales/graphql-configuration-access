@@ -152,4 +152,19 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $moduleRepository->saveStringSetting($nameID, $value, 'awesomeModule');
     }
+
+    public function testChangeModuleSettingCollection(): void
+    {
+        $nameID = new ID('boolSetting');
+        $value = [3, 'interesting', 'values'];
+
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveCollection')
+            ->with($nameID->val(), $value, 'awesomeModule');
+
+        $moduleRepository = new ModuleSettingRepository($moduleSettingService);
+
+        $moduleRepository->saveCollectionSetting($nameID, $value, 'awesomeModule');
+    }
 }

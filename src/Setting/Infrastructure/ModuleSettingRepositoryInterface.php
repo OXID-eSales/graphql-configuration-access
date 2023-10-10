@@ -19,5 +19,5 @@ interface ModuleSettingRepositoryInterface
     public function saveFloatSetting(ID $name, float $value, string $moduleId): void;
     public function saveBooleanSetting(ID $name, bool $value, string $moduleId): void;
     public function saveStringSetting(ID $name, string $value, string $moduleId): void;
-    public function saveCollectionSetting(ID $name, string $value, string $moduleId): void;
+    public function saveCollectionSetting(ID $name, array $value, string $moduleId): void;
 }

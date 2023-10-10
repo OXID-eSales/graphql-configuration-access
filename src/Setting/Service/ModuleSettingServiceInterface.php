@@ -19,4 +19,5 @@ interface ModuleSettingServiceInterface
     public function changeFloatSetting(ID $name, float $value, string $moduleId): FloatSetting;
     public function changeBooleanSetting(ID $name, bool $value, string $moduleId): BooleanSetting;
     public function changeStringSetting(ID $name, string $value, string $moduleId): StringSetting;
+    public function changeCollectionSetting(ID $name, string $value, string $moduleId): StringSetting;
 }

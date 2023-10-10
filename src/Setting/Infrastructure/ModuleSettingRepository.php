@@ -59,6 +59,31 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $name = $name->val();
         $value = $this->moduleSettingService->getCollection($name, $moduleId);
 
-        return new StringSetting(new ID($name), json_encode($value));
+        return new StringSetting(new ID($name), '', json_encode($value));
+    }
+
+    public function saveIntegerSetting(ID $name, int $value, string $moduleId): void
+    {
+        $this->moduleSettingService->saveInteger($name->val(), $value, $moduleId);
+    }
+
+    public function saveFloatSetting(ID $name, float $value, string $moduleId): void
+    {
+        $this->moduleSettingService->saveFloat($name->val(), $value, $moduleId);
+    }
+
+    public function saveBooleanSetting(ID $name, bool $value, string $moduleId): void
+    {
+        $this->moduleSettingService->saveBoolean($name->val(), $value, $moduleId);
+    }
+
+    public function saveStringSetting(ID $name, string $value, string $moduleId): void
+    {
+        $this->moduleSettingService->saveString($name->val(), $value, $moduleId);
+    }
+
+    public function saveCollectionSetting(ID $name, string $value, string $moduleId): void
+    {
+        $this->moduleSettingService->saveString($name->val(), $value, $moduleId);
     }
 }

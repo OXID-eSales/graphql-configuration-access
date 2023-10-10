@@ -118,4 +118,15 @@ final class ModuleSettingController
     {
         return $this->settingService->changeStringSetting($name, $value, $moduleId);
     }
+
+    /**
+     * @Mutation
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     */
+    public function changeModuleSettingCollection(ID $name, string $value, string $moduleId): StringSetting
+    {
+        return $this->settingService->changeCollectionSetting($name, $value, $moduleId);
+    }
 }
