@@ -370,4 +370,47 @@ final class SettingCest extends BaseCest
         $I->assertSame('boolSetting', $setting['name']);
         $I->assertSame(false, $setting['value']);
     }
+
+    public function testChangeStringSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingString(name: "stringSetting", value: "default", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeModuleSettingString" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeStringSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingString(name: "stringSetting", value: "default", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingString'];
+        $I->assertSame('stringSetting', $setting['name']);
+        $I->assertSame('default', $setting['value']);
+    }
 }
