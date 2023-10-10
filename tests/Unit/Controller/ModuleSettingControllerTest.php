@@ -5,7 +5,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Controller;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller\ModuleSettingController;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 class ModuleSettingControllerTest extends UnitTestCase
 {
@@ -20,7 +19,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingController = new ModuleSettingController($settingService);
 
-        $nameID = new ID('integerSetting');
+        $nameID = $serviceIntegerSetting->getName();
         $integerSetting = $settingController->getModuleSettingInteger($nameID, 'awesomeModule');
 
         $this->assertSame($serviceIntegerSetting, $integerSetting);
@@ -37,7 +36,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingController = new ModuleSettingController($settingService);
 
-        $nameID = new ID('floatSetting');
+        $nameID = $serviceFloatSetting->getName();
         $floatSetting = $settingController->getModuleSettingFloat($nameID, 'awesomeModule');
 
         $this->assertSame($serviceFloatSetting, $floatSetting);
@@ -54,7 +53,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingController = new ModuleSettingController($settingService);
 
-        $nameID = new ID('booleanSetting');
+        $nameID = $serviceBooleanSetting->getName();
         $booleanSetting = $settingController->getModuleSettingBoolean($nameID, 'awesomeModule');
 
         $this->assertSame($serviceBooleanSetting, $booleanSetting);
@@ -71,7 +70,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingController = new ModuleSettingController($settingService);
 
-        $nameID = new ID('stringSetting');
+        $nameID = $serviceStringSetting->getName();
         $stringSetting = $settingController->getModuleSettingString($nameID, 'awesomeModule');
 
         $this->assertSame($serviceStringSetting, $stringSetting);
@@ -88,7 +87,7 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingController = new ModuleSettingController($settingService);
 
-        $nameID = new ID('arraySetting');
+        $nameID = $serviceCollectionSetting->getName();
         $collectionSetting = $settingController->getModuleSettingCollection($nameID, 'awesomeModule');
 
         $this->assertSame($serviceCollectionSetting, $collectionSetting);
@@ -105,8 +104,9 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingController = new ModuleSettingController($settingService);
 
-        $nameID = new ID('intSetting');
-        $integerSetting = $settingController->changeModuleSettingInteger($nameID, 123, 'awesomeModule');
+        $nameID = $serviceIntegerSetting->getName();
+        $value = $serviceIntegerSetting->getValue();
+        $integerSetting = $settingController->changeModuleSettingInteger($nameID, $value, 'awesomeModule');
 
         $this->assertSame($serviceIntegerSetting, $integerSetting);
     }
@@ -122,8 +122,9 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $settingController = new ModuleSettingController($settingService);
 
-        $nameID = new ID('floatSetting');
-        $floatSetting = $settingController->changeModuleSettingFloat($nameID, 1.23, 'awesomeModule');
+        $nameID = $serviceFloatSetting->getName();
+        $value = $serviceFloatSetting->getValue();
+        $floatSetting = $settingController->changeModuleSettingFloat($nameID, $value, 'awesomeModule');
 
         $this->assertSame($serviceFloatSetting, $floatSetting);
     }
