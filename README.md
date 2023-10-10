@@ -3,13 +3,14 @@ OXAPI (GraphQL based) access to configuration settings
 
 
 ### Why we use this schema
-To get and update the configurations we implemented a different query/mutation per each value-type.
-We choose this schema, because GraphQL is very strict and doesn't allow dynamic types. Without these strict types,
-the user would always have to convert the value after queries or before mutations.
+To fetch and update the configurations we implemented a different query/mutation per value-type.
+We have chosen this schema because of GraphQL's strictness which doesn't allow for dynamic types. Without these types,
+the API consumer would always have to convert the value after queries or before mutations if, for example,
+we decided to use json encoded strings instead.
 
 To get the specific type of a configuration, we provide queries like
 `getShopSettingsList`/`getModuleSettingsList`/`getThemeSettingsList` to figure out the type for configurations.
-As a result you get an array of `SettingType`'s:
+As a result you get an array of setting types:
 
 ```
 type SettingType {
