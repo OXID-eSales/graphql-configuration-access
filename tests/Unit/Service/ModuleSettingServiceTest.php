@@ -119,4 +119,18 @@ class ModuleSettingServiceTest extends UnitTestCase
         $this->assertSame($nameID, $floatSetting->getName());
         $this->assertSame(1.23, $floatSetting->getValue());
     }
+
+    public function testChangeModuleSettingBoolean(): void
+    {
+        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+
+        $settingService = new ModuleSettingService($repository);
+
+        $nameID = new ID('boolSetting');
+        $value = 1.23;
+        $floatSetting = $settingService->changeFloatSetting($nameID, $value, 'awesomeModule');
+
+        $this->assertSame($nameID, $floatSetting->getName());
+        $this->assertSame($value, $floatSetting->getValue());
+    }
 }

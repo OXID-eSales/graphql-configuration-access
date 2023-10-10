@@ -122,4 +122,19 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $moduleRepository->saveFloatSetting($nameID, 1.23, 'awesomeModule');
     }
+
+    public function testChangeModuleSettingBoolean(): void
+    {
+        $nameID = new ID('boolSetting');
+        $value = false;
+
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveBoolean')
+            ->with($nameID->val(), $value, 'awesomeModule');
+
+        $moduleRepository = new ModuleSettingRepository($moduleSettingService);
+
+        $moduleRepository->saveBooleanSetting($nameID, $value, 'awesomeModule');
+    }
 }

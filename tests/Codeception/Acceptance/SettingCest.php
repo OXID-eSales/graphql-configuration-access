@@ -328,4 +328,46 @@ final class SettingCest extends BaseCest
         $I->assertSame(1.24, $setting['value']);
     }
 
+    public function testChangeBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingBoolean(name: "boolSetting", value: False, moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeModuleSettingBoolean" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeBooleanSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingBoolean(name: "boolSetting", value: false, moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingBoolean'];
+        $I->assertSame('boolSetting', $setting['name']);
+        $I->assertSame(false, $setting['value']);
+    }
 }
