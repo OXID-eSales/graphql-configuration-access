@@ -65,6 +65,6 @@ class SettingTest extends UnitTestCase
         $this->expectExceptionMessage('The value "invalidType" is not a valid field type.
 Please use one of the following types: "'.implode('", "', FieldType::getEnums()).'".');
 
-        new SettingType(new ID('coolSettingType'), 'setting type description', 'invalidType');
+        new SettingType(new ID('coolSettingType'), 'invalidType');
     }
 }

@@ -24,7 +24,6 @@ final class SettingType
 
     public function __construct(
         private ID $name,
-        private string $description,
         String $type
     ) {
         $valid = FieldType::validateFieldType($type);
@@ -43,14 +42,6 @@ Please use one of the following types: "'.implode('", "', FieldType::getEnums())
     public function getName(): ID
     {
         return $this->name;
-    }
-
-    /**
-     * @Field()
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
     }
 
     /**

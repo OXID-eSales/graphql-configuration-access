@@ -15,12 +15,12 @@ class UnitTestCase extends TestCase
 {
     protected function getIntegerSetting(): IntegerSetting
     {
-        return new IntegerSetting(new ID('integerSetting'), '', 123);
+        return new IntegerSetting(new ID('integerSetting'), 123);
     }
 
     protected function getFloatSetting(): FloatSetting
     {
-        return new FloatSetting(new ID('floatSetting'), '', 1.23);
+        return new FloatSetting(new ID('floatSetting'), 1.23);
     }
 
     protected function getBooleanSetting(): BooleanSetting
@@ -30,16 +30,16 @@ class UnitTestCase extends TestCase
 
     protected function getStringSetting(): StringSetting
     {
-        return new StringSetting(new ID('stringSetting'), '', 'default');
+        return new StringSetting(new ID('stringSetting'), 'default');
     }
 
     protected function getCollectionSetting(): StringSetting
     {
-        return new StringSetting(new ID('arraySetting'), '', json_encode(['nice', 'values']));
+        return new StringSetting(new ID('arraySetting'), json_encode(['nice', 'values']));
     }
 
     protected function getSettingType(): SettingType
     {
-        return new SettingType(new ID('settingType'), '', FieldType::BOOLEAN);
+        return new SettingType(new ID('settingType'), FieldType::BOOLEAN);
     }
 }
