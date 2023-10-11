@@ -2,6 +2,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
@@ -146,6 +147,35 @@ class ModuleSettingServiceTest extends UnitTestCase
 
         $this->assertSame($nameID, $stringSetting->getName());
         $this->assertSame($value, $stringSetting->getValue());
+    }
+
+    /**
+     * @dataProvider invalidCollectionDataProvider
+     */
+    public function testChangeModuleSettingInvalidCollection($value): void
+    {
+        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+
+        $settingService = new ModuleSettingService($repository);
+
+        $nameID = new ID('collectionSetting');
+
+        $this->expectException(InvalidCollection::class);
+        $this->expectExceptionMessage(sprintf('%s is not a valid collection string.', $value));
+
+        $settingService->changeCollectionSetting($nameID, $value, 'awesomeModule');
+    }
+
+    public function invalidCollectionDataProvider(): array
+    {
+        return [
+            ['[2, "values"'],
+            ['{2, "values"}'],
+            ['2, "values"}'],
+            ['[2, values]'],
+            ['"3, interesting, values"'],
+            ['"3, \'interesting\', \'values\'"'],
+        ];
     }
 
     public function testChangeModuleSettingCollection(): void
