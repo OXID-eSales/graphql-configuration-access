@@ -27,7 +27,7 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $name = $name->val();
         $value = $this->moduleSettingService->getInteger($name, $moduleId);
 
-        return new IntegerSetting(new ID($name), '', $value);
+        return new IntegerSetting(new ID($name), $value);
     }
 
     public function getFloatSetting(ID $name, string $moduleId): FloatSetting
@@ -35,7 +35,7 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $name = $name->val();
         $value = $this->moduleSettingService->getFloat($name, $moduleId);
 
-        return new FloatSetting(new ID($name), '', $value);
+        return new FloatSetting(new ID($name), $value);
     }
 
     public function getBooleanSetting(ID $name, string $moduleId): BooleanSetting
@@ -43,7 +43,7 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $name = $name->val();
         $value = $this->moduleSettingService->getBoolean($name, $moduleId);
 
-        return new BooleanSetting(new ID($name), '', $value);
+        return new BooleanSetting(new ID($name), $value);
     }
 
     public function getStringSetting(ID $name, string $moduleId): StringSetting
@@ -51,7 +51,7 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $name = $name->val();
         $value = $this->moduleSettingService->getString($name, $moduleId);
 
-        return new StringSetting(new ID($name), '', (string)$value);
+        return new StringSetting(new ID($name), (string)$value);
     }
 
     public function getCollectionSetting(ID $name, string $moduleId): StringSetting
@@ -59,6 +59,6 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $name = $name->val();
         $value = $this->moduleSettingService->getCollection($name, $moduleId);
 
-        return new StringSetting(new ID($name), '', json_encode($value));
+        return new StringSetting(new ID($name), json_encode($value));
     }
 }

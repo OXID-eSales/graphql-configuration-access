@@ -20,7 +20,6 @@ final class IntegerSetting
 {
     public function __construct(
         private ID $name,
-        private string $description,
         private int $value
     ) {}
 
@@ -30,15 +29,6 @@ final class IntegerSetting
     public function getName(): ID
     {
         return $this->name;
-    }
-
-    /**
-     * @Field()
-     * Todo: will be removed
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
     }
 
     /**

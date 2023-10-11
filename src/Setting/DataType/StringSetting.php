@@ -20,7 +20,6 @@ final class StringSetting
 {
     public function __construct(
         private ID $name,
-        private string $description,
         private string $value
     ) {}
 
@@ -30,14 +29,6 @@ final class StringSetting
     public function getName(): ID
     {
         return $this->name;
-    }
-
-    /**
-     * @Field()
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
     }
 
     /**
