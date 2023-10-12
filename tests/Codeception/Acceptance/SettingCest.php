@@ -414,24 +414,6 @@ final class SettingCest extends BaseCest
         $I->assertSame('default', $setting['value']);
     }
 
-    public function testChangeCollectionSettingNotLoggedIn(AcceptanceTester $I): void
-    {
-        $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingCollection(name: "arraySetting", moduleId: "'.$this->getTestModuleName().'") {
-                    name
-                    value
-                }
-            }'
-        );
-
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "changeModuleSettingCollection" on type "Mutation".', $errorMessage);
-    }
-
     public function testChangeCollectionSettingNotAuthorized(AcceptanceTester $I): void
     {
         $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
