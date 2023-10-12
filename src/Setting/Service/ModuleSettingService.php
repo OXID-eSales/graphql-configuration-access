@@ -52,28 +52,28 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
     {
         $this->moduleSettingRepository->saveIntegerSetting($name, $value, $moduleId);
 
-        return new IntegerSetting($name, '', $value);
+        return new IntegerSetting($name, $value);
     }
 
     public function changeFloatSetting(ID $name, float $value, string $moduleId):FloatSetting
     {
         $this->moduleSettingRepository->saveFloatSetting($name, $value, $moduleId);
 
-        return new FloatSetting($name, '', $value);
+        return new FloatSetting($name, $value);
     }
 
     public function changeBooleanSetting(ID $name, bool $value, string $moduleId):BooleanSetting
     {
         $this->moduleSettingRepository->saveBooleanSetting($name, $value, $moduleId);
 
-        return new BooleanSetting($name, '', $value);
+        return new BooleanSetting($name, $value);
     }
 
     public function changeStringSetting(ID $name, string $value, string $moduleId):StringSetting
     {
         $this->moduleSettingRepository->saveStringSetting($name, $value, $moduleId);
 
-        return new StringSetting($name, '', $value);
+        return new StringSetting($name, $value);
     }
 
     public function changeCollectionSetting(ID $name, string $value, string $moduleId):StringSetting
@@ -86,6 +86,6 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
         $this->moduleSettingRepository->saveCollectionSetting($name, $arrayValue, $moduleId);
 
-        return new StringSetting($name, '', $value);
+        return new StringSetting($name, $value);
     }
 }

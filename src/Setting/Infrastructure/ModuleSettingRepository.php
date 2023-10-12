@@ -59,7 +59,7 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $name = $name->val();
         $value = $this->moduleSettingService->getCollection($name, $moduleId);
 
-        return new StringSetting(new ID($name), '', json_encode($value));
+        return new StringSetting(new ID($name), json_encode($value));
     }
 
     public function saveIntegerSetting(ID $name, int $value, string $moduleId): void
@@ -82,8 +82,8 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         $this->moduleSettingService->saveString($name->val(), $value, $moduleId);
     }
 
-    public function saveCollectionSetting(ID $name, string $value, string $moduleId): void
+    public function saveCollectionSetting(ID $name, array $value, string $moduleId): void
     {
-        $this->moduleSettingService->saveString($name->val(), $value, $moduleId);
+        $this->moduleSettingService->saveCollection($name->val(), $value, $moduleId);
     }
 }
