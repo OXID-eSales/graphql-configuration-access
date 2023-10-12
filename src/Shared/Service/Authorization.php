@@ -26,7 +26,7 @@ final class Authorization implements AuthorizationServiceInterface
     public function isAllowed(string $right, $subject = null): bool
     {
         if (null === $this->authorization) {
-            throw GraphQLServiceNotFound::byServiceName(BaseAuthorization::class);
+            throw new GraphQLServiceNotFound(BaseAuthorization::class);
         }
 
         return $this->authorization->isAllowed($right, $subject);

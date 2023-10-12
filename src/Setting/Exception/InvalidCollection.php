@@ -13,8 +13,8 @@ use Exception;
 
 final class InvalidCollection extends Exception
 {
-    public static function byCollectionString(string $value): self
+    public function __construct(string $value)
     {
-        return new self(sprintf('%s is not a valid collection string.', $value));
+        parent::__construct(sprintf('%s is not a valid collection string.', $value));
     }
 }

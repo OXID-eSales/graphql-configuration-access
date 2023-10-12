@@ -81,7 +81,7 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
         $arrayValue = json_decode($value, true);
 
         if (!is_array($arrayValue) || json_last_error() !== JSON_ERROR_NONE) {
-            throw InvalidCollection::byCollectionString($value);
+            throw new InvalidCollection($value);
         }
 
         $this->moduleSettingRepository->saveCollectionSetting($name, $arrayValue, $moduleId);

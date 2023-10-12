@@ -13,8 +13,8 @@ use Exception;
 
 final class GraphQLServiceNotFound extends Exception
 {
-    public static function byServiceName(string $name): self
+    public function __construct(string $name)
     {
-        return new self(sprintf('GraphQL service %s is not available.', $name));
+         parent::__construct(sprintf('GraphQL service %s is not available.', $name));
     }
 }
