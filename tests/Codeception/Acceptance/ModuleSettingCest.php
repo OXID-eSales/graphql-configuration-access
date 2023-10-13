@@ -13,11 +13,11 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
- * @group setting
+ * @group module_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
  */
-final class SettingCest extends BaseCest
+final class ModuleSettingCest extends BaseCest
 {
     private const AGENT_USERNAME = 'JanvierJaimesVelasquez@cuvox.de';
 
