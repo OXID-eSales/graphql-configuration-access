@@ -11,3 +11,12 @@ REPLACE INTO `oxgroups` (`OXID`, `OXRRID`, `OXACTIVE`, `OXTITLE`, `OXTITLE_1`, `
 REPLACE INTO `oxobject2group` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXGROUPSID`, `OXTIMESTAMP`) VALUES
 ('d687174433046c8b3b9bf114c3aa0830',	1,	'4d7a345d24356293cc79b426e6d2c2a6',	'oxidadmin',	'2023-09-27 14:40:01'),
 ('d687174433046c8b3b9bf114c3aa0831',	1,	'01ba0f60-bd8e-4c01-bcf6-aa457bcb',	'oxidcustomer',	'2023-09-27 14:40:01');
+
+REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`, `OXTIMESTAMP`) VALUES
+('_intSetting',	1,	'theme:awesomeTheme',	'intSetting',	'num',	'123',	'2023-10-13 08:26:19'),
+('_floatSetting',	1,	'theme:awesomeTheme',	'floatSetting',	'num',	'1.23',	'2023-10-13 08:26:19'),
+('_boolSetting',	1,	'theme:awesomeTheme',	'boolSetting',	'bool',	'false',	'2023-10-13 08:26:19'),
+('_stringSetting',	1,	'theme:awesomeTheme',	'stringSetting',	'str',	'default',	'2023-10-13 08:26:19'),
+('_selectSetting',	1,	'theme:awesomeTheme',	'selectSetting',	'select',	'selectString',	'2023-10-13 08:26:19'),
+('_arraySetting',	1,	'theme:awesomeTheme',	'arraySetting',	'arr',	'a:4:{i:0;s:2:"10";i:1;s:2:"20";i:2;s:2:"50";i:3;s:3:"100";}',	'2023-10-13 08:26:19'),
+('_aarraySetting',	1,	'theme:awesomeTheme',	'aarraySetting',	'aarr',	'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}',	'2023-10-13 08:26:19');

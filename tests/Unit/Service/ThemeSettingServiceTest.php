@@ -1,0 +1,28 @@
+<?php
+
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
+
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use TheCodingMachine\GraphQLite\Types\ID;
+
+class ThemeSettingServiceTest extends UnitTestCase
+{
+    public function testGetThemeSettingInteger(): void
+    {
+        $serviceIntegerSetting = $this->getIntegerSetting();
+
+        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getIntegerSetting')
+            ->willReturn($serviceIntegerSetting);
+
+        $settingService = new ThemeSettingService($repository);
+
+        $nameID = new ID('integerSetting');
+        $integerSetting = $settingService->getIntegerSetting($nameID, 'awesomeTheme');
+
+        $this->assertSame($serviceIntegerSetting, $integerSetting);
+    }
+}

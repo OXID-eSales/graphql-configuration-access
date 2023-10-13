@@ -20,6 +20,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 abstract class BaseCest
 {
     private const TEST_MODULE_ID = 'awesomeModule';
+    private const TEST_THEME_ID = 'awesomeTheme';
 
     public function _before(AcceptanceTester $I): void
     {
@@ -35,6 +36,11 @@ abstract class BaseCest
     protected function getTestModuleName(): string
     {
         return self::TEST_MODULE_ID;
+    }
+
+    protected function getTestThemeName(): string
+    {
+        return self::TEST_THEME_ID;
     }
 
     private function prepareConfiguration(): void
