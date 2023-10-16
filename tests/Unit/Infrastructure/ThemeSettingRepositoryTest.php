@@ -7,7 +7,9 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use TheCodingMachine\GraphQLite\Types\ID;
+use UnexpectedValueException;
 
 class ThemeSettingRepositoryTest extends UnitTestCase
 {
@@ -25,10 +27,35 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $this->assertEquals($serviceIntegerSetting, $integerSetting);
     }
 
+    public function testGetNoThemeSettingInteger(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
+        $repository->getIntegerSetting($nameID, 'awesomeModule');
+    }
+
+    public function testGetThemeSettingInvalidInteger(): void
+    {
+        $nameID = new ID('floatSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
+        $repository->getIntegerSetting($nameID, 'awesomeModule');
+    }
+
     /**
-     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&\PHPUnit\Framework\MockObject\MockObject)|\PHPUnit\Framework\MockObject\MockObject
+     * @param string|bool $returnedValue
+     * @return QueryBuilderFactoryInterface|MockObject
      */
-    public function getQueryBuilderFactoryMock(string $returnedValue): QueryBuilderFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
+    public function getQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
     {
         $result = $this->createMock(Result::class);
         $result->expects($this->once())
