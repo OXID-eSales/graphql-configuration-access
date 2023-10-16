@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Types\ID;
+use UnexpectedValueException;
 
 final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 {
@@ -39,6 +40,15 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $result = $this->queryBuilder->execute();
         $value = $result->fetchOne();
 
+        if ($value === False || $this->isFloatString($value)) {
+            throw new UnexpectedValueException('The queried name couldn\'t be found as an integer configuration');
+        }
+
         return new IntegerSetting($name, (int)$value);
+    }
+
+    private function isFloatString(string $number): bool
+    {
+        return is_numeric($number) && str_contains($number, '.') !== false;
     }
 }
