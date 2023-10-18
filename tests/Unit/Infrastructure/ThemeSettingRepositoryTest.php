@@ -50,6 +50,43 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
         $repository->getIntegerSetting($nameID, 'awesomeModule');
     }
+    public function testGetThemeSettingFloat(): void
+    {
+        $serviceFloatSetting = $this->getFloatSetting();
+        $nameID = new ID('floatSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $integerSetting = $repository->getFloatSetting($nameID, 'awesomeModule');
+
+        $this->assertEquals($serviceFloatSetting, $integerSetting);
+    }
+
+    public function testGetNoThemeSettingFloat(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as an float configuration');
+        $repository->getFloatSetting($nameID, 'awesomeModule');
+    }
+
+    public function testGetThemeSettingInvalidFloat(): void
+    {
+        $nameID = new ID('intSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('123');
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as an float configuration');
+        $repository->getFloatSetting($nameID, 'awesomeModule');
+    }
 
     /**
      * @param string|bool $returnedValue

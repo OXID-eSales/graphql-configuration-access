@@ -25,4 +25,21 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $this->assertSame($serviceIntegerSetting, $integerSetting);
     }
+
+    public function testGetThemeSettingFloat(): void
+    {
+        $serviceFloatSetting = $this->getFloatSetting();
+
+        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getFloatSetting')
+            ->willReturn($serviceFloatSetting);
+
+        $settingService = new ThemeSettingService($repository);
+
+        $nameID = new ID('floatSetting');
+        $floatSetting = $settingService->getFloatSetting($nameID, 'awesomeTheme');
+
+        $this->assertSame($serviceFloatSetting, $floatSetting);
+    }
 }
