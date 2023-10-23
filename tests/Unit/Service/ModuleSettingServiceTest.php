@@ -46,7 +46,7 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testGetModuleSettingBoolean(): void
     {
-        $serviceBooleanSetting = $this->getBooleanSetting();
+        $serviceBooleanSetting = $this->getNegativBooleanSetting();
 
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())

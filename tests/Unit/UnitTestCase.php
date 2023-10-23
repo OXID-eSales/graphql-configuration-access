@@ -35,9 +35,14 @@ class UnitTestCase extends TestCase
         return new FloatSetting(new ID('floatSetting'), 1.23);
     }
 
-    protected function getBooleanSetting(): BooleanSetting
+    protected function getNegativBooleanSetting(): BooleanSetting
     {
-        return new BooleanSetting(new ID('booleanSetting'), '', false);
+        return new BooleanSetting(new ID('booleanSetting'), false);
+    }
+
+    protected function getPositivBooleanSetting(): BooleanSetting
+    {
+        return new BooleanSetting(new ID('booleanSetting'), true);
     }
 
     protected function getStringSetting(): StringSetting

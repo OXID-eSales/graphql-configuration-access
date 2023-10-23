@@ -5,11 +5,11 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use TheCodingMachine\GraphQLite\Types\ID;
-use UnexpectedValueException;
 
 class ThemeSettingRepositoryTest extends UnitTestCase
 {
@@ -34,7 +34,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
 
         $repository = new ThemeSettingRepository($queryBuilderFactory);
 
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
         $repository->getIntegerSetting($nameID, 'awesomeModule');
     }
@@ -46,7 +46,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
 
         $repository = new ThemeSettingRepository($queryBuilderFactory);
 
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
         $repository->getIntegerSetting($nameID, 'awesomeModule');
     }
@@ -71,8 +71,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
 
         $repository = new ThemeSettingRepository($queryBuilderFactory);
 
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as an float configuration');
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
         $repository->getFloatSetting($nameID, 'awesomeModule');
     }
 
@@ -83,9 +83,49 @@ class ThemeSettingRepositoryTest extends UnitTestCase
 
         $repository = new ThemeSettingRepository($queryBuilderFactory);
 
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as an float configuration');
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
         $repository->getFloatSetting($nameID, 'awesomeModule');
+    }
+
+    public function testGetThemeSettingBooleanNegativ(): void
+    {
+        $serviceBooleanSetting = $this->getNegativBooleanSetting();
+        $nameID = new ID('booleanSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('');
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $booleanSetting = $repository->getBooleanSetting($nameID, 'awesomeModule');
+
+        $this->assertEquals($serviceBooleanSetting, $booleanSetting);
+    }
+
+    public function testGetThemeSettingBooleanPositiv(): void
+    {
+        $serviceBooleanSetting = $this->getPositivBooleanSetting();
+        $nameID = new ID('booleanSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1');
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $booleanSetting = $repository->getBooleanSetting($nameID, 'awesomeModule');
+
+        $this->assertEquals($serviceBooleanSetting, $booleanSetting);
+    }
+
+    public function testGetNoThemeSettingBoolean(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a boolean configuration');
+        $repository->getBooleanSetting($nameID, 'awesomeModule');
     }
 
     /**
@@ -108,5 +148,4 @@ class ThemeSettingRepositoryTest extends UnitTestCase
             ->willReturn($queryBuilder);
         return $queryBuilderFactory;
     }
-
 }

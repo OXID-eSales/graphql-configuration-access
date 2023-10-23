@@ -2,6 +2,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingServiceInterface;
@@ -37,5 +38,16 @@ final class ThemeSettingController
     public function getThemeSettingFloat(ID $name, string $themeId): FloatSetting
     {
         return $this->settingService->getFloatSetting($name, $themeId);
+    }
+
+    /**
+     * @Query()
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     */
+    public function getThemeSettingBoolean(ID $name, string $themeId): BooleanSetting
+    {
+        return $this->settingService->getBooleanSetting($name, $themeId);
     }
 }

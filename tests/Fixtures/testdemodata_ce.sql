@@ -15,7 +15,7 @@ REPLACE INTO `oxobject2group` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXGROUPSID`, `
 REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`, `OXTIMESTAMP`) VALUES
 ('_intSetting',	1,	'theme:awesomeTheme',	'intSetting',	'num',	'123',	'2023-10-13 08:26:19'),
 ('_floatSetting',	1,	'theme:awesomeTheme',	'floatSetting',	'num',	'1.23',	'2023-10-13 08:26:19'),
-('_boolSetting',	1,	'theme:awesomeTheme',	'boolSetting',	'bool',	'false',	'2023-10-13 08:26:19'),
+('_boolSetting',	1,	'theme:awesomeTheme',	'boolSetting',	'bool',	'',	'2023-10-13 08:26:19'),
 ('_stringSetting',	1,	'theme:awesomeTheme',	'stringSetting',	'str',	'default',	'2023-10-13 08:26:19'),
 ('_selectSetting',	1,	'theme:awesomeTheme',	'selectSetting',	'select',	'selectString',	'2023-10-13 08:26:19'),
 ('_arraySetting',	1,	'theme:awesomeTheme',	'arraySetting',	'arr',	'a:4:{i:0;s:2:"10";i:1;s:2:"20";i:2;s:2:"50";i:3;s:3:"100";}',	'2023-10-13 08:26:19'),

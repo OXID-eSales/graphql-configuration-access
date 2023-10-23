@@ -112,4 +112,47 @@ final class ThemeSettingCest extends BaseCest
         $I->assertSame('floatSetting', $setting['name']);
         $I->assertSame(1.23, $setting['value']);
     }
+
+    public function testGetBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                themeSettingBoolean(name: "boolSetting", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "themeSettingBoolean" on type "Query".', $errorMessage);
+    }
+
+    public function testGetBooleanSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                themeSettingBoolean(name: "boolSetting", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['themeSettingBoolean'];
+        $I->assertSame('boolSetting', $setting['name']);
+        $I->assertSame(false, $setting['value']);
+    }
 }

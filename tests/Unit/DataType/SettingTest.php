@@ -12,7 +12,7 @@ class SettingTest extends UnitTestCase
 {
     public function testBooleanSetting(): void
     {
-        $setting = $this->getBooleanSetting();
+        $setting = $this->getNegativBooleanSetting();
 
         $this->assertEquals(new ID('booleanSetting'), $setting->getName());
         $this->assertFalse($setting->getValue());
