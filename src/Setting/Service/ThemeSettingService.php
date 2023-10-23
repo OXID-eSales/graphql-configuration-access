@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -34,5 +35,10 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
     public function getBooleanSetting(ID $name, $themeId): BooleanSetting
     {
         return $this->themeSettingRepository->getBooleanSetting($name, $themeId);
+    }
+
+    public function getStringSetting(ID $name, $themeId): StringSetting
+    {
+        return $this->themeSettingRepository->getStringSetting($name, $themeId);
     }
 }

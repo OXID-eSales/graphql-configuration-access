@@ -15,6 +15,7 @@ use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -56,6 +57,17 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         }
 
         return new BooleanSetting($name, (bool)$value);
+    }
+
+    public function getStringSetting(ID $name, string $themeId): StringSetting
+    {
+        $value = $this->getSettingValue($themeId, $name, FieldType::STRING);
+
+        if ($value === False) {
+            throw new NotFound('The queried name couldn\'t be found as a string configuration');
+        }
+
+        return new StringSetting($name, $value);
     }
 
     private function isFloatString(string $number): bool

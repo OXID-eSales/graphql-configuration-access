@@ -128,6 +128,32 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $repository->getBooleanSetting($nameID, 'awesomeModule');
     }
 
+    public function testGetThemeSettingString(): void
+    {
+        $serviceStringSetting = $this->getStringSetting();
+        $nameID = new ID('stringSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('default');
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $stringSetting = $repository->getStringSetting($nameID, 'awesomeModule');
+
+        $this->assertEquals($serviceStringSetting, $stringSetting);
+    }
+
+    public function testGetNoThemeSettingString(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a string configuration');
+        $repository->getStringSetting($nameID, 'awesomeModule');
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject
