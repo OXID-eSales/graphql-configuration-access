@@ -2,7 +2,12 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
@@ -13,13 +18,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     public function testGetModuleSettingInteger(): void
     {
         $serviceIntegerSetting = $this->getIntegerSetting();
-
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getIntegerSetting')
-            ->willReturn($serviceIntegerSetting);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('num','getIntegerSetting', $serviceIntegerSetting);
 
         $nameID = new ID('integerSetting');
         $integerSetting = $settingService->getIntegerSetting($nameID, 'awesomeModule');
@@ -30,13 +29,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     public function testGetModuleSettingFloat(): void
     {
         $serviceFloatSetting = $this->getFloatSetting();
-
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getFloatSetting')
-            ->willReturn($serviceFloatSetting);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('num','getFloatSetting', $serviceFloatSetting);
 
         $nameID = new ID('floatSetting');
         $floatSetting = $settingService->getFloatSetting($nameID, 'awesomeModule');
@@ -47,13 +40,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     public function testGetModuleSettingBoolean(): void
     {
         $serviceBooleanSetting = $this->getBooleanSetting();
-
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getBooleanSetting')
-            ->willReturn($serviceBooleanSetting);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('bool','getBooleanSetting', $serviceBooleanSetting);
 
         $nameID = new ID('booleanSetting');
         $booleanSetting = $settingService->getBooleanSetting($nameID, 'awesomeModule');
@@ -64,13 +51,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     public function testGetModuleSettingString(): void
     {
         $serviceStringSetting = $this->getStringSetting();
-
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getStringSetting')
-            ->willReturn($serviceStringSetting);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('str','getStringSetting', $serviceStringSetting);
 
         $nameID = new ID('stringSetting');
         $stringSetting = $settingService->getStringSetting($nameID, 'awesomeModule');
@@ -81,13 +62,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     public function testGetModuleSettingCollection(): void
     {
         $serviceCollectionSetting = $this->getCollectionSetting();
-
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getCollectionSetting')
-            ->willReturn($serviceCollectionSetting);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('arr','getCollectionSetting', $serviceCollectionSetting);
 
         $nameID = new ID('arraySetting');
         $collectionSetting = $settingService->getCollectionSetting($nameID, 'awesomeModule');
@@ -97,9 +72,7 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testChangeModuleSettingInteger(): void
     {
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('num',);
 
         $nameID = new ID('intSetting');
         $integerSetting = $settingService->changeIntegerSetting($nameID, 123, 'awesomeModule');
@@ -110,9 +83,7 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testChangeModuleSettingFloat(): void
     {
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('num',);
 
         $nameID = new ID('floatSetting');
         $floatSetting = $settingService->changeFloatSetting($nameID, 1.23, 'awesomeModule');
@@ -123,9 +94,7 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testChangeModuleSettingBoolean(): void
     {
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('bool',);
 
         $nameID = new ID('boolSetting');
         $value = false;
@@ -137,9 +106,7 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testChangeModuleSettingString(): void
     {
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('str',);
 
         $nameID = new ID('stringSetting');
         $value = 'default';
@@ -154,9 +121,7 @@ class ModuleSettingServiceTest extends UnitTestCase
      */
     public function testChangeModuleSettingInvalidCollection($value): void
     {
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('arr',);
 
         $nameID = new ID('collectionSetting');
 
@@ -180,9 +145,7 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testChangeModuleSettingCollection(): void
     {
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getModuleSettingServiceMock('arr',);
 
         $nameID = new ID('collectionSetting');
         $value = '[2, "values"]';
@@ -190,5 +153,66 @@ class ModuleSettingServiceTest extends UnitTestCase
 
         $this->assertSame($nameID, $collectionSetting->getName());
         $this->assertSame($value, $collectionSetting->getValue());
+    }
+
+    /**
+     * @dataProvider invalidSettingTypeDataProvider
+     */
+    public function testChangeModuleSettingInvalidSettingType($method, $setting, $value, $type): void
+    {
+        $settingService = $this->getModuleSettingServiceMock($type);
+
+        $nameID = new ID($setting);
+
+        $this->expectException(InvalidType::class);
+        $this->expectExceptionMessage((new InvalidType($type))->getMessage());
+
+        $settingService->$method($nameID, $value, 'awesomeModule');
+    }
+
+    public function invalidSettingTypeDataProvider(): array
+    {
+        return [
+            ['changeStringSetting', 'intSetting', '123', 'num'],
+            ['changeStringSetting', 'arraySetting', '[2, "values"]', 'arr'],
+            ['changeIntegerSetting', 'stringSetting', 123, 'str'],
+            ['changeFloatSetting', 'stringSetting', 123, 'str'],
+            ['changeBooleanSetting', 'intSetting', 1, 'num'],
+        ];
+    }
+
+    private function getModuleSettingServiceMock(string $type, string $method = null, mixed $returnValue = null): ModuleSettingService
+    {
+        $context = $this->getMockBuilder(ContextInterface::class)->getMock();
+        $context
+            ->method('getCurrentShopId')
+            ->willReturn(1);
+
+        $setting = $this->getMockBuilder(Setting::class)->getMock();
+        $setting
+            ->method('getType')
+            ->willReturn($type);
+
+        $moduleConfiguration = $this->getMockBuilder(ModuleConfiguration::class)->getMock();
+        $moduleConfiguration
+            ->method('getModuleSetting')
+            ->willReturn($setting);
+
+        $moduleConfigurationDao = $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock();
+        $moduleConfigurationDao
+            ->method('get')
+            ->with('awesomeModule', 1)
+            ->willReturn($moduleConfiguration);
+
+
+        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+        if ($method) {
+            $repository
+                ->expects($this->once())
+                ->method($method)
+                ->willReturn($returnValue);
+        }
+
+        return new ModuleSettingService($context, $moduleConfigurationDao, $repository);
     }
 }

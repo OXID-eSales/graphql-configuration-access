@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Basket;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidType;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
@@ -455,5 +456,27 @@ final class SettingCest extends BaseCest
         $setting = $result['data']['changeModuleSettingCollection'];
         $I->assertSame('arraySetting', $setting['name']);
         $I->assertSame('[3, "interesting", "values"]', $setting['value']);
+    }
+
+    public function testChangeIntegerSettingWithStringMutation(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeModuleSettingString(name: "intSetting", value: "notString", moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayHasKey('errors', $result);
+
+        $errorMessage = $result['errors'][0]['debugMessage'];
+        $I->assertSame((new InvalidType('num'))->getMessage(), $errorMessage);
     }
 }

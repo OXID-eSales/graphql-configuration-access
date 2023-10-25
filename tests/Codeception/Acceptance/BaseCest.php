@@ -44,27 +44,32 @@ abstract class BaseCest
         $integerSetting = new Setting();
         $integerSetting
             ->setName('intSetting')
-            ->setValue(123);
+            ->setValue(123)
+            ->setType('num');
 
         $floatSetting = new Setting();
         $floatSetting
             ->setName('floatSetting')
-            ->setValue(1.23);
+            ->setValue(1.23)
+            ->setType('num');
 
         $booleanSetting = new Setting();
         $booleanSetting
             ->setName('boolSetting')
-            ->setValue(false);
+            ->setValue(false)
+            ->setType('bool');
 
         $stringSetting = new Setting();
         $stringSetting
             ->setName('stringSetting')
-            ->setValue('default');
+            ->setValue('default')
+            ->setType('str');
 
         $collectionSetting = new Setting();
         $collectionSetting
             ->setName('arraySetting')
-            ->setValue(['nice', 'values']);
+            ->setValue(['nice', 'values'])
+            ->setType('arr');
 
 
         $moduleConfiguration = new ModuleConfiguration();
