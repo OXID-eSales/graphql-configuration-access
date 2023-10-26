@@ -14,4 +14,5 @@ interface ThemeSettingServiceInterface
     public function getFloatSetting(ID $name, $themeId): FloatSetting;
     public function getBooleanSetting(ID $name, $themeId): BooleanSetting;
     public function getStringSetting(ID $name, $themeId): StringSetting;
+    public function getSelectSetting(ID $name, $themeId): StringSetting;
 }

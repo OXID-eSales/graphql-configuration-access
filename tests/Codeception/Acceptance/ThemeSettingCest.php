@@ -198,4 +198,47 @@ final class ThemeSettingCest extends BaseCest
         $I->assertSame('stringSetting', $setting['name']);
         $I->assertSame('default', $setting['value']);
     }
+
+    public function testGetSelectSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                themeSettingSelect(name: "selectSetting", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "themeSettingSelect" on type "Query".', $errorMessage);
+    }
+
+    public function testGetSelectSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                themeSettingSelect(name: "selectSetting", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['themeSettingSelect'];
+        $I->assertSame('selectSetting', $setting['name']);
+        $I->assertSame('selectString', $setting['value']);
+    }
 }

@@ -50,6 +50,11 @@ class UnitTestCase extends TestCase
         return new StringSetting(new ID('stringSetting'), 'default');
     }
 
+    protected function getSelectSetting(): StringSetting
+    {
+        return new StringSetting(new ID('selectSetting'), 'select');
+    }
+
     protected function getCollectionSetting(): StringSetting
     {
         return new StringSetting(new ID('arraySetting'), json_encode(['nice', 'values']));

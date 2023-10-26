@@ -41,4 +41,9 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
     {
         return $this->themeSettingRepository->getStringSetting($name, $themeId);
     }
+
+    public function getSelectSetting(ID $name, $themeId): StringSetting
+    {
+        return $this->themeSettingRepository->getSelectSetting($name, $themeId);
+    }
 }

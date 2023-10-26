@@ -154,6 +154,32 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $repository->getStringSetting($nameID, 'awesomeModule');
     }
 
+    public function testGetThemeSettingSelect(): void
+    {
+        $serviceSelectSetting = $this->getSelectSetting();
+        $nameID = new ID('selectSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('select');
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $selectSetting = $repository->getSelectSetting($nameID, 'awesomeModule');
+
+        $this->assertEquals($serviceSelectSetting, $selectSetting);
+    }
+
+    public function testGetNoThemeSettingSelect(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a select configuration');
+        $repository->getSelectSetting($nameID, 'awesomeModule');
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject
