@@ -10,9 +10,9 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 interface ThemeSettingServiceInterface
 {
-    public function getIntegerSetting(ID $name, $themeId): IntegerSetting;
-    public function getFloatSetting(ID $name, $themeId): FloatSetting;
-    public function getBooleanSetting(ID $name, $themeId): BooleanSetting;
-    public function getStringSetting(ID $name, $themeId): StringSetting;
-    public function getSelectSetting(ID $name, $themeId): StringSetting;
+    public function getIntegerSetting(ID $name, string $themeId): IntegerSetting;
+    public function getFloatSetting(ID $name, string $themeId): FloatSetting;
+    public function getBooleanSetting(ID $name, string $themeId): BooleanSetting;
+    public function getStringSetting(ID $name, string $themeId): StringSetting;
+    public function getSelectSetting(ID $name, string $themeId): StringSetting;
 }

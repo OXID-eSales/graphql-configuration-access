@@ -22,27 +22,27 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
         private ThemeSettingRepositoryInterface $themeSettingRepository
     ) {}
 
-    public function getIntegerSetting(ID $name, $themeId): IntegerSetting
+    public function getIntegerSetting(ID $name, string $themeId): IntegerSetting
     {
         return $this->themeSettingRepository->getIntegerSetting($name, $themeId);
     }
 
-    public function getFloatSetting(ID $name, $themeId): FloatSetting
+    public function getFloatSetting(ID $name, string $themeId): FloatSetting
     {
         return $this->themeSettingRepository->getFloatSetting($name, $themeId);
     }
 
-    public function getBooleanSetting(ID $name, $themeId): BooleanSetting
+    public function getBooleanSetting(ID $name, string $themeId): BooleanSetting
     {
         return $this->themeSettingRepository->getBooleanSetting($name, $themeId);
     }
 
-    public function getStringSetting(ID $name, $themeId): StringSetting
+    public function getStringSetting(ID $name, string $themeId): StringSetting
     {
         return $this->themeSettingRepository->getStringSetting($name, $themeId);
     }
 
-    public function getSelectSetting(ID $name, $themeId): StringSetting
+    public function getSelectSetting(ID $name, string $themeId): StringSetting
     {
         return $this->themeSettingRepository->getSelectSetting($name, $themeId);
     }
