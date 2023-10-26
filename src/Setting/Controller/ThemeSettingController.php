@@ -73,4 +73,15 @@ final class ThemeSettingController
     {
         return $this->settingService->getSelectSetting($name, $themeId);
     }
+
+    /**
+     * @Query()
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     */
+    public function getThemeSettingCollection(ID $name, string $themeId): StringSetting
+    {
+        return $this->settingService->getCollectionSetting($name, $themeId);
+    }
 }

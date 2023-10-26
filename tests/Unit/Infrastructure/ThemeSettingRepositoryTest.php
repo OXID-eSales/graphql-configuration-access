@@ -180,6 +180,31 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $repository->getSelectSetting($nameID, 'awesomeModule');
     }
 
+    public function testGetThemeSettingCollection(): void
+    {
+        $serviceCollectionSetting = $this->getCollectionSetting();
+        $nameID = new ID('arraySetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $collectionSetting = $repository->getCollectionSetting($nameID, 'awesomeModule');
+
+        $this->assertEquals($serviceCollectionSetting, $collectionSetting);
+    }
+
+    public function testGetNoThemeSettingCollection(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
+        $repository->getCollectionSetting($nameID, 'awesomeModule');
+    }
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject

@@ -93,4 +93,21 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $this->assertSame($serviceSelectSetting, $selectSetting);
     }
+
+    public function testGetThemeSettingCollection(): void
+    {
+        $serviceCollectionSetting = $this->getCollectionSetting();
+
+        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getCollectionSetting')
+            ->willReturn($serviceCollectionSetting);
+
+        $settingService = new ThemeSettingService($repository);
+
+        $nameID = new ID('arraySetting');
+        $collectionSetting = $settingService->getCollectionSetting($nameID, 'awesomeTheme');
+
+        $this->assertSame($serviceCollectionSetting, $collectionSetting);
+    }
 }

@@ -81,9 +81,25 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         return new StringSetting($name, $value);
     }
 
+    public function getCollectionSetting(ID $name, string $themeId): StringSetting
+    {
+        $value = $this->getSettingValue($themeId, $name, FieldType::ARRAY);
+
+        if ($value === False) {
+            throw new NotFound('The queried name couldn\'t be found as a collection configuration');
+        }
+
+        return new StringSetting($name, $this->parseSerializedArrayToJson($value));
+    }
+
     private function isFloatString(string $number): bool
     {
         return is_numeric($number) && str_contains($number, '.') !== false;
+    }
+
+    private function parseSerializedArrayToJson(string $serializedArray): string
+    {
+        return json_encode(unserialize($serializedArray));
     }
 
     private function getSettingValue(string $themeId, ID $name, string $fieldType): mixed
