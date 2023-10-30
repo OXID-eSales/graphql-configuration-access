@@ -15,15 +15,15 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getIntegerSetting')
-            ->willReturn($serviceIntegerSetting);
+            ->method('getInteger')
+            ->willReturn(123);
 
         $settingService = new ThemeSettingService($repository);
 
         $nameID = new ID('integerSetting');
         $integerSetting = $settingService->getIntegerSetting($nameID, 'awesomeTheme');
 
-        $this->assertSame($serviceIntegerSetting, $integerSetting);
+        $this->assertEquals($serviceIntegerSetting, $integerSetting);
     }
 
     public function testGetThemeSettingFloat(): void
@@ -32,15 +32,15 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getFloatSetting')
-            ->willReturn($serviceFloatSetting);
+            ->method('getFloat')
+            ->willReturn(1.23);
 
         $settingService = new ThemeSettingService($repository);
 
         $nameID = new ID('floatSetting');
         $floatSetting = $settingService->getFloatSetting($nameID, 'awesomeTheme');
 
-        $this->assertSame($serviceFloatSetting, $floatSetting);
+        $this->assertEquals($serviceFloatSetting, $floatSetting);
     }
 
     public function testGetThemeSettingBoolean(): void
@@ -49,15 +49,15 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getBooleanSetting')
-            ->willReturn($serviceBooleanSetting);
+            ->method('getBoolean')
+            ->willReturn(False);
 
         $settingService = new ThemeSettingService($repository);
 
         $nameID = new ID('booleanSetting');
         $booleanSetting = $settingService->getBooleanSetting($nameID, 'awesomeTheme');
 
-        $this->assertSame($serviceBooleanSetting, $booleanSetting);
+        $this->assertEquals($serviceBooleanSetting, $booleanSetting);
     }
 
     public function testGetThemeSettingString(): void
@@ -66,15 +66,15 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getStringSetting')
-            ->willReturn($serviceStringSetting);
+            ->method('getString')
+            ->willReturn('default');
 
         $settingService = new ThemeSettingService($repository);
 
         $nameID = new ID('stringSetting');
         $stringSetting = $settingService->getStringSetting($nameID, 'awesomeTheme');
 
-        $this->assertSame($serviceStringSetting, $stringSetting);
+        $this->assertEquals($serviceStringSetting, $stringSetting);
     }
 
     public function testGetThemeSettingSelect(): void
@@ -83,15 +83,15 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getSelectSetting')
-            ->willReturn($serviceSelectSetting);
+            ->method('getSelect')
+            ->willReturn('select');
 
         $settingService = new ThemeSettingService($repository);
 
         $nameID = new ID('selectSetting');
         $selectSetting = $settingService->getSelectSetting($nameID, 'awesomeTheme');
 
-        $this->assertSame($serviceSelectSetting, $selectSetting);
+        $this->assertEquals($serviceSelectSetting, $selectSetting);
     }
 
     public function testGetThemeSettingCollection(): void
@@ -100,15 +100,15 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getCollectionSetting')
-            ->willReturn($serviceCollectionSetting);
+            ->method('getCollection')
+            ->willReturn(['nice', 'values']);
 
         $settingService = new ThemeSettingService($repository);
 
         $nameID = new ID('arraySetting');
         $collectionSetting = $settingService->getCollectionSetting($nameID, 'awesomeTheme');
 
-        $this->assertSame($serviceCollectionSetting, $collectionSetting);
+        $this->assertEquals($serviceCollectionSetting, $collectionSetting);
     }
 
     public function testGetThemeSettingAssocCollection(): void
@@ -117,14 +117,14 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
-            ->method('getAssocCollectionSetting')
-            ->willReturn($serviceAssocCollectionSetting);
+            ->method('getAssocCollection')
+            ->willReturn(['first'=>'10','second'=>'20','third'=>'50']);
 
         $settingService = new ThemeSettingService($repository);
 
         $nameID = new ID('aarraySetting');
         $assocCollectionSetting = $settingService->getAssocCollectionSetting($nameID, 'awesomeTheme');
 
-        $this->assertSame($serviceAssocCollectionSetting, $assocCollectionSetting);
+        $this->assertEquals($serviceAssocCollectionSetting, $assocCollectionSetting);
     }
 }

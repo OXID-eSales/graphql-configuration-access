@@ -2,19 +2,15 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 interface ThemeSettingRepositoryInterface
 {
-    public function getIntegerSetting(ID $name, string $themeId): IntegerSetting;
-    public function getFloatSetting(ID $name, string $themeId): FloatSetting;
-    public function getBooleanSetting(ID $name, string $themeId): BooleanSetting;
-    public function getStringSetting(ID $name, string $themeId): StringSetting;
-    public function getSelectSetting(ID $name, string $themeId): StringSetting;
-    public function getCollectionSetting(ID $name, string $themeId): StringSetting;
-    public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting;
+    public function getInteger(ID $name, string $themeId): int;
+    public function getFloat(ID $name, string $themeId): float;
+    public function getBoolean(ID $name, string $themeId): bool;
+    public function getString(ID $name, string $themeId): string;
+    public function getSelect(ID $name, string $themeId): string;
+    public function getCollection(ID $name, string $themeId): array;
+    public function getAssocCollection(ID $name, string $themeId): array;
 }

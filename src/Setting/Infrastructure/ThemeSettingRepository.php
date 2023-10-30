@@ -26,7 +26,7 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->queryBuilder = $this->queryBuilderFactory->create();
     }
 
-    public function getIntegerSetting(ID $name, string $themeId): IntegerSetting
+    public function getInteger(ID $name, string $themeId): int
     {
         $value = $this->getSettingValue($themeId, $name, FieldType::NUMBER);
 
@@ -34,10 +34,10 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             throw new NotFound('The queried name couldn\'t be found as an integer configuration');
         }
 
-        return new IntegerSetting($name, (int)$value);
+        return (int)$value;
     }
 
-    public function getFloatSetting(ID $name, string $themeId): FloatSetting
+    public function getFloat(ID $name, string $themeId): float
     {
         $value = $this->getSettingValue($themeId, $name, FieldType::NUMBER);
 
@@ -45,10 +45,10 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             throw new NotFound('The queried name couldn\'t be found as a float configuration');
         }
 
-        return new FloatSetting($name, (float)$value);
+        return (float)$value;
     }
 
-    public function getBooleanSetting(ID $name, string $themeId): BooleanSetting
+    public function getBoolean(ID $name, string $themeId): bool
     {
         $value = $this->getSettingValue($themeId, $name, FieldType::BOOLEAN);
 
@@ -56,10 +56,10 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
            throw new NotFound('The queried name couldn\'t be found as a boolean configuration');
         }
 
-        return new BooleanSetting($name, (bool)$value);
+        return (bool)$value;
     }
 
-    public function getStringSetting(ID $name, string $themeId): StringSetting
+    public function getString(ID $name, string $themeId): string
     {
         $value = $this->getSettingValue($themeId, $name, FieldType::STRING);
 
@@ -67,10 +67,10 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             throw new NotFound('The queried name couldn\'t be found as a string configuration');
         }
 
-        return new StringSetting($name, $value);
+        return $value;
     }
 
-    public function getSelectSetting(ID $name, string $themeId): StringSetting
+    public function getSelect(ID $name, string $themeId): string
     {
         $value = $this->getSettingValue($themeId, $name, FieldType::SELECT);
 
@@ -78,10 +78,10 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             throw new NotFound('The queried name couldn\'t be found as a select configuration');
         }
 
-        return new StringSetting($name, $value);
+        return $value;
     }
 
-    public function getCollectionSetting(ID $name, string $themeId): StringSetting
+    public function getCollection(ID $name, string $themeId): array
     {
         $value = $this->getSettingValue($themeId, $name, FieldType::ARRAY);
 
@@ -89,10 +89,10 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             throw new NotFound('The queried name couldn\'t be found as a collection configuration');
         }
 
-        return new StringSetting($name, $this->parseSerializedArrayToJson($value));
+        return unserialize($value);
     }
 
-    public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting
+    public function getAssocCollection(ID $name, string $themeId): array
     {
         $value = $this->getSettingValue($themeId, $name, FieldType::ASSOCIATIVE_ARRAY);
 
@@ -100,17 +100,12 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             throw new NotFound('The queried name couldn\'t be found as an associative collection configuration');
         }
 
-        return new StringSetting($name, $this->parseSerializedArrayToJson($value));
+        return unserialize($value);
     }
 
     private function isFloatString(string $number): bool
     {
         return is_numeric($number) && str_contains($number, '.') !== false;
-    }
-
-    private function parseSerializedArrayToJson(string $serializedArray): string
-    {
-        return json_encode(unserialize($serializedArray));
     }
 
     private function getSettingValue(string $themeId, ID $name, string $fieldType): mixed

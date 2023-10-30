@@ -24,36 +24,43 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
 
     public function getIntegerSetting(ID $name, string $themeId): IntegerSetting
     {
-        return $this->themeSettingRepository->getIntegerSetting($name, $themeId);
+        $integer = $this->themeSettingRepository->getInteger($name, $themeId);
+        return new IntegerSetting($name, $integer);
     }
 
     public function getFloatSetting(ID $name, string $themeId): FloatSetting
     {
-        return $this->themeSettingRepository->getFloatSetting($name, $themeId);
+        $float = $this->themeSettingRepository->getFloat($name, $themeId);
+        return new FloatSetting($name, $float);
     }
 
     public function getBooleanSetting(ID $name, string $themeId): BooleanSetting
     {
-        return $this->themeSettingRepository->getBooleanSetting($name, $themeId);
+        $bool = $this->themeSettingRepository->getBoolean($name, $themeId);
+        return new BooleanSetting($name, $bool);
     }
 
     public function getStringSetting(ID $name, string $themeId): StringSetting
     {
-        return $this->themeSettingRepository->getStringSetting($name, $themeId);
+        $string = $this->themeSettingRepository->getString($name, $themeId);
+        return new StringSetting($name, $string);
     }
 
     public function getSelectSetting(ID $name, string $themeId): StringSetting
     {
-        return $this->themeSettingRepository->getSelectSetting($name, $themeId);
+        $select = $this->themeSettingRepository->getSelect($name, $themeId);
+        return new StringSetting($name, $select);
     }
 
     public function getCollectionSetting(ID $name, string $themeId): StringSetting
     {
-        return $this->themeSettingRepository->getCollectionSetting($name, $themeId);
+        $collectionString = $this->themeSettingRepository->getCollection($name, $themeId);
+        return new StringSetting($name, json_encode($collectionString));
     }
 
     public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting
     {
-        return $this->themeSettingRepository->getAssocCollectionSetting($name, $themeId);
+        $assocCollectionString = $this->themeSettingRepository->getAssocCollection($name, $themeId);
+        return new StringSetting($name, json_encode($assocCollectionString));
     }
 }
