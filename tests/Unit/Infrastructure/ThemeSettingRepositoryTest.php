@@ -205,6 +205,34 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
         $repository->getCollectionSetting($nameID, 'awesomeModule');
     }
+
+    public function testGetThemeSettingAssocCollection(): void
+    {
+        $serviceAssocCollectionSetting = $this->getAssocCollectionSetting();
+        $nameID = new ID('aarraySetting');
+
+        $serializeArrayString = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($serializeArrayString);
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $AssocCollectionSetting = $repository->getAssocCollectionSetting($nameID, 'awesomeModule');
+
+        $this->assertEquals($serviceAssocCollectionSetting, $AssocCollectionSetting);
+    }
+
+    public function testGetNoThemeSettingAssocCollection(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as an associative collection configuration');
+        $repository->getAssocCollectionSetting($nameID, 'awesomeModule');
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject

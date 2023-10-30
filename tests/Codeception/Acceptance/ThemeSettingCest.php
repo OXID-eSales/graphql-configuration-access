@@ -284,4 +284,47 @@ final class ThemeSettingCest extends BaseCest
         $I->assertSame('arraySetting', $setting['name']);
         $I->assertSame('["10","20","50","100"]', $setting['value']);
     }
+
+    public function testGetAssocCollectionSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                themeSettingAssocCollection(name: "aarraySetting", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "themeSettingAssocCollection" on type "Query".', $errorMessage);
+    }
+
+    public function testGetAssocCollectionSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+
+        $I->sendGQLQuery(
+            'query{
+                themeSettingAssocCollection(name: "aarraySetting", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['themeSettingAssocCollection'];
+        $I->assertSame('aarraySetting', $setting['name']);
+        $I->assertSame('{"first":"10","second":"20","third":"50"}', $setting['value']);
+    }
 }

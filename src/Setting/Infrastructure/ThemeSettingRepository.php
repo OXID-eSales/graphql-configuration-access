@@ -92,6 +92,17 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         return new StringSetting($name, $this->parseSerializedArrayToJson($value));
     }
 
+    public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting
+    {
+        $value = $this->getSettingValue($themeId, $name, FieldType::ASSOCIATIVE_ARRAY);
+
+        if ($value === False) {
+            throw new NotFound('The queried name couldn\'t be found as an associative collection configuration');
+        }
+
+        return new StringSetting($name, $this->parseSerializedArrayToJson($value));
+    }
+
     private function isFloatString(string $number): bool
     {
         return is_numeric($number) && str_contains($number, '.') !== false;

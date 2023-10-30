@@ -16,4 +16,5 @@ interface ThemeSettingServiceInterface
     public function getStringSetting(ID $name, string $themeId): StringSetting;
     public function getSelectSetting(ID $name, string $themeId): StringSetting;
     public function getCollectionSetting(ID $name, string $themeId): StringSetting;
+    public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting;
 }

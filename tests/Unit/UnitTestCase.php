@@ -60,6 +60,12 @@ class UnitTestCase extends TestCase
         return new StringSetting(new ID('arraySetting'), json_encode(['nice', 'values']));
     }
 
+    protected function getAssocCollectionSetting(): StringSetting
+    {
+        return new StringSetting(new ID('aarraySetting'), json_encode(
+            ['first'=>'10','second'=>'20','third'=>'50']));
+    }
+
     protected function getSettingType(): SettingType
     {
         return new SettingType(new ID('settingType'), FieldType::BOOLEAN);
