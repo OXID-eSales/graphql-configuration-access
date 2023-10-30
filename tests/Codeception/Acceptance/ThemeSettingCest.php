@@ -19,17 +19,9 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
  */
 final class ThemeSettingCest extends BaseCest
 {
-    private const AGENT_USERNAME = 'JanvierJaimesVelasquez@cuvox.de';
-
-    private const AGENT_PASSWORD = 'agent';
-
-    private const ADMIN_USERNAME = 'noreply@oxid-esales.com';
-
-    private const ADMIN_PASSWORD = 'admin';
-
     public function testGetIntegerSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -49,7 +41,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetIntegerSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -72,7 +64,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetFloatSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -92,7 +84,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetFloatSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -115,7 +107,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetBooleanSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -135,7 +127,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetBooleanSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -158,7 +150,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetStringSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -178,7 +170,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetStringSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -201,7 +193,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetSelectSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -221,7 +213,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetSelectSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -244,7 +236,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetCollectionSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -264,7 +256,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetCollectionSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -287,7 +279,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetAssocCollectionSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'query{
@@ -307,7 +299,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testGetAssocCollectionSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{

@@ -9,12 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDao;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 abstract class BaseCest
@@ -22,14 +16,16 @@ abstract class BaseCest
     private const TEST_MODULE_ID = 'awesomeModule';
     private const TEST_THEME_ID = 'awesomeTheme';
 
-    public function _before(AcceptanceTester $I): void
-    {
-        $this->prepareConfiguration();
-    }
+    private const AGENT_USERNAME = 'JanvierJaimesVelasquez@cuvox.de';
+
+    private const AGENT_PASSWORD = 'agent';
+
+    private const ADMIN_USERNAME = 'noreply@oxid-esales.com';
+
+    private const ADMIN_PASSWORD = 'admin';
 
     public function _after(AcceptanceTester $I): void
     {
-        $this->removeConfiguration(self::TEST_MODULE_ID);
         $I->logout();
     }
 
@@ -43,70 +39,23 @@ abstract class BaseCest
         return self::TEST_THEME_ID;
     }
 
-    private function prepareConfiguration(): void
+    protected function getAgentUsername(): string
     {
-        $shopConfiguration = $this->getShopConfiguration();
-
-        $integerSetting = new Setting();
-        $integerSetting
-            ->setName('intSetting')
-            ->setValue(123);
-
-        $floatSetting = new Setting();
-        $floatSetting
-            ->setName('floatSetting')
-            ->setValue(1.23);
-
-        $booleanSetting = new Setting();
-        $booleanSetting
-            ->setName('boolSetting')
-            ->setValue(false);
-
-        $stringSetting = new Setting();
-        $stringSetting
-            ->setName('stringSetting')
-            ->setValue('default');
-
-        $collectionSetting = new Setting();
-        $collectionSetting
-            ->setName('arraySetting')
-            ->setValue(['nice', 'values']);
-
-
-        $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration
-            ->setId(self::TEST_MODULE_ID)
-            ->setModuleSource('testPath')
-            ->addModuleSetting($integerSetting)
-            ->addModuleSetting($floatSetting)
-            ->addModuleSetting($booleanSetting)
-            ->addModuleSetting($stringSetting)
-            ->addModuleSetting($collectionSetting);
-
-        $shopConfiguration->addModuleConfiguration($moduleConfiguration);
-        $this->getShopConfigurationDao()->save($shopConfiguration,1);
+        return self::AGENT_USERNAME;
     }
 
-    private function removeConfiguration(string $moduleId): void
+    protected function getAgentPassword(): string
     {
-        $shopConfiguration = $this->getShopConfiguration();
-        $shopConfiguration->deleteModuleConfiguration($moduleId);
-
+        return self::AGENT_PASSWORD;
     }
 
-    private function getShopConfiguration(): ShopConfiguration
+    protected function getAdminUsername(): string
     {
-        $shopConfigurationDao = $this->getShopConfigurationDao();
-        $shopConfiguration = $shopConfigurationDao->get(1);
-
-        return $shopConfiguration;
+        return self::ADMIN_USERNAME;
     }
 
-    private function getShopConfigurationDao(): ShopConfigurationDao
+    protected function getAdminPassword(): string
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        /** @var ShopConfigurationDao $shopConfigurationDao */
-        $shopConfigurationDao = $container->get(ShopConfigurationDaoInterface::class);
-        return $shopConfigurationDao;
+        return self::ADMIN_PASSWORD;
     }
 }
