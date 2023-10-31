@@ -10,4 +10,5 @@ interface ShopSettingRepositoryInterface
     public function getFloat(ID $name): float;
     public function getBoolean(ID $name): bool;
     public function getString(ID $name): string;
+    public function getSelect(ID $name): string;
 }

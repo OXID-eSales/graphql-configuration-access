@@ -62,4 +62,15 @@ final class ShopSettingController
     {
         return $this->settingService->getStringSetting($name);
     }
+
+    /**
+     * @Query()
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     */
+    public function getShopSettingSelect(ID $name): StringSetting
+    {
+        return $this->settingService->getSelectSetting($name);
+    }
 }
