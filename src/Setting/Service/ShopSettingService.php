@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
@@ -30,5 +31,11 @@ final class ShopSettingService implements ShopSettingServiceInterface
     {
         $float = $this->shopSettingRepository->getFloat($name);
         return new FloatSetting($name, $float);
+    }
+
+    public function getBooleanSetting(ID $name): BooleanSetting
+    {
+        $bool = $this->shopSettingRepository->getBoolean($name);
+        return new BooleanSetting($name, $bool);
     }
 }

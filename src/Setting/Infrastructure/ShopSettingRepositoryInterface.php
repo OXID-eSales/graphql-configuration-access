@@ -8,4 +8,5 @@ interface ShopSettingRepositoryInterface
 {
     public function getInteger(ID $name): int;
     public function getFloat(ID $name): float;
+    public function getBoolean(ID $name): bool;
 }

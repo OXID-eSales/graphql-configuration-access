@@ -44,6 +44,17 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return (float)$value;
     }
 
+    public function getBoolean(ID $name): bool
+    {
+        $value = $this->getSettingValue($name, FieldType::BOOLEAN);
+
+        if ($value === False) {
+            throw new NotFound('The queried name couldn\'t be found as a boolean configuration');
+        }
+
+        return (bool)$value;
+    }
+
     private function isFloatString(string $number): bool
     {
         return is_numeric($number) && str_contains($number, '.') !== false;

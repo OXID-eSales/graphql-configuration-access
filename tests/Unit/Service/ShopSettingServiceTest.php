@@ -9,7 +9,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 class ShopSettingServiceTest extends UnitTestCase
 {
-    public function testGetSHopSettingInteger(): void
+    public function testGetShopSettingInteger(): void
     {
         $serviceIntegerSetting = $this->getIntegerSetting();
 
@@ -41,5 +41,22 @@ class ShopSettingServiceTest extends UnitTestCase
         $floatSetting = $settingService->getFloatSetting($nameID);
 
         $this->assertEquals($serviceFloatSetting, $floatSetting);
+    }
+
+    public function testGetShopSettingBoolean(): void
+    {
+        $serviceBooleanSetting = $this->getNegativBooleanSetting();
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getBoolean')
+            ->willReturn(False);
+
+        $settingService = new ShopSettingService($repository);
+
+        $nameID = new ID('booleanSetting');
+        $booleanSetting = $settingService->getBooleanSetting($nameID);
+
+        $this->assertEquals($serviceBooleanSetting, $booleanSetting);
     }
 }
