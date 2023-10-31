@@ -200,6 +200,32 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getCollection($nameID);
     }
 
+    public function testGetShopSettingAssocCollection(): void
+    {
+        $nameID = new ID('aarraySetting');
+
+        $serializeArrayString = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($serializeArrayString);
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $assocCollection = $repository->getAssocCollection($nameID);
+
+        $this->assertEquals(['first'=>'10','second'=>'20','third'=>'50'], $assocCollection);
+    }
+
+    public function testGetNoShopSettingAssocCollection(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as an associative collection configuration');
+        $repository->getAssocCollection($nameID);
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject
