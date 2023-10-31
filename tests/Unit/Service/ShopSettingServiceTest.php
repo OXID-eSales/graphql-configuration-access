@@ -76,4 +76,21 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals($serviceStringSetting, $stringSetting);
     }
+
+    public function testGetShopSettingSelect(): void
+    {
+        $serviceSelectSetting = $this->getSelectSetting();
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getSelect')
+            ->willReturn('select');
+
+        $settingService = new ShopSettingService($repository);
+
+        $nameID = new ID('selectSetting');
+        $selectSetting = $settingService->getSelectSetting($nameID);
+
+        $this->assertEquals($serviceSelectSetting, $selectSetting);
+    }
 }
