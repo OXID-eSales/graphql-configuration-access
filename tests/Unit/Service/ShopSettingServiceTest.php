@@ -9,7 +9,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 class ShopSettingServiceTest extends UnitTestCase
 {
-    public function testGetThemeSettingInteger(): void
+    public function testGetSHopSettingInteger(): void
     {
         $serviceIntegerSetting = $this->getIntegerSetting();
 
