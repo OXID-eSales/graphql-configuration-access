@@ -147,4 +147,47 @@ final class ShopSettingCest extends BaseCest
         $I->assertSame('boolSetting', $setting['name']);
         $I->assertSame(false, $setting['value']);
     }
+
+    public function testGetStringSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'query{
+                shopSettingString(name: "stringSetting") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "shopSettingString" on type "Query".', $errorMessage);
+    }
+
+    public function testGetStringSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'query{
+                shopSettingString(name: "stringSetting") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['shopSettingString'];
+        $I->assertSame('stringSetting', $setting['name']);
+        $I->assertSame('default', $setting['value']);
+    }
 }
