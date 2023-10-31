@@ -150,6 +150,31 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getString($nameID);
     }
 
+    public function testGetShopSettingSelect(): void
+    {
+        $nameID = new ID('selectSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('select');
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $select = $repository->getSelect($nameID);
+
+        $this->assertEquals('select', $select);
+    }
+
+    public function testGetNoShopSettingSelect(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a select configuration');
+        $repository->getSelect($nameID);
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject
