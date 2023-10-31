@@ -88,6 +88,17 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return unserialize($value);
     }
 
+    public function getAssocCollection(ID $name): array
+    {
+        $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY);
+
+        if ($value === False) {
+            throw new NotFound('The queried name couldn\'t be found as an associative collection configuration');
+        }
+
+        return unserialize($value);
+    }
+
     private function isFloatString(string $number): bool
     {
         return is_numeric($number) && str_contains($number, '.') !== false;
