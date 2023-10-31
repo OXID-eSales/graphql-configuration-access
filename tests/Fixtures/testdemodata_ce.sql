@@ -13,10 +13,17 @@ REPLACE INTO `oxobject2group` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXGROUPSID`, `
 ('d687174433046c8b3b9bf114c3aa0831',	1,	'01ba0f60-bd8e-4c01-bcf6-aa457bcb',	'oxidcustomer',	'2023-09-27 14:40:01');
 
 REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`, `OXTIMESTAMP`) VALUES
-('_intSetting',	1,	'theme:awesomeTheme',	'intSetting',	'num',	'123',	'2023-10-13 08:26:19'),
-('_floatSetting',	1,	'theme:awesomeTheme',	'floatSetting',	'num',	'1.23',	'2023-10-13 08:26:19'),
-('_boolSetting',	1,	'theme:awesomeTheme',	'boolSetting',	'bool',	'',	'2023-10-13 08:26:19'),
-('_stringSetting',	1,	'theme:awesomeTheme',	'stringSetting',	'str',	'default',	'2023-10-13 08:26:19'),
-('_selectSetting',	1,	'theme:awesomeTheme',	'selectSetting',	'select',	'selectString',	'2023-10-13 08:26:19'),
-('_arraySetting',	1,	'theme:awesomeTheme',	'arraySetting',	'arr',	'a:4:{i:0;s:2:"10";i:1;s:2:"20";i:2;s:2:"50";i:3;s:3:"100";}',	'2023-10-13 08:26:19'),
-('_aarraySetting',	1,	'theme:awesomeTheme',	'aarraySetting',	'aarr',	'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}',	'2023-10-13 08:26:19');
+('_intSetting_theme',	1,	'theme:awesomeTheme',	'intSetting',	'num',	'123',	'2023-10-13 08:26:19'),
+('_floatSetting_theme',	1,	'theme:awesomeTheme',	'floatSetting',	'num',	'1.23',	'2023-10-13 08:26:19'),
+('_boolSetting_theme',	1,	'theme:awesomeTheme',	'boolSetting',	'bool',	'',	'2023-10-13 08:26:19'),
+('_stringSetting_theme',	1,	'theme:awesomeTheme',	'stringSetting',	'str',	'default',	'2023-10-13 08:26:19'),
+('_selectSetting_theme',	1,	'theme:awesomeTheme',	'selectSetting',	'select',	'selectString',	'2023-10-13 08:26:19'),
+('_arraySetting_theme',	1,	'theme:awesomeTheme',	'arraySetting',	'arr',	'a:4:{i:0;s:2:"10";i:1;s:2:"20";i:2;s:2:"50";i:3;s:3:"100";}',	'2023-10-13 08:26:19'),
+('_aarraySetting_theme',	1,	'theme:awesomeTheme',	'aarraySetting',	'aarr',	'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}',	'2023-10-13 08:26:19'),
+('_intSetting_shop',	1,	'',	'intSetting',	'num',	'123',	'2023-10-13 08:26:19'),
+('_floatSetting_shop',	1,	'',	'floatSetting',	'num',	'1.23',	'2023-10-13 08:26:19'),
+('_boolSetting_shop',	1,	'',	'boolSetting',	'bool',	'',	'2023-10-13 08:26:19'),
+('_stringSetting_shop',	1,	'',	'stringSetting',	'str',	'default',	'2023-10-13 08:26:19'),
+('_selectSetting_shop',	1,	'',	'selectSetting',	'select',	'selectString',	'2023-10-13 08:26:19'),
+('_arraySetting_shop',	1,	'',	'arraySetting',	'arr',	'a:4:{i:0;s:2:"10";i:1;s:2:"20";i:2;s:2:"50";i:3;s:3:"100";}',	'2023-10-13 08:26:19'),
+('_aarraySetting_shop',	1,	'',	'aarraySetting',	'aarr',	'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}',	'2023-10-13 08:26:19');
