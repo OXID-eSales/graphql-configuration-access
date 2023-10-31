@@ -125,6 +125,31 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getBoolean($nameID);
     }
 
+    public function testGetShopSettingString(): void
+    {
+        $nameID = new ID('stringSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('default');
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $string = $repository->getString($nameID);
+
+        $this->assertEquals('default', $string);
+    }
+
+    public function testGetNoShopSettingString(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a string configuration');
+        $repository->getString($nameID);
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject

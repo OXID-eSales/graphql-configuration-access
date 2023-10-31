@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -37,5 +38,11 @@ final class ShopSettingService implements ShopSettingServiceInterface
     {
         $bool = $this->shopSettingRepository->getBoolean($name);
         return new BooleanSetting($name, $bool);
+    }
+
+    public function getStringSetting(ID $name): StringSetting
+    {
+        $string = $this->shopSettingRepository->getString($name);
+        return new StringSetting($name, $string);
     }
 }

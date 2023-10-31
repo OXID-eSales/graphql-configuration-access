@@ -5,6 +5,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
@@ -49,5 +50,16 @@ final class ShopSettingController
     public function getShopSettingBoolean(ID $name): BooleanSetting
     {
         return $this->settingService->getBooleanSetting($name);
+    }
+
+    /**
+     * @Query()
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     */
+    public function getShopSettingString(ID $name): StringSetting
+    {
+        return $this->settingService->getStringSetting($name);
     }
 }
