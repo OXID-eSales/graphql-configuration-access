@@ -175,6 +175,31 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getSelect($nameID);
     }
 
+    public function testGetShopSettingCollection(): void
+    {
+        $nameID = new ID('arraySetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $collection = $repository->getCollection($nameID);
+
+        $this->assertEquals(['nice', 'values'], $collection);
+    }
+
+    public function testGetNoShopSettingCollection(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
+        $repository->getCollection($nameID);
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject
