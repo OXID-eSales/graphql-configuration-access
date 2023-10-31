@@ -59,4 +59,21 @@ class ShopSettingControllerTest extends UnitTestCase
 
         $this->assertSame($serviceBooleanSetting, $booleanSetting);
     }
+
+    public function testGetShopSettingString(): void
+    {
+        $serviceStringSetting = $this->getStringSetting();
+
+        $settingService = $this->createMock(ShopSettingServiceInterface::class);
+        $settingService->expects($this->once())
+            ->method('getStringSetting')
+            ->willReturn($serviceStringSetting);
+
+        $settingController = new ShopSettingController($settingService);
+
+        $nameID = new ID('stringSetting');
+        $stringSetting = $settingController->getShopSettingString($nameID);
+
+        $this->assertSame($serviceStringSetting, $stringSetting);
+    }
 }
