@@ -93,4 +93,21 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals($serviceSelectSetting, $selectSetting);
     }
+
+    public function testGetShopSettingCollection(): void
+    {
+        $serviceCollectionSetting = $this->getCollectionSetting();
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getCollection')
+            ->willReturn(['nice', 'values']);
+
+        $settingService = new ShopSettingService($repository);
+
+        $nameID = new ID('arraySetting');
+        $collectionSetting = $settingService->getCollectionSetting($nameID);
+
+        $this->assertEquals($serviceCollectionSetting, $collectionSetting);
+    }
 }
