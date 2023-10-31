@@ -104,4 +104,47 @@ final class ShopSettingCest extends BaseCest
         $I->assertSame('floatSetting', $setting['name']);
         $I->assertSame(1.23, $setting['value']);
     }
+
+    public function testGetBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'query{
+                shopSettingBoolean(name: "boolSetting") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "shopSettingBoolean" on type "Query".', $errorMessage);
+    }
+
+    public function testGetBooleanSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'query{
+                shopSettingBoolean(name: "boolSetting") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['shopSettingBoolean'];
+        $I->assertSame('boolSetting', $setting['name']);
+        $I->assertSame(false, $setting['value']);
+    }
 }

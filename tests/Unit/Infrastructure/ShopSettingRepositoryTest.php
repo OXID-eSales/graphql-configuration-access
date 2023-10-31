@@ -87,6 +87,44 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getFloat($nameID);
     }
 
+    public function testGetShopSettingBooleanNegativ(): void
+    {
+        $nameID = new ID('booleanSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('');
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $boolean = $repository->getBoolean($nameID);
+
+        $this->assertEquals(False, $boolean);
+    }
+
+    public function testGetShopSettingBooleanPositiv(): void
+    {
+        $nameID = new ID('booleanSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1');
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $boolean = $repository->getBoolean($nameID);
+
+        $this->assertEquals(true, $boolean);
+    }
+
+    public function testGetNoShopSettingBoolean(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a boolean configuration');
+        $repository->getBoolean($nameID);
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject

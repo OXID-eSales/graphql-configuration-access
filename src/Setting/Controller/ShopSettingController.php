@@ -2,6 +2,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingServiceInterface;
@@ -37,5 +38,16 @@ final class ShopSettingController
     public function getShopSettingFloat(ID $name): FloatSetting
     {
         return $this->settingService->getFloatSetting($name);
+    }
+
+    /**
+     * @Query()
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     */
+    public function getShopSettingBoolean(ID $name): BooleanSetting
+    {
+        return $this->settingService->getBooleanSetting($name);
     }
 }
