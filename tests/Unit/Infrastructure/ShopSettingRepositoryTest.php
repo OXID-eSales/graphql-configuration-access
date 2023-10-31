@@ -13,7 +13,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 class ShopSettingRepositoryTest extends UnitTestCase
 {
-    public function testGetThemeSettingInteger(): void
+    public function testGetShopSettingInteger(): void
     {
         $nameID = new ID('integerSetting');
 
@@ -26,7 +26,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $this->assertEquals(123, $integer);
     }
 
-    public function testGetNoThemeSettingInteger(): void
+    public function testGetNoShopSettingInteger(): void
     {
         $nameID = new ID('NotExistingSetting');
         $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
@@ -38,7 +38,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getInteger($nameID);
     }
 
-    public function testGetThemeSettingInvalidInteger(): void
+    public function testGetShopSettingInvalidInteger(): void
     {
         $nameID = new ID('floatSetting');
         $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
