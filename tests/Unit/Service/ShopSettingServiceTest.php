@@ -25,4 +25,21 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals($serviceIntegerSetting, $integerSetting);
     }
+
+    public function testGetShopSettingFloat(): void
+    {
+        $serviceFloatSetting = $this->getFloatSetting();
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getFloat')
+            ->willReturn(1.23);
+
+        $settingService = new ShopSettingService($repository);
+
+        $nameID = new ID('floatSetting');
+        $floatSetting = $settingService->getFloatSetting($nameID);
+
+        $this->assertEquals($serviceFloatSetting, $floatSetting);
+    }
 }

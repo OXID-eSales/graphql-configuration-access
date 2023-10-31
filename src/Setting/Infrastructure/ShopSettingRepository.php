@@ -33,6 +33,17 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return (int)$value;
     }
 
+    public function getFloat(ID $name): float
+    {
+        $value = $this->getSettingValue($name, FieldType::NUMBER);
+
+        if ($value === False || !$this->isFloatString($value)) {
+            throw new NotFound('The queried name couldn\'t be found as a float configuration');
+        }
+
+        return (float)$value;
+    }
+
     private function isFloatString(string $number): bool
     {
         return is_numeric($number) && str_contains($number, '.') !== false;
