@@ -9,7 +9,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 class ShopSettingControllerTest extends UnitTestCase
 {
-    public function testGetThemeSettingInteger(): void
+    public function testGetShopSettingInteger(): void
     {
         $serviceIntegerSetting = $this->getIntegerSetting();
 
@@ -24,5 +24,22 @@ class ShopSettingControllerTest extends UnitTestCase
         $integerSetting = $settingController->getShopSettingInteger($nameID);
 
         $this->assertSame($serviceIntegerSetting, $integerSetting);
+    }
+
+    public function testGetShopSettingFloat(): void
+    {
+        $serviceFloatSetting = $this->getFloatSetting();
+
+        $settingService = $this->createMock(ShopSettingServiceInterface::class);
+        $settingService->expects($this->once())
+            ->method('getFloatSetting')
+            ->willReturn($serviceFloatSetting);
+
+        $settingController = new ShopSettingController($settingService);
+
+        $nameID = new ID('floatSetting');
+        $floatSetting = $settingController->getShopSettingFloat($nameID);
+
+        $this->assertSame($serviceFloatSetting, $floatSetting);
     }
 }

@@ -50,6 +50,43 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getInteger($nameID);
     }
 
+    public function testGetShopSettingFloat(): void
+    {
+        $nameID = new ID('floatSetting');
+
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $float = $repository->getFloat($nameID);
+
+        $this->assertEquals(1.23, $float);
+    }
+
+    public function testGetNoShopSettingFloat(): void
+    {
+        $nameID = new ID('NotExistingSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
+        $repository->getFloat($nameID);
+    }
+
+    public function testGetShopSettingInvalidFloat(): void
+    {
+        $nameID = new ID('intSetting');
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('123');
+
+        $repository = new ShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
+        $repository->getFloat($nameID);
+    }
+
     /**
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|MockObject
