@@ -18,3 +18,9 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository
+
+  OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingService
+
+  OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
