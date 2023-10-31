@@ -93,4 +93,21 @@ class ShopSettingControllerTest extends UnitTestCase
 
         $this->assertSame($serviceSelectSetting, $selectSetting);
     }
+
+    public function testGetShopSettingCollection(): void
+    {
+        $serviceCollectionSetting = $this->getCollectionSetting();
+
+        $settingService = $this->createMock(ShopSettingServiceInterface::class);
+        $settingService->expects($this->once())
+            ->method('getCollectionSetting')
+            ->willReturn($serviceCollectionSetting);
+
+        $settingController = new ShopSettingController($settingService);
+
+        $nameID = new ID('arraySetting');
+        $collectionSetting = $settingController->getShopSettingCollection($nameID);
+
+        $this->assertSame($serviceCollectionSetting, $collectionSetting);
+    }
 }

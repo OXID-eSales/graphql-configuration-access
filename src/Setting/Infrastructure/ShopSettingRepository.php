@@ -77,6 +77,17 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return $value;
     }
 
+    public function getCollection(ID $name): array
+    {
+        $value = $this->getSettingValue($name, FieldType::ARRAY);
+
+        if ($value === False) {
+            throw new NotFound('The queried name couldn\'t be found as a collection configuration');
+        }
+
+        return unserialize($value);
+    }
+
     private function isFloatString(string $number): bool
     {
         return is_numeric($number) && str_contains($number, '.') !== false;
