@@ -7,6 +7,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use TheCodingMachine\GraphQLite\Types\ID;
 
+/**
+ * TODO: This class will probably removed in the future as the ShopSettingRepository will be reimplemented differently
+ */
 abstract class AbstractDatabaseSettingRepository
 {
     public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
