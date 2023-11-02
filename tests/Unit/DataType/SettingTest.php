@@ -2,8 +2,10 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\DatabaseSettingType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\ModuleSettingType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\DatabaseFieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\ModuleFieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
@@ -50,21 +52,37 @@ class SettingTest extends UnitTestCase
         $this->assertSame(json_encode(['nice', 'values']), $setting->getValue());
     }
 
-    public function testSettingType(): void
+    public function testDatabaseSettingType(): void
     {
-        $settingType = $this->getSettingType();
+        $databaseSettingType = $this->getDatabaseSettingType();
 
-        $this->assertEquals(new ID('settingType'), $settingType->getName());
-        $this->assertSame( FieldType::BOOLEAN, $settingType->getType()
-        );
+        $this->assertEquals(new ID('settingType'), $databaseSettingType->getName());
+        $this->assertSame( DatabaseFieldType::BOOLEAN, $databaseSettingType->getType());
     }
 
-    public function testInvalidSettingType(): void
+    public function testModuleSettingType(): void
+    {
+        $moduleSettingType = $this->getModuleSettingType();
+
+        $this->assertEquals(new ID('settingType'), $moduleSettingType->getName());
+        $this->assertSame( DatabaseFieldType::BOOLEAN, $moduleSettingType->getType());
+    }
+
+    public function testInvalidDatabaseSettingType(): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('The value "invalidType" is not a valid field type.
-Please use one of the following types: "'.implode('", "', FieldType::getEnums()).'".');
+Please use one of the following types: "'.implode('", "', DatabaseFieldType::getEnums()).'".');
 
-        new SettingType(new ID('coolSettingType'), 'invalidType');
+        new DatabaseSettingType(new ID('coolSettingType'), 'invalidType');
+    }
+
+    public function testInvalidModuleSettingType(): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The value "invalidType" is not a valid field type.
+Please use one of the following types: "'.implode('", "', ModuleFieldType::getEnums()).'".');
+
+        new ModuleSettingType(new ID('coolSettingType'), 'invalidType');
     }
 }
