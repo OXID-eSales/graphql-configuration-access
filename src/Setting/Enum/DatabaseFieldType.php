@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum;
 
 
-final class FieldType
+final class DatabaseFieldType extends AbstractEnum
 {
     public const ASSOCIATIVE_ARRAY = 'aarr';
     public const NUMBER = 'num';
@@ -19,7 +19,7 @@ final class FieldType
     public const BOOLEAN = 'bool';
     public const SELECT = 'select';
 
-    private static array $enums = [
+    protected static array $enums = [
         self::ASSOCIATIVE_ARRAY,
         self::NUMBER,
         self::ARRAY,
@@ -27,18 +27,4 @@ final class FieldType
         self::BOOLEAN,
         self::SELECT
     ];
-
-    static public function validateFieldType(string $type): bool
-    {
-        if (in_array($type, self::$enums)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    static public function getEnums(): array
-    {
-        return self::$enums;
-    }
 }
