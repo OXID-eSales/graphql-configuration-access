@@ -10,40 +10,20 @@ we decided to use json encoded strings instead.
 
 To get the specific type of a configuration, we provide queries like
 `getShopSettingsList`/`getModuleSettingsList`/`getThemeSettingsList` to figure out the type for configurations.
-As a result you get an array of setting types.
-
-Either for `getModuleSettingsList`:
+As a result you get an array of setting types:
 
 ```
-type ModuleSettingType {
+type SettingType {
   name: ID!
   description: String!
-  type: ModuleFieldType!
+  type: FieldType!
 }
 
-enum ModuleFieldType {
-  'int'
-  'float'
-  'bool'
-  'string'
-  'arr'
-}
-```
-
-Or for `getShopSettingsList`/`getThemeSettingsList`:
-
-```
-type DatabaseSettingType {
-  name: ID!
-  description: String!
-  type: DatabaseFieldType!
-}
-
-enum DatabaseFieldType {
-  'num'
-  'bool'
+enum FieldType {
   'str'
   'select'
+  'bool'
+  'num
   'arr'
   'aarr'
 }
