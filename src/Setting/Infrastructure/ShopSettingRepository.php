@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 use OxidEsales\GraphQL\Base\Exception\NotFound;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\DatabaseFieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
 
@@ -19,7 +19,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
     public function getInteger(ID $name): int
     {
         try {
-            $value = $this->getSettingValue($name, DatabaseFieldType::NUMBER);
+            $value = $this->getSettingValue($name, FieldType::NUMBER);
         } catch (NotFound $e) {
             $this->throwNotFoundException('integer');
         }
@@ -34,7 +34,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
     public function getFloat(ID $name): float
     {
         try {
-            $value = $this->getSettingValue($name, DatabaseFieldType::NUMBER);
+            $value = $this->getSettingValue($name, FieldType::NUMBER);
         } catch (NotFound $e) {
             $this->throwNotFoundException('float');
         }
@@ -49,7 +49,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
     public function getBoolean(ID $name): bool
     {
         try {
-            $value = $this->getSettingValue($name, DatabaseFieldType::BOOLEAN);
+            $value = $this->getSettingValue($name, FieldType::BOOLEAN);
         } catch (NotFound $e) {
             $this->throwNotFoundException('boolean');
         }
@@ -60,7 +60,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
     public function getString(ID $name): string
     {
         try {
-            $value = $this->getSettingValue($name, DatabaseFieldType::STRING);
+            $value = $this->getSettingValue($name, FieldType::STRING);
         } catch (NotFound $e) {
             $this->throwNotFoundException('string');
         }
@@ -71,7 +71,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
     public function getSelect(ID $name): string
     {
         try {
-            $value = $this->getSettingValue($name, DatabaseFieldType::SELECT);
+            $value = $this->getSettingValue($name, FieldType::SELECT);
         } catch (NotFound $e) {
             $this->throwNotFoundException('select');
         }
@@ -82,7 +82,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
     public function getCollection(ID $name): array
     {
         try {
-            $value = $this->getSettingValue($name, DatabaseFieldType::ARRAY);
+            $value = $this->getSettingValue($name, FieldType::ARRAY);
         } catch (NotFound $e) {
             $this->throwNotFoundException('collection');
         }
@@ -93,7 +93,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
     public function getAssocCollection(ID $name): array
     {
         try {
-            $value = $this->getSettingValue($name, DatabaseFieldType::ASSOCIATIVE_ARRAY);
+            $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY);
         } catch (NotFound $e) {
             $this->throwNotFoundException('associative collection');
         }

@@ -5,11 +5,9 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\DatabaseSettingType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\ModuleSettingType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\DatabaseFieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\ModuleFieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use PHPUnit\Framework\TestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -56,14 +54,8 @@ class UnitTestCase extends TestCase
             ['first'=>'10','second'=>'20','third'=>'50']));
     }
 
-
-    protected function getDatabaseSettingType(): DatabaseSettingType
+    protected function getSettingType(): SettingType
     {
-        return new DatabaseSettingType(new ID('settingType'), DatabaseFieldType::BOOLEAN);
-    }
-
-    protected function getModuleSettingType(): DatabaseSettingType
-    {
-        return new DatabaseSettingType(new ID('settingType'), ModuleFieldType::BOOLEAN);
+        return new SettingType(new ID('settingType'), FieldType::BOOLEAN);
     }
 }
