@@ -182,4 +182,19 @@ class ModuleSettingControllerTest extends UnitTestCase
 
         $this->assertSame($collectionSetting, $serviceCollectionSetting);
     }
+
+    public function testListModuleSettings(): void
+    {
+        $serviceSettingsList = $this->getSettingTypeList();
+        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $settingService->expects($this->once())
+            ->method('getSettingsList')
+            ->willReturn($serviceSettingsList);
+
+        $settingsController = new ModuleSettingController($settingService);
+        $settingsList = $settingsController->listModuleSettings('awesomeModule');
+
+        $this->assertCount(3, $settingsList);
+        $this->assertSame($settingsList, $serviceSettingsList);
+    }
 }

@@ -58,4 +58,15 @@ class UnitTestCase extends TestCase
     {
         return new SettingType(new ID('settingType'), FieldType::BOOLEAN);
     }
+
+    /**
+     * @return SettingType[]
+     */
+    protected function getSettingTypeList(): array
+    {
+        $intSetting = new SettingType(new ID('intSetting'), FieldType::NUMBER);
+        $stringSetting = new SettingType(new ID('stringSetting'), FieldType::STRING);
+        $arraySetting = new SettingType(new ID('arraySetting'), FieldType::ARRAY);
+        return [$intSetting, $stringSetting, $arraySetting];
+    }
 }

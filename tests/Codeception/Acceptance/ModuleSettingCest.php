@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
@@ -467,6 +468,53 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame('[3, "interesting", "values"]', $setting['value']);
     }
 
+    public function testListModuleSettingsNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'query{
+                listModuleSettings(moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    type
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "listModuleSettings" on type "Query".', $errorMessage);
+    }
+
+    public function testListModuleSettingsAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'query{
+                listModuleSettings(moduleId: "'.$this->getTestModuleName().'") {
+                    name
+                    type
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $settingsList = $result['data']['listModuleSettings'];
+        $I->assertCount(5, $settingsList);
+        $I->assertContains(['name'=>'intSetting', 'type'=>FieldType::NUMBER], $settingsList);
+        $I->assertContains(['name'=>'floatSetting', 'type'=>FieldType::NUMBER], $settingsList);
+        $I->assertContains(['name'=>'boolSetting', 'type'=>FieldType::BOOLEAN], $settingsList);
+        $I->assertContains(['name'=>'stringSetting', 'type'=>FieldType::STRING], $settingsList);
+        $I->assertContains(['name'=>'arraySetting', 'type'=>FieldType::ARRAY], $settingsList);
+    }
+
     private function prepareConfiguration(): void
     {
         $shopConfiguration = $this->getShopConfiguration();
@@ -474,27 +522,32 @@ final class ModuleSettingCest extends BaseCest
         $integerSetting = new Setting();
         $integerSetting
             ->setName('intSetting')
-            ->setValue(123);
+            ->setValue(123)
+            ->setType(FieldType::NUMBER);
 
         $floatSetting = new Setting();
         $floatSetting
             ->setName('floatSetting')
-            ->setValue(1.23);
+            ->setValue(1.23)
+            ->setType(FieldType::NUMBER);
 
         $booleanSetting = new Setting();
         $booleanSetting
             ->setName('boolSetting')
-            ->setValue(false);
+            ->setValue(false)
+            ->setType(FieldType::BOOLEAN);
 
         $stringSetting = new Setting();
         $stringSetting
             ->setName('stringSetting')
-            ->setValue('default');
+            ->setValue('default')
+            ->setType(FieldType::STRING);
 
         $collectionSetting = new Setting();
         $collectionSetting
             ->setName('arraySetting')
-            ->setValue(['nice', 'values']);
+            ->setValue(['nice', 'values'])
+            ->setType(FieldType::ARRAY);
 
 
         $moduleConfiguration = new ModuleConfiguration();

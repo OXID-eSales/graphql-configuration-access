@@ -2,6 +2,8 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
@@ -190,5 +192,22 @@ class ModuleSettingServiceTest extends UnitTestCase
 
         $this->assertSame($nameID, $collectionSetting->getName());
         $this->assertSame($value, $collectionSetting->getValue());
+    }
+
+    public function testListModuleSettings(): void
+    {
+        $intSetting = (new Setting())->setName('intSetting')->setType(FieldType::NUMBER);
+        $stringSetting = (new Setting())->setName('stringSetting')->setType(FieldType::STRING);
+        $arraySetting = (new Setting())->setName('arraySetting')->setType(FieldType::ARRAY);
+        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getSettingsList')
+            ->willReturn([$intSetting, $stringSetting, $arraySetting]);
+
+        $settingsService = new ModuleSettingService($repository);
+        $settingsList = $settingsService->getSettingsList('awesomeModule');
+
+        $this->assertCount(3, $settingsList);
+        $this->assertEquals($settingsList, $this->getSettingTypeList());
     }
 }
