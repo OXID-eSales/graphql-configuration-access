@@ -11,6 +11,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRep
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use TheCodingMachine\GraphQLite\Types\ID;
+use UnexpectedValueException;
 
 class ShopSettingRepositoryTest extends UnitTestCase
 {
@@ -49,8 +50,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
         $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
 
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The queried configuration was found as a float, not an integer');
         $repository->getInteger($nameID);
     }
 
@@ -89,8 +90,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
         $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
 
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The queried configuration was found as an integer, not a float');
         $repository->getFloat($nameID);
     }
 

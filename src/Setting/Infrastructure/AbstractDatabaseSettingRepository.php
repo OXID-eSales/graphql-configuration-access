@@ -33,7 +33,7 @@ abstract class AbstractDatabaseSettingRepository
         return is_numeric($number) && str_contains($number, '.') !== false;
     }
 
-    protected function getSettingValue(ID $name, string $fieldType, string $theme = ''): mixed
+    protected function getSettingValue(ID $name, string $fieldType, string $theme = ''): string
     {
         if ($theme) {
             $theme = 'theme:'.$theme;
@@ -53,6 +53,11 @@ abstract class AbstractDatabaseSettingRepository
             ]);
         $result = $this->queryBuilder->execute();
         $value = $result->fetchOne();
+
+        if ($value === false) {
+            throw new NotFound('The requested configuration was not found');
+        }
+
         return $value;
     }
 }

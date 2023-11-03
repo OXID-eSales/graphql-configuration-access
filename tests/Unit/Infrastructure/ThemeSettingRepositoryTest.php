@@ -11,6 +11,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRe
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use TheCodingMachine\GraphQLite\Types\ID;
+use UnexpectedValueException;
 
 class ThemeSettingRepositoryTest extends UnitTestCase
 {
@@ -49,8 +50,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
 
         $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
 
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The queried configuration was found as a float, not an integer');
         $repository->getInteger($nameID, 'awesomeModule');
     }
     public function testGetThemeSettingFloat(): void
@@ -88,8 +89,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
 
         $repository = new ThemeSettingRepository($queryBuilderFactory, $basicContext);
 
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('The queried configuration was found as an integer, not a float');
         $repository->getFloat($nameID, 'awesomeModule');
     }
 
