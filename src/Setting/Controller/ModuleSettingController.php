@@ -5,6 +5,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
@@ -128,5 +129,17 @@ final class ModuleSettingController
     public function changeModuleSettingCollection(ID $name, string $value, string $moduleId): StringSetting
     {
         return $this->settingService->changeCollectionSetting($name, $value, $moduleId);
+    }
+
+    /**
+     * @Query
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     * @return SettingType[]
+     */
+    public function listModuleSettings(string $moduleId): array
+    {
+        return $this->settingService->getSettingsList($moduleId);
     }
 }
