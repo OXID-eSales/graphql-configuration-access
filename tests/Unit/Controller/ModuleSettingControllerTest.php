@@ -192,7 +192,7 @@ class ModuleSettingControllerTest extends UnitTestCase
             ->willReturn($serviceSettingsList);
 
         $settingsController = new ModuleSettingController($settingService);
-        $settingsList = $settingsController->listModuleSettings('awesomeModule');
+        $settingsList = $settingsController->getModuleSettingsList('awesomeModule');
 
         $this->assertCount(3, $settingsList);
         $this->assertSame($settingsList, $serviceSettingsList);

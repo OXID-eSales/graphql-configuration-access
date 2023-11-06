@@ -138,7 +138,7 @@ final class ModuleSettingController
      * @Right("CHANGE_CONFIGURATION")
      * @return SettingType[]
      */
-    public function listModuleSettings(string $moduleId): array
+    public function getModuleSettingsList(string $moduleId): array
     {
         return $this->settingService->getSettingsList($moduleId);
     }

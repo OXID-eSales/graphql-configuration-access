@@ -468,13 +468,13 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame('[3, "interesting", "values"]', $setting['value']);
     }
 
-    public function testListModuleSettingsNotAuthorized(AcceptanceTester $I): void
+    public function testGetModuleSettingsListNotAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'query{
-                listModuleSettings(moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingsList(moduleId: "'.$this->getTestModuleName().'") {
                     name
                     type
                 }
@@ -485,16 +485,16 @@ final class ModuleSettingCest extends BaseCest
 
         $result = $I->grabJsonResponseAsArray();
         $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "listModuleSettings" on type "Query".', $errorMessage);
+        $I->assertSame('Cannot query field "moduleSettingsList" on type "Query".', $errorMessage);
     }
 
-    public function testListModuleSettingsAuthorized(AcceptanceTester $I): void
+    public function testGetModuleSettingsListAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{
-                listModuleSettings(moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingsList(moduleId: "'.$this->getTestModuleName().'") {
                     name
                     type
                 }
@@ -506,7 +506,7 @@ final class ModuleSettingCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $settingsList = $result['data']['listModuleSettings'];
+        $settingsList = $result['data']['moduleSettingsList'];
         $I->assertCount(5, $settingsList);
         $I->assertContains(['name'=>'intSetting', 'type'=>FieldType::NUMBER], $settingsList);
         $I->assertContains(['name'=>'floatSetting', 'type'=>FieldType::NUMBER], $settingsList);
