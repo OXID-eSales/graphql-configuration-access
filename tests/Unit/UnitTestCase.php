@@ -2,8 +2,6 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit;
 
-use OxidEsales\Eshop\Core\Config;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
@@ -15,16 +13,6 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 class UnitTestCase extends TestCase
 {
-    protected function setUp(): void
-    {
-        $config = $this->createMock(Config::class);
-        $config->expects($this->any())
-            ->method('getShopId')
-            ->willReturn(1);
-
-        Registry::set(Config::class, $config);
-    }
-
     protected function getIntegerSetting(): IntegerSetting
     {
         return new IntegerSetting(new ID('integerSetting'), 123);

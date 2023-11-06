@@ -11,18 +11,19 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 {
-    public function __construct(private QueryBuilderFactoryInterface $queryBuilderFactory)
-    {
+    private $queryBuilder;
+
+    public function __construct(
+        private QueryBuilderFactoryInterface $queryBuilderFactory,
+        private BasicContextInterface $basicContext
+    ) {
         $this->queryBuilder = $this->queryBuilderFactory->create();
     }
 
@@ -120,7 +121,7 @@ final class ThemeSettingRepository implements ThemeSettingRepositoryInterface
                 ':module' => 'theme:' . $themeId,
                 ':name' => $name->val(),
                 ':type' => $fieldType,
-                ':shopId' => EshopRegistry::getConfig()->getShopId()
+                ':shopId' => $this->basicContext->getCurrentShopId()
             ]);
         $result = $this->queryBuilder->execute();
         $value = $result->fetchOne();
