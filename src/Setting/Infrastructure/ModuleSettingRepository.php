@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
-use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
@@ -23,7 +23,8 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
 {
     public function __construct(
         private ModuleSettingServiceInterface $moduleSettingService,
-        private ModuleConfigurationDaoInterface $moduleConfigurationDao
+        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        private BasicContextInterface $basicContext
     ) {}
 
     public function getIntegerSetting(ID $name, string $moduleId): IntegerSetting
@@ -96,7 +97,7 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
      */
     public function getSettingsList(string $moduleId): array
     {
-        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, EshopRegistry::getConfig()->getShopId());
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $this->basicContext->getCurrentShopId());
         return $moduleConfiguration->getModuleSettings();
     }
 }
