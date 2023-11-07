@@ -2,6 +2,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
@@ -126,5 +127,24 @@ class ThemeSettingServiceTest extends UnitTestCase
         $assocCollectionSetting = $settingService->getAssocCollectionSetting($nameID, 'awesomeTheme');
 
         $this->assertEquals($serviceAssocCollectionSetting, $assocCollectionSetting);
+    }
+
+    public function testListModuleSettings(): void
+    {
+        $repositorySettingsList = [
+            'intSetting' => FieldType::NUMBER,
+            'stringSetting' => FieldType::STRING,
+            'arraySetting' => FieldType::ARRAY
+        ];
+        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getSettingsList')
+            ->willReturn($repositorySettingsList);
+
+        $settingsService = new ThemeSettingService($repository);
+        $settingsList = $settingsService->getSettingsList('awesomeTheme');
+
+        $this->assertCount(3, $settingsList);
+        $this->assertEquals($settingsList, $this->getSettingTypeList());
     }
 }
