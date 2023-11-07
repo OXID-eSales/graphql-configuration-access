@@ -15,7 +15,6 @@ As a result you get an array of setting types:
 ```
 type SettingType {
   name: ID!
-  description: String!
   type: FieldType!
 }
 
