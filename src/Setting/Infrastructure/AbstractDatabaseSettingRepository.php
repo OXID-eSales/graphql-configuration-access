@@ -3,9 +3,13 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
@@ -16,8 +20,11 @@ abstract class AbstractDatabaseSettingRepository
     private QueryBuilder $queryBuilder;
 
     public function __construct(
+        private BasicContextInterface $basicContext,
+        private EventDispatcherInterface $eventDispatcher,
+        private ShopConfigurationSettingDaoInterface $shopConfigurationDao,
+        private ShopSettingEncoderInterface $shopSettingEncoder,
         QueryBuilderFactoryInterface $queryBuilderFactory,
-        private BasicContextInterface $basicContext
     ) {
         $this->queryBuilder = $queryBuilderFactory->create();
     }
@@ -54,5 +61,35 @@ abstract class AbstractDatabaseSettingRepository
         $result = $this->queryBuilder->execute();
         $value = $result->fetchOne();
         return $value;
+    }
+
+    protected function saveSettingValue(string $name, string $themeId, string $fieldType, mixed $value): void
+    {
+        $shopId = $this->basicContext->getCurrentShopId();
+
+        $this->queryBuilder
+            ->update('oxconfig')
+            ->where($this->queryBuilder->expr()->eq('oxvarname', ':name'))
+            ->andWhere($this->queryBuilder->expr()->eq('oxshopid', ':shopId'))
+            ->andWhere($this->queryBuilder->expr()->eq('oxmodule', ':themeId'))
+            ->set('oxvarvalue', ':value')
+            ->setParameters([
+                'shopId' => $shopId,
+                'name' => $name,
+                'themeId' => 'theme:' . $themeId,
+                'value' => $this->shopSettingEncoder->encode(
+                    $fieldType,
+                    $value
+                ),
+            ]);
+
+        $this->queryBuilder->execute();
+
+        $this->eventDispatcher->dispatch(
+            new ShopConfigurationChangedEvent(
+                $name,
+                $shopId,
+            )
+        );
     }
 }

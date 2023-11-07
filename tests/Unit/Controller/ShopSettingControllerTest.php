@@ -45,7 +45,7 @@ class ShopSettingControllerTest extends UnitTestCase
 
     public function testGetShopSettingBoolean(): void
     {
-        $serviceBooleanSetting = $this->getNegativBooleanSetting();
+        $serviceBooleanSetting = $this->getNegativeBooleanSetting();
 
         $settingService = $this->createMock(ShopSettingServiceInterface::class);
         $settingService->expects($this->once())

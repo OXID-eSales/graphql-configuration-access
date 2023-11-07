@@ -322,7 +322,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeIntegerSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -342,7 +342,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeIntegerSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -365,7 +365,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeFloatSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -385,7 +385,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeFloatSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -408,7 +408,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeBooleanSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -428,7 +428,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeBooleanSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -451,7 +451,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeStringSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -471,7 +471,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeStringSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -494,7 +494,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeCollectionSettingNotAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::AGENT_USERNAME, self::AGENT_PASSWORD);
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
             'mutation{
@@ -514,7 +514,7 @@ final class ThemeSettingCest extends BaseCest
 
     public function testChangeCollectionSettingAuthorized(AcceptanceTester $I): void
     {
-        $I->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'mutation{
