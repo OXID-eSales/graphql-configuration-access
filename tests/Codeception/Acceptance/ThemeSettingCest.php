@@ -341,7 +341,7 @@ final class ThemeSettingCest extends BaseCest
         $I->assertSame('Cannot query field "themeSettingsList" on type "Query".', $errorMessage);
     }
 
-    public function testGetModuleSettingsListAuthorized(AcceptanceTester $I): void
+    public function testGetThemeSettingsListAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 

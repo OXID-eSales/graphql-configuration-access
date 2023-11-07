@@ -5,6 +5,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
@@ -94,5 +95,17 @@ final class ShopSettingController
     public function getShopSettingAssocCollection(ID $name): StringSetting
     {
         return $this->settingService->getAssocCollectionSetting($name);
+    }
+
+    /**
+     * @Query
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     * @return SettingType[]
+     */
+    public function getShopSettingsList(): array
+    {
+        return $this->settingService->getSettingsList();
     }
 }

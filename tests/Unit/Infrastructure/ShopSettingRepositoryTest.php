@@ -245,16 +245,39 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getAssocCollection($nameID);
     }
 
+    public function testGetNoSettingsList(): void
+    {
+        $result = $this->createMock(Result::class);
+        $result->expects($this->once())
+            ->method('fetchAllKeyValue')
+            ->willReturn([]);
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($result);
+        $repository = $this->getShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('No configurations found for shopID: "1"');
+        $repository->getSettingsList();
+    }
+
     /**
      * @param string|bool $returnedValue
-     * @return QueryBuilderFactoryInterface|MockObject
+     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    public function getQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
+    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
     {
         $result = $this->createMock(Result::class);
         $result->expects($this->once())
             ->method('fetchOne')
             ->willReturn($returnedValue);
+        return $this->getQueryBuilderFactoryMock($result);
+    }
+
+    /**
+     * @param Result|MockObject|(Result&MockObject) $result
+     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
+     */
+    public function getQueryBuilderFactoryMock(Result|MockObject $result
+    ): QueryBuilderFactoryInterface|MockObject {
         $queryBuilder = $this->createPartialMock(QueryBuilder::class, ['execute']);
         $queryBuilder->expects($this->once())
             ->method('execute')
@@ -266,7 +289,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
         return $queryBuilderFactory;
     }
 
-    public function getBasicContextMock(int $shopId): BasicContextInterface|MockObject
+    public function getBasicContextMock(int $shopId = 1): BasicContextInterface|MockObject
     {
         $basicContext = $this->createMock(BasicContextInterface::class);
         $basicContext->expects($this->once())
@@ -274,5 +297,15 @@ class ShopSettingRepositoryTest extends UnitTestCase
             ->willReturn($shopId);
 
         return $basicContext;
+    }
+
+    /**
+     * @param MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
+     * @return ShopSettingRepository
+     */
+    private function getShopSettingRepository(MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
+    ): ShopSettingRepository {
+        $basicContextMock = $this->getBasicContextMock(1);
+        return new ShopSettingRepository($queryBuilderFactory, $basicContextMock);
     }
 }

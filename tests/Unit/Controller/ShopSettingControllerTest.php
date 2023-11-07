@@ -127,4 +127,19 @@ class ShopSettingControllerTest extends UnitTestCase
 
         $this->assertSame($serviceAssocCollectionSetting, $assocCollectionSetting);
     }
+
+    public function testListShopSettings(): void
+    {
+        $serviceSettingsList = $this->getSettingTypeList();
+        $settingService = $this->createMock(ShopSettingServiceInterface::class);
+        $settingService->expects($this->once())
+            ->method('getSettingsList')
+            ->willReturn($serviceSettingsList);
+
+        $settingsController = new ShopSettingController($settingService);
+        $settingsList = $settingsController->getShopSettingsList();
+
+        $this->assertCount(3, $settingsList);
+        $this->assertSame($settingsList, $serviceSettingsList);
+    }
 }

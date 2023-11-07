@@ -100,4 +100,9 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
 
         return unserialize($value);
     }
+
+    public function getSettingsList(): array
+    {
+        return $this->getSettingTypes();
+    }
 }
