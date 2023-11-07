@@ -5,6 +5,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
@@ -94,5 +95,17 @@ final class ThemeSettingController
     public function getThemeSettingAssocCollection(ID $name, string $themeId): StringSetting
     {
         return $this->settingService->getAssocCollectionSetting($name, $themeId);
+    }
+
+    /**
+     * @Query
+     * @Logged()
+     * @HideIfUnauthorized()
+     * @Right("CHANGE_CONFIGURATION")
+     * @return SettingType[]
+     */
+    public function getThemeSettingsList(string $themeId): array
+    {
+        return $this->settingService->getSettingsList($themeId);
     }
 }

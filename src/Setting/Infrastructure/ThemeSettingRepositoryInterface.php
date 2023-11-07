@@ -13,4 +13,10 @@ interface ThemeSettingRepositoryInterface
     public function getSelect(ID $name, string $themeId): string;
     public function getCollection(ID $name, string $themeId): array;
     public function getAssocCollection(ID $name, string $themeId): array;
+    /**
+     * @return [
+     * string $name => FieldType $type
+     * ]
+     */
+    public function getSettingsList(string $themeId): array;
 }

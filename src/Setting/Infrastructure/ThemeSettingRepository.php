@@ -100,4 +100,9 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
         return unserialize($value);
     }
+
+    public function getSettingsList(string $themeId): array
+    {
+        return $this->getSettingTypes($themeId);
+    }
 }

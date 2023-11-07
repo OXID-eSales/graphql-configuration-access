@@ -6,6 +6,7 @@ use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,7 +19,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('integerSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('123');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('123');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -30,7 +31,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingInteger(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -42,7 +43,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetThemeSettingInvalidInteger(): void
     {
         $nameID = new ID('floatSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1.23');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -54,7 +55,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('floatSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1.23');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -66,7 +67,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingFloat(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -78,7 +79,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetThemeSettingInvalidFloat(): void
     {
         $nameID = new ID('intSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('123');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('123');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -91,7 +92,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -104,7 +105,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -116,7 +117,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingBoolean(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -129,7 +130,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('stringSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('default');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('default');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -141,7 +142,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingString(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -154,7 +155,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('selectSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('select');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('select');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -166,7 +167,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingSelect(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -179,7 +180,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('arraySetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -191,7 +192,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -205,7 +206,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $nameID = new ID('aarraySetting');
 
         $serializeArrayString = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($serializeArrayString);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock($serializeArrayString);
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -217,7 +218,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingAssocCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getThemeSettingRepository($queryBuilderFactory);
 
@@ -226,17 +227,59 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $repository->getAssocCollection($nameID, 'awesomeModule');
     }
 
+    public function testGetSettingsList(): void
+    {
+        $settingTypes = [
+            'intSetting' => FieldType::NUMBER,
+            'stringSetting' => FieldType::STRING,
+            'arraySetting' => FieldType::ARRAY
+        ];
+
+        $result = $this->createMock(Result::class);
+        $result->expects($this->once())
+            ->method('fetchAllKeyValue')
+            ->willReturn($settingTypes);
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($result);
+        $repository = $this->getThemeSettingRepository($queryBuilderFactory);
+
+        $repositorySettingTypes = $repository->getSettingsList('awesomeTheme');
+        $this->assertCount(3, $repositorySettingTypes);
+        $this->assertSame($settingTypes, $repositorySettingTypes);
+    }
+
+    public function testGetNoSettingsList(): void
+    {
+        $result = $this->createMock(Result::class);
+        $result->expects($this->once())
+            ->method('fetchAllKeyValue')
+            ->willReturn([]);
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($result);
+        $repository = $this->getThemeSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('No configurations found for theme: "awesomeTheme"');
+        $repository->getSettingsList('awesomeTheme');
+    }
 
     /**
      * @param string|bool $returnedValue
-     * @return QueryBuilderFactoryInterface|MockObject
+     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    private function getQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
+    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
     {
         $result = $this->createMock(Result::class);
         $result->expects($this->once())
             ->method('fetchOne')
             ->willReturn($returnedValue);
+        return $this->getQueryBuilderFactoryMock($result);
+    }
+
+    /**
+     * @param Result|MockObject|(Result&MockObject) $result
+     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
+     */
+    public function getQueryBuilderFactoryMock(Result|MockObject $result
+    ): QueryBuilderFactoryInterface|MockObject {
         $queryBuilder = $this->createPartialMock(QueryBuilder::class, ['execute']);
         $queryBuilder->expects($this->once())
             ->method('execute')

@@ -60,4 +60,29 @@ abstract class AbstractDatabaseSettingRepository
 
         return $value;
     }
+
+    protected function getSettingTypes(string $theme = ''): array
+    {
+        $themeCondition = (!empty($theme)) ? 'theme:'.$theme : '';
+        $shopId = $this->basicContext->getCurrentShopId();
+
+        $this->queryBuilder->select('c.oxvarname')
+            ->addSelect('c.oxvartype')
+            ->from('oxconfig', 'c')
+            ->where('c.oxmodule = :module')
+            ->andWhere('c.oxshopid = :shopId')
+            ->setParameters([
+                ':module' => $themeCondition,
+                ':shopId' => $shopId
+            ]);
+        $result = $this->queryBuilder->execute();
+        $value = $result->fetchAllKeyValue();
+
+        $notFoundLocation = (!empty($theme)) ? 'theme: "'.$theme.'"' : 'shopID: "'.$shopId.'"';
+        if ($value === []) {
+            throw new NotFound('No configurations found for '.$notFoundLocation);
+        }
+
+        return $value;
+    }
 }
