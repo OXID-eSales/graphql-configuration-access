@@ -2,12 +2,14 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit;
 
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -68,5 +70,15 @@ class UnitTestCase extends TestCase
         $stringSetting = new SettingType(new ID('stringSetting'), FieldType::STRING);
         $arraySetting = new SettingType(new ID('arraySetting'), FieldType::ARRAY);
         return [$intSetting, $stringSetting, $arraySetting];
+    }
+
+    protected function getBasicContextMock(int $shopId = 1): BasicContextInterface|MockObject
+    {
+        $basicContext = $this->createMock(BasicContextInterface::class);
+        $basicContext->expects($this->any())
+            ->method('getCurrentShopId')
+            ->willReturn($shopId);
+
+        return $basicContext;
     }
 }

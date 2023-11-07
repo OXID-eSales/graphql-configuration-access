@@ -2,8 +2,8 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
-use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -12,7 +12,8 @@ use TheCodingMachine\GraphQLite\Types\ID;
  */
 abstract class AbstractDatabaseSettingRepository
 {
-    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
+    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory,
+    protected BasicContextInterface $basicContext)
     {
         $this->queryBuilder = $queryBuilderFactory->create();
     }
@@ -44,7 +45,7 @@ abstract class AbstractDatabaseSettingRepository
                 ':module' => $theme,
                 ':name' => $name->val(),
                 ':type' => $fieldType,
-                ':shopId' => EshopRegistry::getConfig()->getShopId()
+                ':shopId' => $this->basicContext->getCurrentShopId()
             ]);
         $result = $this->queryBuilder->execute();
         $value = $result->fetchOne();
