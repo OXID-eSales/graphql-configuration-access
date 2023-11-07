@@ -13,4 +13,10 @@ interface ShopSettingRepositoryInterface
     public function getSelect(ID $name): string;
     public function getCollection(ID $name): array;
     public function getAssocCollection(ID $name): array;
+    /**
+     * @return [
+     * string $name => FieldType $type
+     * ]
+     */
+    public function getSettingsList(): array;
 }

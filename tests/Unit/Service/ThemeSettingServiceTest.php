@@ -129,7 +129,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $this->assertEquals($serviceAssocCollectionSetting, $assocCollectionSetting);
     }
 
-    public function testListModuleSettings(): void
+    public function testListThemeSettings(): void
     {
         $repositorySettingsList = [
             'intSetting' => FieldType::NUMBER,

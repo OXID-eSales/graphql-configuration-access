@@ -18,7 +18,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('integerSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('123');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('123');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -30,7 +30,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingInteger(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -42,7 +42,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetShopSettingInvalidInteger(): void
     {
         $nameID = new ID('floatSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1.23');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -55,7 +55,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('floatSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1.23');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1.23');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -67,7 +67,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingFloat(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -79,7 +79,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetShopSettingInvalidFloat(): void
     {
         $nameID = new ID('intSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('123');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('123');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -92,7 +92,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -105,7 +105,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('1');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -117,7 +117,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingBoolean(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -130,7 +130,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('stringSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('default');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('default');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -142,7 +142,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingString(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -155,7 +155,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('selectSetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('select');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('select');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -167,7 +167,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingSelect(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -180,7 +180,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('arraySetting');
 
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -192,7 +192,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -206,7 +206,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $nameID = new ID('aarraySetting');
 
         $serializeArrayString = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($serializeArrayString);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock($serializeArrayString);
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -218,7 +218,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingAssocCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock(False);
+        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
 
         $repository = $this->getShopSettingRepository($queryBuilderFactory);
 
@@ -227,16 +227,39 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $repository->getAssocCollection($nameID);
     }
 
+    public function testGetNoSettingsList(): void
+    {
+        $result = $this->createMock(Result::class);
+        $result->expects($this->once())
+            ->method('fetchAllKeyValue')
+            ->willReturn([]);
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($result);
+        $repository = $this->getShopSettingRepository($queryBuilderFactory);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('No configurations found for shopID: "1"');
+        $repository->getSettingsList();
+    }
+
     /**
      * @param string|bool $returnedValue
-     * @return QueryBuilderFactoryInterface|MockObject
+     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    public function getQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
+    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
     {
         $result = $this->createMock(Result::class);
         $result->expects($this->once())
             ->method('fetchOne')
             ->willReturn($returnedValue);
+        return $this->getQueryBuilderFactoryMock($result);
+    }
+
+    /**
+     * @param Result|MockObject|(Result&MockObject) $result
+     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
+     */
+    public function getQueryBuilderFactoryMock(Result|MockObject $result
+    ): QueryBuilderFactoryInterface|MockObject {
         $queryBuilder = $this->createPartialMock(QueryBuilder::class, ['execute']);
         $queryBuilder->expects($this->once())
             ->method('execute')
@@ -252,7 +275,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
      * @param MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
      * @return ShopSettingRepository
      */
-    public function getShopSettingRepository(MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
+    private function getShopSettingRepository(MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
     ): ShopSettingRepository {
         $basicContextMock = $this->getBasicContextMock();
         return new ShopSettingRepository($queryBuilderFactory, $basicContextMock);
