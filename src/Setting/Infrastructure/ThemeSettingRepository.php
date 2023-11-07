@@ -93,36 +93,43 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function saveIntegerSetting(ID $name, int $value, string $themeId): void
     {
-        $this->saveSettingValue($name->val(), $themeId, FieldType::NUMBER, $value);
+        $this->getInteger($name, $themeId);
+        $this->saveSettingValue($name, $themeId, FieldType::NUMBER, $value);
     }
 
     public function saveFloatSetting(ID $name, float $value, string $themeId): void
     {
-        $this->saveSettingValue($name->val(), $themeId, FieldType::NUMBER, $value);
+        $this->getFloat($name, $themeId);
+        $this->saveSettingValue($name, $themeId, FieldType::NUMBER, $value);
     }
 
     public function saveBooleanSetting(ID $name, bool $value, string $themeId): void
     {
-        $this->saveSettingValue($name->val(), $themeId, FieldType::BOOLEAN, $value);
+        $this->getBoolean($name, $themeId);
+        $this->saveSettingValue($name, $themeId, FieldType::BOOLEAN, $value);
     }
 
     public function saveStringSetting(ID $name, string $value, string $themeId): void
     {
-        $this->saveSettingValue($name->val(), $themeId, FieldType::STRING, $value);
+        $this->getString($name, $themeId);
+        $this->saveSettingValue($name, $themeId, FieldType::STRING, $value);
     }
 
     public function saveSelectSetting(ID $name, string $value, string $themeId): void
     {
-        $this->saveSettingValue($name->val(), $themeId, FieldType::SELECT, $value);
+        $this->getSelect($name, $themeId);
+        $this->saveSettingValue($name, $themeId, FieldType::SELECT, $value);
     }
 
     public function saveCollectionSetting(ID $name, array $value, string $themeId): void
     {
-        $this->saveSettingValue($name->val(), $themeId, FieldType::ARRAY, $value);
+        $this->getCollection($name, $themeId);
+        $this->saveSettingValue($name, $themeId, FieldType::ARRAY, $value);
     }
 
     public function saveAssocCollectionSetting(ID $name, array $value, string $themeId): void
     {
-        $this->saveSettingValue($name->val(), $themeId, FieldType::ASSOCIATIVE_ARRAY, $value);
+        $this->getAssocCollection($name, $themeId);
+        $this->saveSettingValue($name, $themeId, FieldType::ASSOCIATIVE_ARRAY, $value);
     }
 }

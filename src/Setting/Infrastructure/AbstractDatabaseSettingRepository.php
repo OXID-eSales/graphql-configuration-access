@@ -63,7 +63,7 @@ abstract class AbstractDatabaseSettingRepository
         return $value;
     }
 
-    protected function saveSettingValue(string $name, string $themeId, string $fieldType, mixed $value): void
+    protected function saveSettingValue(ID $name, string $themeId, string $fieldType, mixed $value): void
     {
         $shopId = $this->basicContext->getCurrentShopId();
 
@@ -75,7 +75,7 @@ abstract class AbstractDatabaseSettingRepository
             ->set('oxvarvalue', ':value')
             ->setParameters([
                 'shopId' => $shopId,
-                'name' => $name,
+                'name' => $name->val(),
                 'themeId' => 'theme:' . $themeId,
                 'value' => $this->shopSettingEncoder->encode(
                     $fieldType,
@@ -87,7 +87,7 @@ abstract class AbstractDatabaseSettingRepository
 
         $this->eventDispatcher->dispatch(
             new ShopConfigurationChangedEvent(
-                $name,
+                $name->val(),
                 $shopId,
             )
         );
