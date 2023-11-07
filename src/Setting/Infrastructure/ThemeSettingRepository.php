@@ -9,22 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ThemeSettingRepository extends AbstractDatabaseSettingRepository implements ThemeSettingRepositoryInterface
 {
-    private $queryBuilder;
-
-    public function __construct(
-        private QueryBuilderFactoryInterface $queryBuilderFactory,
-        private BasicContextInterface $basicContext
-    ) {
-        $this->queryBuilder = $this->queryBuilderFactory->create();
-    }
-
     public function getInteger(ID $name, string $themeId): int
     {
         $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
@@ -100,29 +89,5 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
         }
 
         return unserialize($value);
-    }
-
-    private function isFloatString(string $number): bool
-    {
-        return is_numeric($number) && str_contains($number, '.') !== false;
-    }
-
-    private function getSettingValue(string $themeId, ID $name, string $fieldType): mixed
-    {
-        $this->queryBuilder->select('c.oxvarvalue')
-            ->from('oxconfig', 'c')
-            ->where('c.oxmodule = :module')
-            ->andWhere('c.oxvarname = :name')
-            ->andWhere('c.oxvartype = :type')
-            ->andWhere('c.oxshopid = :shopId')
-            ->setParameters([
-                ':module' => 'theme:' . $themeId,
-                ':name' => $name->val(),
-                ':type' => $fieldType,
-                ':shopId' => $this->basicContext->getCurrentShopId()
-            ]);
-        $result = $this->queryBuilder->execute();
-        $value = $result->fetchOne();
-        return $value;
     }
 }
