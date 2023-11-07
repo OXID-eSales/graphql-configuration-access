@@ -327,7 +327,7 @@ final class ShopSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                shopSettingsList() {
+                shopSettingsList {
                     name
                     type
                 }
@@ -347,7 +347,7 @@ final class ShopSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                shopSettingsList() {
+                shopSettingsList {
                     name
                     type
                 }
