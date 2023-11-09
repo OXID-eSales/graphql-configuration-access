@@ -196,18 +196,19 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testListModuleSettings(): void
     {
+        $moduleId = 'awesomeModule';
+
         $intSetting = (new Setting())->setName('intSetting')->setType(FieldType::NUMBER);
         $stringSetting = (new Setting())->setName('stringSetting')->setType(FieldType::STRING);
         $arraySetting = (new Setting())->setName('arraySetting')->setType(FieldType::ARRAY);
+
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getSettingsList')
+            ->with($moduleId)
             ->willReturn([$intSetting, $stringSetting, $arraySetting]);
 
-        $settingsService = new ModuleSettingService($repository);
-        $settingsList = $settingsService->getSettingsList('awesomeModule');
-
-        $this->assertCount(3, $settingsList);
-        $this->assertEquals($settingsList, $this->getSettingTypeList());
+        $sut = new ModuleSettingService($repository);
+        $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList($moduleId));
     }
 }

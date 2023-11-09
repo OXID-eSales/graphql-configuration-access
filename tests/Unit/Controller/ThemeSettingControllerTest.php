@@ -130,16 +130,15 @@ class ThemeSettingControllerTest extends UnitTestCase
 
     public function testListThemeSettings(): void
     {
+        $themeId = 'awesomeTheme';
         $serviceSettingsList = $this->getSettingTypeList();
         $settingService = $this->createMock(ThemeSettingServiceInterface::class);
         $settingService->expects($this->once())
             ->method('getSettingsList')
+            ->with($themeId)
             ->willReturn($serviceSettingsList);
 
-        $settingsController = new ThemeSettingController($settingService);
-        $settingsList = $settingsController->getThemeSettingsList('awesomeTheme');
-
-        $this->assertCount(3, $settingsList);
-        $this->assertSame($settingsList, $serviceSettingsList);
+        $sut = new ThemeSettingController($settingService);
+        $this->assertSame($serviceSettingsList, $sut->getThemeSettingsList($themeId));
     }
 }
