@@ -2,6 +2,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
@@ -126,5 +127,21 @@ class ShopSettingServiceTest extends UnitTestCase
         $assocCollectionSetting = $settingService->getAssocCollectionSetting($nameID);
 
         $this->assertEquals($serviceAssocCollectionSetting, $assocCollectionSetting);
+    }
+
+    public function testListShopSettings(): void
+    {
+        $repositorySettingsList = [
+            'intSetting' => FieldType::NUMBER,
+            'stringSetting' => FieldType::STRING,
+            'arraySetting' => FieldType::ARRAY
+        ];
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getSettingsList')
+            ->willReturn($repositorySettingsList);
+
+        $sut = new ShopSettingService($repository);
+        $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList());
     }
 }

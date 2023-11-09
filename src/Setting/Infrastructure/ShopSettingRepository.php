@@ -9,17 +9,23 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
+use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Types\ID;
+use UnexpectedValueException;
 
 final class ShopSettingRepository extends AbstractDatabaseSettingRepository implements ShopSettingRepositoryInterface
 {
     public function getInteger(ID $name): int
     {
-        $value = $this->getSettingValue($name, FieldType::NUMBER);
-
-        if ($value === False || $this->isFloatString($value)) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::NUMBER);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('integer');
+        }
+
+        if ($this->isFloatString($value)) {
+            throw new UnexpectedValueException('The queried configuration was found as a float, not an integer');
         }
 
         return (int)$value;
@@ -27,10 +33,14 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
 
     public function getFloat(ID $name): float
     {
-        $value = $this->getSettingValue($name, FieldType::NUMBER);
-
-        if ($value === False || !$this->isFloatString($value)) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::NUMBER);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('float');
+        }
+
+        if (!$this->isFloatString($value)) {
+            throw new UnexpectedValueException('The queried configuration was found as an integer, not a float');
         }
 
         return (float)$value;
@@ -38,9 +48,9 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
 
     public function getBoolean(ID $name): bool
     {
-        $value = $this->getSettingValue($name, FieldType::BOOLEAN);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::BOOLEAN);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('boolean');
         }
 
@@ -49,9 +59,9 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
 
     public function getString(ID $name): string
     {
-        $value = $this->getSettingValue($name, FieldType::STRING);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::STRING);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('string');
         }
 
@@ -60,9 +70,9 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
 
     public function getSelect(ID $name): string
     {
-        $value = $this->getSettingValue($name, FieldType::SELECT);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::SELECT);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('select');
         }
 
@@ -71,9 +81,9 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
 
     public function getCollection(ID $name): array
     {
-        $value = $this->getSettingValue($name, FieldType::ARRAY);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::ARRAY);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('collection');
         }
 
@@ -82,12 +92,17 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
 
     public function getAssocCollection(ID $name): array
     {
-        $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('associative collection');
         }
 
         return unserialize($value);
+    }
+
+    public function getSettingsList(): array
+    {
+        return $this->getSettingTypes();
     }
 }

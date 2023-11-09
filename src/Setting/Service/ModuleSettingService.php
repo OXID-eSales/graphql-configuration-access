@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
@@ -87,5 +89,20 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
         $this->moduleSettingRepository->saveCollectionSetting($name, $arrayValue, $moduleId);
 
         return new StringSetting($name, $value);
+    }
+
+    /**
+     * @return SettingType[]
+     */
+    public function getSettingsList(string $moduleId): array
+    {
+        $settingsList = $this->moduleSettingRepository->getSettingsList($moduleId);
+        $settingTypes = [];
+        /** @var Setting $setting */
+        foreach ($settingsList as $setting) {
+            $settingTypes[] = new SettingType(new ID($setting->getName()), $setting->getType());
+        }
+
+        return $settingTypes;
     }
 }

@@ -9,17 +9,23 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
+use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Types\ID;
+use UnexpectedValueException;
 
 final class ThemeSettingRepository extends AbstractDatabaseSettingRepository implements ThemeSettingRepositoryInterface
 {
     public function getInteger(ID $name, string $themeId): int
     {
-        $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
-
-        if ($value === False || $this->isFloatString($value)) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('integer');
+        }
+
+        if ($this->isFloatString($value)) {
+            throw new UnexpectedValueException('The queried configuration was found as a float, not an integer');
         }
 
         return (int)$value;
@@ -27,10 +33,14 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function getFloat(ID $name, string $themeId): float
     {
-        $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
-
-        if ($value === False || !$this->isFloatString($value)) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('float');
+        }
+
+        if (!$this->isFloatString($value)) {
+            throw new UnexpectedValueException('The queried configuration was found as an integer, not a float');
         }
 
         return (float)$value;
@@ -38,10 +48,10 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function getBoolean(ID $name, string $themeId): bool
     {
-        $value = $this->getSettingValue($name, FieldType::BOOLEAN, $themeId);
-
-        if ($value === False) {
-           $this->throwNotFoundException('boolean');
+        try {
+            $value = $this->getSettingValue($name, FieldType::BOOLEAN, $themeId);
+        } catch (NotFound $e) {
+            $this->throwNotFoundException('boolean');
         }
 
         return (bool)$value;
@@ -49,9 +59,9 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function getString(ID $name, string $themeId): string
     {
-        $value = $this->getSettingValue($name, FieldType::STRING, $themeId);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::STRING, $themeId);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('string');
         }
 
@@ -60,9 +70,9 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function getSelect(ID $name, string $themeId): string
     {
-        $value = $this->getSettingValue($name, FieldType::SELECT, $themeId);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::SELECT, $themeId);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('select');
         }
 
@@ -71,9 +81,9 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function getCollection(ID $name, string $themeId): array
     {
-        $value = $this->getSettingValue($name, FieldType::ARRAY, $themeId);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::ARRAY, $themeId);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('collection');
         }
 
@@ -82,12 +92,17 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function getAssocCollection(ID $name, string $themeId): array
     {
-        $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY, $themeId);
-
-        if ($value === False) {
+        try {
+            $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY, $themeId);
+        } catch (NotFound $e) {
             $this->throwNotFoundException('associative collection');
         }
 
         return unserialize($value);
+    }
+
+    public function getSettingsList(string $themeId): array
+    {
+        return $this->getSettingTypes($themeId);
     }
 }

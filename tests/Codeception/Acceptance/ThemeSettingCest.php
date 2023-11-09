@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Basket;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
@@ -318,5 +319,54 @@ final class ThemeSettingCest extends BaseCest
         $setting = $result['data']['themeSettingAssocCollection'];
         $I->assertSame('aarraySetting', $setting['name']);
         $I->assertSame('{"first":"10","second":"20","third":"50"}', $setting['value']);
+    }
+
+    public function testGetThemeSettingsListNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'query{
+                themeSettingsList(themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    type
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "themeSettingsList" on type "Query".', $errorMessage);
+    }
+
+    public function testGetThemeSettingsListAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'query{
+                themeSettingsList(themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    type
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $settingsList = $result['data']['themeSettingsList'];
+        $I->assertCount(7, $settingsList);
+        $I->assertContains(['name'=>'intSetting', 'type' => FieldType::NUMBER], $settingsList);
+        $I->assertContains(['name'=>'floatSetting', 'type' => FieldType::NUMBER], $settingsList);
+        $I->assertContains(['name'=>'boolSetting', 'type' =>FieldType::BOOLEAN], $settingsList);
+        $I->assertContains(['name'=>'stringSetting', 'type' => FieldType::STRING], $settingsList);
+        $I->assertContains(['name'=>'selectSetting', 'type' => FieldType::SELECT], $settingsList);
+        $I->assertContains(['name'=>'arraySetting', 'type' => FieldType::ARRAY], $settingsList);
+        $I->assertContains(['name'=>'aarraySetting', 'type' => FieldType::ASSOCIATIVE_ARRAY], $settingsList);
     }
 }
