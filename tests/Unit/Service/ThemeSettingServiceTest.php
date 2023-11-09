@@ -131,6 +131,8 @@ class ThemeSettingServiceTest extends UnitTestCase
 
     public function testListThemeSettings(): void
     {
+        $themeId = 'awesomeTheme';
+
         $repositorySettingsList = [
             'intSetting' => FieldType::NUMBER,
             'stringSetting' => FieldType::STRING,
@@ -139,12 +141,10 @@ class ThemeSettingServiceTest extends UnitTestCase
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getSettingsList')
+            ->with($themeId)
             ->willReturn($repositorySettingsList);
 
-        $settingsService = new ThemeSettingService($repository);
-        $settingsList = $settingsService->getSettingsList('awesomeTheme');
-
-        $this->assertCount(3, $settingsList);
-        $this->assertEquals($settingsList, $this->getSettingTypeList());
+        $sut = new ThemeSettingService($repository);
+        $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList($themeId));
     }
 }

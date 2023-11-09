@@ -5,16 +5,12 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use PHPUnit\Framework\TestCase;
 
-class FieldTypeTestTest extends TestCase
+class FieldTypeTest extends TestCase
 {
-    public function testValidType(): void
+    /** @dataProvider fieldTypesDataProvider */
+    public function testValidType(string $type): void
     {
-        $this->assertTrue(FieldType::validateFieldType(FieldType::BOOLEAN));
-        $this->assertTrue(FieldType::validateFieldType(FieldType::NUMBER));
-        $this->assertTrue(FieldType::validateFieldType(FieldType::STRING));
-        $this->assertTrue(FieldType::validateFieldType(FieldType::SELECT));
-        $this->assertTrue(FieldType::validateFieldType(FieldType::ASSOCIATIVE_ARRAY));
-        $this->assertTrue(FieldType::validateFieldType(FieldType::ARRAY));
+        $this->assertTrue(FieldType::validateFieldType($type));
     }
 
     public function testInvalidType(): void
@@ -22,16 +18,21 @@ class FieldTypeTestTest extends TestCase
         $this->assertFalse(FieldType::validateFieldType('INVALID_FIELDTYPE'));
     }
 
-    public function testGetEnums(): void
+    /** @dataProvider fieldTypesDataProvider */
+    public function testGetEnums(string $type): void
     {
         $enums = FieldType::getEnums();
 
-        $this->assertIsArray($enums);
-        $this->assertContains(FieldType::ASSOCIATIVE_ARRAY, $enums);
-        $this->assertContains(FieldType::NUMBER, $enums);
-        $this->assertContains(FieldType::ARRAY, $enums);
-        $this->assertContains(FieldType::STRING, $enums);
-        $this->assertContains(FieldType::BOOLEAN, $enums);
-        $this->assertContains(FieldType::SELECT, $enums);
+        $this->assertContains($type, $enums);
+    }
+
+    public function fieldTypesDataProvider(): \Generator
+    {
+        yield [FieldType::ASSOCIATIVE_ARRAY];
+        yield [FieldType::NUMBER];
+        yield [FieldType::ARRAY];
+        yield [FieldType::STRING];
+        yield [FieldType::BOOLEAN];
+        yield [FieldType::SELECT];
     }
 }

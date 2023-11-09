@@ -136,10 +136,7 @@ class ShopSettingControllerTest extends UnitTestCase
             ->method('getSettingsList')
             ->willReturn($serviceSettingsList);
 
-        $settingsController = new ShopSettingController($settingService);
-        $settingsList = $settingsController->getShopSettingsList();
-
-        $this->assertCount(3, $settingsList);
-        $this->assertSame($settingsList, $serviceSettingsList);
+        $sut = new ShopSettingController($settingService);
+        $this->assertSame($serviceSettingsList, $sut->getShopSettingsList());
     }
 }

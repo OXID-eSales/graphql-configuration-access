@@ -141,10 +141,7 @@ class ShopSettingServiceTest extends UnitTestCase
             ->method('getSettingsList')
             ->willReturn($repositorySettingsList);
 
-        $settingsService = new ShopSettingService($repository);
-        $settingsList = $settingsService->getSettingsList();
-
-        $this->assertCount(3, $settingsList);
-        $this->assertEquals($settingsList, $this->getSettingTypeList());
+        $sut = new ShopSettingService($repository);
+        $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList());
     }
 }
