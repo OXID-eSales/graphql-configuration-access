@@ -31,7 +31,7 @@ return [
     'BROWSER_NAME' => getenv('BROWSER_NAME') ?: 'chrome',
     'PHP_BIN' => getenv('PHPBIN') ?: 'php',
     'SCREEN_SHOT_URL' => getenv('CC_SCREEN_SHOTS_PATH') ?: '',
-    'THEME_ID' => getenv('THEME_ID') ?: 'twig',
+    'THEME_ID' => getenv('THEME_ID') ?: 'apex',
 ];
 
 function getTestDataDumpFilePath(): string
