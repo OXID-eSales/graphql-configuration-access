@@ -203,6 +203,11 @@ jobs:
           make down
           sleep 2
 
+      - name: Cleanup style reports
+        run: |
+            perl -pi -e 's#/var/www/test-module/#./#g;' source/test-module/tests/reports/phpstan.report.json
+            perl -pi -e 's#/var/www/test-module/#./#g;' source/test-module/tests/reports/phpmd.report.json
+
       - name: Upload log artifact
         if: always()
         uses: actions/upload-artifact@v3
@@ -264,7 +269,6 @@ jobs:
 
   codeception_twig:
     needs: [ install_shop_with_module ]
-    if: ${{ inputs.template_engine == 'both' || inputs.template_engine == 'twig' }}
     runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
@@ -320,7 +324,7 @@ jobs:
           sleep 2
 
   sonarcloud:
-    needs: [ unit_integration_tests ]
+    needs: [ styles, unit_integration_tests ]
     if: ${{ always() && inputs.report_sonarcloud }}
     runs-on: ubuntu-latest
     steps:
@@ -332,15 +336,28 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ModuleIntegrationTestsLog-${{ inputs.php }}-${{ inputs.mysql }}-${{ inputs.template_engine }}
-          path: ./tests/
+          path: ./testsResults/
 
-      - name: Debug
+      - name: Download StylesLog artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v3
+        with:
+          name: StylesLog-${{ inputs.php }}
+          path: ./stylesResults/
+
+      - name: Debug tests
         run: |
           ls -alh
-          cd tests
+          cd testsResults
           ls -alh
           cd source
           ls -alh
+
+      - name: Debug styles
+        run: |
+            ls -alh
+            cd stylesResults
+            ls -alh
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
@@ -354,6 +371,6 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.tests=tests
             -Dsonar.sourceEncoding=UTF-8
-            -Dsonar.php.coverage.reportPaths=tests/coverage.xml
+            -Dsonar.php.coverage.reportPaths=testsResults/source/coverage.xml
             -Dsonar.cpd.php.minimumTokens=25
             -Dsonar.cpd.php.minimumLines=5
