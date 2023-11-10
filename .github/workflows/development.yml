@@ -289,6 +289,11 @@ jobs:
           make up
           sleep 2
 
+      - name: Install codeception dependencies
+        run: |
+          docker compose exec -T php composer require codeception/module-rest ^3.3.0 --dev --no-update
+          docker compose exec -T php composer require codeception/module-phpbrowser ^3.0.0 --dev --no-update
+
       - name: Install twig template engine and twig theme
         run: |
           docker-compose exec -T php composer require oxid-esales/twig-component:dev-b-7.0.x --no-update
