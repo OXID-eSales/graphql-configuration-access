@@ -101,6 +101,9 @@ jobs:
             -e 's#<sCompileDir>#/var/www/source/tmp/#g;'\
             -e 's#iDebug = 0;#iDebug = -1;#g;'\
             source/source/config.inc.php
+          perl -pi\
+            -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1'\
+            source/source/.htaccess
 
       - name: Checkout current module
         uses: actions/checkout@v4
