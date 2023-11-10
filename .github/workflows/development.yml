@@ -114,19 +114,19 @@ jobs:
 
       - name: Install module
         run: |
-          docker-compose exec -T \
+          docker compose exec -T \
             php composer config repositories.${{ env.PACKAGE_NAME }} \
             --json '{"type":"path", "url":"./test-module", "options": {"symlink": true}}'
-          docker-compose exec -T \
+          docker compose exec -T \
             php composer require ${{ env.PACKAGE_NAME }}:* --no-interaction --no-update
 
       - name: Install dependencies and reset shop
         run: |
-          docker-compose exec -T php composer update --no-interaction
-          docker-compose exec -T php bin/oe-console oe:database:reset \
+          docker compose exec -T php composer update --no-interaction
+          docker compose exec -T php bin/oe-console oe:database:reset \
             --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
-          docker-compose exec -T php bin/oe-console oe:module:activate oe_graphql_base
-          docker-compose exec -T php bin/oe-console oe:module:activate oe_graphql_configuration_access
+          docker compose exec -T php bin/oe-console oe:module:activate oe_graphql_base
+          docker compose exec -T php bin/oe-console oe:module:activate oe_graphql_configuration_access
 
       - name: Stop containers
         run: |
@@ -136,7 +136,7 @@ jobs:
       - name: Show docker log
         if: always()
         run: |
-          docker-compose logs
+          docker compose logs
 
       - name: Upload configuration artifacts
         if: always()
@@ -144,7 +144,7 @@ jobs:
         with:
           name: Configs-${{ inputs.php }}-${{ inputs.mysql }}-${{ inputs.template_engine }}
           path: |
-            docker-compose.yml
+            docker compose.yml
             source/composer.json
             source/composer.lock
             source/source/config.inc.php
@@ -171,7 +171,7 @@ jobs:
 
       - name: Install module dependencies
         run: |
-          docker-compose exec -T \
+          docker compose exec -T \
             --workdir=/var/www/test-module \
             php composer install
 
@@ -179,7 +179,7 @@ jobs:
         id: phpstan
         if: always()
         run: |
-          docker-compose exec -Tw /var/www/test-module \
+          docker compose exec -Tw /var/www/test-module \
             php bash -c "composer phpstan-report; composer phpstan"
 
       - name: Run phpmd
@@ -187,13 +187,13 @@ jobs:
         if: always()
         continue-on-error: true
         run: |
-          docker-compose exec -Tw /var/www/test-module \
+          docker compose exec -Tw /var/www/test-module \
             php bash -c "composer phpmd-report; composer phpmd"
 
       - name: Run phpcs
         if: always()
         run: |
-          docker-compose exec -T \
+          docker compose exec -T \
             --workdir=/var/www/test-module \
             php composer phpcs
 
@@ -240,7 +240,7 @@ jobs:
 
       - name: Run tests
         run: |
-          docker-compose exec -T \
+          docker compose exec -T \
             -e XDEBUG_MODE=coverage \
             php php vendor/bin/phpunit \
               -c /var/www/vendor/${{ env.PACKAGE_NAME }}/tests/phpunit.xml \
@@ -296,14 +296,14 @@ jobs:
 
       - name: Install twig template engine and twig theme
         run: |
-          docker-compose exec -T php composer require oxid-esales/twig-component:dev-b-7.0.x --no-update
-          docker-compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --no-update
-          docker-compose exec -T php composer require oxid-esales/apex-theme:dev-b-7.0.x --no-update
-          docker-compose exec -T php composer update --no-interaction
+          docker compose exec -T php composer require oxid-esales/twig-component:dev-b-7.0.x --no-update
+          docker compose exec -T php composer require oxid-esales/twig-admin-theme:dev-b-7.0.x --no-update
+          docker compose exec -T php composer require oxid-esales/apex-theme:dev-b-7.0.x --no-update
+          docker compose exec -T php composer update --no-interaction
 
       - name: Run tests
         run: |
-          docker-compose exec -Tw /var/www/test-module \
+          docker compose exec -Tw /var/www/test-module \
             php composer codeception -- -g ${{ inputs.module_codecept_test_group }}
 
       - name: Upload log artifact
@@ -312,7 +312,7 @@ jobs:
         with:
           name: ModuleCodeceptionTestsLog-${{ inputs.php }}-${{ inputs.mysql }}-${{ inputs.template_engine }}
           path: |
-            docker-compose.yml
+            docker compose.yml
             source/composer.json
             source/composer.lock
             source/source/config.inc.php
