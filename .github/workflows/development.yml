@@ -204,6 +204,7 @@ jobs:
           sleep 2
 
       - name: Cleanup style reports
+        if: always()
         run: |
             perl -pi -e 's#/var/www/test-module/#./#g;' source/test-module/tests/reports/phpstan.report.json
             perl -pi -e 's#/var/www/test-module/#./#g;' source/test-module/tests/reports/phpmd.report.json
@@ -297,11 +298,8 @@ jobs:
 
       - name: Run tests
         run: |
-          docker-compose exec -T \
-            -e THEME_ID=apex \
-            -e MODULE_IDS=oe_graphql_base,oe_graphql_configuration_access \
-            php vendor/bin/codecept run acceptance \
-                -c /var/www/vendor/${{ env.PACKAGE_NAME }}/tests/codeception.yml -g ${{ inputs.module_codecept_test_group }}
+          docker-compose exec -Tw /var/www/test-module \
+            php composer codeception -- -g ${{ inputs.module_codecept_test_group }}
 
       - name: Upload log artifact
         if: always()
@@ -345,20 +343,6 @@ jobs:
           name: StylesLog-${{ inputs.php }}
           path: ./stylesResults/
 
-      - name: Debug tests
-        run: |
-          ls -alh
-          cd testsResults
-          ls -alh
-          cd source
-          ls -alh
-
-      - name: Debug styles
-        run: |
-            ls -alh
-            cd stylesResults
-            ls -alh
-
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -372,5 +356,6 @@ jobs:
             -Dsonar.tests=tests
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.php.coverage.reportPaths=testsResults/source/coverage.xml
+            -Dsonar.php.phpstan.reportPaths=stylesResults/phpstan.report.json
             -Dsonar.cpd.php.minimumTokens=25
             -Dsonar.cpd.php.minimumLines=5
