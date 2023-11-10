@@ -320,7 +320,7 @@ jobs:
           sleep 2
 
   sonarcloud:
-    needs: [ prepare_coverage_results ]
+    needs: [ unit_integration_tests ]
     if: ${{ always() && inputs.report_sonarcloud }}
     runs-on: ubuntu-latest
     steps:
