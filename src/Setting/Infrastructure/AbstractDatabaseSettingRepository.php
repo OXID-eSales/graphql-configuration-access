@@ -15,8 +15,6 @@ use TheCodingMachine\GraphQLite\Types\ID;
  */
 abstract class AbstractDatabaseSettingRepository
 {
-    private QueryBuilder $queryBuilder;
-
     public function __construct(
         private BasicContextInterface $basicContext,
         private EventDispatcherInterface $eventDispatcher,
@@ -69,7 +67,8 @@ abstract class AbstractDatabaseSettingRepository
         $themeCondition = (!empty($theme)) ? 'theme:'.$theme : '';
         $shopId = $this->basicContext->getCurrentShopId();
 
-        $this->queryBuilder->select('c.oxvarname')
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder->select('c.oxvarname')
             ->addSelect('c.oxvartype')
             ->from('oxconfig', 'c')
             ->where('c.oxmodule = :module')
@@ -78,7 +77,7 @@ abstract class AbstractDatabaseSettingRepository
                 ':module' => $themeCondition,
                 ':shopId' => $shopId
             ]);
-        $result = $this->queryBuilder->execute();
+        $result = $queryBuilder->execute();
         $value = $result->fetchAllKeyValue();
 
         $notFoundLocation = (!empty($theme)) ? 'theme: "'.$theme.'"' : 'shopID: "'.$shopId.'"';
