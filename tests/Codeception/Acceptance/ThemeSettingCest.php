@@ -326,12 +326,14 @@ final class ThemeSettingCest extends BaseCest
         $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
-            'query{
-                themeSettingsList(themeId: "' . $this->getTestThemeName() . '") {
+            'query getSettings($themeId: String!){
+                themeSettingsList(themeId:  $themeId) {
                     name
                     type
+                    supported
                 }
-            }'
+            }',
+            ['themeId' => $this->getTestThemeName()]
         );
 
         $I->seeResponseIsJson();
@@ -346,12 +348,14 @@ final class ThemeSettingCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'query{
-                themeSettingsList(themeId: "' . $this->getTestThemeName() . '") {
+            'query getSettings($themeId: String!){
+                themeSettingsList(themeId:  $themeId) {
                     name
                     type
+                    supported
                 }
-            }'
+            }',
+            ['themeId' => $this->getTestThemeName()]
         );
 
         $I->seeResponseIsJson();
@@ -361,13 +365,34 @@ final class ThemeSettingCest extends BaseCest
 
         $settingsList = $result['data']['themeSettingsList'];
         $I->assertCount(7, $settingsList);
-        $I->assertContains(['name' => 'intSetting', 'type' => FieldType::NUMBER], $settingsList);
-        $I->assertContains(['name' => 'floatSetting', 'type' => FieldType::NUMBER], $settingsList);
-        $I->assertContains(['name' => 'boolSetting', 'type' => FieldType::BOOLEAN], $settingsList);
-        $I->assertContains(['name' => 'stringSetting', 'type' => FieldType::STRING], $settingsList);
-        $I->assertContains(['name' => 'selectSetting', 'type' => FieldType::SELECT], $settingsList);
-        $I->assertContains(['name' => 'arraySetting', 'type' => FieldType::ARRAY], $settingsList);
-        $I->assertContains(['name' => 'aarraySetting', 'type' => FieldType::ASSOCIATIVE_ARRAY], $settingsList);
+        $I->assertContains(
+            ['name' => 'intSetting', 'type' => FieldType::NUMBER, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'floatSetting', 'type' => FieldType::NUMBER, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'boolSetting', 'type' => FieldType::BOOLEAN, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'stringSetting', 'type' => FieldType::STRING, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'selectSetting', 'type' => FieldType::SELECT, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'arraySetting', 'type' => FieldType::ARRAY, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'aarraySetting', 'type' => FieldType::ASSOCIATIVE_ARRAY, 'supported' => true],
+            $settingsList
+        );
     }
 
     public function testChangeIntegerSettingNotAuthorized(AcceptanceTester $I): void
