@@ -49,22 +49,4 @@ class SettingTest extends UnitTestCase
         $this->assertEquals(new ID('arraySetting'), $setting->getName());
         $this->assertSame(json_encode(['nice', 'values']), $setting->getValue());
     }
-
-    public function testSettingType(): void
-    {
-        $settingType = $this->getSettingType();
-
-        $this->assertEquals(new ID('settingType'), $settingType->getName());
-        $this->assertSame( FieldType::BOOLEAN, $settingType->getType()
-        );
-    }
-
-    public function testInvalidSettingType(): void
-    {
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('The value "invalidType" is not a valid field type.
-Please use one of the following types: "'.implode('", "', FieldType::getEnums()).'".');
-
-        new SettingType(new ID('coolSettingType'), 'invalidType');
-    }
 }

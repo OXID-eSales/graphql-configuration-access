@@ -473,12 +473,13 @@ final class ModuleSettingCest extends BaseCest
         $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
         $I->sendGQLQuery(
-            'query{
-                moduleSettingsList(moduleId: "'.$this->getTestModuleName().'") {
+            'query getSettings($moduleId: String!){
+                moduleSettingsList(moduleId: $moduleId) {
                     name
                     type
                 }
-            }'
+            }',
+            ['moduleId' => $this->getTestModuleName()]
         );
 
         $I->seeResponseIsJson();
@@ -493,12 +494,14 @@ final class ModuleSettingCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'query{
-                moduleSettingsList(moduleId: "'.$this->getTestModuleName().'") {
+            'query getSettings($moduleId: String!){
+                moduleSettingsList(moduleId: $moduleId) {
                     name
                     type
+                    supported
                 }
-            }'
+            }',
+            ['moduleId' => $this->getTestModuleName()]
         );
 
         $I->seeResponseIsJson();
@@ -508,11 +511,26 @@ final class ModuleSettingCest extends BaseCest
 
         $settingsList = $result['data']['moduleSettingsList'];
         $I->assertCount(5, $settingsList);
-        $I->assertContains(['name'=>'intSetting', 'type'=>FieldType::NUMBER], $settingsList);
-        $I->assertContains(['name'=>'floatSetting', 'type'=>FieldType::NUMBER], $settingsList);
-        $I->assertContains(['name'=>'boolSetting', 'type'=>FieldType::BOOLEAN], $settingsList);
-        $I->assertContains(['name'=>'stringSetting', 'type'=>FieldType::STRING], $settingsList);
-        $I->assertContains(['name'=>'arraySetting', 'type'=>FieldType::ARRAY], $settingsList);
+        $I->assertContains(
+            ['name' => 'intSetting', 'type' => FieldType::NUMBER, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'floatSetting', 'type' => FieldType::NUMBER, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'boolSetting', 'type' => FieldType::BOOLEAN, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'stringSetting', 'type' => FieldType::STRING, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'arraySetting', 'type' => FieldType::ARRAY, 'supported' => true],
+            $settingsList
+        );
     }
 
     private function prepareConfiguration(): void
