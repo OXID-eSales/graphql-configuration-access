@@ -58,4 +58,16 @@ abstract class BaseCest
     {
         return self::ADMIN_PASSWORD;
     }
+
+    protected function assertQueryNotFoundErrorInResult(AcceptanceTester $I, array $result, string $query): void
+    {
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "' . $query . '" on type "Query".', $errorMessage);
+    }
+
+    protected function assertMutationNotFoundErrorInResult(AcceptanceTester $I, array $result, string $mutation): void
+    {
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "' . $mutation . '" on type "Mutation".', $errorMessage);
+    }
 }

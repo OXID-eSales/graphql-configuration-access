@@ -41,38 +41,17 @@ final class ModuleSettingCest extends BaseCest
     {
         $I->login($this->getAgentUsername(), $this->getAgentPassword());
 
-        $I->sendGQLQuery(
-            'query{
-                moduleSettingInteger(name: "intSetting", moduleId: "' . $this->getTestModuleName() . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runGetIntegerQueryAndGetResult($I, 'intSetting');
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "moduleSettingInteger" on type "Query".', $errorMessage);
+        $this->assertQueryNotFoundErrorInResult($I, $result, 'moduleSettingInteger');
     }
 
     public function testGetIntegerSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'query{
-                moduleSettingInteger(name: "intSetting", moduleId: "' . $this->getTestModuleName() . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runGetIntegerQueryAndGetResult($I, 'intSetting');
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['moduleSettingInteger'];
@@ -80,42 +59,41 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame(123, $setting['value']);
     }
 
-    public function testGetFloatSettingNotAuthorized(AcceptanceTester $I): void
+    private function runGetIntegerQueryAndGetResult(AcceptanceTester $I, string $name): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'query{
-                moduleSettingFloat(name: "floatSetting", moduleId: "' . $this->getTestModuleName() . '") {
+            'query q($name: ID!, $moduleId: String!){
+                moduleSettingInteger(name: $name, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "moduleSettingFloat" on type "Query".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testGetFloatSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runGetFloatQueryAndGetResult($I, 'floatSetting');
+
+        $this->assertQueryNotFoundErrorInResult($I, $result, 'moduleSettingFloat');
     }
 
     public function testGetFloatSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'query{
-                moduleSettingFloat(name: "floatSetting", moduleId: "' . $this->getTestModuleName() . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runGetFloatQueryAndGetResult($I, 'floatSetting');
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['moduleSettingFloat'];
@@ -123,42 +101,41 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame(1.23, $setting['value']);
     }
 
-    public function testGetBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    private function runGetFloatQueryAndGetResult(AcceptanceTester $I, string $name): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'query{
-                moduleSettingBoolean(name: "boolSetting", moduleId: "' . $this->getTestModuleName() . '") {
+            'query q($name: ID!, $moduleId: String!){
+                moduleSettingFloat(name: $name, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "moduleSettingBoolean" on type "Query".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testGetBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runGetBooleanQueryAndGetResult($I, 'boolSetting');
+
+        $this->assertQueryNotFoundErrorInResult($I, $result, 'moduleSettingBoolean');
     }
 
     public function testGetBooleanSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'query{
-                moduleSettingBoolean(name: "boolSetting", moduleId: "' . $this->getTestModuleName() . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runGetBooleanQueryAndGetResult($I, 'boolSetting');
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['moduleSettingBoolean'];
@@ -166,42 +143,41 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame(false, $setting['value']);
     }
 
-    public function testGetStringSettingNotAuthorized(AcceptanceTester $I): void
+    private function runGetBooleanQueryAndGetResult(AcceptanceTester $I, string $name): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'query{
-                moduleSettingString(name: "stringSetting", moduleId: "' . $this->getTestModuleName() . '") {
+            'query q($name: ID!, $moduleId: String!){
+                moduleSettingBoolean(name: $name, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "moduleSettingString" on type "Query".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testGetStringSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runGetStringQueryAndGetResult($I, 'stringSetting');
+
+        $this->assertQueryNotFoundErrorInResult($I, $result, 'moduleSettingString');
     }
 
     public function testGetStringSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'query{
-                moduleSettingString(name: "stringSetting", moduleId: "' . $this->getTestModuleName() . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runGetStringQueryAndGetResult($I, 'stringSetting');
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['moduleSettingString'];
@@ -209,42 +185,41 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame('default', $setting['value']);
     }
 
-    public function testGetCollectionSettingNotAuthorized(AcceptanceTester $I): void
+    private function runGetStringQueryAndGetResult(AcceptanceTester $I, string $name): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'query{
-                moduleSettingCollection(name: "arraySetting", moduleId: "' . $this->getTestModuleName() . '") {
+            'query q($name: ID!, $moduleId: String!){
+                moduleSettingString(name: $name, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "moduleSettingCollection" on type "Query".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testGetCollectionSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runGetCollectionQueryAndGetResult($I, 'arraySetting');
+
+        $this->assertQueryNotFoundErrorInResult($I, $result, 'moduleSettingCollection');
     }
 
     public function testGetCollectionSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'query{
-                moduleSettingCollection(name: "arraySetting", moduleId: "' . $this->getTestModuleName() . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runGetCollectionQueryAndGetResult($I, 'arraySetting');
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['moduleSettingCollection'];
@@ -252,42 +227,41 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame('["nice","values"]', $setting['value']);
     }
 
-    public function testChangeIntegerSettingNotAuthorized(AcceptanceTester $I): void
+    private function runGetCollectionQueryAndGetResult(AcceptanceTester $I, string $name): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingInteger(name: "intSetting", value: 124, moduleId: "' . $this->getTestModuleName() . '") {
+            'query q($name: ID!, $moduleId: String!){
+                moduleSettingCollection(name: $name, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "changeModuleSettingInteger" on type "Mutation".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testChangeIntegerSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runChangeIntegerMutationAndGetResult($I, 'intSetting', 124);
+
+        $this->assertMutationNotFoundErrorInResult($I, $result, 'changeModuleSettingInteger');
     }
 
     public function testChangeIntegerSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingInteger(name: "intSetting", value: 124, moduleId: "' . $this->getTestModuleName() . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runChangeIntegerMutationAndGetResult($I, 'intSetting', 124);
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['changeModuleSettingInteger'];
@@ -295,42 +269,41 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame(124, $setting['value']);
     }
 
-    public function testChangeFloatSettingNotAuthorized(AcceptanceTester $I): void
+    private function runChangeIntegerMutationAndGetResult(AcceptanceTester $I, string $name, int $value): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingFloat(name: "floatSetting", value: 1.24, moduleId: "' . $this->getTestModuleName() . '") {
+            'mutation m($name: ID!, $value: Int!, $moduleId: String!){
+                changeModuleSettingInteger(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'value' => $value,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "changeModuleSettingFloat" on type "Mutation".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testChangeFloatSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runFloatMutationAndGetResult($I, 'floatSetting', 1.24);
+
+        $this->assertMutationNotFoundErrorInResult($I, $result, 'changeModuleSettingFloat');
     }
 
     public function testChangeFloatSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingFloat(name: "floatSetting", value: 1.24, moduleId: "' . $this->getTestModuleName() . '") {
-                    name
-                    value
-                }
-            }'
-        );
-
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
+        $result = $this->runFloatMutationAndGetResult($I, 'floatSetting', 1.24);
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['changeModuleSettingFloat'];
@@ -338,44 +311,42 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame(1.24, $setting['value']);
     }
 
-    public function testChangeBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    private function runFloatMutationAndGetResult(AcceptanceTester $I, string $name, float $value): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingBoolean(name: "boolSetting", value: False, moduleId: "' . $this->getTestModuleName(
-            ) . '") {
+            'mutation m($name: ID!, $value: Float!, $moduleId: String!){
+                changeModuleSettingFloat(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'value' => $value,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "changeModuleSettingBoolean" on type "Mutation".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testChangeBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runChangeBooleanMutationAndGetResult($I, 'boolSetting', false);
+
+        $this->assertMutationNotFoundErrorInResult($I, $result, 'changeModuleSettingBoolean');
     }
 
     public function testChangeBooleanSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingBoolean(name: "boolSetting", value: false, moduleId: "' . $this->getTestModuleName(
-            ) . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runChangeBooleanMutationAndGetResult($I, 'boolSetting', false);
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['changeModuleSettingBoolean'];
@@ -383,44 +354,42 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame(false, $setting['value']);
     }
 
-    public function testChangeStringSettingNotAuthorized(AcceptanceTester $I): void
+    private function runChangeBooleanMutationAndGetResult(AcceptanceTester $I, string $name, bool $value): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingString(name: "stringSetting", value: "default", moduleId: "' . $this->getTestModuleName(
-            ) . '") {
+            'mutation m($name: ID!, $value: Boolean!, $moduleId: String!){
+                changeModuleSettingBoolean(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'value' => $value,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "changeModuleSettingString" on type "Mutation".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testChangeStringSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runChangeStringMutationAndGetResult($I, 'stringSetting', 'default');
+
+        $this->assertMutationNotFoundErrorInResult($I, $result, 'changeModuleSettingString');
     }
 
     public function testChangeStringSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingString(name: "stringSetting", value: "default", moduleId: "' . $this->getTestModuleName(
-            ) . '") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runChangeStringMutationAndGetResult($I, 'stringSetting', 'default');
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['changeModuleSettingString'];
@@ -428,47 +397,68 @@ final class ModuleSettingCest extends BaseCest
         $I->assertSame('default', $setting['value']);
     }
 
-    public function testChangeCollectionSettingNotAuthorized(AcceptanceTester $I): void
+    private function runChangeStringMutationAndGetResult(AcceptanceTester $I, string $name, string $value): array
     {
-        $I->login($this->getAgentUsername(), $this->getAgentPassword());
-
         $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingCollection(name: "arraySetting", moduleId: "' . $this->getTestModuleName() . '") {
+            'mutation m($name: ID!, $value: String!, $moduleId: String!){
+                changeModuleSettingString(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => $name,
+                'value' => $value,
+                'moduleId' => $this->getTestModuleName()
+            ]
         );
 
         $I->seeResponseIsJson();
 
-        $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "changeModuleSettingCollection" on type "Mutation".', $errorMessage);
+        return $I->grabJsonResponseAsArray();
+    }
+
+    public function testChangeCollectionSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $result = $this->runChangeCollectionMutationAndGetResult($I, 'arraySetting', '[3, "interesting", "values"]');
+
+        $this->assertMutationNotFoundErrorInResult($I, $result, 'changeModuleSettingCollection');
     }
 
     public function testChangeCollectionSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $I->sendGQLQuery(
-            'mutation{
-                changeModuleSettingCollection(name: "arraySetting", moduleId: "' . $this->getTestModuleName() . '", value: "[3, \"interesting\", \"values\"]") {
-                    name
-                    value
-                }
-            }'
-        );
+        $result = $this->runChangeCollectionMutationAndGetResult($I, 'arraySetting', '[3, "interesting", "values"]');
 
-        $I->seeResponseIsJson();
-
-        $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['changeModuleSettingCollection'];
         $I->assertSame('arraySetting', $setting['name']);
         $I->assertSame('[3, "interesting", "values"]', $setting['value']);
+    }
+
+    private function runChangeCollectionMutationAndGetResult(AcceptanceTester $I, string $name, string $value): array
+    {
+        $I->sendGQLQuery(
+            'mutation m($name: ID!, $value: String!, $moduleId: String!){
+                changeModuleSettingCollection(name: $name, value: $value, moduleId: $moduleId) {
+                    name
+                    value
+                }
+            }',
+            [
+                'name' => $name,
+                'value' => $value,
+                'moduleId' => $this->getTestModuleName()
+            ]
+        );
+
+        $I->seeResponseIsJson();
+
+        return $I->grabJsonResponseAsArray();
     }
 
     public function testGetModuleSettingsListNotAuthorized(AcceptanceTester $I): void
@@ -488,8 +478,8 @@ final class ModuleSettingCest extends BaseCest
         $I->seeResponseIsJson();
 
         $result = $I->grabJsonResponseAsArray();
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "moduleSettingsList" on type "Query".', $errorMessage);
+
+        $this->assertQueryNotFoundErrorInResult($I, $result, 'moduleSettingsList');
     }
 
     public function testGetModuleSettingsListAuthorized(AcceptanceTester $I): void
