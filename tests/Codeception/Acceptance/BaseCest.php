@@ -13,7 +13,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 abstract class BaseCest
 {
-    private const TEST_MODULE_ID = 'awesomeModule';
     private const TEST_THEME_ID = 'awesomeTheme';
 
     private const AGENT_USERNAME = 'JanvierJaimesVelasquez@cuvox.de';
@@ -27,11 +26,6 @@ abstract class BaseCest
     public function _after(AcceptanceTester $I): void
     {
         $I->logout();
-    }
-
-    protected function getTestModuleName(): string
-    {
-        return self::TEST_MODULE_ID;
     }
 
     protected function getTestThemeName(): string
