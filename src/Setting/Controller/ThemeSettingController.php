@@ -19,7 +19,8 @@ final class ThemeSettingController
 {
     public function __construct(
         private ThemeSettingServiceInterface $settingService
-    ){}
+    ) {
+    }
 
     /**
      * @Query()

@@ -21,7 +21,8 @@ final class BooleanSetting
     public function __construct(
         private ID $name,
         private bool $value
-        ) {}
+    ) {
+    }
 
     /**
      * @Field()

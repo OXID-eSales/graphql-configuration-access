@@ -13,7 +13,6 @@ use OxidEsales\GraphQL\Base\Framework\NamespaceMapperInterface;
 
 final class NamespaceMapper implements NamespaceMapperInterface
 {
-
     private const SPACE = '\\OxidEsales\\GraphQL\\ConfigurationAccess\\';
 
     public function getControllerNamespaceMapping(): array

@@ -52,7 +52,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getBoolean')
-            ->willReturn(False);
+            ->willReturn(false);
 
         $settingService = new ThemeSettingService($repository);
 
@@ -120,7 +120,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getAssocCollection')
-            ->willReturn(['first'=>'10','second'=>'20','third'=>'50']);
+            ->willReturn(['first' => '10', 'second' => '20', 'third' => '50']);
 
         $settingService = new ThemeSettingService($repository);
 

@@ -46,6 +46,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
         $this->expectExceptionMessage('The queried configuration was found as a float, not an integer');
         $repository->getInteger($nameID, 'awesomeModule');
     }
+
     public function testGetThemeSettingFloat(): void
     {
         $nameID = new ID('floatSetting');
@@ -84,7 +85,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
 
         $boolean = $repository->getBoolean($nameID, 'awesomeModule');
 
-        $this->assertEquals(False, $boolean);
+        $this->assertEquals(false, $boolean);
     }
 
     public function testGetThemeSettingBooleanPositive(): void
@@ -176,7 +177,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
 
         $assocCollection = $repository->getAssocCollection($nameID, 'awesomeModule');
 
-        $this->assertEquals(['first'=>'10','second'=>'20','third'=>'50'], $assocCollection);
+        $this->assertEquals(['first' => '10', 'second' => '20', 'third' => '50'], $assocCollection);
     }
 
     public function testGetNoThemeSettingAssocCollection(): void
@@ -227,8 +228,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
-    {
+    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue
+    ): QueryBuilderFactoryInterface|MockObject {
         $result = $this->createMock(Result::class);
         $result->expects($this->once())
             ->method('fetchOne')
@@ -240,8 +241,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
      * @param Result|MockObject|(Result&MockObject) $result
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    private function getQueryBuilderFactoryMock(Result|MockObject $result
-    ): QueryBuilderFactoryInterface|MockObject {
+    private function getQueryBuilderFactoryMock(Result|MockObject $result): QueryBuilderFactoryInterface|MockObject
+    {
         $queryBuilder = $this->createPartialMock(QueryBuilder::class, ['execute']);
         $queryBuilder->expects($this->once())
             ->method('execute')

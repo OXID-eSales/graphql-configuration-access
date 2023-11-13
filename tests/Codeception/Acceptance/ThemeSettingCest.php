@@ -26,7 +26,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingInteger(name: "intSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingInteger(name: "intSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -46,7 +46,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingInteger(name: "intSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingInteger(name: "intSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -69,7 +69,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingFloat(name: "floatSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingFloat(name: "floatSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -89,7 +89,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingFloat(name: "floatSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingFloat(name: "floatSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -112,7 +112,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingBoolean(name: "boolSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingBoolean(name: "boolSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -132,7 +132,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingBoolean(name: "boolSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingBoolean(name: "boolSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -155,7 +155,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingString(name: "stringSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingString(name: "stringSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -175,7 +175,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingString(name: "stringSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingString(name: "stringSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -198,7 +198,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingSelect(name: "selectSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingSelect(name: "selectSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -218,7 +218,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingSelect(name: "selectSetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingSelect(name: "selectSetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -241,7 +241,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingCollection(name: "arraySetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingCollection(name: "arraySetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -261,7 +261,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingCollection(name: "arraySetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingCollection(name: "arraySetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -284,7 +284,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingAssocCollection(name: "aarraySetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingAssocCollection(name: "aarraySetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -304,7 +304,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingAssocCollection(name: "aarraySetting", themeId: "'.$this->getTestThemeName().'") {
+                themeSettingAssocCollection(name: "aarraySetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -327,7 +327,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingsList(themeId: "'.$this->getTestThemeName().'") {
+                themeSettingsList(themeId: "' . $this->getTestThemeName() . '") {
                     name
                     type
                 }
@@ -347,7 +347,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                themeSettingsList(themeId: "'.$this->getTestThemeName().'") {
+                themeSettingsList(themeId: "' . $this->getTestThemeName() . '") {
                     name
                     type
                 }
@@ -361,13 +361,13 @@ final class ThemeSettingCest extends BaseCest
 
         $settingsList = $result['data']['themeSettingsList'];
         $I->assertCount(7, $settingsList);
-        $I->assertContains(['name'=>'intSetting', 'type' => FieldType::NUMBER], $settingsList);
-        $I->assertContains(['name'=>'floatSetting', 'type' => FieldType::NUMBER], $settingsList);
-        $I->assertContains(['name'=>'boolSetting', 'type' =>FieldType::BOOLEAN], $settingsList);
-        $I->assertContains(['name'=>'stringSetting', 'type' => FieldType::STRING], $settingsList);
-        $I->assertContains(['name'=>'selectSetting', 'type' => FieldType::SELECT], $settingsList);
-        $I->assertContains(['name'=>'arraySetting', 'type' => FieldType::ARRAY], $settingsList);
-        $I->assertContains(['name'=>'aarraySetting', 'type' => FieldType::ASSOCIATIVE_ARRAY], $settingsList);
+        $I->assertContains(['name' => 'intSetting', 'type' => FieldType::NUMBER], $settingsList);
+        $I->assertContains(['name' => 'floatSetting', 'type' => FieldType::NUMBER], $settingsList);
+        $I->assertContains(['name' => 'boolSetting', 'type' => FieldType::BOOLEAN], $settingsList);
+        $I->assertContains(['name' => 'stringSetting', 'type' => FieldType::STRING], $settingsList);
+        $I->assertContains(['name' => 'selectSetting', 'type' => FieldType::SELECT], $settingsList);
+        $I->assertContains(['name' => 'arraySetting', 'type' => FieldType::ARRAY], $settingsList);
+        $I->assertContains(['name' => 'aarraySetting', 'type' => FieldType::ASSOCIATIVE_ARRAY], $settingsList);
     }
 
     public function testChangeIntegerSettingNotAuthorized(AcceptanceTester $I): void
@@ -376,7 +376,8 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingInteger(name: "intSettingEditable", value: 124, themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingInteger(name: "intSettingEditable", value: 124, themeId: "' . $this->getTestThemeName(
+            ) . '") {
                     name
                     value
                 }
@@ -396,7 +397,8 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingInteger(name: "intSettingEditable", value: 124, themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingInteger(name: "intSettingEditable", value: 124, themeId: "' . $this->getTestThemeName(
+            ) . '") {
                     name
                     value
                 }
@@ -419,7 +421,8 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingFloat(name: "floatSettingEditable", value: 1.24, themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingFloat(name: "floatSettingEditable", value: 1.24, themeId: "' . $this->getTestThemeName(
+            ) . '") {
                     name
                     value
                 }
@@ -439,7 +442,8 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingFloat(name: "floatSettingEditable", value: 1.24, themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingFloat(name: "floatSettingEditable", value: 1.24, themeId: "' . $this->getTestThemeName(
+            ) . '") {
                     name
                     value
                 }
@@ -462,7 +466,8 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingBoolean(name: "boolSettingEditable", value: False, themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingBoolean(name: "boolSettingEditable", value: False, themeId: "' . $this->getTestThemeName(
+            ) . '") {
                     name
                     value
                 }
@@ -482,7 +487,8 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingBoolean(name: "boolSettingEditable", value: true, themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingBoolean(name: "boolSettingEditable", value: true, themeId: "' . $this->getTestThemeName(
+            ) . '") {
                     name
                     value
                 }
@@ -505,7 +511,8 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingString(name: "stringSettingEditable", value: "default", themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingString(name: "stringSettingEditable", value: "default", themeId: "' . $this->getTestThemeName(
+            ) . '") {
                     name
                     value
                 }
@@ -525,7 +532,8 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingString(name: "stringSetting", value: "default", themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingString(name: "stringSetting", value: "default", themeId: "' . $this->getTestThemeName(
+            ) . '") {
                     name
                     value
                 }
@@ -548,7 +556,7 @@ final class ThemeSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeThemeSettingCollection(name: "arraySetting", themeId: "'.$this->getTestThemeName().'") {
+                changeThemeSettingCollection(name: "arraySetting", themeId: "' . $this->getTestThemeName() . '") {
                     name
                     value
                 }
@@ -584,5 +592,4 @@ final class ThemeSettingCest extends BaseCest
         $I->assertSame('arraySetting', $setting['name']);
         $I->assertSame('[3, "interesting", "values"]', $setting['value']);
     }
-
 }

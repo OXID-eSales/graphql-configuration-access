@@ -25,7 +25,8 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         private ModuleSettingServiceInterface $moduleSettingService,
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
         private BasicContextInterface $basicContext
-    ) {}
+    ) {
+    }
 
     public function getIntegerSetting(ID $name, string $moduleId): IntegerSetting
     {

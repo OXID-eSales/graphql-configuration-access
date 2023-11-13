@@ -21,7 +21,8 @@ final class IntegerSetting
     public function __construct(
         private ID $name,
         private int $value
-    ) {}
+    ) {
+    }
 
     /**
      * @Field()

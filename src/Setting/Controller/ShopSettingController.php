@@ -18,7 +18,8 @@ final class ShopSettingController
 {
     public function __construct(
         private ShopSettingServiceInterface $settingService
-    ){}
+    ) {
+    }
 
     /**
      * @Query()

@@ -26,7 +26,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
  */
 final class ModuleSettingCest extends BaseCest
 {
-
     public function _before(AcceptanceTester $I): void
     {
         $this->prepareConfiguration();
@@ -44,7 +43,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingInteger(name: "intSetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingInteger(name: "intSetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -64,7 +63,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingInteger(name: "intSetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingInteger(name: "intSetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -87,7 +86,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingFloat(name: "floatSetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingFloat(name: "floatSetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -107,7 +106,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingFloat(name: "floatSetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingFloat(name: "floatSetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -130,7 +129,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingBoolean(name: "boolSetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingBoolean(name: "boolSetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -150,7 +149,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingBoolean(name: "boolSetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingBoolean(name: "boolSetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -173,7 +172,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingString(name: "stringSetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingString(name: "stringSetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -193,7 +192,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingString(name: "stringSetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingString(name: "stringSetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -216,7 +215,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingCollection(name: "arraySetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingCollection(name: "arraySetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -236,7 +235,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingCollection(name: "arraySetting", moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingCollection(name: "arraySetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -259,7 +258,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingInteger(name: "intSetting", value: 124, moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingInteger(name: "intSetting", value: 124, moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -279,7 +278,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingInteger(name: "intSetting", value: 124, moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingInteger(name: "intSetting", value: 124, moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -302,7 +301,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingFloat(name: "floatSetting", value: 1.24, moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingFloat(name: "floatSetting", value: 1.24, moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -322,7 +321,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingFloat(name: "floatSetting", value: 1.24, moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingFloat(name: "floatSetting", value: 1.24, moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -345,7 +344,8 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingBoolean(name: "boolSetting", value: False, moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingBoolean(name: "boolSetting", value: False, moduleId: "' . $this->getTestModuleName(
+            ) . '") {
                     name
                     value
                 }
@@ -365,7 +365,8 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingBoolean(name: "boolSetting", value: false, moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingBoolean(name: "boolSetting", value: false, moduleId: "' . $this->getTestModuleName(
+            ) . '") {
                     name
                     value
                 }
@@ -388,7 +389,8 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingString(name: "stringSetting", value: "default", moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingString(name: "stringSetting", value: "default", moduleId: "' . $this->getTestModuleName(
+            ) . '") {
                     name
                     value
                 }
@@ -408,7 +410,8 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingString(name: "stringSetting", value: "default", moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingString(name: "stringSetting", value: "default", moduleId: "' . $this->getTestModuleName(
+            ) . '") {
                     name
                     value
                 }
@@ -431,7 +434,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation{
-                changeModuleSettingCollection(name: "arraySetting", moduleId: "'.$this->getTestModuleName().'") {
+                changeModuleSettingCollection(name: "arraySetting", moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     value
                 }
@@ -474,7 +477,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingsList(moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingsList(moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     type
                 }
@@ -494,7 +497,7 @@ final class ModuleSettingCest extends BaseCest
 
         $I->sendGQLQuery(
             'query{
-                moduleSettingsList(moduleId: "'.$this->getTestModuleName().'") {
+                moduleSettingsList(moduleId: "' . $this->getTestModuleName() . '") {
                     name
                     type
                 }
@@ -508,11 +511,11 @@ final class ModuleSettingCest extends BaseCest
 
         $settingsList = $result['data']['moduleSettingsList'];
         $I->assertCount(5, $settingsList);
-        $I->assertContains(['name'=>'intSetting', 'type'=>FieldType::NUMBER], $settingsList);
-        $I->assertContains(['name'=>'floatSetting', 'type'=>FieldType::NUMBER], $settingsList);
-        $I->assertContains(['name'=>'boolSetting', 'type'=>FieldType::BOOLEAN], $settingsList);
-        $I->assertContains(['name'=>'stringSetting', 'type'=>FieldType::STRING], $settingsList);
-        $I->assertContains(['name'=>'arraySetting', 'type'=>FieldType::ARRAY], $settingsList);
+        $I->assertContains(['name' => 'intSetting', 'type' => FieldType::NUMBER], $settingsList);
+        $I->assertContains(['name' => 'floatSetting', 'type' => FieldType::NUMBER], $settingsList);
+        $I->assertContains(['name' => 'boolSetting', 'type' => FieldType::BOOLEAN], $settingsList);
+        $I->assertContains(['name' => 'stringSetting', 'type' => FieldType::STRING], $settingsList);
+        $I->assertContains(['name' => 'arraySetting', 'type' => FieldType::ARRAY], $settingsList);
     }
 
     private function prepareConfiguration(): void
@@ -561,14 +564,13 @@ final class ModuleSettingCest extends BaseCest
             ->addModuleSetting($collectionSetting);
 
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
-        $this->getShopConfigurationDao()->save($shopConfiguration,1);
+        $this->getShopConfigurationDao()->save($shopConfiguration, 1);
     }
 
     private function removeConfiguration(string $moduleId): void
     {
         $shopConfiguration = $this->getShopConfiguration();
         $shopConfiguration->deleteModuleConfiguration($moduleId);
-
     }
 
     private function getShopConfiguration(): ShopConfiguration

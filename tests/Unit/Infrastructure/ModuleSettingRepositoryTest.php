@@ -253,5 +253,4 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $basicContext = $this->createMock(BasicContextInterface::class);
         return new ModuleSettingRepository($moduleSettingService, $moduleConfigurationDao, $basicContext);
     }
-
 }

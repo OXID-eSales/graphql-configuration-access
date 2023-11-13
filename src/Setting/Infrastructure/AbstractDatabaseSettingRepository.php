@@ -36,7 +36,7 @@ abstract class AbstractDatabaseSettingRepository
     protected function getSettingValue(ID $name, string $fieldType, string $theme = ''): string
     {
         if ($theme) {
-            $theme = 'theme:'.$theme;
+            $theme = 'theme:' . $theme;
         }
 
         $queryBuilder = $this->queryBuilderFactory->create();
@@ -64,7 +64,7 @@ abstract class AbstractDatabaseSettingRepository
 
     protected function getSettingTypes(string $theme = ''): array
     {
-        $themeCondition = (!empty($theme)) ? 'theme:'.$theme : '';
+        $themeCondition = (!empty($theme)) ? 'theme:' . $theme : '';
         $shopId = $this->basicContext->getCurrentShopId();
 
         $queryBuilder = $this->queryBuilderFactory->create();
@@ -80,9 +80,9 @@ abstract class AbstractDatabaseSettingRepository
         $result = $queryBuilder->execute();
         $value = $result->fetchAllKeyValue();
 
-        $notFoundLocation = (!empty($theme)) ? 'theme: "'.$theme.'"' : 'shopID: "'.$shopId.'"';
+        $notFoundLocation = (!empty($theme)) ? 'theme: "' . $theme . '"' : 'shopID: "' . $shopId . '"';
         if ($value === []) {
-            throw new NotFound('No configurations found for '.$notFoundLocation);
+            throw new NotFound('No configurations found for ' . $notFoundLocation);
         }
 
         return $value;

@@ -21,7 +21,8 @@ final class StringSetting
     public function __construct(
         private ID $name,
         private string $value
-    ) {}
+    ) {
+    }
 
     /**
      * @Field()

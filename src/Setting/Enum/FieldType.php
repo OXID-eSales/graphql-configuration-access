@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum;
 
-
 final class FieldType
 {
     public const ASSOCIATIVE_ARRAY = 'aarr';

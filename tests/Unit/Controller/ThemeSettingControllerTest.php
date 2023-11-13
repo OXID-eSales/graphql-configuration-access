@@ -263,7 +263,11 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $nameID = $serviceAssocCollectionSetting->getName();
         $value = $serviceAssocCollectionSetting->getValue();
-        $assocCollectionSetting = $settingController->changeThemeSettingAssocCollection($nameID, $value, 'awesomeTheme');
+        $assocCollectionSetting = $settingController->changeThemeSettingAssocCollection(
+            $nameID,
+            $value,
+            'awesomeTheme'
+        );
 
         $this->assertSame($assocCollectionSetting, $serviceAssocCollectionSetting);
     }

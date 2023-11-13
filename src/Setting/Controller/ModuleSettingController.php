@@ -19,7 +19,8 @@ final class ModuleSettingController
 {
     public function __construct(
         private ModuleSettingServiceInterface $settingService
-    ){}
+    ) {
+    }
 
     /**
      * @Query()

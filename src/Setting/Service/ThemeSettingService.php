@@ -22,7 +22,8 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
 {
     public function __construct(
         private ThemeSettingRepositoryInterface $themeSettingRepository
-    ) {}
+    ) {
+    }
 
     public function getIntegerSetting(ID $name, string $themeId): IntegerSetting
     {

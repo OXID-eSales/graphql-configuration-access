@@ -51,7 +51,7 @@ class ShopSettingServiceTest extends UnitTestCase
         $repository = $this->createMock(ShopSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getBoolean')
-            ->willReturn(False);
+            ->willReturn(false);
 
         $settingService = new ShopSettingService($repository);
 
@@ -119,7 +119,7 @@ class ShopSettingServiceTest extends UnitTestCase
         $repository = $this->createMock(ShopSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getAssocCollection')
-            ->willReturn(['first'=>'10','second'=>'20','third'=>'50']);
+            ->willReturn(['first' => '10', 'second' => '20', 'third' => '50']);
 
         $settingService = new ShopSettingService($repository);
 

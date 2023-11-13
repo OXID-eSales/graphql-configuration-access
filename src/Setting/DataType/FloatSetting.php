@@ -21,7 +21,8 @@ final class FloatSetting
     public function __construct(
         private ID $name,
         private float $value
-    ) {}
+    ) {
+    }
 
     /**
      * @Field()

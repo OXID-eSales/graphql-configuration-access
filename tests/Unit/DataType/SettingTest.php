@@ -55,15 +55,16 @@ class SettingTest extends UnitTestCase
         $settingType = $this->getSettingType();
 
         $this->assertEquals(new ID('settingType'), $settingType->getName());
-        $this->assertSame( FieldType::BOOLEAN, $settingType->getType()
-        );
+        $this->assertSame(FieldType::BOOLEAN, $settingType->getType());
     }
 
     public function testInvalidSettingType(): void
     {
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('The value "invalidType" is not a valid field type.
-Please use one of the following types: "'.implode('", "', FieldType::getEnums()).'".');
+        $this->expectExceptionMessage(
+            'The value "invalidType" is not a valid field type.
+Please use one of the following types: "' . implode('", "', FieldType::getEnums()) . '".'
+        );
 
         new SettingType(new ID('coolSettingType'), 'invalidType');
     }

@@ -25,7 +25,10 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
     {
         $container = ContainerFactory::getInstance()->getContainer();
         $configurationChangedEvent = new ThemeSettingChangedEvent(
-            "coolIntSetting", 1, 'awesomeTheme');
+            "coolIntSetting",
+            1,
+            'awesomeTheme'
+        );
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->once())
             ->method('dispatch')
@@ -61,7 +64,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $queryBuilder->execute();
 
         $repository->saveIntegerSetting(new ID('coolIntSetting'), 124, 'awesomeTheme');
-        $integerResult = $repository->getInteger(new ID ('coolIntSetting'), 'awesomeTheme');
+        $integerResult = $repository->getInteger(new ID('coolIntSetting'), 'awesomeTheme');
 
         $this->assertSame(124, $integerResult);
     }

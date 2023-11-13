@@ -23,7 +23,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 {
     public function __construct(
         private ModuleSettingRepositoryInterface $moduleSettingRepository
-    ) {}
+    ) {
+    }
 
     public function getIntegerSetting(ID $name, $moduleId): IntegerSetting
     {
@@ -50,35 +51,35 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
         return $this->moduleSettingRepository->getCollectionSetting($name, $moduleId);
     }
 
-    public function changeIntegerSetting(ID $name, int $value, string $moduleId):IntegerSetting
+    public function changeIntegerSetting(ID $name, int $value, string $moduleId): IntegerSetting
     {
         $this->moduleSettingRepository->saveIntegerSetting($name, $value, $moduleId);
 
         return new IntegerSetting($name, $value);
     }
 
-    public function changeFloatSetting(ID $name, float $value, string $moduleId):FloatSetting
+    public function changeFloatSetting(ID $name, float $value, string $moduleId): FloatSetting
     {
         $this->moduleSettingRepository->saveFloatSetting($name, $value, $moduleId);
 
         return new FloatSetting($name, $value);
     }
 
-    public function changeBooleanSetting(ID $name, bool $value, string $moduleId):BooleanSetting
+    public function changeBooleanSetting(ID $name, bool $value, string $moduleId): BooleanSetting
     {
         $this->moduleSettingRepository->saveBooleanSetting($name, $value, $moduleId);
 
         return new BooleanSetting($name, $value);
     }
 
-    public function changeStringSetting(ID $name, string $value, string $moduleId):StringSetting
+    public function changeStringSetting(ID $name, string $value, string $moduleId): StringSetting
     {
         $this->moduleSettingRepository->saveStringSetting($name, $value, $moduleId);
 
         return new StringSetting($name, $value);
     }
 
-    public function changeCollectionSetting(ID $name, string $value, string $moduleId):StringSetting
+    public function changeCollectionSetting(ID $name, string $value, string $moduleId): StringSetting
     {
         $arrayValue = json_decode($value, true);
 

@@ -21,7 +21,8 @@ final class ShopSettingService implements ShopSettingServiceInterface
 {
     public function __construct(
         private ShopSettingRepositoryInterface $shopSettingRepository
-    ) {}
+    ) {
+    }
 
     public function getIntegerSetting(ID $name): IntegerSetting
     {

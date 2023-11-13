@@ -24,16 +24,15 @@ final class SettingType
 
     public function __construct(
         private ID $name,
-        String $type
+        string $type
     ) {
         $valid = FieldType::validateFieldType($type);
         if (!$valid) {
-            throw new UnexpectedValueException('The value "'.$type.'" is not a valid field type.
-Please use one of the following types: "'.implode('", "', FieldType::getEnums()).'".');
+            throw new UnexpectedValueException('The value "' . $type . '" is not a valid field type.
+Please use one of the following types: "' . implode('", "', FieldType::getEnums()) . '".');
         }
 
         $this->type = $type;
-
     }
 
     /**

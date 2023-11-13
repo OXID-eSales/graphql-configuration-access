@@ -5,7 +5,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
@@ -33,7 +32,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('NotExistingSetting');
 
-        $repository = $this->getFetchOneShopSettingRepoInstance(False);
+        $repository = $this->getFetchOneShopSettingRepoInstance(false);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
@@ -67,7 +66,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('NotExistingSetting');
 
-        $repository = $this->getFetchOneShopSettingRepoInstance(False);
+        $repository = $this->getFetchOneShopSettingRepoInstance(false);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
@@ -94,7 +93,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
         $boolean = $repository->getBoolean($nameID);
 
-        $this->assertEquals(False, $boolean);
+        $this->assertEquals(false, $boolean);
     }
 
     public function testGetShopSettingBooleanPositiv(): void
@@ -113,7 +112,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('NotExistingSetting');
 
-        $repository = $this->getFetchOneShopSettingRepoInstance(False);
+        $repository = $this->getFetchOneShopSettingRepoInstance(false);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a boolean configuration');
@@ -136,7 +135,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('NotExistingSetting');
 
-        $repository = $this->getFetchOneShopSettingRepoInstance(False);
+        $repository = $this->getFetchOneShopSettingRepoInstance(false);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a string configuration');
@@ -159,7 +158,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('NotExistingSetting');
 
-        $repository = $this->getFetchOneShopSettingRepoInstance(False);
+        $repository = $this->getFetchOneShopSettingRepoInstance(false);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a select configuration');
@@ -182,7 +181,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('NotExistingSetting');
 
-        $repository = $this->getFetchOneShopSettingRepoInstance(False);
+        $repository = $this->getFetchOneShopSettingRepoInstance(false);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
@@ -199,14 +198,14 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
         $assocCollection = $repository->getAssocCollection($nameID);
 
-        $this->assertEquals(['first'=>'10','second'=>'20','third'=>'50'], $assocCollection);
+        $this->assertEquals(['first' => '10', 'second' => '20', 'third' => '50'], $assocCollection);
     }
 
     public function testGetNoShopSettingAssocCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
 
-        $repository = $this->getFetchOneShopSettingRepoInstance(False);
+        $repository = $this->getFetchOneShopSettingRepoInstance(false);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an associative collection configuration');
@@ -231,8 +230,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue): QueryBuilderFactoryInterface|MockObject
-    {
+    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue
+    ): QueryBuilderFactoryInterface|MockObject {
         $result = $this->createMock(Result::class);
         $result->expects($this->once())
             ->method('fetchOne')
@@ -244,7 +243,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
      * @param Result|MockObject|(Result&MockObject) $result
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    public function getQueryBuilderFactoryMock(Result|MockObject $result): QueryBuilderFactoryInterface|MockObject {
+    public function getQueryBuilderFactoryMock(Result|MockObject $result): QueryBuilderFactoryInterface|MockObject
+    {
         $queryBuilder = $this->createPartialMock(QueryBuilder::class, ['execute']);
         $queryBuilder->expects($this->once())
             ->method('execute')
