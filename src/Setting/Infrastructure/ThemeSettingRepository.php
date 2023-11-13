@@ -93,43 +93,36 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function saveIntegerSetting(ID $name, int $value, string $themeId): void
     {
-        $this->getInteger($name, $themeId);
-        $this->saveSettingValue($name, $themeId, FieldType::NUMBER, $value);
+        $this->saveSettingValue($name, $themeId, $value);
     }
 
     public function saveFloatSetting(ID $name, float $value, string $themeId): void
     {
-        $this->getFloat($name, $themeId);
-        $this->saveSettingValue($name, $themeId, FieldType::NUMBER, $value);
+        // TODO: Implement saveFloatSetting() method.
     }
 
     public function saveBooleanSetting(ID $name, bool $value, string $themeId): void
     {
-        $this->getBoolean($name, $themeId);
-        $this->saveSettingValue($name, $themeId, FieldType::BOOLEAN, $value);
+        // TODO: Implement saveBooleanSetting() method.
     }
 
     public function saveStringSetting(ID $name, string $value, string $themeId): void
     {
-        $this->getString($name, $themeId);
-        $this->saveSettingValue($name, $themeId, FieldType::STRING, $value);
+        // TODO: Implement saveStringSetting() method.
     }
 
     public function saveSelectSetting(ID $name, string $value, string $themeId): void
     {
-        $this->getSelect($name, $themeId);
-        $this->saveSettingValue($name, $themeId, FieldType::SELECT, $value);
+        // TODO: Implement saveSelectSetting() method.
     }
 
     public function saveCollectionSetting(ID $name, array $value, string $themeId): void
     {
-        $this->getCollection($name, $themeId);
-        $this->saveSettingValue($name, $themeId, FieldType::ARRAY, $value);
+        // TODO: Implement saveCollectionSetting() method.
     }
 
     public function saveAssocCollectionSetting(ID $name, array $value, string $themeId): void
     {
-        $this->getAssocCollection($name, $themeId);
-        $this->saveSettingValue($name, $themeId, FieldType::ASSOCIATIVE_ARRAY, $value);
+        // TODO: Implement saveAssocCollectionSetting() method.
     }
 }

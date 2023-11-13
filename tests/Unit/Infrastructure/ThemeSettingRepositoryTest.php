@@ -4,9 +4,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
@@ -240,16 +238,12 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     private function getThemeSettingRepoInstance(string|bool $qbReturnedValue, int $shopId = 1): ThemeSettingRepositoryInterface
     {
         $queryBuilderFactory = $this->getQueryBuilderFactoryMock($qbReturnedValue);
-        $shopConfigurationDao = $this->createMock(ShopConfigurationSettingDaoInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $shopSettingEncoder = $this->createMock(ShopSettingEncoderInterface::class);
         $basicContext = $this->getBasicContextMock($shopId);
 
         return new ThemeSettingRepository(
             $basicContext,
             $eventDispatcher,
-            $shopConfigurationDao,
-            $shopSettingEncoder,
             $queryBuilderFactory
         );
     }
