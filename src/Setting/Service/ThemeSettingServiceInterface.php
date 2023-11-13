@@ -22,4 +22,11 @@ interface ThemeSettingServiceInterface
      * @return SettingType[]
      */
     public function getSettingsList(string $themeId): array;
+    public function changeIntegerSetting(ID $name, int $value, string $themeId): IntegerSetting;
+    public function changeFloatSetting(ID $name, float $value, string $themeId): FloatSetting;
+    public function changeBooleanSetting(ID $name, bool $value, string $themeId): BooleanSetting;
+    public function changeStringSetting(ID $name, string $value, string $themeId): StringSetting;
+    public function changeSelectSetting(ID $name, string $value, string $themeId): StringSetting;
+    public function changeCollectionSetting(ID $name, string $value, string $themeId): StringSetting;
+    public function changeAssocCollectionSetting(ID $name, string $value, string $themeId): StringSetting;
 }

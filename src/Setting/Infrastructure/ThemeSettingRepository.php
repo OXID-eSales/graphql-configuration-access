@@ -105,4 +105,39 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
     {
         return $this->getSettingTypes($themeId);
     }
+
+    public function saveIntegerSetting(ID $name, int $value, string $themeId): void
+    {
+        $this->saveSettingValue($name, $themeId, $value);
+    }
+
+    public function saveFloatSetting(ID $name, float $value, string $themeId): void
+    {
+        // TODO: Implement saveFloatSetting() method.
+    }
+
+    public function saveBooleanSetting(ID $name, bool $value, string $themeId): void
+    {
+        // TODO: Implement saveBooleanSetting() method.
+    }
+
+    public function saveStringSetting(ID $name, string $value, string $themeId): void
+    {
+        // TODO: Implement saveStringSetting() method.
+    }
+
+    public function saveSelectSetting(ID $name, string $value, string $themeId): void
+    {
+        // TODO: Implement saveSelectSetting() method.
+    }
+
+    public function saveCollectionSetting(ID $name, array $value, string $themeId): void
+    {
+        // TODO: Implement saveCollectionSetting() method.
+    }
+
+    public function saveAssocCollectionSetting(ID $name, array $value, string $themeId): void
+    {
+        // TODO: Implement saveAssocCollectionSetting() method.
+    }
 }

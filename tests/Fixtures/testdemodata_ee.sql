@@ -26,4 +26,11 @@ REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE
 ('_stringSetting_shop',	1,	'',	'stringSetting',	'str',	'default',	'2023-10-13 08:26:19'),
 ('_selectSetting_shop',	1,	'',	'selectSetting',	'select',	'selectString',	'2023-10-13 08:26:19'),
 ('_arraySetting_shop',	1,	'',	'arraySetting',	'arr',	'a:4:{i:0;s:2:"10";i:1;s:2:"20";i:2;s:2:"50";i:3;s:3:"100";}',	'2023-10-13 08:26:19'),
-('_aarraySetting_shop',	1,	'',	'aarraySetting',	'aarr',	'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}',	'2023-10-13 08:26:19');
+('_aarraySetting_shop',	1,	'',	'aarraySetting',	'aarr',	'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}',	'2023-10-13 08:26:19'),
+('changeIntSetting',	1,	'theme:awesomeTheme',	'intSettingEditable',	'num',	'123',	'2023-10-11 19:21:11'),
+('changeFloatSetting',	1,	'theme:awesomeTheme',	'floatSettingEditable',	'num',	'1.23',	'2023-10-11 19:21:11'),
+('changeBoolSetting',	1,	'theme:awesomeTheme',	'boolSettingEditable',	'bool',	'',	'2023-10-11 19:21:11'),
+('changeStringSetting',	1,	'theme:awesomeTheme',	'stringSettingEditable',	'str',	'',	'2023-10-11 19:21:11'),
+('changeSelectSetting',	1,	'theme:awesomeTheme',	'selectSettingEditable',	'select',	'',	'2023-10-11 19:21:11'),
+('changeArraySetting',	1,	'theme:awesomeTheme',	'arraySettingEditable',	'arr',	'',	'2023-10-11 19:21:11'),
+('changeAssocArraySetting',	1,	'theme:awesomeTheme',	'assocArraySettingEditable',	'aarr',	'',	'2023-10-11 19:21:11');

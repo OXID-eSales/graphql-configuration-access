@@ -9,10 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
@@ -77,5 +78,66 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
         }
 
         return $settingsTypeList;
+    }
+
+    public function changeIntegerSetting(ID $name, int $value, string $themeId): IntegerSetting
+    {
+        $this->themeSettingRepository->saveIntegerSetting($name, $value, $themeId);
+
+        return new IntegerSetting($name, $value);
+    }
+
+    public function changeFloatSetting(ID $name, float $value, string $themeId): FloatSetting
+    {
+        $this->themeSettingRepository->saveFloatSetting($name, $value, $themeId);
+
+        return new FloatSetting($name, $value);
+    }
+
+    public function changeBooleanSetting(ID $name, bool $value, string $themeId): BooleanSetting
+    {
+        $this->themeSettingRepository->saveBooleanSetting($name, $value, $themeId);
+
+        return new BooleanSetting($name, $value);
+    }
+
+    public function changeStringSetting(ID $name, string $value, string $themeId): StringSetting
+    {
+        $this->themeSettingRepository->saveStringSetting($name, $value, $themeId);
+
+        return new StringSetting($name, $value);
+    }
+
+    public function changeSelectSetting(ID $name, string $value, string $themeId): StringSetting
+    {
+        $this->themeSettingRepository->saveSelectSetting($name, $value, $themeId);
+
+        return new StringSetting($name, $value);
+    }
+
+    public function changeCollectionSetting(ID $name, string $value, string $themeId): StringSetting
+    {
+        $arrayValue = json_decode($value, true);
+
+        if (!is_array($arrayValue) || json_last_error() !== JSON_ERROR_NONE) {
+            throw new InvalidCollection($value);
+        }
+
+        $this->themeSettingRepository->saveCollectionSetting($name, $arrayValue, $themeId);
+
+        return new StringSetting($name, $value);
+    }
+
+    public function changeAssocCollectionSetting(ID $name, string $value, string $themeId): StringSetting
+    {
+        $arrayValue = json_decode($value, true);
+
+        if (!is_array($arrayValue) || json_last_error() !== JSON_ERROR_NONE) {
+            throw new InvalidCollection($value);
+        }
+
+        $this->themeSettingRepository->saveAssocCollectionSetting($name, $arrayValue, $themeId);
+
+        return new StringSetting($name, $value);
     }
 }

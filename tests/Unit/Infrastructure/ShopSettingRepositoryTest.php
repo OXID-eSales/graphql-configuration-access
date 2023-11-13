@@ -8,8 +8,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
 
@@ -19,10 +21,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('integerSetting');
 
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('123');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('123');
 
         $integer = $repository->getInteger($nameID);
 
@@ -32,10 +32,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingInteger(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
@@ -45,10 +43,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetShopSettingInvalidInteger(): void
     {
         $nameID = new ID('floatSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1.23');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('1.23');
 
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('The queried configuration was found as a float, not an integer');
@@ -59,10 +55,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('floatSetting');
 
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1.23');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('1.23');
 
         $float = $repository->getFloat($nameID);
 
@@ -72,10 +66,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingFloat(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
@@ -85,10 +77,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetShopSettingInvalidFloat(): void
     {
         $nameID = new ID('intSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('123');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('123');
 
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('The queried configuration was found as an integer, not a float');
@@ -99,10 +89,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('');
 
         $boolean = $repository->getBoolean($nameID);
 
@@ -113,10 +101,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('1');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('1');
 
         $boolean = $repository->getBoolean($nameID);
 
@@ -126,10 +112,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingBoolean(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a boolean configuration');
@@ -140,10 +124,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('stringSetting');
 
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('default');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('default');
 
         $string = $repository->getString($nameID);
 
@@ -153,10 +135,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingString(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a string configuration');
@@ -167,10 +147,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('selectSetting');
 
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('select');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('select');
 
         $select = $repository->getSelect($nameID);
 
@@ -180,10 +158,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingSelect(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a select configuration');
@@ -194,10 +170,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('arraySetting');
 
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}', 1);
 
         $collection = $repository->getCollection($nameID);
 
@@ -207,10 +181,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
@@ -222,10 +194,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $nameID = new ID('aarraySetting');
 
         $serializeArrayString = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock($serializeArrayString);
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance($serializeArrayString);
 
         $assocCollection = $repository->getAssocCollection($nameID);
 
@@ -235,10 +205,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetNoShopSettingAssocCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock(False);
-        $basicContext = $this->getBasicContextMock(1);
 
-        $repository = new ShopSettingRepository($queryBuilderFactory, $basicContext);
+        $repository = $this->getShopSettingRepoInstance(False);
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an associative collection configuration');
@@ -298,6 +266,19 @@ class ShopSettingRepositoryTest extends UnitTestCase
         return $basicContext;
     }
 
+    private function getShopSettingRepoInstance(string|bool $qbReturnValue, int $shopId = 1): ShopSettingRepositoryInterface
+    {
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($qbReturnValue);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $basicContext = $this->getBasicContextMock($shopId);
+
+        return new ShopSettingRepository(
+            $basicContext,
+            $eventDispatcher,
+            $queryBuilderFactory
+        );
+    }
+
     /**
      * @param MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
      * @return ShopSettingRepository
@@ -305,6 +286,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     private function getShopSettingRepository(MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
     ): ShopSettingRepository {
         $basicContextMock = $this->getBasicContextMock(1);
-        return new ShopSettingRepository($queryBuilderFactory, $basicContextMock);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        return new ShopSettingRepository($basicContextMock, $eventDispatcher, $queryBuilderFactory);
     }
 }

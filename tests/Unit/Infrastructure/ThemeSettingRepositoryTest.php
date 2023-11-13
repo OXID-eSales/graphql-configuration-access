@@ -8,8 +8,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
 
@@ -278,7 +280,7 @@ class ThemeSettingRepositoryTest extends UnitTestCase
      * @param Result|MockObject|(Result&MockObject) $result
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    public function getQueryBuilderFactoryMock(Result|MockObject $result
+    private function getQueryBuilderFactoryMock(Result|MockObject $result
     ): QueryBuilderFactoryInterface|MockObject {
         $queryBuilder = $this->createPartialMock(QueryBuilder::class, ['execute']);
         $queryBuilder->expects($this->once())
@@ -295,10 +297,23 @@ class ThemeSettingRepositoryTest extends UnitTestCase
      * @param MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
      * @return ThemeSettingRepository
      */
-    public function getThemeSettingRepository(
+    private function getThemeSettingRepository(
         MockObject|QueryBuilderFactoryInterface $queryBuilderFactory,
     ): ThemeSettingRepository {
         $basicContext = $this->getBasicContextMock();
         return new ThemeSettingRepository($queryBuilderFactory, $basicContext);
+    }
+
+    private function getThemeSettingRepoInstance(string|bool $qbReturnedValue, int $shopId = 1): ThemeSettingRepositoryInterface
+    {
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($qbReturnedValue);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $basicContext = $this->getBasicContextMock($shopId);
+
+        return new ThemeSettingRepository(
+            $basicContext,
+            $eventDispatcher,
+            $queryBuilderFactory
+        );
     }
 }

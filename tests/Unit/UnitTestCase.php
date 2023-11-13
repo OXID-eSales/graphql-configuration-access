@@ -25,12 +25,12 @@ class UnitTestCase extends TestCase
         return new FloatSetting(new ID('floatSetting'), 1.23);
     }
 
-    protected function getNegativBooleanSetting(): BooleanSetting
+    protected function getNegativeBooleanSetting(): BooleanSetting
     {
         return new BooleanSetting(new ID('booleanSetting'), false);
     }
 
-    protected function getPositivBooleanSetting(): BooleanSetting
+    protected function getPositiveBooleanSetting(): BooleanSetting
     {
         return new BooleanSetting(new ID('booleanSetting'), true);
     }

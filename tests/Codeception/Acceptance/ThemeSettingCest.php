@@ -369,4 +369,220 @@ final class ThemeSettingCest extends BaseCest
         $I->assertContains(['name'=>'arraySetting', 'type' => FieldType::ARRAY], $settingsList);
         $I->assertContains(['name'=>'aarraySetting', 'type' => FieldType::ASSOCIATIVE_ARRAY], $settingsList);
     }
+
+    public function testChangeIntegerSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingInteger(name: "intSettingEditable", value: 124, themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeThemeSettingInteger" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeIntegerSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingInteger(name: "intSettingEditable", value: 124, themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeThemeSettingInteger'];
+        $I->assertSame('intSettingEditable', $setting['name']);
+        $I->assertSame(124, $setting['value']);
+    }
+
+    public function testChangeFloatSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingFloat(name: "floatSettingEditable", value: 1.24, themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeThemeSettingFloat" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeFloatSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingFloat(name: "floatSettingEditable", value: 1.24, themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeThemeSettingFloat'];
+        $I->assertSame('floatSettingEditable', $setting['name']);
+        $I->assertSame(1.24, $setting['value']);
+    }
+
+    public function testChangeBooleanSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingBoolean(name: "boolSettingEditable", value: False, themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeThemeSettingBoolean" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeBooleanSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingBoolean(name: "boolSettingEditable", value: true, themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeThemeSettingBoolean'];
+        $I->assertSame('boolSettingEditable', $setting['name']);
+        $I->assertSame(true, $setting['value']);
+    }
+
+    public function testChangeStringSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingString(name: "stringSettingEditable", value: "default", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeThemeSettingString" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeStringSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingString(name: "stringSetting", value: "default", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeThemeSettingString'];
+        $I->assertSame('stringSetting', $setting['name']);
+        $I->assertSame('default', $setting['value']);
+    }
+
+    public function testChangeCollectionSettingNotAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingCollection(name: "arraySetting", themeId: "'.$this->getTestThemeName().'") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $errorMessage = $result['errors'][0]['message'];
+        $I->assertSame('Cannot query field "changeThemeSettingCollection" on type "Mutation".', $errorMessage);
+    }
+
+    public function testChangeCollectionSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'mutation{
+                changeThemeSettingCollection(name: "arraySetting", themeId: "' . $this->getTestThemeName() . '", value: "[3, \"interesting\", \"values\"]") {
+                    name
+                    value
+                }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeThemeSettingCollection'];
+        $I->assertSame('arraySetting', $setting['name']);
+        $I->assertSame('[3, "interesting", "values"]', $setting['value']);
+    }
+
 }
