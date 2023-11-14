@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
@@ -22,7 +21,8 @@ use TheCodingMachine\GraphQLite\Types\ID;
 final class ThemeSettingService implements ThemeSettingServiceInterface
 {
     public function __construct(
-        private ThemeSettingRepositoryInterface $themeSettingRepository
+        private ThemeSettingRepositoryInterface $themeSettingRepository,
+        private JsonServiceInterface $jsonService,
     ) {
     }
 
@@ -59,28 +59,17 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
     public function getCollectionSetting(ID $name, string $themeId): StringSetting
     {
         $collection = $this->themeSettingRepository->getCollection($name, $themeId);
+        $collectionEncodingResult = $this->jsonService->jsonEncodeArray($collection);
 
-        return new StringSetting($name, $this->jsonEncodeCollection($collection));
+        return new StringSetting($name, $collectionEncodingResult);
     }
 
     public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting
     {
         $assocCollection = $this->themeSettingRepository->getAssocCollection($name, $themeId);
+        $collectionEncodingResult = $this->jsonService->jsonEncodeArray($assocCollection);
 
-        return new StringSetting($name, $this->jsonEncodeCollection($assocCollection));
-    }
-
-    /**
-     * @throws CollectionEncodingException
-     */
-    private function jsonEncodeCollection(array $collection): string
-    {
-        $jsonValue = json_encode($collection);
-
-        if ($jsonValue === false) {
-            throw new CollectionEncodingException();
-        }
-        return $jsonValue;
+        return new StringSetting($name, $collectionEncodingResult);
     }
 
     /**

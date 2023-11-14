@@ -2,10 +2,11 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
@@ -21,7 +22,7 @@ class ThemeSettingServiceTest extends UnitTestCase
             ->method('getInteger')
             ->willReturn(123);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('integerSetting');
         $integerSetting = $settingService->getIntegerSetting($nameID, 'awesomeTheme');
@@ -38,7 +39,7 @@ class ThemeSettingServiceTest extends UnitTestCase
             ->method('getFloat')
             ->willReturn(1.23);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('floatSetting');
         $floatSetting = $settingService->getFloatSetting($nameID, 'awesomeTheme');
@@ -55,7 +56,7 @@ class ThemeSettingServiceTest extends UnitTestCase
             ->method('getBoolean')
             ->willReturn(false);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('booleanSetting');
         $booleanSetting = $settingService->getBooleanSetting($nameID, 'awesomeTheme');
@@ -72,7 +73,7 @@ class ThemeSettingServiceTest extends UnitTestCase
             ->method('getString')
             ->willReturn('default');
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('stringSetting');
         $stringSetting = $settingService->getStringSetting($nameID, 'awesomeTheme');
@@ -89,7 +90,7 @@ class ThemeSettingServiceTest extends UnitTestCase
             ->method('getSelect')
             ->willReturn('select');
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('selectSetting');
         $selectSetting = $settingService->getSelectSetting($nameID, 'awesomeTheme');
@@ -99,66 +100,60 @@ class ThemeSettingServiceTest extends UnitTestCase
 
     public function testGetThemeSettingCollection(): void
     {
-        $serviceCollectionSetting = $this->getCollectionSetting();
         $nameID = new ID('arraySetting');
         $themeId = 'awesomeTheme';
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $repositoryResult = ['nice', 'values'];
         $repository->expects($this->once())
             ->method('getCollection')
             ->with($nameID, $themeId)
-            ->willReturn(['nice', 'values']);
+            ->willReturn($repositoryResult);
 
-        $settingService = new ThemeSettingService($repository);
+        $jsonService = $this->createMock(JsonServiceInterface::class);
+        $collectionEncodingResult = 'someEncodedResult';
+        $jsonService->method('jsonEncodeArray')
+            ->with($repositoryResult)
+            ->willReturn($collectionEncodingResult);
 
-        $collectionSetting = $settingService->getCollectionSetting($nameID, $themeId);
+        $sut = $this->getSut(
+            themeSettingRepository: $repository,
+            jsonService: $jsonService,
+        );
 
-        $this->assertEquals($serviceCollectionSetting, $collectionSetting);
+        $this->assertEquals(
+            new StringSetting($nameID, $collectionEncodingResult),
+            $sut->getCollectionSetting($nameID, $themeId)
+        );
     }
 
     public function testGetThemeSettingAssocCollection(): void
     {
-        $serviceAssocCollectionSetting = $this->getAssocCollectionSetting();
         $nameID = new ID('aarraySetting');
         $themeId = 'awesomeTheme';
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $repositoryResult = ['first' => '10', 'second' => '20', 'third' => '50'];
         $repository->expects($this->once())
             ->method('getAssocCollection')
             ->with($nameID, $themeId)
-            ->willReturn(['first' => '10', 'second' => '20', 'third' => '50']);
+            ->willReturn($repositoryResult);
 
-        $settingService = new ThemeSettingService($repository);
+        $jsonService = $this->createMock(JsonServiceInterface::class);
+        $collectionEncodingResult = 'someEncodedResult';
+        $jsonService->method('jsonEncodeArray')
+            ->with($repositoryResult)
+            ->willReturn($collectionEncodingResult);
 
-        $assocCollectionSetting = $settingService->getAssocCollectionSetting($nameID, $themeId);
+        $sut = $this->getSut(
+            themeSettingRepository: $repository,
+            jsonService: $jsonService
+        );
 
-        $this->assertEquals($serviceAssocCollectionSetting, $assocCollectionSetting);
-    }
-
-    /** @dataProvider collectionEncodingExceptionDataProvider */
-    public function testCollectionEncodingExceptionThrown(string $repositoryMethod, string $serviceMethod): void
-    {
-        $nameID = new ID('arraySetting');
-        $themeId = 'awesomeTheme';
-        $repositoryResponse = [&$repositoryResponse];
-
-        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method($repositoryMethod)
-            ->with($nameID, $themeId)
-            ->willReturn($repositoryResponse);
-
-        $sut = new ThemeSettingService($repository);
-
-        $this->expectException(CollectionEncodingException::class);
-
-        $sut->$serviceMethod($nameID, $themeId);
-    }
-
-    public function collectionEncodingExceptionDataProvider(): \Generator
-    {
-        yield ['repositoryMethod' => 'getCollection', 'serviceMethod' => 'getCollectionSetting'];
-        yield ['repositoryMethod' => 'getAssocCollection', 'serviceMethod' => 'getAssocCollectionSetting'];
+        $this->assertEquals(
+            new StringSetting($nameID, $collectionEncodingResult),
+            $sut->getAssocCollectionSetting($nameID, $themeId)
+        );
     }
 
     public function testListThemeSettings(): void
@@ -176,7 +171,7 @@ class ThemeSettingServiceTest extends UnitTestCase
             ->with($themeId)
             ->willReturn($repositorySettingsList);
 
-        $sut = new ThemeSettingService($repository);
+        $sut = $this->getSut(themeSettingRepository: $repository);
         $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList($themeId));
     }
 
@@ -189,7 +184,7 @@ class ThemeSettingServiceTest extends UnitTestCase
             ->with($nameID, 'awesomeTheme')
             ->willReturn(123);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $integerSetting = $settingService->changeIntegerSetting($nameID, 123, 'awesomeTheme');
 
@@ -201,7 +196,7 @@ class ThemeSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('floatSetting');
         $floatSetting = $settingService->changeFloatSetting($nameID, 1.23, 'awesomeTheme');
@@ -214,7 +209,7 @@ class ThemeSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('boolSetting');
         $value = false;
@@ -228,7 +223,7 @@ class ThemeSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('stringSetting');
         $value = 'default';
@@ -245,7 +240,7 @@ class ThemeSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('collectionSetting');
 
@@ -271,7 +266,7 @@ class ThemeSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
 
-        $settingService = new ThemeSettingService($repository);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
 
         $nameID = new ID('collectionSetting');
         $value = '[2, "values"]';
@@ -279,5 +274,15 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $this->assertSame($nameID, $collectionSetting->getName());
         $this->assertSame($value, $collectionSetting->getValue());
+    }
+
+    public function getSut(
+        ?ThemeSettingRepositoryInterface $themeSettingRepository = null,
+        ?JsonServiceInterface $jsonService = null,
+    ): ThemeSettingService {
+        return new ThemeSettingService(
+            themeSettingRepository: $themeSettingRepository ?? $this->createStub(ThemeSettingRepositoryInterface::class),
+            jsonService: $jsonService ?? $this->createStub(JsonServiceInterface::class)
+        );
     }
 }
