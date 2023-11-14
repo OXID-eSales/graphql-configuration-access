@@ -3,6 +3,7 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
@@ -99,16 +100,18 @@ class ThemeSettingServiceTest extends UnitTestCase
     public function testGetThemeSettingCollection(): void
     {
         $serviceCollectionSetting = $this->getCollectionSetting();
+        $nameID = new ID('arraySetting');
+        $themeId = 'awesomeTheme';
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getCollection')
+            ->with($nameID, $themeId)
             ->willReturn(['nice', 'values']);
 
         $settingService = new ThemeSettingService($repository);
 
-        $nameID = new ID('arraySetting');
-        $collectionSetting = $settingService->getCollectionSetting($nameID, 'awesomeTheme');
+        $collectionSetting = $settingService->getCollectionSetting($nameID, $themeId);
 
         $this->assertEquals($serviceCollectionSetting, $collectionSetting);
     }
@@ -116,18 +119,46 @@ class ThemeSettingServiceTest extends UnitTestCase
     public function testGetThemeSettingAssocCollection(): void
     {
         $serviceAssocCollectionSetting = $this->getAssocCollectionSetting();
+        $nameID = new ID('aarraySetting');
+        $themeId = 'awesomeTheme';
 
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getAssocCollection')
+            ->with($nameID, $themeId)
             ->willReturn(['first' => '10', 'second' => '20', 'third' => '50']);
 
         $settingService = new ThemeSettingService($repository);
 
-        $nameID = new ID('aarraySetting');
-        $assocCollectionSetting = $settingService->getAssocCollectionSetting($nameID, 'awesomeTheme');
+        $assocCollectionSetting = $settingService->getAssocCollectionSetting($nameID, $themeId);
 
         $this->assertEquals($serviceAssocCollectionSetting, $assocCollectionSetting);
+    }
+
+    /** @dataProvider collectionEncodingExceptionDataProvider */
+    public function testCollectionEncodingExceptionThrown(string $repositoryMethod, string $serviceMethod): void
+    {
+        $nameID = new ID('arraySetting');
+        $themeId = 'awesomeTheme';
+        $repositoryResponse = [&$repositoryResponse];
+
+        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method($repositoryMethod)
+            ->with($nameID, $themeId)
+            ->willReturn($repositoryResponse);
+
+        $sut = new ThemeSettingService($repository);
+
+        $this->expectException(CollectionEncodingException::class);
+
+        $sut->$serviceMethod($nameID, $themeId);
+    }
+
+    public function collectionEncodingExceptionDataProvider(): \Generator
+    {
+        yield ['repositoryMethod' => 'getCollection', 'serviceMethod' => 'getCollectionSetting'];
+        yield ['repositoryMethod' => 'getAssocCollection', 'serviceMethod' => 'getAssocCollectionSetting'];
     }
 
     public function testListThemeSettings(): void

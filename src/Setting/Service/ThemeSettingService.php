@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
@@ -57,14 +58,29 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
 
     public function getCollectionSetting(ID $name, string $themeId): StringSetting
     {
-        $collectionString = $this->themeSettingRepository->getCollection($name, $themeId);
-        return new StringSetting($name, json_encode($collectionString));
+        $collection = $this->themeSettingRepository->getCollection($name, $themeId);
+
+        return new StringSetting($name, $this->jsonEncodeCollection($collection));
     }
 
     public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting
     {
-        $assocCollectionString = $this->themeSettingRepository->getAssocCollection($name, $themeId);
-        return new StringSetting($name, json_encode($assocCollectionString));
+        $assocCollection = $this->themeSettingRepository->getAssocCollection($name, $themeId);
+
+        return new StringSetting($name, $this->jsonEncodeCollection($assocCollection));
+    }
+
+    /**
+     * @throws CollectionEncodingException
+     */
+    private function jsonEncodeCollection(array $collection): string
+    {
+        $jsonValue = json_encode($collection);
+
+        if ($jsonValue === false) {
+            throw new CollectionEncodingException();
+        }
+        return $jsonValue;
     }
 
     /**
