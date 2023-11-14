@@ -26,27 +26,27 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
     ) {
     }
 
-    public function getIntegerSetting(ID $name, $moduleId): IntegerSetting
+    public function getIntegerSetting(ID $name, string $moduleId): IntegerSetting
     {
         return $this->moduleSettingRepository->getIntegerSetting($name, $moduleId);
     }
 
-    public function getFloatSetting(ID $name, $moduleId): FloatSetting
+    public function getFloatSetting(ID $name, string $moduleId): FloatSetting
     {
         return $this->moduleSettingRepository->getFloatSetting($name, $moduleId);
     }
 
-    public function getBooleanSetting(ID $name, $moduleId): BooleanSetting
+    public function getBooleanSetting(ID $name, string $moduleId): BooleanSetting
     {
         return $this->moduleSettingRepository->getBooleanSetting($name, $moduleId);
     }
 
-    public function getStringSetting(ID $name, $moduleId): StringSetting
+    public function getStringSetting(ID $name, string $moduleId): StringSetting
     {
         return $this->moduleSettingRepository->getStringSetting($name, $moduleId);
     }
 
-    public function getCollectionSetting(ID $name, $moduleId): StringSetting
+    public function getCollectionSetting(ID $name, string $moduleId): StringSetting
     {
         return $this->moduleSettingRepository->getCollectionSetting($name, $moduleId);
     }

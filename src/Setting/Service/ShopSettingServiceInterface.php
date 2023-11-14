@@ -12,12 +12,19 @@ use TheCodingMachine\GraphQLite\Types\ID;
 interface ShopSettingServiceInterface
 {
     public function getIntegerSetting(ID $name): IntegerSetting;
+
     public function getFloatSetting(ID $name): FloatSetting;
+
     public function getBooleanSetting(ID $name): BooleanSetting;
+
     public function getStringSetting(ID $name): StringSetting;
+
     public function getSelectSetting(ID $name): StringSetting;
+
     public function getCollectionSetting(ID $name): StringSetting;
+
     public function getAssocCollectionSetting(ID $name): StringSetting;
+
     /**
      * @return SettingType[]
      */
