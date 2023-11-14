@@ -28,9 +28,8 @@ class ThemeSettingRepository extends AbstractDatabaseSettingRepository implement
         if ($this->isFloatString($encodedValue)) {
             throw new UnexpectedValueException('The queried configuration was found as a float, not an integer');
         }
-        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
-        return (int)$value;
+        return (int)$this->shopSettingEncoder->decode($fieldType, $encodedValue);
     }
 
     public function getFloat(ID $name, string $themeId): float

@@ -20,8 +20,10 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = new ID('integerSetting');
-        $integerSetting = $settingController->getThemeSettingInteger($nameID, 'awesomeTheme');
+        $integerSetting = $settingController->getThemeSettingInteger(
+            new ID('integerSetting'),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceIntegerSetting, $integerSetting);
     }
@@ -37,8 +39,10 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = new ID('floatSetting');
-        $floatSetting = $settingController->getThemeSettingFloat($nameID, 'awesomeTheme');
+        $floatSetting = $settingController->getThemeSettingFloat(
+            new ID('floatSetting'),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceFloatSetting, $floatSetting);
     }
@@ -54,8 +58,10 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = new ID('booleanSetting');
-        $booleanSetting = $settingController->getThemeSettingBoolean($nameID, 'awesomeTheme');
+        $booleanSetting = $settingController->getThemeSettingBoolean(
+            new ID('booleanSetting'),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceBooleanSetting, $booleanSetting);
     }
@@ -71,8 +77,10 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = new ID('stringSetting');
-        $stringSetting = $settingController->getThemeSettingString($nameID, 'awesomeTheme');
+        $stringSetting = $settingController->getThemeSettingString(
+            new ID('stringSetting'),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceStringSetting, $stringSetting);
     }
@@ -88,8 +96,10 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = new ID('selectSetting');
-        $selectSetting = $settingController->getThemeSettingSelect($nameID, 'awesomeTheme');
+        $selectSetting = $settingController->getThemeSettingSelect(
+            new ID('selectSetting'),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceSelectSetting, $selectSetting);
     }
@@ -105,8 +115,10 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = new ID('arraySetting');
-        $collectionSetting = $settingController->getThemeSettingCollection($nameID, 'awesomeTheme');
+        $collectionSetting = $settingController->getThemeSettingCollection(
+            new ID('arraySetting'),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceCollectionSetting, $collectionSetting);
     }
@@ -122,8 +134,10 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = new ID('aarraySetting');
-        $assocCollectionSetting = $settingController->getThemeSettingAssocCollection($nameID, 'awesomeTheme');
+        $assocCollectionSetting = $settingController->getThemeSettingAssocCollection(
+            new ID('aarraySetting'),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceAssocCollectionSetting, $assocCollectionSetting);
     }
@@ -153,9 +167,11 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = $serviceIntegerSetting->getName();
-        $value = $serviceIntegerSetting->getValue();
-        $integerSetting = $settingController->changeThemeSettingInteger($nameID, $value, 'awesomeTheme');
+        $integerSetting = $settingController->changeThemeSettingInteger(
+            $serviceIntegerSetting->getName(),
+            $serviceIntegerSetting->getValue(),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceIntegerSetting, $integerSetting);
     }
@@ -171,9 +187,11 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = $serviceFloatSetting->getName();
-        $value = $serviceFloatSetting->getValue();
-        $floatSetting = $settingController->changeThemeSettingFloat($nameID, $value, 'awesomeTheme');
+        $floatSetting = $settingController->changeThemeSettingFloat(
+            $serviceFloatSetting->getName(),
+            $serviceFloatSetting->getValue(),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceFloatSetting, $floatSetting);
     }
@@ -189,9 +207,11 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = $serviceBooleanSetting->getName();
-        $value = $serviceBooleanSetting->getValue();
-        $booleanSetting = $settingController->changeThemeSettingBoolean($nameID, $value, 'awesomeTheme');
+        $booleanSetting = $settingController->changeThemeSettingBoolean(
+            $serviceBooleanSetting->getName(),
+            $serviceBooleanSetting->getValue(),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceBooleanSetting, $booleanSetting);
     }
@@ -207,9 +227,11 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = $serviceStringSetting->getName();
-        $value = $serviceStringSetting->getValue();
-        $stringSetting = $settingController->changeThemeSettingString($nameID, $value, 'awesomeTheme');
+        $stringSetting = $settingController->changeThemeSettingString(
+            $serviceStringSetting->getName(),
+            $serviceStringSetting->getValue(),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceStringSetting, $stringSetting);
     }
@@ -225,9 +247,11 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = $serviceSelectSetting->getName();
-        $value = $serviceSelectSetting->getValue();
-        $selectSetting = $settingController->changeThemeSettingSelect($nameID, $value, 'awesomeTheme');
+        $selectSetting = $settingController->changeThemeSettingSelect(
+            $serviceSelectSetting->getName(),
+            $serviceSelectSetting->getValue(),
+            'awesomeTheme'
+        );
 
         $this->assertSame($serviceSelectSetting, $selectSetting);
     }
@@ -243,9 +267,11 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = $serviceCollectionSetting->getName();
-        $value = $serviceCollectionSetting->getValue();
-        $collectionSetting = $settingController->changeThemeSettingCollection($nameID, $value, 'awesomeTheme');
+        $collectionSetting = $settingController->changeThemeSettingCollection(
+            $serviceCollectionSetting->getName(),
+            $serviceCollectionSetting->getValue(),
+            'awesomeTheme'
+        );
 
         $this->assertSame($collectionSetting, $serviceCollectionSetting);
     }
@@ -261,11 +287,9 @@ class ThemeSettingControllerTest extends UnitTestCase
 
         $settingController = new ThemeSettingController($settingService);
 
-        $nameID = $serviceAssocCollectionSetting->getName();
-        $value = $serviceAssocCollectionSetting->getValue();
         $assocCollectionSetting = $settingController->changeThemeSettingAssocCollection(
-            $nameID,
-            $value,
+            $serviceAssocCollectionSetting->getName(),
+            $serviceAssocCollectionSetting->getValue(),
             'awesomeTheme'
         );
 
