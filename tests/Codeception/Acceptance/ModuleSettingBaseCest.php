@@ -20,8 +20,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 abstract class ModuleSettingBaseCest extends BaseCest
 {
-    protected const TEST_MODULE_ID = 'awesomeModule';
-
     public function _before(AcceptanceTester $I): void
     {
         $this->prepareConfiguration();

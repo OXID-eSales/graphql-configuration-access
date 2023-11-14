@@ -13,7 +13,8 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 abstract class BaseCest
 {
-    private const TEST_THEME_ID = 'awesomeTheme';
+    public const TEST_MODULE_ID = 'awesomeModule';
+    public const TEST_THEME_ID = 'awesomeTheme';
 
     private const AGENT_USERNAME = 'JanvierJaimesVelasquez@cuvox.de';
 
@@ -51,17 +52,5 @@ abstract class BaseCest
     protected function getAdminPassword(): string
     {
         return self::ADMIN_PASSWORD;
-    }
-
-    protected function assertQueryNotFoundErrorInResult(AcceptanceTester $I, array $result, string $query): void
-    {
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "' . $query . '" on type "Query".', $errorMessage);
-    }
-
-    protected function assertMutationNotFoundErrorInResult(AcceptanceTester $I, array $result, string $mutation): void
-    {
-        $errorMessage = $result['errors'][0]['message'];
-        $I->assertSame('Cannot query field "' . $mutation . '" on type "Mutation".', $errorMessage);
     }
 }
