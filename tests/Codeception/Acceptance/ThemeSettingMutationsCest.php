@@ -23,13 +23,17 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation{
-                changeThemeSettingInteger(name: "intSettingEditable", value: 124, themeId: "' . $this->getTestThemeName(
-            ) . '") {
+            'mutation m($name: ID!, $value: Int!, $themeId: String!){
+                changeThemeSettingInteger(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => 'intSettingEditable',
+                'value' => 124,
+                'themeId' => self::TEST_THEME_ID
+            ]
         );
 
         $I->seeResponseIsJson();
@@ -47,13 +51,17 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation{
-                changeThemeSettingFloat(name: "floatSettingEditable", value: 1.24, themeId: "' . $this->getTestThemeName(
-            ) . '") {
+            'mutation m($name: ID!, $value: Float!, $themeId: String!){
+                changeThemeSettingFloat(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => 'floatSettingEditable',
+                'value' => 1.24,
+                'themeId' => self::TEST_THEME_ID
+            ]
         );
 
         $I->seeResponseIsJson();
@@ -71,13 +79,17 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation{
-                changeThemeSettingBoolean(name: "boolSettingEditable", value: true, themeId: "' . $this->getTestThemeName(
-            ) . '") {
+            'mutation m($name: ID!, $value: Boolean!, $themeId: String!){
+                changeThemeSettingBoolean(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => 'boolSettingEditable',
+                'value' => true,
+                'themeId' => self::TEST_THEME_ID
+            ]
         );
 
         $I->seeResponseIsJson();
@@ -95,13 +107,17 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation{
-                changeThemeSettingString(name: "stringSetting", value: "default", themeId: "' . $this->getTestThemeName(
-            ) . '") {
+            'mutation m($name: ID!, $value: String!, $themeId: String!){
+                changeThemeSettingString(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => 'stringSetting',
+                'value' => 'default',
+                'themeId' => self::TEST_THEME_ID
+            ]
         );
 
         $I->seeResponseIsJson();
@@ -119,12 +135,17 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation{
-                changeThemeSettingCollection(name: "arraySetting", themeId: "' . $this->getTestThemeName() . '", value: "[3, \"interesting\", \"values\"]") {
+            'mutation m($name: ID!, $value: String!, $themeId: String!){
+                changeThemeSettingCollection(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
-            }'
+            }',
+            [
+                'name' => 'arraySetting',
+                'value' => '[3, "interesting", "values"]',
+                'themeId' => self::TEST_THEME_ID
+            ]
         );
 
         $I->seeResponseIsJson();

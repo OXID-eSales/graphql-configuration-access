@@ -122,7 +122,8 @@ final class NotAuthorizedAccessCest extends BaseCest
     ): void {
         $errorMessage = $result['errors'][0]['message'];
         $I->assertSame(
-            'Cannot query field "' . $query . '" on type "' . ucfirst($queryType) . '".', $errorMessage
+            'Cannot query field "' . $query . '" on type "' . ucfirst($queryType) . '".',
+            $errorMessage
         );
     }
 }

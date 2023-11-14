@@ -22,17 +22,6 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $result = $this->runChangeIntegerMutationAndGetResult($I, 'intSetting', 124);
-
-        $I->assertArrayNotHasKey('errors', $result);
-
-        $setting = $result['data']['changeModuleSettingInteger'];
-        $I->assertSame('intSetting', $setting['name']);
-        $I->assertSame(124, $setting['value']);
-    }
-
-    private function runChangeIntegerMutationAndGetResult(AcceptanceTester $I, string $name, int $value): array
-    {
         $I->sendGQLQuery(
             'mutation m($name: ID!, $value: Int!, $moduleId: String!){
                 changeModuleSettingInteger(name: $name, value: $value, moduleId: $moduleId) {
@@ -41,31 +30,27 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
                 }
             }',
             [
-                'name' => $name,
-                'value' => $value,
+                'name' => 'intSetting',
+                'value' => 124,
                 'moduleId' => self::TEST_MODULE_ID
             ]
         );
 
         $I->seeResponseIsJson();
 
-        return $I->grabJsonResponseAsArray();
+        $result = $I->grabJsonResponseAsArray();
+
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingInteger'];
+        $I->assertSame('intSetting', $setting['name']);
+        $I->assertSame(124, $setting['value']);
     }
 
     public function testChangeFloatSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $result = $this->runFloatMutationAndGetResult($I, 'floatSetting', 1.24);
-        $I->assertArrayNotHasKey('errors', $result);
-
-        $setting = $result['data']['changeModuleSettingFloat'];
-        $I->assertSame('floatSetting', $setting['name']);
-        $I->assertSame(1.24, $setting['value']);
-    }
-
-    private function runFloatMutationAndGetResult(AcceptanceTester $I, string $name, float $value): array
-    {
         $I->sendGQLQuery(
             'mutation m($name: ID!, $value: Float!, $moduleId: String!){
                 changeModuleSettingFloat(name: $name, value: $value, moduleId: $moduleId) {
@@ -74,32 +59,27 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
                 }
             }',
             [
-                'name' => $name,
-                'value' => $value,
+                'name' => 'floatSetting',
+                'value' => 1.24,
                 'moduleId' => self::TEST_MODULE_ID
             ]
         );
 
         $I->seeResponseIsJson();
 
-        return $I->grabJsonResponseAsArray();
+        $result = $I->grabJsonResponseAsArray();
+
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingFloat'];
+        $I->assertSame('floatSetting', $setting['name']);
+        $I->assertSame(1.24, $setting['value']);
     }
 
     public function testChangeBooleanSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $result = $this->runChangeBooleanMutationAndGetResult($I, 'boolSetting', false);
-
-        $I->assertArrayNotHasKey('errors', $result);
-
-        $setting = $result['data']['changeModuleSettingBoolean'];
-        $I->assertSame('boolSetting', $setting['name']);
-        $I->assertSame(false, $setting['value']);
-    }
-
-    private function runChangeBooleanMutationAndGetResult(AcceptanceTester $I, string $name, bool $value): array
-    {
         $I->sendGQLQuery(
             'mutation m($name: ID!, $value: Boolean!, $moduleId: String!){
                 changeModuleSettingBoolean(name: $name, value: $value, moduleId: $moduleId) {
@@ -108,32 +88,27 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
                 }
             }',
             [
-                'name' => $name,
-                'value' => $value,
+                'name' => 'boolSetting',
+                'value' => false,
                 'moduleId' => self::TEST_MODULE_ID
             ]
         );
 
         $I->seeResponseIsJson();
 
-        return $I->grabJsonResponseAsArray();
+        $result = $I->grabJsonResponseAsArray();
+
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingBoolean'];
+        $I->assertSame('boolSetting', $setting['name']);
+        $I->assertSame(false, $setting['value']);
     }
 
     public function testChangeStringSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $result = $this->runChangeStringMutationAndGetResult($I, 'stringSetting', 'default');
-
-        $I->assertArrayNotHasKey('errors', $result);
-
-        $setting = $result['data']['changeModuleSettingString'];
-        $I->assertSame('stringSetting', $setting['name']);
-        $I->assertSame('default', $setting['value']);
-    }
-
-    private function runChangeStringMutationAndGetResult(AcceptanceTester $I, string $name, string $value): array
-    {
         $I->sendGQLQuery(
             'mutation m($name: ID!, $value: String!, $moduleId: String!){
                 changeModuleSettingString(name: $name, value: $value, moduleId: $moduleId) {
@@ -142,32 +117,27 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
                 }
             }',
             [
-                'name' => $name,
-                'value' => $value,
+                'name' => 'stringSetting',
+                'value' => 'default',
                 'moduleId' => self::TEST_MODULE_ID
             ]
         );
 
         $I->seeResponseIsJson();
 
-        return $I->grabJsonResponseAsArray();
+        $result = $I->grabJsonResponseAsArray();
+
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingString'];
+        $I->assertSame('stringSetting', $setting['name']);
+        $I->assertSame('default', $setting['value']);
     }
 
     public function testChangeCollectionSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $result = $this->runChangeCollectionMutationAndGetResult($I, 'arraySetting', '[3, "interesting", "values"]');
-
-        $I->assertArrayNotHasKey('errors', $result);
-
-        $setting = $result['data']['changeModuleSettingCollection'];
-        $I->assertSame('arraySetting', $setting['name']);
-        $I->assertSame('[3, "interesting", "values"]', $setting['value']);
-    }
-
-    private function runChangeCollectionMutationAndGetResult(AcceptanceTester $I, string $name, string $value): array
-    {
         $I->sendGQLQuery(
             'mutation m($name: ID!, $value: String!, $moduleId: String!){
                 changeModuleSettingCollection(name: $name, value: $value, moduleId: $moduleId) {
@@ -176,14 +146,20 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
                 }
             }',
             [
-                'name' => $name,
-                'value' => $value,
+                'name' => 'arraySetting',
+                'value' => '[3, "interesting", "values"]',
                 'moduleId' => self::TEST_MODULE_ID
             ]
         );
 
         $I->seeResponseIsJson();
 
-        return $I->grabJsonResponseAsArray();
+        $result = $I->grabJsonResponseAsArray();
+
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeModuleSettingCollection'];
+        $I->assertSame('arraySetting', $setting['name']);
+        $I->assertSame('[3, "interesting", "values"]', $setting['value']);
     }
 }
