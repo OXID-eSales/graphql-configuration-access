@@ -314,14 +314,13 @@ class ThemeSettingServiceTest extends UnitTestCase
         $this->assertSame($value, $collectionSetting->getValue());
     }
 
-    public function getSut(
+    private function getSut(
         ?ThemeSettingRepositoryInterface $themeSettingRepository = null,
         ?JsonServiceInterface $jsonService = null,
     ): ThemeSettingService {
+        $themeSettingRepository = $themeSettingRepository ?? $this->createStub(ThemeSettingRepositoryInterface::class);
         return new ThemeSettingService(
-            themeSettingRepository: $themeSettingRepository ?? $this->createStub(
-            ThemeSettingRepositoryInterface::class
-        ),
+            themeSettingRepository: $themeSettingRepository,
             jsonService: $jsonService ?? $this->createStub(JsonServiceInterface::class)
         );
     }

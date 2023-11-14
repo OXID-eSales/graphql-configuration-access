@@ -36,7 +36,7 @@ class ChangeThemeSettingRepositoryTest extends UnitTestCase
             ->method('saveSettingValue')
             ->with($nameID, 'awesomeTheme', '123');
 
-        $repository->saveIntegerSetting($nameID, 123,  'awesomeTheme');
+        $repository->saveIntegerSetting($nameID, 123, 'awesomeTheme');
     }
 
     public function testChangeNoThemeSettingInteger(): void
@@ -64,6 +64,6 @@ class ChangeThemeSettingRepositoryTest extends UnitTestCase
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The integer setting "' . $nameID->val() . '" doesn\'t exist');
 
-        $repository->saveIntegerSetting($nameID, 123,  'awesomeTheme');
+        $repository->saveIntegerSetting($nameID, 123, 'awesomeTheme');
     }
 }

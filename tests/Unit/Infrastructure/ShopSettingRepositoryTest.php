@@ -264,14 +264,9 @@ class ShopSettingRepositoryTest extends UnitTestCase
         return $this->getShopSettingRepository($queryBuilderFactory);
     }
 
-    /**
-     * @param MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
-     * @return ShopSettingRepository
-     */
     private function getShopSettingRepository(
-        MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
-    ): ShopSettingRepository
-    {
+        QueryBuilderFactoryInterface $queryBuilderFactory
+    ): ShopSettingRepository {
         $basicContextMock = $this->getBasicContextMock(1);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $shopSettingEncoder = new ShopSettingEncoder();
