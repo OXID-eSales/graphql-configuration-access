@@ -4,6 +4,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
@@ -270,6 +271,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
     ): ShopSettingRepository {
         $basicContextMock = $this->getBasicContextMock(1);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        return new ShopSettingRepository($basicContextMock, $eventDispatcher, $queryBuilderFactory);
+        $shopSettingEncoder = new ShopSettingEncoder();
+        return new ShopSettingRepository($basicContextMock, $eventDispatcher, $queryBuilderFactory, $shopSettingEncoder);
     }
 }

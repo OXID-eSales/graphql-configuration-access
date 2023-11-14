@@ -21,7 +21,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
         try {
             $value = $this->getSettingValue($name, FieldType::NUMBER);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('integer');
+            $this->throwGetterNotFoundException('integer');
         }
 
         if ($this->isFloatString($value)) {
@@ -36,7 +36,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
         try {
             $value = $this->getSettingValue($name, FieldType::NUMBER);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('float');
+            $this->throwGetterNotFoundException('float');
         }
 
         if (!$this->isFloatString($value)) {
@@ -51,7 +51,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
         try {
             $value = $this->getSettingValue($name, FieldType::BOOLEAN);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('boolean');
+            $this->throwGetterNotFoundException('boolean');
         }
 
         return (bool)$value;
@@ -62,7 +62,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
         try {
             $value = $this->getSettingValue($name, FieldType::STRING);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('string');
+            $this->throwGetterNotFoundException('string');
         }
 
         return $value;
@@ -73,7 +73,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
         try {
             $value = $this->getSettingValue($name, FieldType::SELECT);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('select');
+            $this->throwGetterNotFoundException('select');
         }
 
         return $value;
@@ -84,7 +84,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
         try {
             $value = $this->getSettingValue($name, FieldType::ARRAY);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('collection');
+            $this->throwGetterNotFoundException('collection');
         }
 
         return unserialize($value);
@@ -95,7 +95,7 @@ final class ShopSettingRepository extends AbstractDatabaseSettingRepository impl
         try {
             $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('associative collection');
+            $this->throwGetterNotFoundException('associative collection');
         }
 
         return unserialize($value);

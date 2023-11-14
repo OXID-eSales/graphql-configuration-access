@@ -84,8 +84,9 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
     public function changeIntegerSetting(ID $name, int $value, string $themeId): IntegerSetting
     {
         $this->themeSettingRepository->saveIntegerSetting($name, $value, $themeId);
+        $integer = $this->themeSettingRepository->getInteger($name, $themeId);
 
-        return new IntegerSetting($name, $value);
+        return new IntegerSetting($name, $integer);
     }
 
     public function changeFloatSetting(ID $name, float $value, string $themeId): FloatSetting

@@ -9,11 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Integration\Infrastructure;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -23,7 +24,6 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 {
     public function testSaveAndGetIntegerSetting(): void
     {
-        $container = ContainerFactory::getInstance()->getContainer();
         $configurationChangedEvent = new ThemeSettingChangedEvent(
             "coolIntSetting",
             1,
@@ -33,14 +33,16 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $eventDispatcher->expects($this->once())
             ->method('dispatch')
             ->with($configurationChangedEvent);
-        $basicContext = $container->get(BasicContextInterface::class);
+        $basicContext = $this->get(BasicContextInterface::class);
         /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
-        $queryBuilderFactory = $container->get(QueryBuilderFactoryInterface::class);
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+        $shopSettingEncoder = new DecoratedShopSettingEncoder();
 
         $repository = new ThemeSettingRepository(
             $basicContext,
             $eventDispatcher,
-            $queryBuilderFactory
+            $queryBuilderFactory,
+            $shopSettingEncoder
         );
 
         $uniqueId = uniqid();
@@ -67,5 +69,25 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $integerResult = $repository->getInteger(new ID('coolIntSetting'), 'awesomeTheme');
 
         $this->assertSame(124, $integerResult);
+        $this->assertSame(1, $shopSettingEncoder->getEncodeCounter());
+    }
+
+    public function testSaveNotExistingSetting(): void
+    {
+        $basicContext = $this->get(BasicContextInterface::class);
+        $eventDispatcher = $this->get(EventDispatcherInterface::class);
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+        $shopSettingEncoder = $this->get(ShopSettingEncoderInterface::class);
+
+        $repository = new ThemeSettingRepository(
+            $basicContext,
+            $eventDispatcher,
+            $queryBuilderFactory,
+            $shopSettingEncoder
+        );
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The integer setting "notExistingSetting" doesn\'t exist');
+        $repository->saveIntegerSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
     }
 }

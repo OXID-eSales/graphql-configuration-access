@@ -18,87 +18,101 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 {
     public function getInteger(ID $name, string $themeId): int
     {
+        $fieldType = FieldType::NUMBER;
         try {
-            $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
+            $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('integer');
+            $this->throwGetterNotFoundException('integer');
         }
 
-        if ($this->isFloatString($value)) {
+        if ($this->isFloatString($encodedValue)) {
             throw new UnexpectedValueException('The queried configuration was found as a float, not an integer');
         }
+        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
         return (int)$value;
     }
 
     public function getFloat(ID $name, string $themeId): float
     {
+        $fieldType = FieldType::NUMBER;
         try {
-            $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
+            $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('float');
+            $this->throwGetterNotFoundException('float');
         }
 
-        if (!$this->isFloatString($value)) {
+        if (!$this->isFloatString($encodedValue)) {
             throw new UnexpectedValueException('The queried configuration was found as an integer, not a float');
         }
+        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
         return (float)$value;
     }
 
     public function getBoolean(ID $name, string $themeId): bool
     {
+        $fieldType = FieldType::BOOLEAN;
         try {
-            $value = $this->getSettingValue($name, FieldType::BOOLEAN, $themeId);
+            $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('boolean');
+            $this->throwGetterNotFoundException('boolean');
         }
+        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
         return (bool)$value;
     }
 
     public function getString(ID $name, string $themeId): string
     {
+        $fieldType = FieldType::STRING;
         try {
-            $value = $this->getSettingValue($name, FieldType::STRING, $themeId);
+            $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('string');
+            $this->throwGetterNotFoundException('string');
         }
+        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
         return $value;
     }
 
     public function getSelect(ID $name, string $themeId): string
     {
+        $fieldType = FieldType::SELECT;
         try {
-            $value = $this->getSettingValue($name, FieldType::SELECT, $themeId);
+            $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('select');
+            $this->throwGetterNotFoundException('select');
         }
+        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
         return $value;
     }
 
     public function getCollection(ID $name, string $themeId): array
     {
+        $fieldType = FieldType::ARRAY;
         try {
-            $value = $this->getSettingValue($name, FieldType::ARRAY, $themeId);
+            $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('collection');
+            $this->throwGetterNotFoundException('collection');
         }
+        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
-        return unserialize($value);
+        return $value;
     }
 
     public function getAssocCollection(ID $name, string $themeId): array
     {
+        $fieldType = FieldType::ASSOCIATIVE_ARRAY;
         try {
-            $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY, $themeId);
+            $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
         } catch (NotFound $e) {
-            $this->throwNotFoundException('associative collection');
+            $this->throwGetterNotFoundException('associative collection');
         }
+        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
-        return unserialize($value);
+        return $value;
     }
 
     public function getSettingsList(string $themeId): array
@@ -108,7 +122,13 @@ final class ThemeSettingRepository extends AbstractDatabaseSettingRepository imp
 
     public function saveIntegerSetting(ID $name, int $value, string $themeId): void
     {
-        $this->saveSettingValue($name, $themeId, $value);
+        $value = $this->shopSettingEncoder->encode(FieldType::NUMBER, $value);
+
+        try {
+            $this->saveSettingValue($name, $themeId, (string)$value);
+        } catch (NotFound $e) {
+            $this->throwSetterNotFoundException('integer', $name->val());
+        }
     }
 
     public function saveFloatSetting(ID $name, float $value, string $themeId): void

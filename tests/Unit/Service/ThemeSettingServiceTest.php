@@ -151,11 +151,15 @@ class ThemeSettingServiceTest extends UnitTestCase
 
     public function testChangeThemeSettingInteger(): void
     {
+        $nameID = new ID('intSetting');
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getInteger')
+            ->with($nameID, 'awesomeTheme')
+            ->willReturn(123);
 
         $settingService = new ThemeSettingService($repository);
 
-        $nameID = new ID('intSetting');
         $integerSetting = $settingService->changeIntegerSetting($nameID, 123, 'awesomeTheme');
 
         $this->assertSame($nameID, $integerSetting->getName());

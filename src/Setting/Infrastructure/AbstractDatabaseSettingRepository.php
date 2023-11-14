@@ -2,7 +2,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
-use Doctrine\DBAL\Query\QueryBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -18,14 +18,20 @@ abstract class AbstractDatabaseSettingRepository
     public function __construct(
         private BasicContextInterface $basicContext,
         private EventDispatcherInterface $eventDispatcher,
-        private QueryBuilderFactoryInterface $queryBuilderFactory
+        private QueryBuilderFactoryInterface $queryBuilderFactory,
+        protected ShopSettingEncoderInterface $shopSettingEncoder
     ) {
     }
 
-    protected function throwNotFoundException(string $typeString)
+    protected function throwGetterNotFoundException(string $typeString)
     {
         $aOrAn = (preg_match('/^[aeiou]/i', $typeString)) ? 'an' : 'a';
         throw new NotFound("The queried name couldn't be found as $aOrAn $typeString configuration");
+    }
+
+    protected function throwSetterNotFoundException(string $typeString, string $name)
+    {
+        throw new NotFound('The ' . $typeString . ' setting "' . $name . '" doesn\'t exist');
     }
 
     protected function isFloatString(string $number): bool
@@ -88,7 +94,7 @@ abstract class AbstractDatabaseSettingRepository
         return $value;
     }
 
-    protected function saveSettingValue(ID $name, string $themeId, mixed $value): void
+    protected function saveSettingValue(ID $name, string $themeId, string $value): void
     {
         $shopId = $this->basicContext->getCurrentShopId();
 
@@ -106,7 +112,10 @@ abstract class AbstractDatabaseSettingRepository
                 'value' => $value
             ]);
 
-        $queryBuilder->execute();
+        $affectedRows = $queryBuilder->execute();
+        if ($affectedRows === 0) {
+            throw new NotFound('No configurations found for ' . $themeId);
+        }
 
         $this->eventDispatcher->dispatch(
             new ThemeSettingChangedEvent(

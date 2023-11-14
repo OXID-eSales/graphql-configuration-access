@@ -4,6 +4,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
@@ -263,7 +264,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     ): ThemeSettingRepository {
         $basicContext = $this->getBasicContextMock();
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        return new ThemeSettingRepository($basicContext, $eventDispatcher, $queryBuilderFactory);
+        $shopSettingEncoder = new ShopSettingEncoder();
+        return new ThemeSettingRepository($basicContext, $eventDispatcher, $queryBuilderFactory, $shopSettingEncoder);
     }
 
     private function getFetchOneThemeSettingRepoInstance(string|bool $qbReturnedValue): ThemeSettingRepositoryInterface
