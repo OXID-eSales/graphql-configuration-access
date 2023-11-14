@@ -53,7 +53,8 @@ class UnitTestCase extends TestCase
     protected function getAssocCollectionSetting(): StringSetting
     {
         return new StringSetting(
-            new ID('aarraySetting'), json_encode(
+            new ID('aarraySetting'),
+            json_encode(
                 ['first' => '10', 'second' => '20', 'third' => '50']
             )
         );

@@ -231,7 +231,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue
+    private function getFetchOneQueryBuilderFactoryMock(
+        string|bool $returnedValue
     ): QueryBuilderFactoryInterface|MockObject {
         $result = $this->createMock(Result::class);
         $result->expects($this->once())
@@ -267,11 +268,17 @@ class ShopSettingRepositoryTest extends UnitTestCase
      * @param MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
      * @return ShopSettingRepository
      */
-    private function getShopSettingRepository(MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
+    private function getShopSettingRepository(
+        MockObject|QueryBuilderFactoryInterface $queryBuilderFactory
     ): ShopSettingRepository {
         $basicContextMock = $this->getBasicContextMock(1);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $shopSettingEncoder = new ShopSettingEncoder();
-        return new ShopSettingRepository($basicContextMock, $eventDispatcher, $queryBuilderFactory, $shopSettingEncoder);
+        return new ShopSettingRepository(
+            $basicContextMock,
+            $eventDispatcher,
+            $queryBuilderFactory,
+            $shopSettingEncoder
+        );
     }
 }

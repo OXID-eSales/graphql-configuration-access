@@ -229,7 +229,8 @@ class ThemeSettingRepositoryTest extends UnitTestCase
      * @param string|bool $returnedValue
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
-    private function getFetchOneQueryBuilderFactoryMock(string|bool $returnedValue
+    private function getFetchOneQueryBuilderFactoryMock(
+        string|bool $returnedValue
     ): QueryBuilderFactoryInterface|MockObject {
         $result = $this->createMock(Result::class);
         $result->expects($this->once())
