@@ -55,7 +55,11 @@ class UnitTestCase extends TestCase
         return new StringSetting(
             new ID('aarraySetting'),
             json_encode(
-                ['first' => '10', 'second' => '20', 'third' => '50']
+                [
+                    'first' => '10',
+                    'second' => '20',
+                    'third' => '50'
+                ]
             )
         );
     }

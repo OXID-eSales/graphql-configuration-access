@@ -5,7 +5,9 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
@@ -16,14 +18,32 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
 
-class ThemeSettingRepositoryTest extends UnitTestCase
+class GetThemeSettingRepositoryTest extends UnitTestCase
 {
     public function testGetThemeSettingInteger(): void
     {
         $nameID = new ID('integerSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance('123');
+        $settingEncoder = $this->createMock(ShopSettingEncoderInterface::class);
+        $settingEncoder->expects($this->once())
+            ->method('decode')
+            ->with(FieldType::NUMBER, '123')
+            ->willReturn('123');
 
-        $integer = $repository->getInteger($nameID, 'awesomeModule');
+        $repository = $this->getMockBuilder(ThemeSettingRepository::class)
+            ->setConstructorArgs([
+                $this->createMock(BasicContextInterface::class),
+                $this->createMock(EventDispatcherInterface::class),
+                $this->createMock(QueryBuilderFactoryInterface::class),
+                $settingEncoder
+            ])
+            ->onlyMethods(['getSettingValue'])
+            ->getMock();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
+            ->willReturn('123');
+
+        $integer = $repository->getInteger($nameID, 'awesomeTheme');
 
         $this->assertEquals(123, $integer);
     }
@@ -31,11 +51,24 @@ class ThemeSettingRepositoryTest extends UnitTestCase
     public function testGetNoThemeSettingInteger(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance(false);
+        $repository = $this->getMockBuilder(ThemeSettingRepository::class)
+            ->setConstructorArgs([
+                $this->createMock(BasicContextInterface::class),
+                $this->createMock(EventDispatcherInterface::class),
+                $this->createMock(QueryBuilderFactoryInterface::class),
+                $this->createMock(ShopSettingEncoderInterface::class)
+            ])
+            ->onlyMethods(['getSettingValue'])
+            ->getMock();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
+            ->willThrowException(new NotFound());
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
-        $repository->getInteger($nameID, 'awesomeModule');
+
+        $repository->getInteger($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingInvalidInteger(): void

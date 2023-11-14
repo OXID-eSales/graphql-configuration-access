@@ -36,7 +36,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $basicContext = $this->get(BasicContextInterface::class);
         /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
         $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
-        $shopSettingEncoder = new DecoratedShopSettingEncoder();
+        $shopSettingEncoder = $this->get(ShopSettingEncoderInterface::class);
 
         $repository = new ThemeSettingRepository(
             $basicContext,
@@ -69,21 +69,18 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $integerResult = $repository->getInteger(new ID('coolIntSetting'), 'awesomeTheme');
 
         $this->assertSame(124, $integerResult);
-        $this->assertSame(1, $shopSettingEncoder->getEncodeCounter());
     }
 
     public function testSaveNotExistingSetting(): void
     {
-        $basicContext = $this->get(BasicContextInterface::class);
-        $eventDispatcher = $this->get(EventDispatcherInterface::class);
-        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
-        $shopSettingEncoder = $this->get(ShopSettingEncoderInterface::class);
-
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())
+            ->method('dispatch');
         $repository = new ThemeSettingRepository(
-            $basicContext,
+            $this->get(BasicContextInterface::class),
             $eventDispatcher,
-            $queryBuilderFactory,
-            $shopSettingEncoder
+            $this->get(QueryBuilderFactoryInterface::class),
+            $this->get(ShopSettingEncoderInterface::class)
         );
 
         $this->expectException(NotFound::class);

@@ -14,7 +14,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
 
-final class ThemeSettingRepository extends AbstractDatabaseSettingRepository implements ThemeSettingRepositoryInterface
+class ThemeSettingRepository extends AbstractDatabaseSettingRepository implements ThemeSettingRepositoryInterface
 {
     public function getInteger(ID $name, string $themeId): int
     {

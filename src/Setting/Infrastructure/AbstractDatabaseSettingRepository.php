@@ -114,7 +114,7 @@ abstract class AbstractDatabaseSettingRepository
 
         $affectedRows = $queryBuilder->execute();
         if ($affectedRows === 0) {
-            throw new NotFound('No configurations found for ' . $themeId);
+            throw new NotFound('Configuration not found for ' . $themeId);
         }
 
         $this->eventDispatcher->dispatch(
