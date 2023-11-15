@@ -2,6 +2,9 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
@@ -14,97 +17,107 @@ class ShopSettingServiceTest extends UnitTestCase
 {
     public function testGetShopSettingInteger(): void
     {
-        $serviceIntegerSetting = $this->getIntegerSetting();
-
-        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getInteger')
-            ->willReturn(123);
-
-        $settingService = $this->getSut(shopSettingRepository: $repository);
-
         $nameID = new ID('integerSetting');
-        $integerSetting = $settingService->getIntegerSetting($nameID);
+        $repositoryResult = 123;
 
-        $this->assertEquals($serviceIntegerSetting, $integerSetting);
+        $sut = $this->getSut(
+            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
+                'getInteger',
+                $nameID,
+                $repositoryResult
+            )
+        );
+
+        $this->assertEquals(
+            new IntegerSetting($nameID, $repositoryResult),
+            $sut->getIntegerSetting($nameID)
+        );
     }
 
     public function testGetShopSettingFloat(): void
     {
-        $serviceFloatSetting = $this->getFloatSetting();
-
-        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getFloat')
-            ->willReturn(1.23);
-
-        $settingService = $this->getSut(shopSettingRepository: $repository);
-
         $nameID = new ID('floatSetting');
-        $floatSetting = $settingService->getFloatSetting($nameID);
+        $repositoryResult = 1.23;
 
-        $this->assertEquals($serviceFloatSetting, $floatSetting);
+        $sut = $this->getSut(
+            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
+                'getFloat',
+                $nameID,
+                $repositoryResult
+            )
+        );
+
+        $this->assertEquals(
+            new FloatSetting($nameID, $repositoryResult),
+            $sut->getFloatSetting($nameID)
+        );
     }
 
     public function testGetShopSettingBoolean(): void
     {
-        $serviceBooleanSetting = $this->getNegativeBooleanSetting();
-
-        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getBoolean')
-            ->willReturn(false);
-
-        $settingService = $this->getSut(shopSettingRepository: $repository);
-
         $nameID = new ID('booleanSetting');
-        $booleanSetting = $settingService->getBooleanSetting($nameID);
+        $repositoryResult = false;
 
-        $this->assertEquals($serviceBooleanSetting, $booleanSetting);
+        $settingService = $this->getSut(
+            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
+                'getBoolean',
+                $nameID,
+                $repositoryResult
+            )
+        );
+
+        $this->assertEquals(
+            new BooleanSetting($nameID, $repositoryResult),
+            $settingService->getBooleanSetting($nameID)
+        );
     }
 
     public function testGetShopSettingString(): void
     {
-        $serviceStringSetting = $this->getStringSetting();
-
-        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getString')
-            ->willReturn('default');
-
-        $settingService = $this->getSut(shopSettingRepository: $repository);
-
         $nameID = new ID('stringSetting');
-        $stringSetting = $settingService->getStringSetting($nameID);
+        $repositoryResult = 'default';
 
-        $this->assertEquals($serviceStringSetting, $stringSetting);
+        $settingService = $this->getSut(
+            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
+                'getString',
+                $nameID,
+                $repositoryResult
+            )
+        );
+
+        $this->assertEquals(
+            new StringSetting($nameID, $repositoryResult),
+            $settingService->getStringSetting($nameID)
+        );
     }
 
     public function testGetShopSettingSelect(): void
     {
-        $serviceSelectSetting = $this->getSelectSetting();
-
-        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getSelect')
-            ->willReturn('select');
-
-        $settingService = $this->getSut(shopSettingRepository: $repository);
-
         $nameID = new ID('selectSetting');
-        $selectSetting = $settingService->getSelectSetting($nameID);
+        $repositoryResult = 'select';
 
-        $this->assertEquals($serviceSelectSetting, $selectSetting);
+        $settingService = $this->getSut(
+            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
+                'getSelect',
+                $nameID,
+                $repositoryResult
+            )
+        );
+
+        $this->assertEquals(
+            new StringSetting($nameID, $repositoryResult),
+            $settingService->getSelectSetting($nameID)
+        );
     }
 
     public function testGetShopSettingCollection(): void
     {
         $nameID = new ID('arraySetting');
-
         $repositoryResult = ['nice', 'values'];
         $collectionEncodingResult = 'someEncodedResult';
+
         $settingService = $this->getSut(
-            shopSettingRepository: $this->getRepositorySettingGetterMock(
+            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
                 'getCollection',
                 $nameID,
                 $repositoryResult
@@ -122,10 +135,10 @@ class ShopSettingServiceTest extends UnitTestCase
     {
         $nameID = new ID('aarraySetting');
         $repositoryResult = ['first' => '10', 'second' => '20', 'third' => '50'];
-
         $collectionEncodingResult = 'someEncodedResult';
+
         $settingService = $this->getSut(
-            shopSettingRepository: $this->getRepositorySettingGetterMock(
+            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
                 'getAssocCollection',
                 $nameID,
                 $repositoryResult
@@ -134,12 +147,12 @@ class ShopSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals(
-            new StringSetting(new ID('aarraySetting'), $collectionEncodingResult),
+            new StringSetting($nameID, $collectionEncodingResult),
             $settingService->getAssocCollectionSetting($nameID)
         );
     }
 
-    private function getRepositorySettingGetterMock(
+    private function getShopRepositorySettingGetterMock(
         string $repositoryMethod,
         ID $nameID,
         $repositoryResult
@@ -159,12 +172,14 @@ class ShopSettingServiceTest extends UnitTestCase
             'stringSetting' => FieldType::STRING,
             'arraySetting' => FieldType::ARRAY
         ];
+
         $repository = $this->createMock(ShopSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getSettingsList')
             ->willReturn($repositorySettingsList);
 
         $sut = $this->getSut(shopSettingRepository: $repository);
+
         $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList());
     }
 
