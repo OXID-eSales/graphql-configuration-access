@@ -18,129 +18,109 @@ use TheCodingMachine\GraphQLite\Types\ID;
 final class ModuleSettingController
 {
     public function __construct(
-        private ModuleSettingServiceInterface $settingService
+        private ModuleSettingServiceInterface $moduleSettingService
     ) {
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getModuleSettingInteger(ID $name, string $moduleId): IntegerSetting
     {
-        return $this->settingService->getIntegerSetting($name, $moduleId);
+        return $this->moduleSettingService->getIntegerSetting($name, $moduleId);
     }
 
-    /**
-     * @Query
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getModuleSettingFloat(ID $name, string $moduleId): FloatSetting
     {
-        return $this->settingService->getFloatSetting($name, $moduleId);
+        return $this->moduleSettingService->getFloatSetting($name, $moduleId);
     }
 
-    /**
-     * @Query
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getModuleSettingBoolean(ID $name, string $moduleId): BooleanSetting
     {
-        return $this->settingService->getBooleanSetting($name, $moduleId);
+        return $this->moduleSettingService->getBooleanSetting($name, $moduleId);
     }
 
-    /**
-     * @Query
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getModuleSettingString(ID $name, string $moduleId): StringSetting
     {
-        return $this->settingService->getStringSetting($name, $moduleId);
+        return $this->moduleSettingService->getStringSetting($name, $moduleId);
     }
 
-    /**
-     * @Query
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getModuleSettingCollection(ID $name, string $moduleId): StringSetting
     {
-        return $this->settingService->getCollectionSetting($name, $moduleId);
+        return $this->moduleSettingService->getCollectionSetting($name, $moduleId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeModuleSettingInteger(ID $name, int $value, string $moduleId): IntegerSetting
     {
-        return $this->settingService->changeIntegerSetting($name, $value, $moduleId);
+        return $this->moduleSettingService->changeIntegerSetting($name, $value, $moduleId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeModuleSettingFloat(ID $name, float $value, string $moduleId): FloatSetting
     {
-        return $this->settingService->changeFloatSetting($name, $value, $moduleId);
+        return $this->moduleSettingService->changeFloatSetting($name, $value, $moduleId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeModuleSettingBoolean(ID $name, bool $value, string $moduleId): BooleanSetting
     {
-        return $this->settingService->changeBooleanSetting($name, $value, $moduleId);
+        return $this->moduleSettingService->changeBooleanSetting($name, $value, $moduleId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeModuleSettingString(ID $name, string $value, string $moduleId): StringSetting
     {
-        return $this->settingService->changeStringSetting($name, $value, $moduleId);
+        return $this->moduleSettingService->changeStringSetting($name, $value, $moduleId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeModuleSettingCollection(ID $name, string $value, string $moduleId): StringSetting
     {
-        return $this->settingService->changeCollectionSetting($name, $value, $moduleId);
+        return $this->moduleSettingService->changeCollectionSetting($name, $value, $moduleId);
     }
 
     /**
-     * @Query
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
      * @return SettingType[]
      */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getModuleSettingsList(string $moduleId): array
     {
-        return $this->settingService->getSettingsList($moduleId);
+        return $this->moduleSettingService->getSettingsList($moduleId);
     }
 }

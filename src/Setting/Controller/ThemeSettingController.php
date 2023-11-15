@@ -18,173 +18,145 @@ use TheCodingMachine\GraphQLite\Types\ID;
 final class ThemeSettingController
 {
     public function __construct(
-        private ThemeSettingServiceInterface $settingService
+        private ThemeSettingServiceInterface $themeSettingService
     ) {
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getThemeSettingInteger(ID $name, string $themeId): IntegerSetting
     {
-        return $this->settingService->getIntegerSetting($name, $themeId);
+        return $this->themeSettingService->getIntegerSetting($name, $themeId);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getThemeSettingFloat(ID $name, string $themeId): FloatSetting
     {
-        return $this->settingService->getFloatSetting($name, $themeId);
+        return $this->themeSettingService->getFloatSetting($name, $themeId);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getThemeSettingBoolean(ID $name, string $themeId): BooleanSetting
     {
-        return $this->settingService->getBooleanSetting($name, $themeId);
+        return $this->themeSettingService->getBooleanSetting($name, $themeId);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getThemeSettingString(ID $name, string $themeId): StringSetting
     {
-        return $this->settingService->getStringSetting($name, $themeId);
+        return $this->themeSettingService->getStringSetting($name, $themeId);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getThemeSettingSelect(ID $name, string $themeId): StringSetting
     {
-        return $this->settingService->getSelectSetting($name, $themeId);
+        return $this->themeSettingService->getSelectSetting($name, $themeId);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getThemeSettingCollection(ID $name, string $themeId): StringSetting
     {
-        return $this->settingService->getCollectionSetting($name, $themeId);
+        return $this->themeSettingService->getCollectionSetting($name, $themeId);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getThemeSettingAssocCollection(ID $name, string $themeId): StringSetting
     {
-        return $this->settingService->getAssocCollectionSetting($name, $themeId);
+        return $this->themeSettingService->getAssocCollectionSetting($name, $themeId);
     }
 
     /**
-     * @Query
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
      * @return SettingType[]
      */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getThemeSettingsList(string $themeId): array
     {
-        return $this->settingService->getSettingsList($themeId);
+        return $this->themeSettingService->getSettingsList($themeId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeThemeSettingInteger(ID $name, int $value, string $themeId): IntegerSetting
     {
-        return $this->settingService->changeIntegerSetting($name, $value, $themeId);
+        return $this->themeSettingService->changeIntegerSetting($name, $value, $themeId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeThemeSettingFloat(ID $name, float $value, string $themeId): FloatSetting
     {
-        return $this->settingService->changeFloatSetting($name, $value, $themeId);
+        return $this->themeSettingService->changeFloatSetting($name, $value, $themeId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeThemeSettingBoolean(ID $name, bool $value, string $themeId): BooleanSetting
     {
-        return $this->settingService->changeBooleanSetting($name, $value, $themeId);
+        return $this->themeSettingService->changeBooleanSetting($name, $value, $themeId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeThemeSettingString(ID $name, string $value, string $themeId): StringSetting
     {
-        return $this->settingService->changeStringSetting($name, $value, $themeId);
+        return $this->themeSettingService->changeStringSetting($name, $value, $themeId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeThemeSettingSelect(ID $name, string $value, string $themeId): StringSetting
     {
-        return $this->settingService->changeSelectSetting($name, $value, $themeId);
+        return $this->themeSettingService->changeSelectSetting($name, $value, $themeId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeThemeSettingCollection(ID $name, string $value, string $themeId): StringSetting
     {
-        return $this->settingService->changeCollectionSetting($name, $value, $themeId);
+        return $this->themeSettingService->changeCollectionSetting($name, $value, $themeId);
     }
 
-    /**
-     * @Mutation
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function changeThemeSettingAssocCollection(ID $name, string $value, string $themeId): StringSetting
     {
-        return $this->settingService->changeAssocCollectionSetting($name, $value, $themeId);
+        return $this->themeSettingService->changeAssocCollectionSetting($name, $value, $themeId);
     }
 }

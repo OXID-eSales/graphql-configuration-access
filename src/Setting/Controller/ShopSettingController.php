@@ -17,96 +17,82 @@ use TheCodingMachine\GraphQLite\Types\ID;
 final class ShopSettingController
 {
     public function __construct(
-        private ShopSettingServiceInterface $settingService
+        private ShopSettingServiceInterface $shopSettingService
     ) {
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getShopSettingInteger(ID $name): IntegerSetting
     {
-        return $this->settingService->getIntegerSetting($name);
+        return $this->shopSettingService->getIntegerSetting($name);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getShopSettingFloat(ID $name): FloatSetting
     {
-        return $this->settingService->getFloatSetting($name);
+        return $this->shopSettingService->getFloatSetting($name);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getShopSettingBoolean(ID $name): BooleanSetting
     {
-        return $this->settingService->getBooleanSetting($name);
+        return $this->shopSettingService->getBooleanSetting($name);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getShopSettingString(ID $name): StringSetting
     {
-        return $this->settingService->getStringSetting($name);
+        return $this->shopSettingService->getStringSetting($name);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getShopSettingSelect(ID $name): StringSetting
     {
-        return $this->settingService->getSelectSetting($name);
+        return $this->shopSettingService->getSelectSetting($name);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getShopSettingCollection(ID $name): StringSetting
     {
-        return $this->settingService->getCollectionSetting($name);
+        return $this->shopSettingService->getCollectionSetting($name);
     }
 
-    /**
-     * @Query()
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
-     */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getShopSettingAssocCollection(ID $name): StringSetting
     {
-        return $this->settingService->getAssocCollectionSetting($name);
+        return $this->shopSettingService->getAssocCollectionSetting($name);
     }
 
     /**
-     * @Query
-     * @Logged()
-     * @HideIfUnauthorized()
-     * @Right("CHANGE_CONFIGURATION")
      * @return SettingType[]
      */
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
     public function getShopSettingsList(): array
     {
-        return $this->settingService->getSettingsList();
+        return $this->shopSettingService->getSettingsList();
     }
 }
