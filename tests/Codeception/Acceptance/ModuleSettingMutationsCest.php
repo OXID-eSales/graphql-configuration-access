@@ -160,6 +160,6 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $setting = $result['data']['changeModuleSettingCollection'];
         $I->assertSame('arraySetting', $setting['name']);
-        $I->assertSame('[3, "interesting", "values"]', $setting['value']);
+        $I->assertSame('[3,"interesting","values"]', $setting['value']);
     }
 }

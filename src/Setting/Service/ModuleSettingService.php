@@ -99,13 +99,11 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function changeCollectionSetting(ID $name, string $value, string $moduleId): StringSetting
     {
-        $arrayValue = json_decode($value, true);
-
-        if (!is_array($arrayValue) || json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidCollection($value);
-        }
-
-        $this->moduleSettingRepository->saveCollectionSetting((string)$name, $arrayValue, $moduleId);
+        $this->moduleSettingRepository->saveCollectionSetting(
+            (string)$name,
+            $this->jsonService->jsonDecodeCollection($value),
+            $moduleId
+        );
 
         return $this->getCollectionSetting($name, $moduleId);
     }

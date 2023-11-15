@@ -243,47 +243,19 @@ class ModuleSettingServiceTest extends UnitTestCase
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
-    /**
-     * @dataProvider invalidCollectionDataProvider
-     */
-    public function testChangeModuleSettingInvalidCollection($value): void
-    {
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-
-        $settingService = $this->getSut($repository);
-
-        $nameID = new ID('collectionSetting');
-
-        $this->expectException(InvalidCollection::class);
-        $this->expectExceptionMessage(sprintf('%s is not a valid collection string.', $value));
-
-        $settingService->changeCollectionSetting($nameID, $value, 'awesomeModule');
-    }
-
-    public function invalidCollectionDataProvider(): array
-    {
-        return [
-            ['[2, "values"'],
-            ['{2, "values"}'],
-            ['2, "values"}'],
-            ['[2, values]'],
-            ['"3, interesting, values"'],
-            ['"3, \'interesting\', \'values\'"'],
-        ];
-    }
-
     public function testChangeModuleSettingCollection(): void
     {
         $name = 'collectionSetting';
         $moduleId = 'awesomeModule';
 
-        $callValue = '[2, "values"]';
+        $callValue = 'someCollectionValue';
         $repositoryValue = ['realDatabaseValue'];
 
+        $decodedValue = ['decodedCollectionValue'];
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('saveCollectionSetting')
-            ->with($name, json_decode($callValue), $moduleId);
+            ->with($name, $decodedValue, $moduleId);
         $repository->method('getCollectionSetting')
             ->with($name, $moduleId)
             ->willReturn($repositoryValue);
@@ -293,6 +265,9 @@ class ModuleSettingServiceTest extends UnitTestCase
         $encoder->method('jsonEncodeArray')
             ->with($repositoryValue)
             ->willReturn($encoderResponse);
+        $encoder->method('jsonDecodeCollection')
+            ->with($callValue)
+            ->willReturn($decodedValue);
 
         $sut = $this->getSut(
             repository: $repository,
