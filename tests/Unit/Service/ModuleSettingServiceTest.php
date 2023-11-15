@@ -3,6 +3,10 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
@@ -14,87 +18,107 @@ class ModuleSettingServiceTest extends UnitTestCase
 {
     public function testGetModuleSettingInteger(): void
     {
-        $serviceIntegerSetting = $this->getIntegerSetting();
+        $name = 'integerSetting';
+        $moduleId = 'awesomeModule';
 
+        $repositoryResponse = 123;
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getIntegerSetting')
-            ->willReturn($serviceIntegerSetting);
+            ->with($name, $moduleId)
+            ->willReturn($repositoryResponse);
 
-        $settingService = new ModuleSettingService($repository);
+        $sut = new ModuleSettingService($repository);
 
-        $nameID = new ID('integerSetting');
-        $integerSetting = $settingService->getIntegerSetting($nameID, 'awesomeModule');
-
-        $this->assertSame($serviceIntegerSetting, $integerSetting);
+        $nameID = new ID($name);
+        $this->assertEquals(
+            new IntegerSetting($nameID, $repositoryResponse),
+            $sut->getIntegerSetting($nameID, $moduleId)
+        );
     }
 
     public function testGetModuleSettingFloat(): void
     {
-        $serviceFloatSetting = $this->getFloatSetting();
+        $name = 'floatSetting';
+        $moduleId = 'awesomeModule';
 
+        $repositoryResponse = 1.23;
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getFloatSetting')
-            ->willReturn($serviceFloatSetting);
+            ->with($name, $moduleId)
+            ->willReturn($repositoryResponse);
 
-        $settingService = new ModuleSettingService($repository);
+        $sut = new ModuleSettingService($repository);
 
-        $nameID = new ID('floatSetting');
-        $floatSetting = $settingService->getFloatSetting($nameID, 'awesomeModule');
-
-        $this->assertSame($serviceFloatSetting, $floatSetting);
+        $nameID = new ID($name);
+        $this->assertEquals(
+            new FloatSetting($nameID, $repositoryResponse),
+            $sut->getFloatSetting($nameID, $moduleId)
+        );
     }
 
     public function testGetModuleSettingBoolean(): void
     {
-        $serviceBooleanSetting = $this->getNegativeBooleanSetting();
+        $name = 'booleanSetting';
+        $moduleId = 'awesomeModule';
 
+        $repositoryResponse = false;
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getBooleanSetting')
-            ->willReturn($serviceBooleanSetting);
+            ->with($name, $moduleId)
+            ->willReturn($repositoryResponse);
 
-        $settingService = new ModuleSettingService($repository);
+        $sut = new ModuleSettingService($repository);
 
-        $nameID = new ID('booleanSetting');
-        $booleanSetting = $settingService->getBooleanSetting($nameID, 'awesomeModule');
-
-        $this->assertSame($serviceBooleanSetting, $booleanSetting);
+        $nameID = new ID($name);
+        $this->assertEquals(
+            new BooleanSetting($nameID, $repositoryResponse),
+            $sut->getBooleanSetting($nameID, $moduleId)
+        );
     }
 
     public function testGetModuleSettingString(): void
     {
-        $serviceStringSetting = $this->getStringSetting();
+        $name = 'stringSetting';
+        $moduleId = 'awesomeModule';
 
+        $repositoryResponse = 'default';
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getStringSetting')
-            ->willReturn($serviceStringSetting);
+            ->with($name, $moduleId)
+            ->willReturn($repositoryResponse);
 
-        $settingService = new ModuleSettingService($repository);
+        $sut = new ModuleSettingService($repository);
 
-        $nameID = new ID('stringSetting');
-        $stringSetting = $settingService->getStringSetting($nameID, 'awesomeModule');
-
-        $this->assertSame($serviceStringSetting, $stringSetting);
+        $nameID = new ID($name);
+        $this->assertEquals(
+            new StringSetting($nameID, $repositoryResponse),
+            $sut->getStringSetting($nameID, $moduleId)
+        );
     }
 
     public function testGetModuleSettingCollection(): void
     {
-        $serviceCollectionSetting = $this->getCollectionSetting();
+        $name = 'arraySetting';
+        $moduleId = 'awesomeModule';
 
+        $repositoryResponse = ['nice', 'values'];
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('getCollectionSetting')
-            ->willReturn($serviceCollectionSetting);
+            ->with($name, $moduleId)
+            ->willReturn($repositoryResponse);
 
-        $settingService = new ModuleSettingService($repository);
+        $sut = new ModuleSettingService($repository);
 
-        $nameID = new ID('arraySetting');
-        $collectionSetting = $settingService->getCollectionSetting($nameID, 'awesomeModule');
-
-        $this->assertSame($serviceCollectionSetting, $collectionSetting);
+        $nameID = new ID($name);
+        $this->assertEquals(
+            new StringSetting($nameID, json_encode($repositoryResponse)),
+            $sut->getCollectionSetting($nameID, $moduleId)
+        );
     }
 
     public function testChangeModuleSettingInteger(): void

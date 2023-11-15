@@ -7,10 +7,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\String\UnicodeString;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -18,116 +18,121 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 {
     public function testGetModuleSettingInteger(): void
     {
-        $serviceIntegerSetting = $this->getIntegerSetting();
+        $name = 'integerSetting';
+        $moduleId = 'awesomeModule';
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
-        $moduleSettingService->expects($this->once())
-            ->method('getInteger')
-            ->willReturn(123);
-
-        $moduleRepository = $this->getModuleSettingRepository(
-            $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+        $shopServiceReturn = 123;
+        $moduleRepository = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMock(
+                'getInteger',
+                $name,
+                $moduleId,
+                $shopServiceReturn
+            )
         );
 
-        $name = new ID('integerSetting');
-        $integerSetting = $moduleRepository->getIntegerSetting($name, 'awesomeModule');
-
-        $this->assertEquals($serviceIntegerSetting, $integerSetting);
+        $this->assertEquals(
+            $shopServiceReturn,
+            $moduleRepository->getIntegerSetting($name, $moduleId)
+        );
     }
 
     public function testGetModuleSettingFloat(): void
     {
-        $serviceFloatSetting = $this->getFloatSetting();
+        $name = 'floatSetting';
+        $shopServiceReturn = 1.23;
+        $moduleId = 'awesomeModule';
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
-        $moduleSettingService->expects($this->once())
-            ->method('getFloat')
-            ->willReturn(1.23);
-
-        $moduleRepository = $this->getModuleSettingRepository(
-            $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+        $moduleRepository = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMock(
+                'getFloat',
+                $name,
+                $moduleId,
+                $shopServiceReturn
+            ),
         );
 
-        $name = new ID('floatSetting');
-        $floatSetting = $moduleRepository->getFloatSetting($name, 'awesomeModule');
-
-        $this->assertEquals($serviceFloatSetting, $floatSetting);
+        $this->assertEquals(
+            $shopServiceReturn,
+            $moduleRepository->getFloatSetting($name, $moduleId)
+        );
     }
 
     public function testGetModuleSettingBoolean(): void
     {
-        $serviceBooleanSetting = $this->getNegativeBooleanSetting();
+        $name = 'booleanSetting';
+        $shopServiceReturn = false;
+        $moduleId = 'awesomeModule';
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
-        $moduleSettingService->expects($this->once())
-            ->method('getBoolean')
-            ->willReturn(false);
-
-        $moduleRepository = $this->getModuleSettingRepository(
-            $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+        $moduleRepository = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMock(
+                'getBoolean',
+                $name,
+                $moduleId,
+                $shopServiceReturn
+            ),
         );
 
-        $name = new ID('booleanSetting');
-        $booleanSetting = $moduleRepository->getBooleanSetting($name, 'awesomeModule');
-
-        $this->assertEquals($serviceBooleanSetting, $booleanSetting);
+        $this->assertEquals(
+            $shopServiceReturn,
+            $moduleRepository->getBooleanSetting($name, $moduleId)
+        );
     }
 
     public function testGetModuleSettingString(): void
     {
-        $serviceStringSetting = $this->getStringSetting();
+        $name = 'stringSetting';
+        $moduleId = 'awesomeModule';
+        $repositoryReturn = 'default';
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
-        $moduleSettingService->expects($this->once())
-            ->method('getString')
-            ->willReturn(new UnicodeString('default'));
-
-        $moduleRepository = $this->getModuleSettingRepository(
-            $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+        $moduleRepository = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMock(
+                'getString',
+                $name,
+                $moduleId,
+                new UnicodeString($repositoryReturn)
+            ),
         );
 
-        $name = new ID('stringSetting');
-        $stringSetting = $moduleRepository->getStringSetting($name, 'awesomeModule');
-
-        $this->assertEquals($serviceStringSetting, $stringSetting);
+        $this->assertEquals(
+            $repositoryReturn,
+            $moduleRepository->getStringSetting($name, $moduleId)
+        );
     }
 
     public function testGetModuleSettingCollection(): void
     {
-        $serviceCollectionSetting = $this->getCollectionSetting();
+        $name = 'arraySetting';
+        $moduleId = 'awesomeModule';
+        $repositoryReturn = ['nice', 'values'];
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
-        $moduleSettingService->expects($this->once())
-            ->method('getCollection')
-            ->willReturn(['nice', 'values']);
-
-        $moduleRepository = $this->getModuleSettingRepository(
-            $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+        $moduleRepository = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMock(
+                'getCollection',
+                $name,
+                $moduleId,
+                $repositoryReturn
+            ),
         );
 
-        $name = new ID('arraySetting');
-        $collectionSetting = $moduleRepository->getCollectionSetting($name, 'awesomeModule');
-
-        $this->assertEquals($serviceCollectionSetting, $collectionSetting);
+        $this->assertEquals(
+            $repositoryReturn,
+            $moduleRepository->getCollectionSetting($name, $moduleId)
+        );
     }
 
     public function testChangeModuleSettingInteger(): void
     {
         $name = new ID('intSetting');
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveInteger')
             ->with($name->val(), 123, 'awesomeModule');
 
-        $moduleRepository = $this->getModuleSettingRepository(
+        $moduleRepository = $this->getSut(
             $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+            $this->createMock(ModuleConfigurationDaoInterface::class)
         );
 
         $moduleRepository->saveIntegerSetting($name, 123, 'awesomeModule');
@@ -137,14 +142,14 @@ class ModuleSettingRepositoryTest extends UnitTestCase
     {
         $name = new ID('floatSetting');
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveFloat')
             ->with($name->val(), 1.23, 'awesomeModule');
 
-        $moduleRepository = $this->getModuleSettingRepository(
+        $moduleRepository = $this->getSut(
             $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+            $this->createMock(ModuleConfigurationDaoInterface::class)
         );
 
         $moduleRepository->saveFloatSetting($name, 1.23, 'awesomeModule');
@@ -155,14 +160,14 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $name = new ID('boolSetting');
         $value = false;
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveBoolean')
             ->with($name->val(), $value, 'awesomeModule');
 
-        $moduleRepository = $this->getModuleSettingRepository(
+        $moduleRepository = $this->getSut(
             $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+            $this->createMock(ModuleConfigurationDaoInterface::class)
         );
 
         $moduleRepository->saveBooleanSetting($name, $value, 'awesomeModule');
@@ -173,14 +178,14 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $name = new ID('stringSetting');
         $value = 'default';
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveString')
             ->with($name->val(), $value, 'awesomeModule');
 
-        $moduleRepository = $this->getModuleSettingRepository(
+        $moduleRepository = $this->getSut(
             $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+            $this->createMock(ModuleConfigurationDaoInterface::class)
         );
 
         $moduleRepository->saveStringSetting($name, $value, 'awesomeModule');
@@ -191,14 +196,14 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $name = new ID('boolSetting');
         $value = [3, 'interesting', 'values'];
 
-        $moduleSettingService = $this->getModuleSettingServiceMock();
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveCollection')
             ->with($name->val(), $value, 'awesomeModule');
 
-        $moduleRepository = $this->getModuleSettingRepository(
+        $moduleRepository = $this->getSut(
             $moduleSettingService,
-            $this->getModuleConfigurationDaoMock()
+            $this->createMock(ModuleConfigurationDaoInterface::class)
         );
 
         $moduleRepository->saveCollectionSetting($name, $value, 'awesomeModule');
@@ -214,43 +219,44 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $moduleConfiguration->expects($this->once())
             ->method('getModuleSettings')
             ->willReturn([$intSetting, $stringSetting, $arraySetting]);
-        $moduleConfigurationDao = $this->getModuleConfigurationDaoMock();
+        $moduleConfigurationDao = $this->createMock(ModuleConfigurationDaoInterface::class);
         $moduleConfigurationDao->expects($this->once())
             ->method('get')
             ->willReturn($moduleConfiguration);
 
-        $moduleRepository = $this->getModuleSettingRepository(
-            $this->getModuleSettingServiceMock(),
+        $moduleRepository = $this->getSut(
+            $this->createMock(ModuleSettingServiceInterface::class),
             $moduleConfigurationDao
         );
         $settingsList = $moduleRepository->getSettingsList('awesomeModule');
         $this->assertEquals([$intSetting, $stringSetting, $arraySetting], $settingsList);
     }
 
-    /**
-     * @return ModuleConfigurationDaoInterface|(ModuleConfigurationDaoInterface&MockObject)|MockObject
-     */
-    public function getModuleConfigurationDaoMock(): ModuleConfigurationDaoInterface|MockObject
-    {
-        return $this->createMock(ModuleConfigurationDaoInterface::class);
-    }
-
-    /**
-     * @return ModuleSettingServiceInterface|(ModuleSettingServiceInterface&MockObject)|MockObject
-     */
-    public function getModuleSettingServiceMock(): MockObject|ModuleSettingServiceInterface
-    {
-        return $this->createMock(ModuleSettingServiceInterface::class);
-    }
-
-    /**
-     * @return ModuleSettingRepository
-     */
-    public function getModuleSettingRepository(
-        ModuleSettingServiceInterface $moduleSettingService,
-        ModuleConfigurationDaoInterface|MockObject $moduleConfigurationDao
+    public function getSut(
+        ?ModuleSettingServiceInterface $moduleSettingService = null,
+        ?ModuleConfigurationDaoInterface $moduleConfigurationDao = null,
+        ?BasicContextInterface $basicContext = null,
     ): ModuleSettingRepository {
-        $basicContext = $this->createMock(BasicContextInterface::class);
-        return new ModuleSettingRepository($moduleSettingService, $moduleConfigurationDao, $basicContext);
+        $moduleConfigurationDao = $moduleConfigurationDao ?? $this->createStub(ModuleConfigurationDaoInterface::class);
+
+        return new ModuleSettingRepository(
+            moduleSettingService: $moduleSettingService ?? $this->createStub(ModuleSettingServiceInterface::class),
+            moduleConfigurationDao: $moduleConfigurationDao,
+            basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class)
+        );
+    }
+
+    private function getShopModuleSettingServiceMock(
+        string $methodName,
+        string $name,
+        string $moduleId,
+        $shopServiceReturn
+    ): ModuleSettingServiceInterface {
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method($methodName)
+            ->with($name, $moduleId)
+            ->willReturn($shopServiceReturn);
+        return $moduleSettingService;
     }
 }

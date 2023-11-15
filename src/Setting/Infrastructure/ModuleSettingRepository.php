@@ -13,10 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
@@ -28,44 +24,29 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
     ) {
     }
 
-    public function getIntegerSetting(ID $name, string $moduleId): IntegerSetting
+    public function getIntegerSetting(string $name, string $moduleId): int
     {
-        $name = $name->val();
-        $value = $this->moduleSettingService->getInteger($name, $moduleId);
-
-        return new IntegerSetting(new ID($name), $value);
+        return $this->moduleSettingService->getInteger($name, $moduleId);
     }
 
-    public function getFloatSetting(ID $name, string $moduleId): FloatSetting
+    public function getFloatSetting(string $name, string $moduleId): float
     {
-        $name = $name->val();
-        $value = $this->moduleSettingService->getFloat($name, $moduleId);
-
-        return new FloatSetting(new ID($name), $value);
+        return $this->moduleSettingService->getFloat($name, $moduleId);
     }
 
-    public function getBooleanSetting(ID $name, string $moduleId): BooleanSetting
+    public function getBooleanSetting(string $name, string $moduleId): bool
     {
-        $name = $name->val();
-        $value = $this->moduleSettingService->getBoolean($name, $moduleId);
-
-        return new BooleanSetting(new ID($name), $value);
+        return $this->moduleSettingService->getBoolean($name, $moduleId);
     }
 
-    public function getStringSetting(ID $name, string $moduleId): StringSetting
+    public function getStringSetting(string $name, string $moduleId): string
     {
-        $name = $name->val();
-        $value = $this->moduleSettingService->getString($name, $moduleId);
-
-        return new StringSetting(new ID($name), (string)$value);
+        return (string)$this->moduleSettingService->getString($name, $moduleId);
     }
 
-    public function getCollectionSetting(ID $name, string $moduleId): StringSetting
+    public function getCollectionSetting(string $name, string $moduleId): array
     {
-        $name = $name->val();
-        $value = $this->moduleSettingService->getCollection($name, $moduleId);
-
-        return new StringSetting(new ID($name), json_encode($value));
+        return $this->moduleSettingService->getCollection($name, $moduleId);
     }
 
     public function saveIntegerSetting(ID $name, int $value, string $moduleId): void

@@ -3,23 +3,19 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 interface ModuleSettingRepositoryInterface
 {
-    public function getIntegerSetting(ID $name, string $moduleId): IntegerSetting;
+    public function getIntegerSetting(string $name, string $moduleId): int;
 
-    public function getFloatSetting(ID $name, string $moduleId): FloatSetting;
+    public function getFloatSetting(string $name, string $moduleId): float;
 
-    public function getBooleanSetting(ID $name, string $moduleId): BooleanSetting;
+    public function getBooleanSetting(string $name, string $moduleId): bool;
 
-    public function getStringSetting(ID $name, string $moduleId): StringSetting;
+    public function getStringSetting(string $name, string $moduleId): string;
 
-    public function getCollectionSetting(ID $name, string $moduleId): StringSetting;
+    public function getCollectionSetting(string $name, string $moduleId): array;
 
     public function saveIntegerSetting(ID $name, int $value, string $moduleId): void;
 
