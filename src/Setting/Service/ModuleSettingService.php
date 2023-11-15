@@ -22,7 +22,8 @@ use TheCodingMachine\GraphQLite\Types\ID;
 final class ModuleSettingService implements ModuleSettingServiceInterface
 {
     public function __construct(
-        private ModuleSettingRepositoryInterface $moduleSettingRepository
+        private ModuleSettingRepositoryInterface $moduleSettingRepository,
+        private JsonServiceInterface $jsonService
     ) {
     }
 
@@ -60,9 +61,11 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function getCollectionSetting(ID $name, string $moduleId): StringSetting
     {
+        $collection = $this->moduleSettingRepository->getCollectionSetting((string)$name, $moduleId);
+
         return new StringSetting(
             $name,
-            json_encode($this->moduleSettingRepository->getCollectionSetting((string)$name, $moduleId))
+            $this->jsonService->jsonEncodeArray($collection)
         );
     }
 

@@ -10,6 +10,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
@@ -28,7 +29,7 @@ class ModuleSettingServiceTest extends UnitTestCase
             ->with($name, $moduleId)
             ->willReturn($repositoryResponse);
 
-        $sut = new ModuleSettingService($repository);
+        $sut = $this->getSut($repository);
 
         $nameID = new ID($name);
         $this->assertEquals(
@@ -49,7 +50,7 @@ class ModuleSettingServiceTest extends UnitTestCase
             ->with($name, $moduleId)
             ->willReturn($repositoryResponse);
 
-        $sut = new ModuleSettingService($repository);
+        $sut = $this->getSut($repository);
 
         $nameID = new ID($name);
         $this->assertEquals(
@@ -70,7 +71,7 @@ class ModuleSettingServiceTest extends UnitTestCase
             ->with($name, $moduleId)
             ->willReturn($repositoryResponse);
 
-        $sut = new ModuleSettingService($repository);
+        $sut = $this->getSut($repository);
 
         $nameID = new ID($name);
         $this->assertEquals(
@@ -91,7 +92,7 @@ class ModuleSettingServiceTest extends UnitTestCase
             ->with($name, $moduleId)
             ->willReturn($repositoryResponse);
 
-        $sut = new ModuleSettingService($repository);
+        $sut = $this->getSut($repository);
 
         $nameID = new ID($name);
         $this->assertEquals(
@@ -112,11 +113,20 @@ class ModuleSettingServiceTest extends UnitTestCase
             ->with($name, $moduleId)
             ->willReturn($repositoryResponse);
 
-        $sut = new ModuleSettingService($repository);
+        $encoderResponse = 'encoderResponse';
+        $encoder = $this->createMock(JsonServiceInterface::class);
+        $encoder->method('jsonEncodeArray')
+            ->with($repositoryResponse)
+            ->willReturn($encoderResponse);
+
+        $sut = $this->getSut(
+            repository: $repository,
+            jsonService: $encoder
+        );
 
         $nameID = new ID($name);
         $this->assertEquals(
-            new StringSetting($nameID, json_encode($repositoryResponse)),
+            new StringSetting($nameID, $encoderResponse),
             $sut->getCollectionSetting($nameID, $moduleId)
         );
     }
@@ -125,7 +135,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
 
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getSut($repository);
 
         $nameID = new ID('intSetting');
         $integerSetting = $settingService->changeIntegerSetting($nameID, 123, 'awesomeModule');
@@ -138,7 +148,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
 
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getSut($repository);
 
         $nameID = new ID('floatSetting');
         $floatSetting = $settingService->changeFloatSetting($nameID, 1.23, 'awesomeModule');
@@ -151,7 +161,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
 
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getSut($repository);
 
         $nameID = new ID('boolSetting');
         $value = false;
@@ -165,7 +175,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
 
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getSut($repository);
 
         $nameID = new ID('stringSetting');
         $value = 'default';
@@ -182,7 +192,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
 
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getSut($repository);
 
         $nameID = new ID('collectionSetting');
 
@@ -208,7 +218,7 @@ class ModuleSettingServiceTest extends UnitTestCase
     {
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
 
-        $settingService = new ModuleSettingService($repository);
+        $settingService = $this->getSut($repository);
 
         $nameID = new ID('collectionSetting');
         $value = '[2, "values"]';
@@ -232,7 +242,17 @@ class ModuleSettingServiceTest extends UnitTestCase
             ->with($moduleId)
             ->willReturn([$intSetting, $stringSetting, $arraySetting]);
 
-        $sut = new ModuleSettingService($repository);
+        $sut = $this->getSut($repository);
         $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList($moduleId));
+    }
+
+    private function getSut(
+        ?ModuleSettingRepositoryInterface $repository = null,
+        ?JsonServiceInterface $jsonService = null,
+    ): ModuleSettingService {
+        return new ModuleSettingService(
+            moduleSettingRepository: $repository ?? $this->createStub(ModuleSettingRepositoryInterface::class),
+            jsonService: $jsonService ?? $this->createStub(JsonServiceInterface::class),
+        );
     }
 }
