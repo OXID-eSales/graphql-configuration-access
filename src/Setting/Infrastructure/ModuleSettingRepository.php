@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
 {

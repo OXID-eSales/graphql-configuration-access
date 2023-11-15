@@ -7,12 +7,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use Symfony\Component\String\UnicodeString;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 class ModuleSettingRepositoryTest extends UnitTestCase
 {
@@ -213,25 +210,36 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
     public function testGetSettingsList(): void
     {
-        $intSetting = (new Setting())->setName('intSetting')->setType(FieldType::NUMBER);
-        $stringSetting = (new Setting())->setName('stringSetting')->setType(FieldType::STRING);
-        $arraySetting = (new Setting())->setName('arraySetting')->setType(FieldType::ARRAY);
+        $shopId = 3;
+        $moduleId = 'awesomeModule';
 
-        $moduleConfiguration = $this->createMock(ModuleConfiguration::class);
-        $moduleConfiguration->expects($this->once())
-            ->method('getModuleSettings')
-            ->willReturn([$intSetting, $stringSetting, $arraySetting]);
+        $response = [
+            $this->createStub(Setting::class),
+            $this->createStub(Setting::class),
+        ];
+
         $moduleConfigurationDao = $this->createMock(ModuleConfigurationDaoInterface::class);
         $moduleConfigurationDao->expects($this->once())
             ->method('get')
-            ->willReturn($moduleConfiguration);
+            ->with($moduleId, $shopId)
+            ->willReturn(
+                $this->createConfiguredMock(ModuleConfiguration::class, [
+                    'getModuleSettings' => $response
+                ])
+            );
+
+        $basicContext = $this->createMock(BasicContextInterface::class);
+        $basicContext->method('getCurrentShopId')->willReturn($shopId);
 
         $moduleRepository = $this->getSut(
-            $this->createMock(ModuleSettingServiceInterface::class),
-            $moduleConfigurationDao
+            moduleConfigurationDao: $moduleConfigurationDao,
+            basicContext: $basicContext,
         );
-        $settingsList = $moduleRepository->getSettingsList('awesomeModule');
-        $this->assertEquals([$intSetting, $stringSetting, $arraySetting], $settingsList);
+
+        $this->assertSame(
+            $response,
+            $moduleRepository->getSettingsList($moduleId)
+        );
     }
 
     public function getSut(
