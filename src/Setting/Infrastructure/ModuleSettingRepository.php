@@ -49,29 +49,29 @@ final class ModuleSettingRepository implements ModuleSettingRepositoryInterface
         return $this->moduleSettingService->getCollection($name, $moduleId);
     }
 
-    public function saveIntegerSetting(ID $name, int $value, string $moduleId): void
+    public function saveIntegerSetting(string $name, int $value, string $moduleId): void
     {
-        $this->moduleSettingService->saveInteger($name->val(), $value, $moduleId);
+        $this->moduleSettingService->saveInteger($name, $value, $moduleId);
     }
 
-    public function saveFloatSetting(ID $name, float $value, string $moduleId): void
+    public function saveFloatSetting(string $name, float $value, string $moduleId): void
     {
-        $this->moduleSettingService->saveFloat($name->val(), $value, $moduleId);
+        $this->moduleSettingService->saveFloat($name, $value, $moduleId);
     }
 
-    public function saveBooleanSetting(ID $name, bool $value, string $moduleId): void
+    public function saveBooleanSetting(string $name, bool $value, string $moduleId): void
     {
-        $this->moduleSettingService->saveBoolean($name->val(), $value, $moduleId);
+        $this->moduleSettingService->saveBoolean($name, $value, $moduleId);
     }
 
-    public function saveStringSetting(ID $name, string $value, string $moduleId): void
+    public function saveStringSetting(string $name, string $value, string $moduleId): void
     {
-        $this->moduleSettingService->saveString($name->val(), $value, $moduleId);
+        $this->moduleSettingService->saveString($name, $value, $moduleId);
     }
 
-    public function saveCollectionSetting(ID $name, array $value, string $moduleId): void
+    public function saveCollectionSetting(string $name, array $value, string $moduleId): void
     {
-        $this->moduleSettingService->saveCollection($name->val(), $value, $moduleId);
+        $this->moduleSettingService->saveCollection($name, $value, $moduleId);
     }
 
     /**

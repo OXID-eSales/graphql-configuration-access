@@ -133,56 +133,114 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testChangeModuleSettingInteger(): void
     {
+        $name = 'intSetting';
+        $moduleId = 'awesomeModule';
+
+        $callValue = 123;
+        $repositoryValue = 321;
+
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('saveIntegerSetting')
+            ->with($name, $callValue, $moduleId);
+        $repository->expects($this->once())
+            ->method('getIntegerSetting')
+            ->with($name, $moduleId)
+            ->willReturn($repositoryValue);
 
-        $settingService = $this->getSut($repository);
+        $sut = $this->getSut(
+            repository: $repository
+        );
 
-        $nameID = new ID('intSetting');
-        $integerSetting = $settingService->changeIntegerSetting($nameID, 123, 'awesomeModule');
+        $nameID = new ID($name);
+        $setting = $sut->changeIntegerSetting($nameID, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $integerSetting->getName());
-        $this->assertSame(123, $integerSetting->getValue());
+        $this->assertSame($nameID, $setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
     }
 
     public function testChangeModuleSettingFloat(): void
     {
+        $name = 'floatSetting';
+        $moduleId = 'awesomeModule';
+
+        $callValue = 1.23;
+        $repositoryValue = 3.21;
+
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('saveFloatSetting')
+            ->with($name, $callValue, $moduleId);
+        $repository->expects($this->once())
+            ->method('getFloatSetting')
+            ->with($name, $moduleId)
+            ->willReturn($repositoryValue);
 
-        $settingService = $this->getSut($repository);
+        $sut = $this->getSut(
+            repository: $repository
+        );
 
-        $nameID = new ID('floatSetting');
-        $floatSetting = $settingService->changeFloatSetting($nameID, 1.23, 'awesomeModule');
+        $nameID = new ID($name);
+        $setting = $sut->changeFloatSetting($nameID, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $floatSetting->getName());
-        $this->assertSame(1.23, $floatSetting->getValue());
+        $this->assertSame($nameID, $setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
     }
 
     public function testChangeModuleSettingBoolean(): void
     {
+        $name = 'boolSetting';
+        $moduleId = 'awesomeModule';
+
+        $callValue = true;
+        $repositoryValue = false;
+
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('saveBooleanSetting')
+            ->with($name, $callValue, $moduleId);
+        $repository->expects($this->once())
+            ->method('getBooleanSetting')
+            ->with($name, $moduleId)
+            ->willReturn($repositoryValue);
 
-        $settingService = $this->getSut($repository);
+        $sut = $this->getSut(
+            repository: $repository
+        );
 
-        $nameID = new ID('boolSetting');
-        $value = false;
-        $booleanSetting = $settingService->changeBooleanSetting($nameID, $value, 'awesomeModule');
+        $nameID = new ID($name);
+        $setting = $sut->changeBooleanSetting($nameID, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $booleanSetting->getName());
-        $this->assertSame($value, $booleanSetting->getValue());
+        $this->assertSame($nameID, $setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
     }
 
     public function testChangeModuleSettingString(): void
     {
+        $name = 'stringSetting';
+        $moduleId = 'awesomeModule';
+
+        $callValue = 'someNewValue';
+        $repositoryValue = 'realDatabaseValue';
+
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('saveStringSetting')
+            ->with($name, $callValue, $moduleId);
+        $repository->expects($this->once())
+            ->method('getStringSetting')
+            ->with($name, $moduleId)
+            ->willReturn($repositoryValue);
 
-        $settingService = $this->getSut($repository);
+        $sut = $this->getSut(
+            repository: $repository
+        );
 
-        $nameID = new ID('stringSetting');
-        $value = 'default';
-        $stringSetting = $settingService->changeStringSetting($nameID, $value, 'awesomeModule');
+        $nameID = new ID($name);
+        $setting = $sut->changeStringSetting($nameID, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $stringSetting->getName());
-        $this->assertSame($value, $stringSetting->getValue());
+        $this->assertSame($nameID, $setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
     }
 
     /**
@@ -216,16 +274,36 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testChangeModuleSettingCollection(): void
     {
+        $name = 'collectionSetting';
+        $moduleId = 'awesomeModule';
+
+        $callValue = '[2, "values"]';
+        $repositoryValue = ['realDatabaseValue'];
+
         $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('saveCollectionSetting')
+            ->with($name, json_decode($callValue), $moduleId);
+        $repository->method('getCollectionSetting')
+            ->with($name, $moduleId)
+            ->willReturn($repositoryValue);
 
-        $settingService = $this->getSut($repository);
+        $encoderResponse = 'encoderResponse';
+        $encoder = $this->createMock(JsonServiceInterface::class);
+        $encoder->method('jsonEncodeArray')
+            ->with($repositoryValue)
+            ->willReturn($encoderResponse);
 
-        $nameID = new ID('collectionSetting');
-        $value = '[2, "values"]';
-        $collectionSetting = $settingService->changeCollectionSetting($nameID, $value, 'awesomeModule');
+        $sut = $this->getSut(
+            repository: $repository,
+            jsonService: $encoder,
+        );
 
-        $this->assertSame($nameID, $collectionSetting->getName());
-        $this->assertSame($value, $collectionSetting->getValue());
+        $nameID = new ID($name);
+        $setting = $sut->changeCollectionSetting($nameID, $callValue, $moduleId);
+
+        $this->assertSame($nameID, $setting->getName());
+        $this->assertSame($encoderResponse, $setting->getValue());
     }
 
     public function testListModuleSettings(): void

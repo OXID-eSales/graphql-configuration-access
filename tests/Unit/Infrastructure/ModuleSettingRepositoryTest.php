@@ -23,7 +23,7 @@ class ModuleSettingRepositoryTest extends UnitTestCase
 
         $shopServiceReturn = 123;
         $moduleRepository = $this->getSut(
-            moduleSettingService: $this->getShopModuleSettingServiceMock(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
                 'getInteger',
                 $name,
                 $moduleId,
@@ -44,7 +44,7 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $moduleId = 'awesomeModule';
 
         $moduleRepository = $this->getSut(
-            moduleSettingService: $this->getShopModuleSettingServiceMock(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
                 'getFloat',
                 $name,
                 $moduleId,
@@ -65,7 +65,7 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $moduleId = 'awesomeModule';
 
         $moduleRepository = $this->getSut(
-            moduleSettingService: $this->getShopModuleSettingServiceMock(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
                 'getBoolean',
                 $name,
                 $moduleId,
@@ -86,7 +86,7 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $repositoryReturn = 'default';
 
         $moduleRepository = $this->getSut(
-            moduleSettingService: $this->getShopModuleSettingServiceMock(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
                 'getString',
                 $name,
                 $moduleId,
@@ -107,7 +107,7 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         $repositoryReturn = ['nice', 'values'];
 
         $moduleRepository = $this->getSut(
-            moduleSettingService: $this->getShopModuleSettingServiceMock(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
                 'getCollection',
                 $name,
                 $moduleId,
@@ -121,92 +121,94 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         );
     }
 
-    public function testChangeModuleSettingInteger(): void
+    public function testSaveIntegerSettingProxyingDataToShopService(): void
     {
-        $name = new ID('intSetting');
+        $name = 'intSetting';
+        $moduleId = 'awesomeModule';
 
+        $callValue = 123;
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveInteger')
-            ->with($name->val(), 123, 'awesomeModule');
+            ->with($name, $callValue, $moduleId);
 
         $moduleRepository = $this->getSut(
-            $moduleSettingService,
-            $this->createMock(ModuleConfigurationDaoInterface::class)
+            moduleSettingService: $moduleSettingService
         );
 
-        $moduleRepository->saveIntegerSetting($name, 123, 'awesomeModule');
+        $moduleRepository->saveIntegerSetting($name, $callValue, $moduleId);
     }
 
-    public function testChangeModuleSettingFloat(): void
+    public function testSaveFloatSettingProxyingDataToShopService(): void
     {
-        $name = new ID('floatSetting');
+        $name = 'floatSetting';
+        $moduleId = 'awesomeModule';
 
+        $callValue = 1.23;
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveFloat')
-            ->with($name->val(), 1.23, 'awesomeModule');
+            ->with($name, $callValue, $moduleId);
 
         $moduleRepository = $this->getSut(
-            $moduleSettingService,
-            $this->createMock(ModuleConfigurationDaoInterface::class)
+            moduleSettingService: $moduleSettingService
         );
 
-        $moduleRepository->saveFloatSetting($name, 1.23, 'awesomeModule');
+        $moduleRepository->saveFloatSetting($name, $callValue, $moduleId);
     }
 
-    public function testChangeModuleSettingBoolean(): void
+    public function testSaveBooleanSettingProxyingDataToShopService(): void
     {
-        $name = new ID('boolSetting');
-        $value = false;
+        $name = 'boolSetting';
+        $moduleId = 'awesomeModule';
 
+        $callValue = false;
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveBoolean')
-            ->with($name->val(), $value, 'awesomeModule');
+            ->with($name, $callValue, $moduleId);
 
         $moduleRepository = $this->getSut(
-            $moduleSettingService,
-            $this->createMock(ModuleConfigurationDaoInterface::class)
+            moduleSettingService: $moduleSettingService
         );
 
-        $moduleRepository->saveBooleanSetting($name, $value, 'awesomeModule');
+        $moduleRepository->saveBooleanSetting($name, $callValue, $moduleId);
     }
 
-    public function testChangeModuleSettingString(): void
+    public function testSaveStringSettingProxyingDataToShopService(): void
     {
-        $name = new ID('stringSetting');
-        $value = 'default';
+        $name = 'stringSetting';
+        $moduleId = 'awesomeModule';
 
+        $callValue = 'default';
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveString')
-            ->with($name->val(), $value, 'awesomeModule');
+            ->with($name, $callValue, $moduleId);
 
         $moduleRepository = $this->getSut(
-            $moduleSettingService,
-            $this->createMock(ModuleConfigurationDaoInterface::class)
+            moduleSettingService: $moduleSettingService
         );
 
-        $moduleRepository->saveStringSetting($name, $value, 'awesomeModule');
+        $moduleRepository->saveStringSetting($name, $callValue, $moduleId);
     }
 
-    public function testChangeModuleSettingCollection(): void
+    public function testSaveCollectionSettingProxyingDataToShopService(): void
     {
-        $name = new ID('boolSetting');
-        $value = [3, 'interesting', 'values'];
+        $name = 'collectionSetting';
+        $moduleId = 'awesomeModule';
 
+        $callValue = [3, 'interesting', 'values'];
         $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
         $moduleSettingService->expects($this->once())
             ->method('saveCollection')
-            ->with($name->val(), $value, 'awesomeModule');
+            ->with($name, $callValue, $moduleId);
 
         $moduleRepository = $this->getSut(
-            $moduleSettingService,
-            $this->createMock(ModuleConfigurationDaoInterface::class)
+            moduleSettingService: $moduleSettingService
         );
 
-        $moduleRepository->saveCollectionSetting($name, $value, 'awesomeModule');
+        $moduleRepository->saveCollectionSetting($name, $callValue, $moduleId);
     }
 
     public function testGetSettingsList(): void
@@ -246,7 +248,7 @@ class ModuleSettingRepositoryTest extends UnitTestCase
         );
     }
 
-    private function getShopModuleSettingServiceMock(
+    private function getShopModuleSettingServiceMethodStub(
         string $methodName,
         string $name,
         string $moduleId,

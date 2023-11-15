@@ -71,30 +71,30 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function changeIntegerSetting(ID $name, int $value, string $moduleId): IntegerSetting
     {
-        $this->moduleSettingRepository->saveIntegerSetting($name, $value, $moduleId);
+        $this->moduleSettingRepository->saveIntegerSetting((string)$name, $value, $moduleId);
 
-        return new IntegerSetting($name, $value);
+        return $this->getIntegerSetting($name, $moduleId);
     }
 
     public function changeFloatSetting(ID $name, float $value, string $moduleId): FloatSetting
     {
-        $this->moduleSettingRepository->saveFloatSetting($name, $value, $moduleId);
+        $this->moduleSettingRepository->saveFloatSetting((string)$name, $value, $moduleId);
 
-        return new FloatSetting($name, $value);
+        return $this->getFloatSetting($name, $moduleId);
     }
 
     public function changeBooleanSetting(ID $name, bool $value, string $moduleId): BooleanSetting
     {
-        $this->moduleSettingRepository->saveBooleanSetting($name, $value, $moduleId);
+        $this->moduleSettingRepository->saveBooleanSetting((string)$name, $value, $moduleId);
 
-        return new BooleanSetting($name, $value);
+        return $this->getBooleanSetting($name, $moduleId);
     }
 
     public function changeStringSetting(ID $name, string $value, string $moduleId): StringSetting
     {
-        $this->moduleSettingRepository->saveStringSetting($name, $value, $moduleId);
+        $this->moduleSettingRepository->saveStringSetting((string)$name, $value, $moduleId);
 
-        return new StringSetting($name, $value);
+        return $this->getStringSetting($name, $moduleId);
     }
 
     public function changeCollectionSetting(ID $name, string $value, string $moduleId): StringSetting
@@ -105,9 +105,9 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
             throw new InvalidCollection($value);
         }
 
-        $this->moduleSettingRepository->saveCollectionSetting($name, $arrayValue, $moduleId);
+        $this->moduleSettingRepository->saveCollectionSetting((string)$name, $arrayValue, $moduleId);
 
-        return new StringSetting($name, $value);
+        return $this->getCollectionSetting($name, $moduleId);
     }
 
     /**
