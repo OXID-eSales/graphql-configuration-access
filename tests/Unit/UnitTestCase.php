@@ -9,6 +9,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
@@ -88,5 +89,16 @@ class UnitTestCase extends TestCase
             ->willReturn($shopId);
 
         return $basicContext;
+    }
+
+    protected function getJsonEncodeServiceMock(
+        array $repositoryResult,
+        string $collectionEncodingResult
+    ): JsonServiceInterface {
+        $jsonService = $this->createMock(JsonServiceInterface::class);
+        $jsonService->method('jsonEncodeArray')
+            ->with($repositoryResult)
+            ->willReturn($collectionEncodingResult);
+        return $jsonService;
     }
 }

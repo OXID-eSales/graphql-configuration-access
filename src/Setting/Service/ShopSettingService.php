@@ -20,7 +20,8 @@ use TheCodingMachine\GraphQLite\Types\ID;
 final class ShopSettingService implements ShopSettingServiceInterface
 {
     public function __construct(
-        private ShopSettingRepositoryInterface $shopSettingRepository
+        private ShopSettingRepositoryInterface $shopSettingRepository,
+        private JsonServiceInterface $jsonService,
     ) {
     }
 
@@ -57,13 +58,17 @@ final class ShopSettingService implements ShopSettingServiceInterface
     public function getCollectionSetting(ID $name): StringSetting
     {
         $collectionString = $this->shopSettingRepository->getCollection($name);
-        return new StringSetting($name, json_encode($collectionString));
+        $collectionEncodingResult = $this->jsonService->jsonEncodeArray($collectionString);
+
+        return new StringSetting($name, $collectionEncodingResult);
     }
 
     public function getAssocCollectionSetting(ID $name): StringSetting
     {
         $assocCollectionString = $this->shopSettingRepository->getAssocCollection($name);
-        return new StringSetting($name, json_encode($assocCollectionString));
+        $assocCollectionEncodingResult = $this->jsonService->jsonEncodeArray($assocCollectionString);
+
+        return new StringSetting($name, $assocCollectionEncodingResult);
     }
 
     /**

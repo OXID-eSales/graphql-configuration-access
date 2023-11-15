@@ -183,17 +183,6 @@ class ThemeSettingServiceTest extends UnitTestCase
         return $repository;
     }
 
-    private function getJsonEncodeServiceMock(
-        array $repositoryResult,
-        string $collectionEncodingResult
-    ): JsonServiceInterface {
-        $jsonService = $this->createMock(JsonServiceInterface::class);
-        $jsonService->method('jsonEncodeArray')
-            ->with($repositoryResult)
-            ->willReturn($collectionEncodingResult);
-        return $jsonService;
-    }
-
     public function testListThemeSettings(): void
     {
         $themeId = 'awesomeTheme';
