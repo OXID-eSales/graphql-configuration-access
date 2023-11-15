@@ -57,7 +57,10 @@
         "phpunit": "vendor/bin/phpunit --bootstrap=/var/www/source/bootstrap.php --config=tests/",
         "phpunit-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --bootstrap=/var/www/source/bootstrap.php --config=tests/ --coverage-html=tests/reports/coverage",
 
-        "codeception": "MODULE_IDS=oe_graphql_base,oe_graphql_configuration_access /var/www/vendor/bin/codecept run acceptance -c /var/www/vendor/oxid-esales/graphql-configuration-access/tests/codeception.yml --no-redirect"
+        "codeception": [
+            "Composer\\Config::disableProcessTimeout",
+            "MODULE_IDS=oe_graphql_base,oe_graphql_configuration_access /var/www/vendor/bin/codecept run acceptance -c /var/www/vendor/oxid-esales/graphql-configuration-access/tests/codeception.yml --no-redirect"
+        ]
     },
     "config": {
         "allow-plugins": {
