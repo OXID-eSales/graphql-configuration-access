@@ -22,7 +22,7 @@ interface ShopSettingRepositoryInterface
     public function getAssocCollection(ID $name): array;
 
     /**
-     * @return array<string, FieldType>
+     * @return array<string, string>
      */
     public function getSettingsList(): array;
 }

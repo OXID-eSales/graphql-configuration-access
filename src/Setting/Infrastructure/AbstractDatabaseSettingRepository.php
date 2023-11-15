@@ -23,13 +23,13 @@ abstract class AbstractDatabaseSettingRepository
     ) {
     }
 
-    protected function throwGetterNotFoundException(string $typeString)
+    protected function throwGetterNotFoundException(string $typeString): void
     {
         $aOrAn = (preg_match('/^[aeiou]/i', $typeString)) ? 'an' : 'a';
         throw new NotFound("The queried name couldn't be found as $aOrAn $typeString configuration");
     }
 
-    protected function throwSetterNotFoundException(string $typeString, string $name)
+    protected function throwSetterNotFoundException(string $typeString, string $name): void
     {
         throw new NotFound('The ' . $typeString . ' setting "' . $name . '" doesn\'t exist');
     }

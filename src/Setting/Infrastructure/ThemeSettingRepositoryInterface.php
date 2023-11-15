@@ -22,7 +22,7 @@ interface ThemeSettingRepositoryInterface
     public function getAssocCollection(ID $name, string $themeId): array;
 
     /**
-     * @return array<string, FieldType>
+     * @return array<string, string>
      */
     public function getSettingsList(string $themeId): array;
 
