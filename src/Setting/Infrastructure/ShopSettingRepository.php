@@ -77,20 +77,17 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return (bool)preg_match("/^\d+(\.\d+)?$/", $value);
     }
 
+    public function getBoolean(string $name): bool
+    {
+        $setting = $this->getShopSetting($name);
+        $this->checkSettingType($setting, FieldType::BOOLEAN);
+
+        return (bool)$setting->getValue();
+    }
+
     protected function getShopSetting(string $name): ShopConfigurationSetting
     {
         return $this->configurationSettingDao->get($name, $this->basicContext->getCurrentShopId());
-    }
-
-    public function getBoolean(ID $name): bool
-    {
-        try {
-            $value = $this->getSettingValue($name, FieldType::BOOLEAN);
-        } catch (NotFound $e) {
-            $this->throwGetterNotFoundException('boolean');
-        }
-
-        return (bool)$value;
     }
 
     public function getString(ID $name): string

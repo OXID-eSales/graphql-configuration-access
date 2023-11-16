@@ -68,7 +68,7 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals(
             new BooleanSetting($nameID, $repositoryResult),
-            $settingService->getBooleanSetting($nameID)
+            $settingService->getBooleanSetting((string)$nameID)
         );
     }
 

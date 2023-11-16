@@ -37,10 +37,10 @@ final class ShopSettingService implements ShopSettingServiceInterface
         return new FloatSetting(new ID($name), $float);
     }
 
-    public function getBooleanSetting(ID $name): BooleanSetting
+    public function getBooleanSetting(string $name): BooleanSetting
     {
         $bool = $this->shopSettingRepository->getBoolean($name);
-        return new BooleanSetting($name, $bool);
+        return new BooleanSetting(new ID($name), $bool);
     }
 
     public function getStringSetting(ID $name): StringSetting

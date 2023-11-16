@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncod
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
@@ -28,15 +29,13 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $settingName = 'settingName';
         $shopId = 3;
 
-        $shopSettingType = 'num';
-
         $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
         $shopSettingDaoStub->method('get')
             ->with($settingName, $shopId)
             ->willReturn(
                 $this->createConfiguredMock(ShopConfigurationSetting::class, [
                     'getName' => $settingName,
-                    'getType' => $shopSettingType,
+                    'getType' => FieldType::NUMBER,
                     'getValue' => $possibleValue
                 ])
             );
@@ -70,7 +69,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
             ->willReturn(
                 $this->createConfiguredMock(ShopConfigurationSetting::class, [
                     'getName' => $settingName,
-                    'getType' => 'num',
+                    'getType' => FieldType::NUMBER,
                     'getValue' => $possibleValue
                 ])
             );
@@ -166,41 +165,53 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'value' => 'any',
             'expectedException' => WrongSettingValueException::class
         ];
+
+        yield [
+            'method' => 'getBoolean',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
     }
 
-    public function testGetShopSettingBooleanNegativ(): void
+    /** @dataProvider possibleBoolValuesDataProvider */
+    public function testGetShopSettingBoolean($possibleValue, $expectedResult): void
     {
-        $nameID = new ID('booleanSetting');
+        $settingName = 'settingName';
+        $shopId = 3;
 
+        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoStub->method('get')
+            ->with($settingName, $shopId)
+            ->willReturn(
+                $this->createConfiguredMock(ShopConfigurationSetting::class, [
+                    'getName' => $settingName,
+                    'getType' => FieldType::BOOLEAN,
+                    'getValue' => $possibleValue
+                ])
+            );
 
-        $repository = $this->getFetchOneShopSettingRepoInstance('');
+        $basicContext = $this->createStub(BasicContextInterface::class);
+        $basicContext->method('getCurrentShopId')->willReturn($shopId);
 
-        $boolean = $repository->getBoolean($nameID);
+        $sut = $this->getSut(
+            basicContext: $basicContext,
+            shopSettingDao: $shopSettingDaoStub
+        );
 
-        $this->assertEquals(false, $boolean);
+        $this->assertSame($expectedResult, $sut->getBoolean($settingName));
     }
 
-    public function testGetShopSettingBooleanPositiv(): void
+    public function possibleBoolValuesDataProvider(): \Generator
     {
-        $nameID = new ID('booleanSetting');
-
-
-        $repository = $this->getFetchOneShopSettingRepoInstance('1');
-
-        $boolean = $repository->getBoolean($nameID);
-
-        $this->assertEquals(true, $boolean);
-    }
-
-    public function testGetNoShopSettingBoolean(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getFetchOneShopSettingRepoInstance(false);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a boolean configuration');
-        $repository->getBoolean($nameID);
+        yield ['possibleValue' => 1, 'expectedResult' => true];
+        yield ['possibleValue' => '1', 'expectedResult' => true];
+        yield ['possibleValue' => true, 'expectedResult' => true];
+        yield ['possibleValue' => 'anything', 'expectedResult' => true];
+        yield ['possibleValue' => null, 'expectedResult' => false];
+        yield ['possibleValue' => 0, 'expectedResult' => false];
+        yield ['possibleValue' => '0', 'expectedResult' => false];
+        yield ['possibleValue' => false, 'expectedResult' => false];
     }
 
     public function testGetShopSettingString(): void

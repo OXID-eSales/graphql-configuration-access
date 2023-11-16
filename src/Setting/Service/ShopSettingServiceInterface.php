@@ -15,7 +15,7 @@ interface ShopSettingServiceInterface
 
     public function getFloatSetting(string $name): FloatSetting;
 
-    public function getBooleanSetting(ID $name): BooleanSetting;
+    public function getBooleanSetting(string $name): BooleanSetting;
 
     public function getStringSetting(ID $name): StringSetting;
 
