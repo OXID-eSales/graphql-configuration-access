@@ -13,9 +13,7 @@ use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-/**
- * @Type()
- */
+#[Type]
 final class IntegerSetting
 {
     public function __construct(
@@ -24,17 +22,13 @@ final class IntegerSetting
     ) {
     }
 
-    /**
-     * @Field()
-     */
+    #[Field]
     public function getName(): ID
     {
         return $this->name;
     }
 
-    /**
-     * @Field()
-     */
+    #[Field]
     public function getValue(): int
     {
         return $this->value;

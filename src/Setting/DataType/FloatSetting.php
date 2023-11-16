@@ -13,9 +13,7 @@ use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-/**
- * @Type()
- */
+#[Type]
 final class FloatSetting
 {
     public function __construct(
@@ -24,17 +22,13 @@ final class FloatSetting
     ) {
     }
 
-    /**
-     * @Field()
-     */
+    #[Field]
     public function getName(): ID
     {
         return $this->name;
     }
 
-    /**
-     * @Field()
-     */
+    #[Field]
     public function getValue(): float
     {
         return $this->value;

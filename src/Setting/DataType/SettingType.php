@@ -14,9 +14,7 @@ use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-/**
- * @Type
- */
+#[Type]
 final class SettingType
 {
     public function __construct(
@@ -25,25 +23,19 @@ final class SettingType
     ) {
     }
 
-    /**
-     * @Field
-     */
+    #[Field]
     public function getName(): ID
     {
         return $this->name;
     }
 
-    /**
-     * @Field
-     */
+    #[Field]
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @Field
-     */
+    #[Field]
     public function isSupported(): bool
     {
         return FieldType::validateFieldType($this->getType());
