@@ -179,6 +179,13 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'value' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
+
+        yield [
+            'method' => 'getSelect',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
     }
 
     /** @dataProvider possibleBoolValuesDataProvider */
@@ -259,28 +266,32 @@ class ShopSettingRepositoryTest extends UnitTestCase
         yield ['possibleValue' => '', 'expectedResult' => ''];
     }
 
-
-    public function testGetShopSettingSelect(): void
+    /** @dataProvider possibleStringValuesDataProvider */
+    public function testGetShopSettingSelect($possibleValue, $expectedResult): void
     {
-        $nameID = new ID('selectSetting');
+        $settingName = 'settingName';
+        $shopId = 3;
 
+        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoStub->method('get')
+            ->with($settingName, $shopId)
+            ->willReturn(
+                $this->createConfiguredMock(ShopConfigurationSetting::class, [
+                    'getName' => $settingName,
+                    'getType' => FieldType::SELECT,
+                    'getValue' => $possibleValue
+                ])
+            );
 
-        $repository = $this->getFetchOneShopSettingRepoInstance('select');
+        $basicContext = $this->createStub(BasicContextInterface::class);
+        $basicContext->method('getCurrentShopId')->willReturn($shopId);
 
-        $select = $repository->getSelect($nameID);
+        $sut = $this->getSut(
+            basicContext: $basicContext,
+            shopSettingDao: $shopSettingDaoStub
+        );
 
-        $this->assertEquals('select', $select);
-    }
-
-    public function testGetNoShopSettingSelect(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getFetchOneShopSettingRepoInstance(false);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a select configuration');
-        $repository->getSelect($nameID);
+        $this->assertSame($expectedResult, $sut->getSelect($settingName));
     }
 
     public function testGetShopSettingCollection(): void

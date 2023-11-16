@@ -49,10 +49,10 @@ final class ShopSettingService implements ShopSettingServiceInterface
         return new StringSetting(new ID($name), $string);
     }
 
-    public function getSelectSetting(ID $name): StringSetting
+    public function getSelectSetting(string $name): StringSetting
     {
         $select = $this->shopSettingRepository->getSelect($name);
-        return new StringSetting($name, $select);
+        return new StringSetting(new ID($name), $select);
     }
 
     public function getCollectionSetting(ID $name): StringSetting

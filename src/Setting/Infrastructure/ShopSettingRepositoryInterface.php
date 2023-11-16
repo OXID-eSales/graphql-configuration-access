@@ -15,7 +15,7 @@ interface ShopSettingRepositoryInterface
 
     public function getString(string $name): string;
 
-    public function getSelect(ID $name): string;
+    public function getSelect(string $name): string;
 
     public function getCollection(ID $name): array;
 
