@@ -19,9 +19,9 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
-use UnexpectedValueException;
 
 final class ShopSettingRepository implements ShopSettingRepositoryInterface
 {
@@ -39,7 +39,20 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $setting = $this->getShopSetting($name);
         $this->checkSettingType($setting, FieldType::NUMBER);
 
-        return (int)$setting->getValue();
+        $value = $setting->getValue();
+        if (
+            !is_int($value)
+            && !(is_string($value) && $this->matchesOnlyDigits($value))
+        ) {
+            throw new WrongSettingValueException();
+        }
+
+        return (int)$value;
+    }
+
+    private function matchesOnlyDigits(string $value): bool
+    {
+        return (bool)preg_match("/^\d+$/", $value);
     }
 
     public function getFloat(string $name): float
@@ -47,7 +60,21 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $setting = $this->getShopSetting($name);
         $this->checkSettingType($setting, FieldType::NUMBER);
 
-        return (float)$setting->getValue();
+        $value = $setting->getValue();
+        if (
+            !is_int($value)
+            && !is_float($value)
+            && !(is_string($value) && $this->matchesFloatDigits($value))
+        ) {
+            throw new WrongSettingValueException();
+        }
+
+        return (float)$value;
+    }
+
+    private function matchesFloatDigits(string $value): bool
+    {
+        return (bool)preg_match("/^\d+(\.\d+)?$/", $value);
     }
 
     protected function getShopSetting(string $name): ShopConfigurationSetting

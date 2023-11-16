@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
@@ -21,15 +22,13 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 class ShopSettingRepositoryTest extends UnitTestCase
 {
-    public function testGetShopSettingInteger(): void
+    /** @dataProvider possibleIntegerValuesDataProvider */
+    public function testGetShopSettingInteger($possibleValue, $expectedResult): void
     {
         $settingName = 'settingName';
         $shopId = 3;
 
-        $shopSettingValue = 123;
         $shopSettingType = 'num';
-
-        $expectedValue = 123;
 
         $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
         $shopSettingDaoStub->method('get')
@@ -38,7 +37,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
                 $this->createConfiguredMock(ShopConfigurationSetting::class, [
                     'getName' => $settingName,
                     'getType' => $shopSettingType,
-                    'getValue' => $shopSettingValue
+                    'getValue' => $possibleValue
                 ])
             );
 
@@ -50,18 +49,20 @@ class ShopSettingRepositoryTest extends UnitTestCase
             shopSettingDao: $shopSettingDaoStub
         );
 
-        $this->assertSame($expectedValue, $sut->getInteger($settingName));
+        $this->assertSame($expectedResult, $sut->getInteger($settingName));
     }
 
-    public function testGetShopSettingFloat(): void
+    public function possibleIntegerValuesDataProvider(): \Generator
+    {
+        yield ['possibleValue' => 123, 'expectedResult' => 123];
+        yield ['possibleValue' => '123', 'expectedResult' => 123];
+    }
+
+    /** @dataProvider possibleFloatValuesDataProvider */
+    public function testGetShopSettingFloat($possibleValue, $expectedResult): void
     {
         $settingName = 'settingName';
         $shopId = 3;
-
-        $shopSettingValue = 1.23;
-        $shopSettingType = 'num';
-
-        $expectedValue = 1.23;
 
         $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
         $shopSettingDaoStub->method('get')
@@ -69,8 +70,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
             ->willReturn(
                 $this->createConfiguredMock(ShopConfigurationSetting::class, [
                     'getName' => $settingName,
-                    'getType' => $shopSettingType,
-                    'getValue' => $shopSettingValue
+                    'getType' => 'num',
+                    'getValue' => $possibleValue
                 ])
             );
 
@@ -82,18 +83,23 @@ class ShopSettingRepositoryTest extends UnitTestCase
             shopSettingDao: $shopSettingDaoStub
         );
 
-        $this->assertSame($expectedValue, $sut->getFloat($settingName));
+        $this->assertSame($expectedResult, $sut->getFloat($settingName));
+    }
+
+    public function possibleFloatValuesDataProvider(): \Generator
+    {
+        yield ['possibleValue' => 123.2, 'expectedResult' => 123.2];
+        yield ['possibleValue' => 123, 'expectedResult' => 123.0];
+        yield ['possibleValue' => '123', 'expectedResult' => 123.0];
     }
 
     /** @dataProvider wrongSettingsDataProvider */
-    public function testGetShopSettingIntegerWrongData(
+    public function testGetShopSettingWrongData(
         string $method,
         string $type,
         $value,
         string $expectedException
     ): void {
-        $settingName = 'settingName';
-
         $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
         $shopSettingDaoStub->method('get')->willReturn(
             $this->createConfiguredMock(ShopConfigurationSetting::class, [
@@ -107,7 +113,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
         );
 
         $this->expectException($expectedException);
-        $sut->$method($settingName);
+        $sut->$method('settingName');
     }
 
     public function wrongSettingsDataProvider(): \Generator
@@ -120,24 +126,47 @@ class ShopSettingRepositoryTest extends UnitTestCase
         ];
 
         yield [
+            'method' => 'getInteger',
+            'type' => 'num',
+            'value' => 'any',
+            'expectedException' => WrongSettingValueException::class
+        ];
+
+        yield [
+            'method' => 'getInteger',
+            'type' => 'num',
+            'value' => null,
+            'expectedException' => WrongSettingValueException::class
+        ];
+
+        yield [
+            'method' => 'getInteger',
+            'type' => 'num',
+            'value' => 1.123,
+            'expectedException' => WrongSettingValueException::class
+        ];
+
+        yield [
+            'method' => 'getInteger',
+            'type' => 'num',
+            'value' => '1.123',
+            'expectedException' => WrongSettingValueException::class
+        ];
+
+        yield [
             'method' => 'getFloat',
             'type' => 'wrong',
             'value' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
-    }
 
-//
-//    public function testGetShopSettingInvalidFloat(): void
-//    {
-//        $nameID = new ID('intSetting');
-//
-//        $repository = $this->getFetchOneShopSettingRepoInstance('123');
-//
-//        $this->expectException(UnexpectedValueException::class);
-//        $this->expectExceptionMessage('The queried configuration was found as an integer, not a float');
-//        $repository->getFloat($nameID);
-//    }
+        yield [
+            'method' => 'getFloat',
+            'type' => 'num',
+            'value' => 'any',
+            'expectedException' => WrongSettingValueException::class
+        ];
+    }
 
     public function testGetShopSettingBooleanNegativ(): void
     {
