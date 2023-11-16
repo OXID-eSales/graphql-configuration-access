@@ -18,7 +18,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
-use UnexpectedValueException;
 
 class ShopSettingRepositoryTest extends UnitTestCase
 {
@@ -54,25 +53,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $this->assertSame($expectedValue, $sut->getInteger($settingName));
     }
 
-    public function testGetShopSettingIntegerWrongType(): void
-    {
-        $settingName = 'settingName';
-
-        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
-        $shopSettingDaoStub->method('get')->willReturn(
-            $this->createConfiguredMock(ShopConfigurationSetting::class, [
-                'getType' => 'wrong'
-            ])
-        );
-
-        $sut = $this->getSut(
-            shopSettingDao: $shopSettingDaoStub
-        );
-
-        $this->expectException(WrongSettingTypeException::class);
-        $sut->getInteger($settingName);
-    }
-
     public function testGetShopSettingFloat(): void
     {
         $settingName = 'settingName';
@@ -104,6 +84,49 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
         $this->assertSame($expectedValue, $sut->getFloat($settingName));
     }
+
+    /** @dataProvider wrongSettingsDataProvider */
+    public function testGetShopSettingIntegerWrongData(
+        string $method,
+        string $type,
+        $value,
+        string $expectedException
+    ): void {
+        $settingName = 'settingName';
+
+        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoStub->method('get')->willReturn(
+            $this->createConfiguredMock(ShopConfigurationSetting::class, [
+                'getType' => $type,
+                'getValue' => $value
+            ])
+        );
+
+        $sut = $this->getSut(
+            shopSettingDao: $shopSettingDaoStub
+        );
+
+        $this->expectException($expectedException);
+        $sut->$method($settingName);
+    }
+
+    public function wrongSettingsDataProvider(): \Generator
+    {
+        yield [
+            'method' => 'getInteger',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
+
+        yield [
+            'method' => 'getFloat',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
+    }
+
 //
 //    public function testGetShopSettingInvalidFloat(): void
 //    {
