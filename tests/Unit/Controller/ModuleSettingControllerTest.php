@@ -3,197 +3,122 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Controller;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller\ModuleSettingController;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 class ModuleSettingControllerTest extends UnitTestCase
 {
-    public function testGetModuleSettingInteger(): void
-    {
-        $serviceIntegerSetting = $this->getIntegerSetting();
-
+    /** @dataProvider proxyTestDataProvider */
+    public function testGetModuleSettingProxyToService(
+        string $controllerMethod,
+        string $serviceMethod,
+        array $params,
+        $expectedValue
+    ): void {
         $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('getIntegerSetting')
-            ->willReturn($serviceIntegerSetting);
+        $settingService->expects($this->once())->method($serviceMethod)->with(...$params)->willReturn($expectedValue);
 
         $settingController = new ModuleSettingController($settingService);
 
-        $nameID = $serviceIntegerSetting->getName();
-        $integerSetting = $settingController->getModuleSettingInteger($nameID, 'awesomeModule');
-
-        $this->assertSame($serviceIntegerSetting, $integerSetting);
+        $this->assertSame($expectedValue, $settingController->$controllerMethod(...$params));
     }
 
-    public function testGetModuleSettingFloat(): void
+    public function proxyTestDataProvider(): \Generator
     {
-        $serviceFloatSetting = $this->getFloatSetting();
+        $settingNameID = new ID('settingName');
 
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('getFloatSetting')
-            ->willReturn($serviceFloatSetting);
+        yield 'getter integer' => [
+            'controllerMethod' => 'getModuleSettingInteger',
+            'serviceMethod' => 'getIntegerSetting',
+            'params' => [$settingNameID, 'awesomeModule'],
+            'expectedValue' => new IntegerSetting($settingNameID, 123)
+        ];
 
-        $settingController = new ModuleSettingController($settingService);
+        yield 'getter float' => [
+            'controllerMethod' => 'getModuleSettingFloat',
+            'serviceMethod' => 'getFloatSetting',
+            'params' => [$settingNameID, 'awesomeModule'],
+            'expectedValue' => new FloatSetting($settingNameID, 1.23)
+        ];
 
-        $nameID = $serviceFloatSetting->getName();
-        $floatSetting = $settingController->getModuleSettingFloat($nameID, 'awesomeModule');
+        yield 'getter bool' => [
+            'controllerMethod' => 'getModuleSettingBoolean',
+            'serviceMethod' => 'getBooleanSetting',
+            'params' => [$settingNameID, 'awesomeModule'],
+            'expectedValue' => new BooleanSetting($settingNameID, false)
+        ];
 
-        $this->assertSame($serviceFloatSetting, $floatSetting);
-    }
+        yield 'getter string' => [
+            'controllerMethod' => 'getModuleSettingString',
+            'serviceMethod' => 'getStringSetting',
+            'params' => [$settingNameID, 'awesomeModule'],
+            'expectedValue' => new StringSetting($settingNameID, 'default')
+        ];
 
-    public function testGetModuleSettingBoolean(): void
-    {
-        $serviceBooleanSetting = $this->getNegativeBooleanSetting();
+        yield 'getter collection' => [
+            'controllerMethod' => 'getModuleSettingCollection',
+            'serviceMethod' => 'getCollectionSetting',
+            'params' => [$settingNameID, 'awesomeModule'],
+            'expectedValue' => new StringSetting($settingNameID, 'someCollectionStringExample')
+        ];
 
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('getBooleanSetting')
-            ->willReturn($serviceBooleanSetting);
+        yield 'setter integer' => [
+            'controllerMethod' => 'changeModuleSettingInteger',
+            'serviceMethod' => 'changeIntegerSetting',
+            'params' => [$settingNameID, 123, 'awesomeModule'],
+            'expectedValue' => new IntegerSetting($settingNameID, 123)
+        ];
 
-        $settingController = new ModuleSettingController($settingService);
+        yield 'setter float' => [
+            'controllerMethod' => 'changeModuleSettingFloat',
+            'serviceMethod' => 'changeFloatSetting',
+            'params' => [$settingNameID, 1.23, 'awesomeModule'],
+            'expectedValue' => new FloatSetting($settingNameID, 1.23)
+        ];
 
-        $nameID = $serviceBooleanSetting->getName();
-        $booleanSetting = $settingController->getModuleSettingBoolean($nameID, 'awesomeModule');
+        yield 'setter float with integer value' => [
+            'controllerMethod' => 'changeModuleSettingFloat',
+            'serviceMethod' => 'changeFloatSetting',
+            'params' => [$settingNameID, 123, 'awesomeModule'],
+            'expectedValue' => new FloatSetting($settingNameID, 123)
+        ];
 
-        $this->assertSame($serviceBooleanSetting, $booleanSetting);
-    }
+        yield 'setter boolean' => [
+            'controllerMethod' => 'changeModuleSettingBoolean',
+            'serviceMethod' => 'changeBooleanSetting',
+            'params' => [$settingNameID, false, 'awesomeModule'],
+            'expectedValue' => new BooleanSetting($settingNameID, false)
+        ];
 
-    public function testGetModuleSettingString(): void
-    {
-        $serviceStringSetting = $this->getStringSetting();
+        yield 'setter string' => [
+            'controllerMethod' => 'changeModuleSettingString',
+            'serviceMethod' => 'changeStringSetting',
+            'params' => [$settingNameID, 'some string', 'awesomeModule'],
+            'expectedValue' => new StringSetting($settingNameID, 'some string')
+        ];
 
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('getStringSetting')
-            ->willReturn($serviceStringSetting);
+        yield 'setter collection' => [
+            'controllerMethod' => 'changeModuleSettingCollection',
+            'serviceMethod' => 'changeCollectionSetting',
+            'params' => [$settingNameID, 'some collection string', 'awesomeModule'],
+            'expectedValue' => new StringSetting($settingNameID, 'some collection string')
+        ];
 
-        $settingController = new ModuleSettingController($settingService);
-
-        $nameID = $serviceStringSetting->getName();
-        $stringSetting = $settingController->getModuleSettingString($nameID, 'awesomeModule');
-
-        $this->assertSame($serviceStringSetting, $stringSetting);
-    }
-
-    public function testGetModuleSettingCollection(): void
-    {
-        $serviceCollectionSetting = $this->getCollectionSetting();
-
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('getCollectionSetting')
-            ->willReturn($serviceCollectionSetting);
-
-        $settingController = new ModuleSettingController($settingService);
-
-        $nameID = $serviceCollectionSetting->getName();
-        $collectionSetting = $settingController->getModuleSettingCollection($nameID, 'awesomeModule');
-
-        $this->assertSame($serviceCollectionSetting, $collectionSetting);
-    }
-
-    public function testChangeModuleSettingInteger(): void
-    {
-        $serviceIntegerSetting = $this->getIntegerSetting();
-
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('changeIntegerSetting')
-            ->willReturn($serviceIntegerSetting);
-
-        $settingController = new ModuleSettingController($settingService);
-
-        $nameID = $serviceIntegerSetting->getName();
-        $value = $serviceIntegerSetting->getValue();
-        $integerSetting = $settingController->changeModuleSettingInteger($nameID, $value, 'awesomeModule');
-
-        $this->assertSame($serviceIntegerSetting, $integerSetting);
-    }
-
-    public function testChangeModuleSettingFloat(): void
-    {
-        $serviceFloatSetting = $this->getFloatSetting();
-
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('changeFloatSetting')
-            ->willReturn($serviceFloatSetting);
-
-        $settingController = new ModuleSettingController($settingService);
-
-        $nameID = $serviceFloatSetting->getName();
-        $value = $serviceFloatSetting->getValue();
-        $floatSetting = $settingController->changeModuleSettingFloat($nameID, $value, 'awesomeModule');
-
-        $this->assertSame($serviceFloatSetting, $floatSetting);
-    }
-
-    public function testChangeModuleSettingBoolean(): void
-    {
-        $serviceBooleanSetting = $this->getNegativeBooleanSetting();
-
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('changeBooleanSetting')
-            ->willReturn($serviceBooleanSetting);
-
-        $settingController = new ModuleSettingController($settingService);
-
-        $nameID = $serviceBooleanSetting->getName();
-        $value = $serviceBooleanSetting->getValue();
-        $booleanSetting = $settingController->changeModuleSettingBoolean($nameID, $value, 'awesomeModule');
-
-        $this->assertSame($serviceBooleanSetting, $booleanSetting);
-    }
-
-    public function testChangeModuleSettingString(): void
-    {
-        $serviceStringSetting = $this->getStringSetting();
-
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('changeStringSetting')
-            ->willReturn($serviceStringSetting);
-
-        $settingController = new ModuleSettingController($settingService);
-
-        $nameID = $serviceStringSetting->getName();
-        $value = $serviceStringSetting->getValue();
-        $stringSetting = $settingController->changeModuleSettingString($nameID, $value, 'awesomeModule');
-
-        $this->assertSame($serviceStringSetting, $stringSetting);
-    }
-
-    public function testChangeModuleSettingCollection(): void
-    {
-        $serviceCollectionSetting = $this->getCollectionSetting();
-
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('changeCollectionSetting')
-            ->willReturn($serviceCollectionSetting);
-
-        $settingController = new ModuleSettingController($settingService);
-
-        $nameID = $serviceCollectionSetting->getName();
-        $value = $serviceCollectionSetting->getValue();
-        $collectionSetting = $settingController->changeModuleSettingCollection($nameID, $value, 'awesomeModule');
-
-        $this->assertSame($collectionSetting, $serviceCollectionSetting);
-    }
-
-    public function testListModuleSettings(): void
-    {
-        $moduleId = 'awesomeModule';
-        $serviceSettingsList = $this->getSettingTypeList();
-        $settingService = $this->createMock(ModuleSettingServiceInterface::class);
-        $settingService->expects($this->once())
-            ->method('getSettingsList')
-            ->with($moduleId)
-            ->willReturn($serviceSettingsList);
-
-        $sut = new ModuleSettingController($settingService);
-        $this->assertSame($serviceSettingsList, $sut->getModuleSettingsList($moduleId));
+        yield 'list query' => [
+            'controllerMethod' => 'getModuleSettingsList',
+            'serviceMethod' => 'getSettingsList',
+            'params' => ['awesomeModule'],
+            'expectedValue' => [
+                new SettingType($settingNameID, FieldType::NUMBER),
+                new SettingType($settingNameID, FieldType::NUMBER),
+            ]
+        ];
     }
 }
