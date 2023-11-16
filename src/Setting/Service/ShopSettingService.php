@@ -25,10 +25,10 @@ final class ShopSettingService implements ShopSettingServiceInterface
     ) {
     }
 
-    public function getIntegerSetting(ID $name): IntegerSetting
+    public function getIntegerSetting(string $name): IntegerSetting
     {
         $integer = $this->shopSettingRepository->getInteger($name);
-        return new IntegerSetting($name, $integer);
+        return new IntegerSetting(new ID($name), $integer);
     }
 
     public function getFloatSetting(ID $name): FloatSetting

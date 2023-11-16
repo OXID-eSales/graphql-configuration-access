@@ -11,7 +11,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 interface ShopSettingServiceInterface
 {
-    public function getIntegerSetting(ID $name): IntegerSetting;
+    public function getIntegerSetting(string $name): IntegerSetting;
 
     public function getFloatSetting(ID $name): FloatSetting;
 

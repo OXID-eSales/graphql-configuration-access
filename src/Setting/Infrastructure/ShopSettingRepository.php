@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChanged
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
@@ -32,19 +33,18 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     ) {
     }
 
-    public function getInteger(ID $name): int
+    public function getInteger(string $name): int
     {
-        try {
-            $value = $this->getSettingValue($name, FieldType::NUMBER);
-        } catch (NotFound $e) {
-            $this->throwGetterNotFoundException('integer');
+        $value = $this->configurationSettingDao->get(
+            $name,
+            $this->basicContext->getCurrentShopId()
+        );
+
+        if ($value->getType() !== FieldType::NUMBER) {
+            throw new WrongSettingTypeException();
         }
 
-        if ($this->isFloatString($value)) {
-            throw new UnexpectedValueException('The queried configuration was found as a float, not an integer');
-        }
-
-        return (int)$value;
+        return (int)$value->getValue();
     }
 
     public function getFloat(ID $name): float

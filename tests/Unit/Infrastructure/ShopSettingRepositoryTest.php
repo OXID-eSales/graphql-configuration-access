@@ -5,9 +5,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
@@ -20,36 +24,53 @@ class ShopSettingRepositoryTest extends UnitTestCase
 {
     public function testGetShopSettingInteger(): void
     {
-        $nameID = new ID('integerSetting');
+        $settingName = 'settingName';
+        $shopId = 3;
 
+        $shopSettingValue = 123;
+        $shopSettingType = 'num';
 
-        $repository = $this->getFetchOneShopSettingRepoInstance('123');
+        $expectedValue = 123;
 
-        $integer = $repository->getInteger($nameID);
+        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoStub->method('get')
+            ->with($settingName, $shopId)
+            ->willReturn(
+                $this->createConfiguredMock(ShopConfigurationSetting::class, [
+                    'getName' => $settingName,
+                    'getType' => $shopSettingType,
+                    'getValue' => $shopSettingValue
+                ])
+            );
 
-        $this->assertEquals(123, $integer);
+        $basicContext = $this->createStub(BasicContextInterface::class);
+        $basicContext->method('getCurrentShopId')->willReturn($shopId);
+
+        $sut = $this->getSut(
+            basicContext: $basicContext,
+            shopSettingDao: $shopSettingDaoStub
+        );
+
+        $this->assertSame($expectedValue, $sut->getInteger($settingName));
     }
 
-    public function testGetNoShopSettingInteger(): void
+    public function testGetShopSettingIntegerWrongType(): void
     {
-        $nameID = new ID('NotExistingSetting');
+        $settingName = 'settingName';
 
-        $repository = $this->getFetchOneShopSettingRepoInstance(false);
+        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoStub->method('get')->willReturn(
+            $this->createConfiguredMock(ShopConfigurationSetting::class, [
+                'getType' => 'wrong'
+            ])
+        );
 
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
-        $repository->getInteger($nameID);
-    }
+        $sut = $this->getSut(
+            shopSettingDao: $shopSettingDaoStub
+        );
 
-    public function testGetShopSettingInvalidInteger(): void
-    {
-        $nameID = new ID('floatSetting');
-
-        $repository = $this->getFetchOneShopSettingRepoInstance('1.23');
-
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('The queried configuration was found as a float, not an integer');
-        $repository->getInteger($nameID);
+        $this->expectException(WrongSettingTypeException::class);
+        $sut->getInteger($settingName);
     }
 
     public function testGetShopSettingFloat(): void
@@ -270,6 +291,22 @@ class ShopSettingRepositoryTest extends UnitTestCase
             $queryBuilderFactory,
             $shopSettingEncoder,
             $this->createStub(ShopConfigurationSettingDaoInterface::class)
+        );
+    }
+
+    private function getSut(
+        ?BasicContextInterface $basicContext = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
+        ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
+        ?ShopSettingEncoderInterface $shopSettingEncoder = null,
+        ?ShopConfigurationSettingDaoInterface $shopSettingDao = null,
+    ): ShopSettingRepositoryInterface {
+        return new ShopSettingRepository(
+            basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class),
+            eventDispatcher: $eventDispatcher ?? $this->createStub(EventDispatcherInterface::class),
+            queryBuilderFactory: $queryBuilderFactory ?? $this->createStub(QueryBuilderFactoryInterface::class),
+            shopSettingEncoder: $shopSettingEncoder ?? $this->createStub(ShopSettingEncoderInterface::class),
+            configurationSettingDao: $shopSettingDao ?? $this->createStub(ShopConfigurationSettingDaoInterface::class),
         );
     }
 }

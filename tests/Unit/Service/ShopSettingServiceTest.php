@@ -30,7 +30,7 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals(
             new IntegerSetting($nameID, $repositoryResult),
-            $sut->getIntegerSetting($nameID)
+            $sut->getIntegerSetting((string)$nameID)
         );
     }
 

@@ -7,7 +7,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 interface ShopSettingRepositoryInterface
 {
-    public function getInteger(ID $name): int;
+    public function getInteger(string $name): int;
 
     public function getFloat(ID $name): float;
 
