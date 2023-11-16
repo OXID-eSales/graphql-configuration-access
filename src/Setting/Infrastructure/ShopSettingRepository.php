@@ -11,6 +11,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
@@ -35,31 +36,23 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
 
     public function getInteger(string $name): int
     {
-        $value = $this->configurationSettingDao->get(
-            $name,
-            $this->basicContext->getCurrentShopId()
-        );
+        $setting = $this->getShopSetting($name);
+        $this->checkSettingType($setting, FieldType::NUMBER);
 
-        if ($value->getType() !== FieldType::NUMBER) {
-            throw new WrongSettingTypeException();
-        }
-
-        return (int)$value->getValue();
+        return (int)$setting->getValue();
     }
 
-    public function getFloat(ID $name): float
+    public function getFloat(string $name): float
     {
-        try {
-            $value = $this->getSettingValue($name, FieldType::NUMBER);
-        } catch (NotFound $e) {
-            $this->throwGetterNotFoundException('float');
-        }
+        $setting = $this->getShopSetting($name);
+        $this->checkSettingType($setting, FieldType::NUMBER);
 
-        if (!$this->isFloatString($value)) {
-            throw new UnexpectedValueException('The queried configuration was found as an integer, not a float');
-        }
+        return (float)$setting->getValue();
+    }
 
-        return (float)$value;
+    protected function getShopSetting(string $name): ShopConfigurationSetting
+    {
+        return $this->configurationSettingDao->get($name, $this->basicContext->getCurrentShopId());
     }
 
     public function getBoolean(ID $name): bool
@@ -126,6 +119,19 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     {
         $aOrAn = (preg_match('/^[aeiou]/i', $typeString)) ? 'an' : 'a';
         throw new NotFound("The queried name couldn't be found as $aOrAn $typeString configuration");
+    }
+
+    /**
+     * @param ShopConfigurationSetting $value
+     * @param string $requiredType
+     * @return void
+     * @throws WrongSettingTypeException
+     */
+    public function checkSettingType(ShopConfigurationSetting $value, string $requiredType): void
+    {
+        if ($value->getType() !== $requiredType) {
+            throw new WrongSettingTypeException();
+        }
     }
 
     protected function throwSetterNotFoundException(string $typeString, string $name): void

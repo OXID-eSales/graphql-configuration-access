@@ -13,7 +13,7 @@ interface ShopSettingServiceInterface
 {
     public function getIntegerSetting(string $name): IntegerSetting;
 
-    public function getFloatSetting(ID $name): FloatSetting;
+    public function getFloatSetting(string $name): FloatSetting;
 
     public function getBooleanSetting(ID $name): BooleanSetting;
 

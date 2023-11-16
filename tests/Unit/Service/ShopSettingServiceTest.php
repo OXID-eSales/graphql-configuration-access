@@ -49,7 +49,7 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals(
             new FloatSetting($nameID, $repositoryResult),
-            $sut->getFloatSetting($nameID)
+            $sut->getFloatSetting((string)$nameID)
         );
     }
 

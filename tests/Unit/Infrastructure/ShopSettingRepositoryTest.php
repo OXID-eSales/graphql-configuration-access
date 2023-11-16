@@ -75,37 +75,46 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
     public function testGetShopSettingFloat(): void
     {
-        $nameID = new ID('floatSetting');
+        $settingName = 'settingName';
+        $shopId = 3;
 
+        $shopSettingValue = 1.23;
+        $shopSettingType = 'num';
 
-        $repository = $this->getFetchOneShopSettingRepoInstance('1.23');
+        $expectedValue = 1.23;
 
-        $float = $repository->getFloat($nameID);
+        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoStub->method('get')
+            ->with($settingName, $shopId)
+            ->willReturn(
+                $this->createConfiguredMock(ShopConfigurationSetting::class, [
+                    'getName' => $settingName,
+                    'getType' => $shopSettingType,
+                    'getValue' => $shopSettingValue
+                ])
+            );
 
-        $this->assertEquals(1.23, $float);
+        $basicContext = $this->createStub(BasicContextInterface::class);
+        $basicContext->method('getCurrentShopId')->willReturn($shopId);
+
+        $sut = $this->getSut(
+            basicContext: $basicContext,
+            shopSettingDao: $shopSettingDaoStub
+        );
+
+        $this->assertSame($expectedValue, $sut->getFloat($settingName));
     }
-
-    public function testGetNoShopSettingFloat(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getFetchOneShopSettingRepoInstance(false);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
-        $repository->getFloat($nameID);
-    }
-
-    public function testGetShopSettingInvalidFloat(): void
-    {
-        $nameID = new ID('intSetting');
-
-        $repository = $this->getFetchOneShopSettingRepoInstance('123');
-
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('The queried configuration was found as an integer, not a float');
-        $repository->getFloat($nameID);
-    }
+//
+//    public function testGetShopSettingInvalidFloat(): void
+//    {
+//        $nameID = new ID('intSetting');
+//
+//        $repository = $this->getFetchOneShopSettingRepoInstance('123');
+//
+//        $this->expectException(UnexpectedValueException::class);
+//        $this->expectExceptionMessage('The queried configuration was found as an integer, not a float');
+//        $repository->getFloat($nameID);
+//    }
 
     public function testGetShopSettingBooleanNegativ(): void
     {
