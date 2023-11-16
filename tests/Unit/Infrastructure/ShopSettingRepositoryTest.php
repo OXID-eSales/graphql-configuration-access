@@ -4,6 +4,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
@@ -228,20 +229,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
     }
 
     /**
-     * @param string|bool $returnedValue
-     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
-     */
-    private function getFetchOneQueryBuilderFactoryMock(
-        string|bool $returnedValue
-    ): QueryBuilderFactoryInterface|MockObject {
-        $result = $this->createMock(Result::class);
-        $result->expects($this->once())
-            ->method('fetchOne')
-            ->willReturn($returnedValue);
-        return $this->getQueryBuilderFactoryMock($result);
-    }
-
-    /**
      * @param Result|MockObject|(Result&MockObject) $result
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
@@ -260,8 +247,15 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
     private function getFetchOneShopSettingRepoInstance(string|bool $qbReturnValue): ShopSettingRepositoryInterface
     {
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock($qbReturnValue);
-        return $this->getShopSettingRepository($queryBuilderFactory);
+        $result = $this->createMock(Result::class);
+        $result->expects($this->once())
+            ->method('fetchOne')
+            ->willReturn($qbReturnValue);
+        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($result);
+
+        return $this->getShopSettingRepository(
+            $queryBuilderFactory
+        );
     }
 
     private function getShopSettingRepository(
@@ -274,7 +268,8 @@ class ShopSettingRepositoryTest extends UnitTestCase
             $basicContextMock,
             $eventDispatcher,
             $queryBuilderFactory,
-            $shopSettingEncoder
+            $shopSettingEncoder,
+            $this->createStub(ShopConfigurationSettingDaoInterface::class)
         );
     }
 }

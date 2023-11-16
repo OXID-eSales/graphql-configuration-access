@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 use Doctrine\DBAL\Result;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
@@ -26,7 +27,8 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         private BasicContextInterface $basicContext,
         private EventDispatcherInterface $eventDispatcher,
         private QueryBuilderFactoryInterface $queryBuilderFactory,
-        protected ShopSettingEncoderInterface $shopSettingEncoder
+        protected ShopSettingEncoderInterface $shopSettingEncoder,
+        protected ShopConfigurationSettingDaoInterface $configurationSettingDao,
     ) {
     }
 
