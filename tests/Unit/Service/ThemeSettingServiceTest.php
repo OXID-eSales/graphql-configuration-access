@@ -12,6 +12,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRe
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 class ThemeSettingServiceTest extends UnitTestCase
@@ -174,7 +175,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         ID $nameID,
         string $themeId,
         $repositoryResult
-    ): ThemeSettingRepositoryInterface {
+    ): ThemeSettingRepositoryInterface|MockObject {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method($repositoryMethod)
@@ -205,59 +206,95 @@ class ThemeSettingServiceTest extends UnitTestCase
     public function testChangeThemeSettingInteger(): void
     {
         $nameID = new ID('intSetting');
-        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $themeID = 'awesomeTheme';
+        $setterValue = 123;
+        $getterValue = 124;
+        $repository = $this->getRepositorySettingGetterMock(
+            'getInteger',
+            $nameID,
+            $themeID,
+            $getterValue
+        );
         $repository->expects($this->once())
-            ->method('getInteger')
-            ->with($nameID, 'awesomeTheme')
-            ->willReturn(123);
+            ->method('saveIntegerSetting')
+            ->with($nameID, $setterValue, $themeID);
 
         $settingService = $this->getSut(themeSettingRepository: $repository);
-
-        $integerSetting = $settingService->changeIntegerSetting($nameID, 123, 'awesomeTheme');
+        $integerSetting = $settingService->changeIntegerSetting($nameID, $setterValue, $themeID);
 
         $this->assertSame($nameID, $integerSetting->getName());
-        $this->assertSame(123, $integerSetting->getValue());
+        $this->assertSame($getterValue, $integerSetting->getValue());
     }
 
     public function testChangeThemeSettingFloat(): void
     {
-        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $nameID = new ID('floatSetting');
+        $themeID = 'awesomeTheme';
+        $setterValue = 1.23;
+        $getterValue = 1.24;
+        $repository = $this->getRepositorySettingGetterMock(
+            'getFloat',
+            $nameID,
+            $themeID,
+            $getterValue
+        );
+        $repository->expects($this->once())
+            ->method('saveFloatSetting')
+            ->with($nameID, $setterValue, $themeID);
 
         $settingService = $this->getSut(themeSettingRepository: $repository);
-
-        $nameID = new ID('floatSetting');
-        $floatSetting = $settingService->changeFloatSetting($nameID, 1.23, 'awesomeTheme');
+        $floatSetting = $settingService->changeFloatSetting($nameID, $setterValue, $themeID);
 
         $this->assertSame($nameID, $floatSetting->getName());
-        $this->assertSame(1.23, $floatSetting->getValue());
+        $this->assertSame($getterValue, $floatSetting->getValue());
     }
 
     public function testChangeThemeSettingBoolean(): void
     {
-        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $nameID = new ID('boolSetting');
+        $themeID = 'awesomeTheme';
+        $setterValue = true;
+        $getterValue = false;
+        $repository = $this->getRepositorySettingGetterMock(
+            'getBoolean',
+            $nameID,
+            $themeID,
+            $getterValue
+        );
+        $repository->expects($this->once())
+            ->method('saveBooleanSetting')
+            ->with($nameID, $setterValue, $themeID);
 
         $settingService = $this->getSut(themeSettingRepository: $repository);
 
-        $nameID = new ID('boolSetting');
-        $value = false;
-        $booleanSetting = $settingService->changeBooleanSetting($nameID, $value, 'awesomeTheme');
+        $booleanSetting = $settingService->changeBooleanSetting($nameID, $setterValue, $themeID);
 
         $this->assertSame($nameID, $booleanSetting->getName());
-        $this->assertSame($value, $booleanSetting->getValue());
+        $this->assertSame($getterValue, $booleanSetting->getValue());
     }
 
     public function testChangeThemeSettingString(): void
     {
-        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $nameID = new ID('stringSetting');
+        $setterValue = 'default';
+        $getterValue = 'otherValue';
+        $themeID = 'awesomeTheme';
+        $repository = $this->getRepositorySettingGetterMock(
+            'getString',
+            $nameID,
+            $themeID,
+            $getterValue
+        );
+        $repository->expects($this->once())
+            ->method('saveStringSetting')
+            ->with($nameID, $setterValue, $themeID);
 
         $settingService = $this->getSut(themeSettingRepository: $repository);
 
-        $nameID = new ID('stringSetting');
-        $value = 'default';
-        $stringSetting = $settingService->changeStringSetting($nameID, $value, 'awesomeTheme');
+        $stringSetting = $settingService->changeStringSetting($nameID, $setterValue, $themeID);
 
         $this->assertSame($nameID, $stringSetting->getName());
-        $this->assertSame($value, $stringSetting->getValue());
+        $this->assertSame($getterValue, $stringSetting->getValue());
     }
 
     /**
@@ -266,15 +303,28 @@ class ThemeSettingServiceTest extends UnitTestCase
     public function testChangeThemeSettingInvalidCollection($value): void
     {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
-
         $settingService = $this->getSut(themeSettingRepository: $repository);
-
         $nameID = new ID('collectionSetting');
 
         $this->expectException(InvalidCollection::class);
         $this->expectExceptionMessage(sprintf('%s is not a valid collection string.', $value));
 
         $settingService->changeCollectionSetting($nameID, $value, 'awesomeTheme');
+    }
+
+    /**
+     * @dataProvider invalidCollectionDataProvider
+     */
+    public function testChangeThemeSettingInvalidAssocCollection($value): void
+    {
+        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
+        $settingService = $this->getSut(themeSettingRepository: $repository);
+        $nameID = new ID('assocCollectionSetting');
+
+        $this->expectException(InvalidCollection::class);
+        $this->expectExceptionMessage(sprintf('%s is not a valid collection string.', $value));
+
+        $settingService->changeAssocCollectionSetting($nameID, $value, 'awesomeTheme');
     }
 
     public function invalidCollectionDataProvider(): array
@@ -291,16 +341,56 @@ class ThemeSettingServiceTest extends UnitTestCase
 
     public function testChangeThemeSettingCollection(): void
     {
-        $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
-
-        $settingService = $this->getSut(themeSettingRepository: $repository);
-
         $nameID = new ID('collectionSetting');
-        $value = '[2, "values"]';
-        $collectionSetting = $settingService->changeCollectionSetting($nameID, $value, 'awesomeTheme');
+        $themeID = 'awesomeTheme';
+        $getterCollection = [2, 'values'];
+        $getterEncodedCollection = '[2, "values"]';
+        $setterCollection = [2, 'new values'];
+        $setterEncodedCollection = '[2, "new values"]';
+
+        $repository = $this->getRepositorySettingGetterMock(
+            'getCollection',
+            $nameID,
+            $themeID,
+            $getterCollection
+        );
+        $repository->expects($this->once())
+            ->method('saveCollectionSetting')
+            ->with($nameID, $setterCollection, $themeID);
+        $jsonService = $this->getJsonEncodeServiceMock($getterCollection, $getterEncodedCollection);
+
+        $settingService = $this->getSut(themeSettingRepository: $repository, jsonService: $jsonService);
+        $collectionSetting = $settingService->changeCollectionSetting($nameID, $setterEncodedCollection, $themeID);
 
         $this->assertSame($nameID, $collectionSetting->getName());
-        $this->assertSame($value, $collectionSetting->getValue());
+        $this->assertSame($getterEncodedCollection, $collectionSetting->getValue());
+    }
+
+    public function testChangeThemeSettingAssocCollection(): void
+    {
+        $nameID = new ID('assocCollectionSetting');
+        $themeID = 'awesomeTheme';
+        $getterCollection = ['first' => 2, 'second' => 'values', 'third' => 'nicevalue'];
+        $getterEncodedCollection = '{"first":2,"second":"values","third":"nicevalue"}';
+        $setterCollection = ['first' => 2, 'second' => 'values'];
+        $setterEncodedCollection = '{"first":2,"second":"values"}';
+
+        $repository = $this->getRepositorySettingGetterMock(
+            'getAssocCollection',
+            $nameID,
+            $themeID,
+            $getterCollection
+        );
+        $repository->expects($this->once())
+            ->method('saveAssocCollectionSetting')
+            ->with($nameID, $setterCollection, $themeID);
+        $jsonService = $this->getJsonEncodeServiceMock($getterCollection, $getterEncodedCollection);
+
+        $settingService = $this->getSut(themeSettingRepository: $repository, jsonService: $jsonService);
+        $collectionSetting = $settingService->changeAssocCollectionSetting($nameID, $setterEncodedCollection, $themeID);
+
+        $this->assertSame($nameID, $collectionSetting->getName());
+        $this->assertSame($getterEncodedCollection, $collectionSetting->getValue());
     }
 
     private function getSut(
