@@ -10,13 +10,16 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingServiceInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-class ModuleSettingControllerTest extends UnitTestCase
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller\ModuleSettingController
+ */
+class ModuleSettingControllerTest extends TestCase
 {
     /** @dataProvider proxyTestDataProvider */
-    public function testControllerProxiesTheDataToServiceAndReturnsItsResult(
+    public function testControllerProxiesParametersToServiceAndReturnsItsResult(
         string $controllerMethod,
         string $serviceMethod,
         array $params,
