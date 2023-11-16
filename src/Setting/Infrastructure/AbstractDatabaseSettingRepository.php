@@ -2,6 +2,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
+use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
@@ -58,6 +59,8 @@ abstract class AbstractDatabaseSettingRepository
                 'type' => $fieldType,
                 'shopId' => $this->basicContext->getCurrentShopId(),
             ]);
+
+        /** @var Result $result */
         $result = $queryBuilder->execute();
         $value = $result->fetchOne();
 
@@ -83,6 +86,8 @@ abstract class AbstractDatabaseSettingRepository
                 ':module' => $themeCondition,
                 ':shopId' => $shopId
             ]);
+
+        /** @var Result $result */
         $result = $queryBuilder->execute();
         $value = $result->fetchAllKeyValue();
 
@@ -119,7 +124,7 @@ abstract class AbstractDatabaseSettingRepository
 
         $this->eventDispatcher->dispatch(
             new ThemeSettingChangedEvent(
-                $name->val(),
+                (string)$name,
                 $shopId,
                 $themeId
             )
