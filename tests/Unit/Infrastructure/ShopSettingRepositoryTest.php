@@ -23,8 +23,8 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 class ShopSettingRepositoryTest extends UnitTestCase
 {
-    /** @dataProvider possibleIntegerValuesDataProvider */
-    public function testGetShopSettingInteger($possibleValue, $expectedResult): void
+    /** @dataProvider possibleGetterValuesDataProvider */
+    public function testGetShopSetting($method, $type, $possibleValue, $expectedResult): void
     {
         $settingName = 'settingName';
         $shopId = 3;
@@ -35,7 +35,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
             ->willReturn(
                 $this->createConfiguredMock(ShopConfigurationSetting::class, [
                     'getName' => $settingName,
-                    'getType' => FieldType::NUMBER,
+                    'getType' => $type,
                     'getValue' => $possibleValue
                 ])
             );
@@ -48,48 +48,165 @@ class ShopSettingRepositoryTest extends UnitTestCase
             shopSettingDao: $shopSettingDaoStub
         );
 
-        $this->assertSame($expectedResult, $sut->getInteger($settingName));
+        $this->assertSame($expectedResult, $sut->$method($settingName));
     }
 
-    public function possibleIntegerValuesDataProvider(): \Generator
+    public function possibleGetterValuesDataProvider(): \Generator
     {
-        yield ['possibleValue' => 123, 'expectedResult' => 123];
-        yield ['possibleValue' => '123', 'expectedResult' => 123];
-    }
+        yield 'int regular' => [
+            'method' => 'getInteger',
+            'type' => FieldType::NUMBER,
+            'possibleValue' => 123,
+            'expectedResult' => 123
+        ];
+        yield 'int in string' => [
+            'method' => 'getInteger',
+            'type' => FieldType::NUMBER,
+            'possibleValue' => '123',
+            'expectedResult' => 123
+        ];
 
-    /** @dataProvider possibleFloatValuesDataProvider */
-    public function testGetShopSettingFloat($possibleValue, $expectedResult): void
-    {
-        $settingName = 'settingName';
-        $shopId = 3;
+        yield 'float regular' => [
+            'method' => 'getFloat',
+            'type' => FieldType::NUMBER,
+            'possibleValue' => 123.2,
+            'expectedResult' => 123.2
+        ];
+        yield 'float from integer' => [
+            'method' => 'getFloat',
+            'type' => FieldType::NUMBER,
+            'possibleValue' => 123,
+            'expectedResult' => 123.0
+        ];
+        yield 'float from string' => [
+            'method' => 'getFloat',
+            'type' => FieldType::NUMBER,
+            'possibleValue' => '123',
+            'expectedResult' => 123.0
+        ];
 
-        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
-        $shopSettingDaoStub->method('get')
-            ->with($settingName, $shopId)
-            ->willReturn(
-                $this->createConfiguredMock(ShopConfigurationSetting::class, [
-                    'getName' => $settingName,
-                    'getType' => FieldType::NUMBER,
-                    'getValue' => $possibleValue
-                ])
-            );
+        yield [
+            'method' => 'getBoolean',
+            'type' => FieldType::BOOLEAN,
+            'possibleValue' => 1,
+            'expectedResult' => true
+        ];
+        yield [
+            'method' => 'getBoolean',
+            'type' => FieldType::BOOLEAN,
+            'possibleValue' => '1',
+            'expectedResult' => true
+        ];
+        yield [
+            'method' => 'getBoolean',
+            'type' => FieldType::BOOLEAN,
+            'possibleValue' => true,
+            'expectedResult' => true
+        ];
+        yield [
+            'method' => 'getBoolean',
+            'type' => FieldType::BOOLEAN,
+            'possibleValue' => 'anything',
+            'expectedResult' => true
+        ];
+        yield [
+            'method' => 'getBoolean',
+            'type' => FieldType::BOOLEAN,
+            'possibleValue' => null,
+            'expectedResult' => false
+        ];
+        yield [
+            'method' => 'getBoolean',
+            'type' => FieldType::BOOLEAN,
+            'possibleValue' => 0,
+            'expectedResult' => false
+        ];
+        yield [
+            'method' => 'getBoolean',
+            'type' => FieldType::BOOLEAN,
+            'possibleValue' => '0',
+            'expectedResult' => false
+        ];
+        yield [
+            'method' => 'getBoolean',
+            'type' => FieldType::BOOLEAN,
+            'possibleValue' => false,
+            'expectedResult' => false
+        ];
 
-        $basicContext = $this->createStub(BasicContextInterface::class);
-        $basicContext->method('getCurrentShopId')->willReturn($shopId);
+        yield [
+            'method' => 'getString',
+            'type' => FieldType::STRING,
+            'possibleValue' => 1,
+            'expectedResult' => '1'
+        ];
+        yield [
+            'method' => 'getString',
+            'type' => FieldType::STRING,
+            'possibleValue' => '1',
+            'expectedResult' => '1'
+        ];
+        yield [
+            'method' => 'getString',
+            'type' => FieldType::STRING,
+            'possibleValue' => 'regular',
+            'expectedResult' => 'regular'
+        ];
+        yield [
+            'method' => 'getString',
+            'type' => FieldType::STRING,
+            'possibleValue' => '0',
+            'expectedResult' => '0'
+        ];
+        yield [
+            'method' => 'getString',
+            'type' => FieldType::STRING,
+            'possibleValue' => null,
+            'expectedResult' => ''
+        ];
+        yield [
+            'method' => 'getString',
+            'type' => FieldType::STRING,
+            'possibleValue' => '',
+            'expectedResult' => ''
+        ];
 
-        $sut = $this->getSut(
-            basicContext: $basicContext,
-            shopSettingDao: $shopSettingDaoStub
-        );
-
-        $this->assertSame($expectedResult, $sut->getFloat($settingName));
-    }
-
-    public function possibleFloatValuesDataProvider(): \Generator
-    {
-        yield ['possibleValue' => 123.2, 'expectedResult' => 123.2];
-        yield ['possibleValue' => 123, 'expectedResult' => 123.0];
-        yield ['possibleValue' => '123', 'expectedResult' => 123.0];
+        yield [
+            'method' => 'getSelect',
+            'type' => FieldType::SELECT,
+            'possibleValue' => 1,
+            'expectedResult' => '1'
+        ];
+        yield [
+            'method' => 'getSelect',
+            'type' => FieldType::SELECT,
+            'possibleValue' => '1',
+            'expectedResult' => '1'
+        ];
+        yield [
+            'method' => 'getSelect',
+            'type' => FieldType::SELECT,
+            'possibleValue' => 'regular',
+            'expectedResult' => 'regular'
+        ];
+        yield [
+            'method' => 'getSelect',
+            'type' => FieldType::SELECT,
+            'possibleValue' => '0',
+            'expectedResult' => '0'
+        ];
+        yield [
+            'method' => 'getSelect',
+            'type' => FieldType::SELECT,
+            'possibleValue' => null,
+            'expectedResult' => ''
+        ];
+        yield [
+            'method' => 'getSelect',
+            'type' => FieldType::SELECT,
+            'possibleValue' => '',
+            'expectedResult' => ''
+        ];
     }
 
     /** @dataProvider wrongSettingsDataProvider */
@@ -186,112 +303,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'value' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
-    }
-
-    /** @dataProvider possibleBoolValuesDataProvider */
-    public function testGetShopSettingBoolean($possibleValue, $expectedResult): void
-    {
-        $settingName = 'settingName';
-        $shopId = 3;
-
-        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
-        $shopSettingDaoStub->method('get')
-            ->with($settingName, $shopId)
-            ->willReturn(
-                $this->createConfiguredMock(ShopConfigurationSetting::class, [
-                    'getName' => $settingName,
-                    'getType' => FieldType::BOOLEAN,
-                    'getValue' => $possibleValue
-                ])
-            );
-
-        $basicContext = $this->createStub(BasicContextInterface::class);
-        $basicContext->method('getCurrentShopId')->willReturn($shopId);
-
-        $sut = $this->getSut(
-            basicContext: $basicContext,
-            shopSettingDao: $shopSettingDaoStub
-        );
-
-        $this->assertSame($expectedResult, $sut->getBoolean($settingName));
-    }
-
-    public function possibleBoolValuesDataProvider(): \Generator
-    {
-        yield ['possibleValue' => 1, 'expectedResult' => true];
-        yield ['possibleValue' => '1', 'expectedResult' => true];
-        yield ['possibleValue' => true, 'expectedResult' => true];
-        yield ['possibleValue' => 'anything', 'expectedResult' => true];
-        yield ['possibleValue' => null, 'expectedResult' => false];
-        yield ['possibleValue' => 0, 'expectedResult' => false];
-        yield ['possibleValue' => '0', 'expectedResult' => false];
-        yield ['possibleValue' => false, 'expectedResult' => false];
-    }
-
-    /** @dataProvider possibleStringValuesDataProvider */
-    public function testGetShopSettingString($possibleValue, $expectedResult): void
-    {
-        $settingName = 'settingName';
-        $shopId = 3;
-
-        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
-        $shopSettingDaoStub->method('get')
-            ->with($settingName, $shopId)
-            ->willReturn(
-                $this->createConfiguredMock(ShopConfigurationSetting::class, [
-                    'getName' => $settingName,
-                    'getType' => FieldType::STRING,
-                    'getValue' => $possibleValue
-                ])
-            );
-
-        $basicContext = $this->createStub(BasicContextInterface::class);
-        $basicContext->method('getCurrentShopId')->willReturn($shopId);
-
-        $sut = $this->getSut(
-            basicContext: $basicContext,
-            shopSettingDao: $shopSettingDaoStub
-        );
-
-        $this->assertSame($expectedResult, $sut->getString($settingName));
-    }
-
-    public function possibleStringValuesDataProvider(): \Generator
-    {
-        yield ['possibleValue' => 1, 'expectedResult' => '1'];
-        yield ['possibleValue' => '1', 'expectedResult' => '1'];
-        yield ['possibleValue' => 'regular', 'expectedResult' => 'regular'];
-        yield ['possibleValue' => '0', 'expectedResult' => '0'];
-        yield ['possibleValue' => null, 'expectedResult' => ''];
-        yield ['possibleValue' => '', 'expectedResult' => ''];
-    }
-
-    /** @dataProvider possibleStringValuesDataProvider */
-    public function testGetShopSettingSelect($possibleValue, $expectedResult): void
-    {
-        $settingName = 'settingName';
-        $shopId = 3;
-
-        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
-        $shopSettingDaoStub->method('get')
-            ->with($settingName, $shopId)
-            ->willReturn(
-                $this->createConfiguredMock(ShopConfigurationSetting::class, [
-                    'getName' => $settingName,
-                    'getType' => FieldType::SELECT,
-                    'getValue' => $possibleValue
-                ])
-            );
-
-        $basicContext = $this->createStub(BasicContextInterface::class);
-        $basicContext->method('getCurrentShopId')->willReturn($shopId);
-
-        $sut = $this->getSut(
-            basicContext: $basicContext,
-            shopSettingDao: $shopSettingDaoStub
-        );
-
-        $this->assertSame($expectedResult, $sut->getSelect($settingName));
     }
 
     public function testGetShopSettingCollection(): void
