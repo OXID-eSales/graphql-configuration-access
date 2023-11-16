@@ -57,6 +57,7 @@ final class NotAuthorizedAccessCest extends BaseCest
         yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingBoolean', 'field' => 'name'];
         yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingString', 'field' => 'name'];
         yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingCollection', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingAssocCollection', 'field' => 'name'];
     }
 
     protected function listQueriesDataProvider(): \Generator

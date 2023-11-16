@@ -114,7 +114,7 @@ final class ThemeSettingMutationsCest extends BaseCest
                 }
             }',
             [
-                'name' => 'stringSetting',
+                'name' => 'stringSettingEditable',
                 'value' => 'default',
                 'themeId' => self::TEST_THEME_ID
             ]
@@ -126,7 +126,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['changeThemeSettingString'];
-        $I->assertSame('stringSetting', $setting['name']);
+        $I->assertSame('stringSettingEditable', $setting['name']);
         $I->assertSame('default', $setting['value']);
     }
 
@@ -142,7 +142,7 @@ final class ThemeSettingMutationsCest extends BaseCest
                 }
             }',
             [
-                'name' => 'arraySetting',
+                'name' => 'arraySettingEditable',
                 'value' => '[3, "interesting", "values"]',
                 'themeId' => self::TEST_THEME_ID
             ]
@@ -154,7 +154,35 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->assertArrayNotHasKey('errors', $result);
 
         $setting = $result['data']['changeThemeSettingCollection'];
-        $I->assertSame('arraySetting', $setting['name']);
+        $I->assertSame('arraySettingEditable', $setting['name']);
         $I->assertSame('[3, "interesting", "values"]', $setting['value']);
+    }
+
+    public function testChangeAssocCollectionSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'mutation m($name: ID!, $value: String!, $themeId: String!){
+                changeThemeSettingAssocCollection(name: $name, value: $value, themeId: $themeId) {
+                    name
+                    value
+                }
+            }',
+            [
+                'name' => 'assocArraySettingEditable',
+                'value' => '{"first":"10","second":"20","third":"50"}',
+                'themeId' => self::TEST_THEME_ID
+            ]
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeThemeSettingAssocCollection'];
+        $I->assertSame('assocArraySettingEditable', $setting['name']);
+        $I->assertSame('{"first":"10","second":"20","third":"50"}', $setting['value']);
     }
 }
