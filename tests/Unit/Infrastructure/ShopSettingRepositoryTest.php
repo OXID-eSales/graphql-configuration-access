@@ -172,6 +172,13 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'value' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
+
+        yield [
+            'method' => 'getString',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
     }
 
     /** @dataProvider possibleBoolValuesDataProvider */
@@ -214,28 +221,44 @@ class ShopSettingRepositoryTest extends UnitTestCase
         yield ['possibleValue' => false, 'expectedResult' => false];
     }
 
-    public function testGetShopSettingString(): void
+    /** @dataProvider possibleStringValuesDataProvider */
+    public function testGetShopSettingString($possibleValue, $expectedResult): void
     {
-        $nameID = new ID('stringSetting');
+        $settingName = 'settingName';
+        $shopId = 3;
 
+        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoStub->method('get')
+            ->with($settingName, $shopId)
+            ->willReturn(
+                $this->createConfiguredMock(ShopConfigurationSetting::class, [
+                    'getName' => $settingName,
+                    'getType' => FieldType::STRING,
+                    'getValue' => $possibleValue
+                ])
+            );
 
-        $repository = $this->getFetchOneShopSettingRepoInstance('default');
+        $basicContext = $this->createStub(BasicContextInterface::class);
+        $basicContext->method('getCurrentShopId')->willReturn($shopId);
 
-        $string = $repository->getString($nameID);
+        $sut = $this->getSut(
+            basicContext: $basicContext,
+            shopSettingDao: $shopSettingDaoStub
+        );
 
-        $this->assertEquals('default', $string);
+        $this->assertSame($expectedResult, $sut->getString($settingName));
     }
 
-    public function testGetNoShopSettingString(): void
+    public function possibleStringValuesDataProvider(): \Generator
     {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getFetchOneShopSettingRepoInstance(false);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a string configuration');
-        $repository->getString($nameID);
+        yield ['possibleValue' => 1, 'expectedResult' => '1'];
+        yield ['possibleValue' => '1', 'expectedResult' => '1'];
+        yield ['possibleValue' => 'regular', 'expectedResult' => 'regular'];
+        yield ['possibleValue' => '0', 'expectedResult' => '0'];
+        yield ['possibleValue' => null, 'expectedResult' => ''];
+        yield ['possibleValue' => '', 'expectedResult' => ''];
     }
+
 
     public function testGetShopSettingSelect(): void
     {

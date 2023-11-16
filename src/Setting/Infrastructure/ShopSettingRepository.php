@@ -85,20 +85,17 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return (bool)$setting->getValue();
     }
 
+    public function getString(string $name): string
+    {
+        $setting = $this->getShopSetting($name);
+        $this->checkSettingType($setting, FieldType::STRING);
+
+        return (string)$setting->getValue();
+    }
+
     protected function getShopSetting(string $name): ShopConfigurationSetting
     {
         return $this->configurationSettingDao->get($name, $this->basicContext->getCurrentShopId());
-    }
-
-    public function getString(ID $name): string
-    {
-        try {
-            $value = $this->getSettingValue($name, FieldType::STRING);
-        } catch (NotFound $e) {
-            $this->throwGetterNotFoundException('string');
-        }
-
-        return $value;
     }
 
     public function getSelect(ID $name): string

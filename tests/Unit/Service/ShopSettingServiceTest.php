@@ -87,7 +87,7 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals(
             new StringSetting($nameID, $repositoryResult),
-            $settingService->getStringSetting($nameID)
+            $settingService->getStringSetting((string)$nameID)
         );
     }
 

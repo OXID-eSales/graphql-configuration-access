@@ -13,7 +13,7 @@ interface ShopSettingRepositoryInterface
 
     public function getBoolean(string $name): bool;
 
-    public function getString(ID $name): string;
+    public function getString(string $name): string;
 
     public function getSelect(ID $name): string;
 

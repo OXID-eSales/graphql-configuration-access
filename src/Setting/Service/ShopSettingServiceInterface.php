@@ -17,7 +17,7 @@ interface ShopSettingServiceInterface
 
     public function getBooleanSetting(string $name): BooleanSetting;
 
-    public function getStringSetting(ID $name): StringSetting;
+    public function getStringSetting(string $name): StringSetting;
 
     public function getSelectSetting(ID $name): StringSetting;
 
