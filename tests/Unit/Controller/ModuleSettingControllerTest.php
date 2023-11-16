@@ -16,7 +16,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 class ModuleSettingControllerTest extends UnitTestCase
 {
     /** @dataProvider proxyTestDataProvider */
-    public function testGetModuleSettingProxyToService(
+    public function testControllerProxiesTheDataToServiceAndReturnsItsResult(
         string $controllerMethod,
         string $serviceMethod,
         array $params,
