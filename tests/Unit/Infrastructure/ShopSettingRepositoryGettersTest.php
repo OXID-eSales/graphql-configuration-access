@@ -4,21 +4,15 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
  */
-class ShopSettingRepositoryTest extends UnitTestCase
+class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
 {
     /** @dataProvider possibleGetterValuesDataProvider */
     public function testGetShopSetting($method, $type, $possibleValue, $expectedResult): void
@@ -433,19 +427,5 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'possibleValue' => false,
             'expectedResult' => WrongSettingValueException::class
         ];
-    }
-
-    private function getSut(
-        ?BasicContextInterface $basicContext = null,
-        ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
-        ?ShopSettingEncoderInterface $shopSettingEncoder = null,
-        ?ShopConfigurationSettingDaoInterface $shopSettingDao = null,
-    ): ShopSettingRepositoryInterface {
-        return new ShopSettingRepository(
-            basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class),
-            queryBuilderFactory: $queryBuilderFactory ?? $this->createStub(QueryBuilderFactoryInterface::class),
-            shopSettingEncoder: $shopSettingEncoder ?? $this->createStub(ShopSettingEncoderInterface::class),
-            configurationSettingDao: $shopSettingDao ?? $this->createStub(ShopConfigurationSettingDaoInterface::class),
-        );
     }
 }
