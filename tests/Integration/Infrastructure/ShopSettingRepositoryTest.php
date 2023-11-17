@@ -19,6 +19,9 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForS
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
+ */
 class ShopSettingRepositoryTest extends IntegrationTestCase
 {
     public function setUp(): void

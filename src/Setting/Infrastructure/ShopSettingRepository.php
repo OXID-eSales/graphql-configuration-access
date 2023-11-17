@@ -171,12 +171,6 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return $value;
     }
 
-    protected function throwGetterNotFoundException(string $typeString): void
-    {
-        $aOrAn = (preg_match('/^[aeiou]/i', $typeString)) ? 'an' : 'a';
-        throw new NotFound("The queried name couldn't be found as $aOrAn $typeString configuration");
-    }
-
     /**
      * @throws WrongSettingTypeException
      */
@@ -185,78 +179,5 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         if ($value->getType() !== $requiredType) {
             throw new WrongSettingTypeException();
         }
-    }
-
-    protected function throwSetterNotFoundException(string $typeString, string $name): void
-    {
-        throw new NotFound('The ' . $typeString . ' setting "' . $name . '" doesn\'t exist');
-    }
-
-    protected function isFloatString(string $number): bool
-    {
-        return is_numeric($number) && str_contains($number, '.') !== false;
-    }
-
-    protected function getSettingValue(ID $name, string $fieldType, string $theme = ''): string
-    {
-        if ($theme) {
-            $theme = 'theme:' . $theme;
-        }
-
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder->select('c.oxvarvalue')
-            ->from('oxconfig', 'c')
-            ->where('c.oxmodule = :module')
-            ->andWhere('c.oxvarname = :name')
-            ->andWhere('c.oxvartype = :type')
-            ->andWhere('c.oxshopid = :shopId')
-            ->setParameters([
-                'module' => $theme,
-                'name' => $name->val(),
-                'type' => $fieldType,
-                'shopId' => $this->basicContext->getCurrentShopId(),
-            ]);
-
-        /** @var Result $result */
-        $result = $queryBuilder->execute();
-        $value = $result->fetchOne();
-
-        if ($value === false) {
-            throw new NotFound('The requested configuration was not found');
-        }
-
-        return $value;
-    }
-
-    protected function saveSettingValue(ID $name, string $themeId, string $value): void
-    {
-        $shopId = $this->basicContext->getCurrentShopId();
-
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder
-            ->update('oxconfig')
-            ->where($queryBuilder->expr()->eq('oxvarname', ':name'))
-            ->andWhere($queryBuilder->expr()->eq('oxshopid', ':shopId'))
-            ->andWhere($queryBuilder->expr()->eq('oxmodule', ':themeId'))
-            ->set('oxvarvalue', ':value')
-            ->setParameters([
-                'shopId' => $shopId,
-                'name' => $name->val(),
-                'themeId' => 'theme:' . $themeId,
-                'value' => $value
-            ]);
-
-        $affectedRows = $queryBuilder->execute();
-        if ($affectedRows === 0) {
-            throw new NotFound('Configuration not found for ' . $themeId);
-        }
-
-        $this->eventDispatcher->dispatch(
-            new ThemeSettingChangedEvent(
-                (string)$name,
-                $shopId,
-                $themeId
-            )
-        );
     }
 }

@@ -2,25 +2,22 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
-use Doctrine\DBAL\ForwardCompatibility\Result;
-use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use TheCodingMachine\GraphQLite\Types\ID;
 
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
+ */
 class ShopSettingRepositoryTest extends UnitTestCase
 {
     /** @dataProvider possibleGetterValuesDataProvider */
@@ -436,51 +433,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'possibleValue' => false,
             'expectedResult' => WrongSettingValueException::class
         ];
-    }
-
-    /**
-     * @param Result|MockObject|(Result&MockObject) $result
-     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
-     */
-    public function getQueryBuilderFactoryMock(Result|MockObject $result): QueryBuilderFactoryInterface|MockObject
-    {
-        $queryBuilder = $this->createPartialMock(QueryBuilder::class, ['execute']);
-        $queryBuilder->expects($this->once())
-            ->method('execute')
-            ->willReturn($result);
-        $queryBuilderFactory = $this->createMock(QueryBuilderFactoryInterface::class);
-        $queryBuilderFactory->expects($this->once())
-            ->method('create')
-            ->willReturn($queryBuilder);
-        return $queryBuilderFactory;
-    }
-
-    private function getFetchOneShopSettingRepoInstance(string|bool $qbReturnValue): ShopSettingRepositoryInterface
-    {
-        $result = $this->createMock(Result::class);
-        $result->expects($this->once())
-            ->method('fetchOne')
-            ->willReturn($qbReturnValue);
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($result);
-
-        return $this->getShopSettingRepository(
-            $queryBuilderFactory
-        );
-    }
-
-    private function getShopSettingRepository(
-        QueryBuilderFactoryInterface $queryBuilderFactory
-    ): ShopSettingRepository {
-        $basicContextMock = $this->getBasicContextMock(1);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $shopSettingEncoder = new ShopSettingEncoder();
-        return new ShopSettingRepository(
-            $basicContextMock,
-            $eventDispatcher,
-            $queryBuilderFactory,
-            $shopSettingEncoder,
-            $this->createStub(ShopConfigurationSettingDaoInterface::class)
-        );
     }
 
     private function getSut(
