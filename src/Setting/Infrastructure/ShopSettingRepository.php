@@ -18,9 +18,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChanged
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForShopException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ShopSettingRepository implements ShopSettingRepositoryInterface
@@ -108,7 +109,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
 
         $value = $setting->getValue();
 
-        if (!is_array($value) && $value !== ''){
+        if (!is_array($value) && $value !== '') {
             throw new WrongSettingValueException();
         }
 
@@ -126,7 +127,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
 
         $value = $setting->getValue();
 
-        if (!is_array($value) && $value !== ''){
+        if (!is_array($value) && $value !== '') {
             throw new WrongSettingValueException();
         }
 
@@ -144,7 +145,30 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
 
     public function getSettingsList(): array
     {
-        return $this->getSettingTypes();
+        $shopId = $this->basicContext->getCurrentShopId();
+
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder->select('c.oxvarname')
+            ->addSelect('c.oxvartype')
+            ->from('oxconfig', 'c')
+            ->where('c.oxmodule = :module')
+            ->andWhere('c.oxshopid = :shopId')
+            ->setParameters([
+                ':module' => '',
+                ':shopId' => $shopId
+            ]);
+
+        /** @var Result $result */
+        $result = $queryBuilder->execute();
+
+        /** @var array<string,string> $value */
+        $value = $result->fetchAllKeyValue();
+
+        if ($value === []) {
+            throw new NoSettingsFoundForShopException($shopId);
+        }
+
+        return $value;
     }
 
     protected function throwGetterNotFoundException(string $typeString): void
@@ -199,34 +223,6 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
 
         if ($value === false) {
             throw new NotFound('The requested configuration was not found');
-        }
-
-        return $value;
-    }
-
-    protected function getSettingTypes(string $theme = ''): array
-    {
-        $themeCondition = (!empty($theme)) ? 'theme:' . $theme : '';
-        $shopId = $this->basicContext->getCurrentShopId();
-
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder->select('c.oxvarname')
-            ->addSelect('c.oxvartype')
-            ->from('oxconfig', 'c')
-            ->where('c.oxmodule = :module')
-            ->andWhere('c.oxshopid = :shopId')
-            ->setParameters([
-                ':module' => $themeCondition,
-                ':shopId' => $shopId
-            ]);
-
-        /** @var Result $result */
-        $result = $queryBuilder->execute();
-        $value = $result->fetchAllKeyValue();
-
-        $notFoundLocation = (!empty($theme)) ? 'theme: "' . $theme . '"' : 'shopID: "' . $shopId . '"';
-        if ($value === []) {
-            throw new NotFound('No configurations found for ' . $notFoundLocation);
         }
 
         return $value;

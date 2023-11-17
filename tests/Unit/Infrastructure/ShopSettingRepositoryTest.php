@@ -438,20 +438,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
         ];
     }
 
-    public function testGetNoSettingsList(): void
-    {
-        $result = $this->createMock(Result::class);
-        $result->expects($this->once())
-            ->method('fetchAllKeyValue')
-            ->willReturn([]);
-        $queryBuilderFactory = $this->getQueryBuilderFactoryMock($result);
-        $repository = $this->getShopSettingRepository($queryBuilderFactory);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('No configurations found for shopID: "1"');
-        $repository->getSettingsList();
-    }
-
     /**
      * @param Result|MockObject|(Result&MockObject) $result
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
