@@ -87,7 +87,6 @@ class ShopSettingRepositoryTest extends IntegrationTestCase
 
         $sut = new ShopSettingRepository(
             basicContext: $basicContext,
-            eventDispatcher: $this->get(EventDispatcherInterface::class),
             queryBuilderFactory: $this->get(QueryBuilderFactoryInterface::class),
             shopSettingEncoder: $this->get(ShopSettingEncoderInterface::class),
             configurationSettingDao: $this->get(ShopConfigurationSettingDaoInterface::class)

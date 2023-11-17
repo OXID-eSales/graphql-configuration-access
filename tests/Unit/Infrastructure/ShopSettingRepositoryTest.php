@@ -437,14 +437,12 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
     private function getSut(
         ?BasicContextInterface $basicContext = null,
-        ?EventDispatcherInterface $eventDispatcher = null,
         ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
         ?ShopSettingEncoderInterface $shopSettingEncoder = null,
         ?ShopConfigurationSettingDaoInterface $shopSettingDao = null,
     ): ShopSettingRepositoryInterface {
         return new ShopSettingRepository(
             basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class),
-            eventDispatcher: $eventDispatcher ?? $this->createStub(EventDispatcherInterface::class),
             queryBuilderFactory: $queryBuilderFactory ?? $this->createStub(QueryBuilderFactoryInterface::class),
             shopSettingEncoder: $shopSettingEncoder ?? $this->createStub(ShopSettingEncoderInterface::class),
             configurationSettingDao: $shopSettingDao ?? $this->createStub(ShopConfigurationSettingDaoInterface::class),

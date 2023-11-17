@@ -14,21 +14,16 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSet
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForShopException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ShopSettingRepository implements ShopSettingRepositoryInterface
 {
     public function __construct(
         private BasicContextInterface $basicContext,
-        private EventDispatcherInterface $eventDispatcher,
         private QueryBuilderFactoryInterface $queryBuilderFactory,
         protected ShopSettingEncoderInterface $shopSettingEncoder,
         protected ShopConfigurationSettingDaoInterface $configurationSettingDao,
