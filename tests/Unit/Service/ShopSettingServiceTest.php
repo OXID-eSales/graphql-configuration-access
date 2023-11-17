@@ -15,141 +15,103 @@ use TheCodingMachine\GraphQLite\Types\ID;
 
 class ShopSettingServiceTest extends UnitTestCase
 {
-    public function testGetShopSettingInteger(): void
-    {
-        $nameID = new ID('integerSetting');
-        $repositoryResult = 123;
+    /** @dataProvider getNotEncodableShopSettingDataProvider */
+    public function testGetNotEncodableShopSetting(
+        string $repositoryMethod,
+        mixed $repositoryResult,
+        string $serviceMethod,
+        mixed $expectedResult
+    ): void {
+        $nameID = new ID('settingName');
 
         $sut = $this->getSut(
             shopSettingRepository: $this->getShopRepositorySettingGetterMock(
-                'getInteger',
+                $repositoryMethod,
                 $nameID,
                 $repositoryResult
             )
         );
 
-        $this->assertEquals(
-            new IntegerSetting($nameID, $repositoryResult),
-            $sut->getIntegerSetting((string)$nameID)
-        );
+        $this->assertEquals($expectedResult, $sut->$serviceMethod((string)$nameID));
     }
 
-    public function testGetShopSettingFloat(): void
+    public function getNotEncodableShopSettingDataProvider(): \Generator
     {
-        $nameID = new ID('floatSetting');
-        $repositoryResult = 1.23;
+        $nameID = new ID('settingName');
+
+        yield 'getIntegerSetting' => [
+            'repositoryMethod' => 'getInteger',
+            'repositoryResult' => 123,
+            'serviceMethod' => 'getIntegerSetting',
+            'expectedResult' => new IntegerSetting($nameID, 123)
+        ];
+
+        yield 'getFloatSetting' => [
+            'repositoryMethod' => 'getFloat',
+            'repositoryResult' => 1.23,
+            'serviceMethod' => 'getFloatSetting',
+            'expectedResult' => new FloatSetting($nameID, 1.23)
+        ];
+
+        yield 'getBooleanSetting' => [
+            'repositoryMethod' => 'getBoolean',
+            'repositoryResult' => false,
+            'serviceMethod' => 'getBooleanSetting',
+            'expectedResult' => new BooleanSetting($nameID, false)
+        ];
+
+        yield 'getStringSetting' => [
+            'repositoryMethod' => 'getString',
+            'repositoryResult' => 'default',
+            'serviceMethod' => 'getStringSetting',
+            'expectedResult' => new StringSetting($nameID, 'default')
+        ];
+
+        yield 'getSelectSetting' => [
+            'repositoryMethod' => 'getSelect',
+            'repositoryResult' => 'selectResult',
+            'serviceMethod' => 'getSelectSetting',
+            'expectedResult' => new StringSetting($nameID, 'selectResult')
+        ];
+    }
+
+    /** @dataProvider getEncodableShopSettingDataProvider */
+    public function testGetEncodableShopSetting(
+        string $repositoryMethod,
+        mixed $repositoryResult,
+        string $serviceMethod
+    ): void {
+        $nameID = new ID('settingName');
+        $encodingResult = 'someEncodedResult';
 
         $sut = $this->getSut(
             shopSettingRepository: $this->getShopRepositorySettingGetterMock(
-                'getFloat',
-                $nameID,
-                $repositoryResult
-            )
-        );
-
-        $this->assertEquals(
-            new FloatSetting($nameID, $repositoryResult),
-            $sut->getFloatSetting((string)$nameID)
-        );
-    }
-
-    public function testGetShopSettingBoolean(): void
-    {
-        $nameID = new ID('booleanSetting');
-        $repositoryResult = false;
-
-        $settingService = $this->getSut(
-            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
-                'getBoolean',
-                $nameID,
-                $repositoryResult
-            )
-        );
-
-        $this->assertEquals(
-            new BooleanSetting($nameID, $repositoryResult),
-            $settingService->getBooleanSetting((string)$nameID)
-        );
-    }
-
-    public function testGetShopSettingString(): void
-    {
-        $nameID = new ID('stringSetting');
-        $repositoryResult = 'default';
-
-        $settingService = $this->getSut(
-            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
-                'getString',
-                $nameID,
-                $repositoryResult
-            )
-        );
-
-        $this->assertEquals(
-            new StringSetting($nameID, $repositoryResult),
-            $settingService->getStringSetting((string)$nameID)
-        );
-    }
-
-    public function testGetShopSettingSelect(): void
-    {
-        $nameID = new ID('selectSetting');
-        $repositoryResult = 'select';
-
-        $settingService = $this->getSut(
-            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
-                'getSelect',
-                $nameID,
-                $repositoryResult
-            )
-        );
-
-        $this->assertEquals(
-            new StringSetting($nameID, $repositoryResult),
-            $settingService->getSelectSetting((string)$nameID)
-        );
-    }
-
-    public function testGetShopSettingCollection(): void
-    {
-        $nameID = new ID('arraySetting');
-        $repositoryResult = ['nice', 'values'];
-        $collectionEncodingResult = 'someEncodedResult';
-
-        $settingService = $this->getSut(
-            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
-                'getCollection',
+                $repositoryMethod,
                 $nameID,
                 $repositoryResult
             ),
-            jsonService: $this->getJsonEncodeServiceMock($repositoryResult, $collectionEncodingResult),
+            jsonService: $this->getJsonEncodeServiceMock($repositoryResult, $encodingResult),
         );
 
         $this->assertEquals(
-            new StringSetting($nameID, $collectionEncodingResult),
-            $settingService->getCollectionSetting((string)$nameID)
+            new StringSetting($nameID, $encodingResult),
+            $sut->$serviceMethod((string)$nameID)
         );
     }
 
-    public function testGetShopSettingAssocCollection(): void
+    public function getEncodableShopSettingDataProvider(): \Generator
     {
-        $nameID = new ID('aarraySetting');
-        $repositoryResult = ['first' => '10', 'second' => '20', 'third' => '50'];
-        $collectionEncodingResult = 'someEncodedResult';
+        yield 'getCollectionSetting' => [
+            'repositoryMethod' => 'getCollection',
+            'repositoryResult' => ['nice', 'values'],
+            'serviceMethod' => 'getCollectionSetting',
+        ];
 
-        $settingService = $this->getSut(
-            shopSettingRepository: $this->getShopRepositorySettingGetterMock(
-                'getAssocCollection',
-                $nameID,
-                $repositoryResult
-            ),
-            jsonService: $this->getJsonEncodeServiceMock($repositoryResult, $collectionEncodingResult),
-        );
-
-        $this->assertEquals(
-            new StringSetting($nameID, $collectionEncodingResult),
-            $settingService->getAssocCollectionSetting((string)$nameID)
-        );
+        yield 'getAssocCollectionSetting' => [
+            'repositoryMethod' => 'getAssocCollection',
+            'repositoryResult' => ['first' => '10', 'second' => '20', 'third' => '50'],
+            'serviceMethod' => 'getAssocCollectionSetting',
+        ];
     }
 
     private function getShopRepositorySettingGetterMock(
