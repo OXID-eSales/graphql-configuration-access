@@ -56,7 +56,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $repository = $this->getSut(eventDispatcher: $eventDispatcher);
 
         $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The integer setting "notExistingSetting" doesn\'t exist');
+        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
         $repository->saveIntegerSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
     }
 
@@ -93,7 +93,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $repository = $this->getSut(eventDispatcher: $eventDispatcher);
 
         $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The float setting "notExistingSetting" doesn\'t exist');
+        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
         $repository->saveFloatSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
     }
 
@@ -130,7 +130,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $repository = $this->getSut(eventDispatcher: $eventDispatcher);
 
         $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The boolean setting "notExistingSetting" doesn\'t exist');
+        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
         $repository->saveBooleanSetting(new ID('notExistingSetting'), true, 'awesomeTheme');
     }
 

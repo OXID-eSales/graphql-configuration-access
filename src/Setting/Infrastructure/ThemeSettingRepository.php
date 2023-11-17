@@ -123,33 +123,21 @@ class ThemeSettingRepository extends AbstractDatabaseSettingRepository implement
     {
         $value = $this->shopSettingEncoder->encode(FieldType::NUMBER, $value);
 
-        try {
-            $this->saveSettingValue($name, $themeId, (string)$value);
-        } catch (NotFound $e) {
-            $this->throwSetterNotFoundException('integer', $name->val());
-        }
+        $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
     public function saveFloatSetting(ID $name, float $value, string $themeId): void
     {
         $value = $this->shopSettingEncoder->encode(FieldType::NUMBER, $value);
 
-        try {
-            $this->saveSettingValue($name, $themeId, (string)$value);
-        } catch (NotFound $e) {
-            $this->throwSetterNotFoundException('float', $name->val());
-        }
+        $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
     public function saveBooleanSetting(ID $name, bool $value, string $themeId): void
     {
         $value = $this->shopSettingEncoder->encode(FieldType::BOOLEAN, $value);
 
-        try {
-            $this->saveSettingValue($name, $themeId, (string)$value);
-        } catch (NotFound $e) {
-            $this->throwSetterNotFoundException('boolean', $name->val());
-        }
+        $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
     public function saveStringSetting(ID $name, string $value, string $themeId): void

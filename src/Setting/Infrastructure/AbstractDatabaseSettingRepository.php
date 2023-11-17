@@ -30,11 +30,6 @@ abstract class AbstractDatabaseSettingRepository
         throw new NotFound("The queried name couldn't be found as $aOrAn $typeString configuration");
     }
 
-    protected function throwSetterNotFoundException(string $typeString, string $name): void
-    {
-        throw new NotFound('The ' . $typeString . ' setting "' . $name . '" doesn\'t exist');
-    }
-
     protected function isFloatString(string $number): bool
     {
         return is_numeric($number) && str_contains($number, '.') !== false;
@@ -119,7 +114,7 @@ abstract class AbstractDatabaseSettingRepository
 
         $affectedRows = $queryBuilder->execute();
         if ($affectedRows === 0) {
-            throw new NotFound('Configuration not found for ' . $themeId);
+            throw new NotFound('Configuration "' . $name->val() . '" was not found for ' . $themeId);
         }
 
         $this->eventDispatcher->dispatch(

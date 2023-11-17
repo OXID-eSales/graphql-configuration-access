@@ -32,25 +32,6 @@ class ChangeThemeSettingRepositoryTest extends UnitTestCase
         $repository->saveIntegerSetting($nameID, 123, 'awesomeTheme');
     }
 
-    public function testChangeNoThemeSettingInteger(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $settingEncoder = $this->getShopSettingEncoderMock(
-            FieldType::NUMBER,
-            123,
-            123
-        );
-        $repository = $this->getSut(settingEncoder: $settingEncoder);
-        $repository->expects($this->once())
-            ->method('saveSettingValue')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The integer setting "' . $nameID->val() . '" doesn\'t exist');
-        $repository->saveIntegerSetting($nameID, 123, 'awesomeTheme');
-    }
-
     public function testChangeThemeSettingFloat(): void
     {
         $nameID = new ID('floatSetting');
@@ -68,26 +49,6 @@ class ChangeThemeSettingRepositoryTest extends UnitTestCase
         $repository->saveFloatSetting($nameID, 1.23, 'awesomeTheme');
     }
 
-    public function testChangeNoThemeSettingFloat(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $settingEncoder = $this->getShopSettingEncoderMock(
-            FieldType::NUMBER,
-            1.23,
-            1.23
-        );
-        $repository = $this->getSut(settingEncoder: $settingEncoder);
-        $repository->expects($this->once())
-            ->method('saveSettingValue')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The float setting "' . $nameID->val() . '" doesn\'t exist');
-
-        $repository->saveFloatSetting($nameID, 1.23, 'awesomeTheme');
-    }
-
     public function testChangeThemeSettingBoolean(): void
     {
         $nameID = new ID('booleanSetting');
@@ -101,26 +62,6 @@ class ChangeThemeSettingRepositoryTest extends UnitTestCase
         $repository->expects($this->once())
             ->method('saveSettingValue')
             ->with($nameID, 'awesomeTheme', '');
-
-        $repository->saveBooleanSetting($nameID, false, 'awesomeTheme');
-    }
-
-    public function testChangeNoThemeSettingBoolean(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $settingEncoder = $this->getShopSettingEncoderMock(
-            FieldType::BOOLEAN,
-            false,
-            ''
-        );
-        $repository = $this->getSut(settingEncoder: $settingEncoder);
-        $repository->expects($this->once())
-            ->method('saveSettingValue')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The boolean setting "' . $nameID->val() . '" doesn\'t exist');
 
         $repository->saveBooleanSetting($nameID, false, 'awesomeTheme');
     }
