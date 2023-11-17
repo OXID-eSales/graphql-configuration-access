@@ -27,4 +27,16 @@ interface ShopSettingRepositoryInterface
     public function getSettingsList(): array;
 
     public function saveIntegerSetting(string $name, int $value): void;
+
+    public function saveFloatSetting(string $name, float $value): void;
+
+    public function saveBooleanSetting(string $name, bool $value): void;
+
+    public function saveStringSetting(string $name, string $value): void;
+
+    public function saveSelectSetting(string $name, string $value): void;
+
+    public function saveCollectionSetting(string $name, array $value): void;
+
+    public function saveAssocCollectionSetting(string $name, array $value): void;
 }

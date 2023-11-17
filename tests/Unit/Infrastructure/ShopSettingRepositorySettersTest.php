@@ -24,7 +24,7 @@ class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
         $basicContextStub->method('getCurrentShopId')->willReturn($shopId);
 
         $shopSettingDaoSpy = $this->createMock(ShopConfigurationSettingDaoInterface::class);
-        $shopSettingDaoSpy->expects($this->once())->method('save')->with($this->equalTo($setting));
+        $shopSettingDaoSpy->expects($this->once())->method('save')->with($setting);
 
         $sut = $this->getSut(
             basicContext: $basicContextStub,
@@ -41,13 +41,49 @@ class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
             'settingValue' => 123,
             'settingType' => FieldType::NUMBER
         ];
+
+        yield 'float' => [
+            'method' => 'saveFloatSetting',
+            'settingValue' => 1.23,
+            'settingType' => FieldType::NUMBER
+        ];
+
+        yield 'boolean' => [
+            'method' => 'saveBooleanSetting',
+            'settingValue' => true,
+            'settingType' => FieldType::BOOLEAN
+        ];
+
+        yield 'string' => [
+            'method' => 'saveStringSetting',
+            'settingValue' => 'string value',
+            'settingType' => FieldType::STRING
+        ];
+
+        yield 'select' => [
+            'method' => 'saveSelectSetting',
+            'settingValue' => 'string select value',
+            'settingType' => FieldType::SELECT
+        ];
+
+        yield 'collection' => [
+            'method' => 'saveCollectionSetting',
+            'settingValue' => ['some', 'collection'],
+            'settingType' => FieldType::ARRAY
+        ];
+
+        yield 'assoc collection' => [
+            'method' => 'saveAssocCollectionSetting',
+            'settingValue' => ['key1' => 'some', 'key2' => 'collection'],
+            'settingType' => FieldType::ASSOCIATIVE_ARRAY
+        ];
     }
 
     public function buildShopSettingStub(
         int $shopId,
         string $settingType,
         string $settingName,
-        int $settingValue
+        $settingValue
     ): ShopConfigurationSetting {
         return (new ShopConfigurationSetting())
             ->setShopId($shopId)

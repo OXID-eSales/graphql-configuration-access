@@ -176,10 +176,48 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
 
     public function saveIntegerSetting(string $name, int $value): void
     {
+        $this->saveAsType(FieldType::NUMBER, $name, $value);
+    }
+
+    public function saveFloatSetting(string $name, float $value): void
+    {
+        $this->saveAsType(FieldType::NUMBER, $name, $value);
+    }
+
+    public function saveBooleanSetting(string $name, bool $value): void
+    {
+        $this->saveAsType(FieldType::BOOLEAN, $name, $value);
+    }
+
+    public function saveStringSetting(string $name, string $value): void
+    {
+        $this->saveAsType(FieldType::STRING, $name, $value);
+    }
+
+    public function saveSelectSetting(string $name, string $value): void
+    {
+        $this->saveAsType(FieldType::SELECT, $name, $value);
+    }
+
+    public function saveCollectionSetting(string $name, array $value): void
+    {
+        $this->saveAsType(FieldType::ARRAY, $name, $value);
+    }
+
+    public function saveAssocCollectionSetting(string $name, array $value): void
+    {
+        $this->saveAsType(FieldType::ASSOCIATIVE_ARRAY, $name, $value);
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function saveAsType(string $type, string $name, $value): void
+    {
         $setting = (new ShopConfigurationSetting())
             ->setShopId($this->basicContext->getCurrentShopId())
             ->setName($name)
-            ->setType(FieldType::NUMBER)
+            ->setType($type)
             ->setValue($value);
 
         $this->configurationSettingDao->save($setting);
