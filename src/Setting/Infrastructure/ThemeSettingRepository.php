@@ -143,7 +143,13 @@ class ThemeSettingRepository extends AbstractDatabaseSettingRepository implement
 
     public function saveBooleanSetting(ID $name, bool $value, string $themeId): void
     {
-        // TODO: Implement saveBooleanSetting() method.
+        $value = $this->shopSettingEncoder->encode(FieldType::BOOLEAN, $value);
+
+        try {
+            $this->saveSettingValue($name, $themeId, (string)$value);
+        } catch (NotFound $e) {
+            $this->throwSetterNotFoundException('boolean', $name->val());
+        }
     }
 
     public function saveStringSetting(ID $name, string $value, string $themeId): void

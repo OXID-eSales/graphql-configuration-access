@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -92,8 +93,45 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $repository = $this->getSut(eventDispatcher: $eventDispatcher);
 
         $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The integer setting "notExistingSetting" doesn\'t exist');
-        $repository->saveIntegerSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
+        $this->expectExceptionMessage('The float setting "notExistingSetting" doesn\'t exist');
+        $repository->saveFloatSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
+    }
+
+    public function testSaveAndGetBooleanSetting(): void
+    {
+        $name = "coolBooleanSetting";
+        $eventDispatcher = $this->getEventDispatcherMock("coolBooleanSetting");
+        /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+
+        $repository = $this->getSut(
+            eventDispatcher: $eventDispatcher,
+            queryBuilderFactory: $queryBuilderFactory
+        );
+
+        $this->createThemeSetting(
+            $queryBuilderFactory,
+            $name,
+            FieldType::BOOLEAN,
+            ''
+        );
+
+        $repository->saveBooleanSetting(new ID($name), true, 'awesomeTheme');
+        $floatResult = $repository->getBoolean(new ID($name), 'awesomeTheme');
+
+        $this->assertSame(true, $floatResult);
+    }
+
+    public function testSaveNotExistingBooleanSetting(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())
+            ->method('dispatch');
+        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The boolean setting "notExistingSetting" doesn\'t exist');
+        $repository->saveBooleanSetting(new ID('notExistingSetting'), true, 'awesomeTheme');
     }
 
     private function getSut(
@@ -101,8 +139,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         ?EventDispatcherInterface $eventDispatcher = null,
         ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
         ?ShopSettingEncoderInterface $shopSettingEncoder = null
-    ): ThemeSettingRepository
-    {
+    ): ThemeSettingRepository {
         return new ThemeSettingRepository(
             $basicContext ?? $this->get(BasicContextInterface::class),
             $eventDispatcher ?? $this->get(EventDispatcherInterface::class),
@@ -116,8 +153,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         string $name,
         string $fieldType,
         mixed $value
-    ): void
-    {
+    ): void {
         $uniqueId = uniqid();
         $queryBuilder = $queryBuilderFactory->create();
         $queryBuilder
@@ -141,9 +177,9 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 
     /**
      * @param string $name
-     * @return \PHPUnit\Framework\MockObject\MockObject|EventDispatcherInterface|(EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject)
+     * @return MockObject|EventDispatcherInterface|(EventDispatcherInterface&MockObject)
      */
-    public function getEventDispatcherMock(string $name): \PHPUnit\Framework\MockObject\MockObject|EventDispatcherInterface
+    public function getEventDispatcherMock(string $name): MockObject|EventDispatcherInterface
     {
         $configurationChangedEvent = new ThemeSettingChangedEvent(
             $name,
