@@ -23,7 +23,7 @@ interface ShopSettingServiceInterface
 
     public function getCollectionSetting(string $name): StringSetting;
 
-    public function getAssocCollectionSetting(ID $name): StringSetting;
+    public function getAssocCollectionSetting(string $name): StringSetting;
 
     /**
      * @return SettingType[]

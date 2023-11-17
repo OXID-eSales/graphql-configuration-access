@@ -235,6 +235,34 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'possibleValue' => ['one' => 'oneValue', 'two' => 'twoValue'],
             'expectedResult' => ['one' => 'oneValue', 'two' => 'twoValue']
         ];
+
+        yield 'empty string for assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => '',
+            'expectedResult' => []
+        ];
+
+        yield 'empty array for assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => [],
+            'expectedResult' => []
+        ];
+
+        yield 'filled not assoc array for assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => ['one', 'two'],
+            'expectedResult' => ['one', 'two']
+        ];
+
+        yield 'associative array in assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => ['one' => 'oneValue', 'two' => 'twoValue'],
+            'expectedResult' => ['one' => 'oneValue', 'two' => 'twoValue']
+        ];
     }
 
     /** @dataProvider wrongSettingsDataProvider */
@@ -373,21 +401,42 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'possibleValue' => false,
             'expectedResult' => WrongSettingValueException::class
         ];
+
+        yield 'false as the error result of unserialize in assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => false,
+            'expectedResult' => WrongSettingValueException::class
+        ];
+
+        yield 'string instead of assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => 'some string',
+            'expectedResult' => WrongSettingValueException::class
+        ];
+
+        yield 'integer instead of assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => 123,
+            'expectedResult' => WrongSettingValueException::class
+        ];
+
+        yield 'float instead of assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => 1.23,
+            'expectedResult' => WrongSettingValueException::class
+        ];
+
+        yield 'null instead of assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => false,
+            'expectedResult' => WrongSettingValueException::class
+        ];
     }
-
-    public function testGetShopSettingAssocCollection(): void
-    {
-        $nameID = new ID('aarraySetting');
-
-        $serializeArrayString = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
-
-        $repository = $this->getFetchOneShopSettingRepoInstance($serializeArrayString);
-
-        $assocCollection = $repository->getAssocCollection($nameID);
-
-        $this->assertEquals(['first' => '10', 'second' => '20', 'third' => '50'], $assocCollection);
-    }
-
 
     public function testGetNoSettingsList(): void
     {

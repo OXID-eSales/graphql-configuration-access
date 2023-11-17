@@ -63,12 +63,12 @@ final class ShopSettingService implements ShopSettingServiceInterface
         return new StringSetting(new ID($name), $collectionEncodingResult);
     }
 
-    public function getAssocCollectionSetting(ID $name): StringSetting
+    public function getAssocCollectionSetting(string $name): StringSetting
     {
         $assocCollectionString = $this->shopSettingRepository->getAssocCollection($name);
         $assocCollectionEncodingResult = $this->jsonService->jsonEncodeArray($assocCollectionString);
 
-        return new StringSetting($name, $assocCollectionEncodingResult);
+        return new StringSetting(new ID($name), $assocCollectionEncodingResult);
     }
 
     /**

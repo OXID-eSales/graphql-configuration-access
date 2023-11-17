@@ -19,7 +19,7 @@ interface ShopSettingRepositoryInterface
 
     public function getCollection(string $name): array;
 
-    public function getAssocCollection(ID $name): array;
+    public function getAssocCollection(string $name): array;
 
     /**
      * @return array<string, string>

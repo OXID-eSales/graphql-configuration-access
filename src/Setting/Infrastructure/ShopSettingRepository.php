@@ -119,15 +119,22 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return $value;
     }
 
-    public function getAssocCollection(ID $name): array
+    public function getAssocCollection(string $name): array
     {
-        try {
-            $value = $this->getSettingValue($name, FieldType::ASSOCIATIVE_ARRAY);
-        } catch (NotFound $e) {
-            $this->throwGetterNotFoundException('associative collection');
+        $setting = $this->getShopSetting($name);
+        $this->checkSettingType($setting, FieldType::ASSOCIATIVE_ARRAY);
+
+        $value = $setting->getValue();
+
+        if (!is_array($value) && $value !== ''){
+            throw new WrongSettingValueException();
         }
 
-        return unserialize($value);
+        if ($value === '') {
+            $value = [];
+        }
+
+        return $value;
     }
 
     protected function getShopSetting(string $name): ShopConfigurationSetting
