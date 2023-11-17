@@ -25,4 +25,6 @@ interface ShopSettingRepositoryInterface
      * @return array<string, string>
      */
     public function getSettingsList(): array;
+
+    public function saveIntegerSetting(string $name, int $value): void;
 }

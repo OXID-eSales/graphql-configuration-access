@@ -173,4 +173,15 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
 
         return $value;
     }
+
+    public function saveIntegerSetting(string $name, int $value): void
+    {
+        $setting = (new ShopConfigurationSetting())
+            ->setShopId($this->basicContext->getCurrentShopId())
+            ->setName($name)
+            ->setType(FieldType::NUMBER)
+            ->setValue($value);
+
+        $this->configurationSettingDao->save($setting);
+    }
 }
