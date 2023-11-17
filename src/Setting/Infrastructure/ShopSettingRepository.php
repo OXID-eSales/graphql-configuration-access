@@ -107,17 +107,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $setting = $this->getShopSetting($name);
         $this->checkSettingType($setting, FieldType::ARRAY);
 
-        $value = $setting->getValue();
-
-        if (!is_array($value) && $value !== '') {
-            throw new WrongSettingValueException();
-        }
-
-        if ($value === '') {
-            $value = [];
-        }
-
-        return $value;
+        return $this->getArrayFromSettingValue($setting);
     }
 
     public function getAssocCollection(string $name): array
@@ -125,17 +115,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $setting = $this->getShopSetting($name);
         $this->checkSettingType($setting, FieldType::ASSOCIATIVE_ARRAY);
 
-        $value = $setting->getValue();
-
-        if (!is_array($value) && $value !== '') {
-            throw new WrongSettingValueException();
-        }
-
-        if ($value === '') {
-            $value = [];
-        }
-
-        return $value;
+        return $this->getArrayFromSettingValue($setting);
     }
 
     protected function getShopSetting(string $name): ShopConfigurationSetting
@@ -179,5 +159,23 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         if ($value->getType() !== $requiredType) {
             throw new WrongSettingTypeException();
         }
+    }
+
+    /**
+     * @throws WrongSettingValueException
+     */
+    public function getArrayFromSettingValue(ShopConfigurationSetting $setting): array
+    {
+        $value = $setting->getValue();
+
+        if ($value === '') {
+            $value = [];
+        }
+
+        if (!is_array($value)) {
+            throw new WrongSettingValueException();
+        }
+
+        return $value;
     }
 }
