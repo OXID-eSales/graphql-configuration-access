@@ -11,7 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -23,43 +22,25 @@ class GetThemeSettingRepositoryTest extends UnitTestCase
     public function testGetThemeSettingInteger(): void
     {
         $nameID = new ID('integerSetting');
-        $settingEncoder = $this->createMock(ShopSettingEncoderInterface::class);
-        $settingEncoder->expects($this->once())
-            ->method('decode')
-            ->with(FieldType::NUMBER, '123')
-            ->willReturn('123');
+        $fieldType = FieldType::NUMBER;
+        $value = '123';
 
-        $repository = $this->getMockBuilder(ThemeSettingRepository::class)
-            ->setConstructorArgs([
-                $this->createMock(BasicContextInterface::class),
-                $this->createMock(EventDispatcherInterface::class),
-                $this->createMock(QueryBuilderFactoryInterface::class),
-                $settingEncoder
-            ])
-            ->onlyMethods(['getSettingValue'])
-            ->getMock();
+        $settingEncoder = $this->getShopSettingEncoderMock($fieldType, $value, $value);
+        $repository = $this->getSut(shopSettingEncoder: $settingEncoder);
         $repository->expects($this->once())
             ->method('getSettingValue')
-            ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
-            ->willReturn('123');
+            ->with($nameID, $fieldType, 'awesomeTheme')
+            ->willReturn($value);
 
         $integer = $repository->getInteger($nameID, 'awesomeTheme');
-
         $this->assertEquals(123, $integer);
     }
 
     public function testGetNoThemeSettingInteger(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $repository = $this->getMockBuilder(ThemeSettingRepository::class)
-            ->setConstructorArgs([
-                $this->createMock(BasicContextInterface::class),
-                $this->createMock(EventDispatcherInterface::class),
-                $this->createMock(QueryBuilderFactoryInterface::class),
-                $this->createMock(ShopSettingEncoderInterface::class)
-            ])
-            ->onlyMethods(['getSettingValue'])
-            ->getMock();
+
+        $repository = $this->getSut();
         $repository->expects($this->once())
             ->method('getSettingValue')
             ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
@@ -74,154 +55,249 @@ class GetThemeSettingRepositoryTest extends UnitTestCase
     public function testGetThemeSettingInvalidInteger(): void
     {
         $nameID = new ID('floatSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance('1.23');
+
+        $repository = $this->getSut();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
+            ->willReturn('1.23');
 
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('The queried configuration was found as a float, not an integer');
-        $repository->getInteger($nameID, 'awesomeModule');
+        $repository->getInteger($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingFloat(): void
     {
         $nameID = new ID('floatSetting');
+        $fieldType = FieldType::NUMBER;
+        $value = '1.23';
 
-        $repository = $this->getFetchOneThemeSettingRepoInstance('1.23');
+        $settingEncoder = $this->getShopSettingEncoderMock($fieldType, $value, $value);
+        $repository = $this->getSut(shopSettingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, $fieldType, 'awesomeTheme')
+            ->willReturn($value);
 
-        $float = $repository->getFloat($nameID, 'awesomeModule');
-
+        $float = $repository->getFloat($nameID, 'awesomeTheme');
         $this->assertEquals(1.23, $float);
     }
 
     public function testGetNoThemeSettingFloat(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance(false);
+
+        $repository = $this->getSut();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
+            ->willThrowException(new NotFound());
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
-        $repository->getFloat($nameID, 'awesomeModule');
+        $repository->getFloat($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingInvalidFloat(): void
     {
         $nameID = new ID('intSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance('123');
+
+        $repository = $this->getSut();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
+            ->willReturn('123');
 
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('The queried configuration was found as an integer, not a float');
-        $repository->getFloat($nameID, 'awesomeModule');
+        $repository->getFloat($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingBooleanNegative(): void
     {
         $nameID = new ID('booleanSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance('');
+        $fieldType = FieldType::BOOLEAN;
+        $encodedValue = '';
+        $decodedValue = false;
 
-        $boolean = $repository->getBoolean($nameID, 'awesomeModule');
+        $settingEncoder = $this->getShopSettingEncoderMock($fieldType, $encodedValue, $decodedValue);
+        $repository = $this->getSut(shopSettingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::BOOLEAN, 'awesomeTheme')
+            ->willReturn($encodedValue);
 
-        $this->assertEquals(false, $boolean);
+        $boolean = $repository->getBoolean($nameID, 'awesomeTheme');
+        $this->assertEquals($decodedValue, $boolean);
     }
 
     public function testGetThemeSettingBooleanPositive(): void
     {
         $nameID = new ID('booleanSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance('1');
+        $fieldType = FieldType::BOOLEAN;
+        $encodedValue = '1';
+        $decodedValue = true;
 
-        $boolean = $repository->getBoolean($nameID, 'awesomeModule');
+        $settingEncoder = $this->getShopSettingEncoderMock($fieldType, $encodedValue, $decodedValue);
+        $repository = $this->getSut(shopSettingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, $fieldType, 'awesomeTheme')
+            ->willReturn($encodedValue);
 
-        $this->assertEquals(true, $boolean);
+        $boolean = $repository->getBoolean($nameID, 'awesomeTheme');
+        $this->assertEquals($decodedValue, $boolean);
     }
 
     public function testGetNoThemeSettingBoolean(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance(false);
+
+        $repository = $this->getSut();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::BOOLEAN, 'awesomeTheme')
+            ->willThrowException(new NotFound());
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a boolean configuration');
-        $repository->getBoolean($nameID, 'awesomeModule');
+        $repository->getBoolean($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingString(): void
     {
         $nameID = new ID('stringSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance('default');
+        $fieldType = FieldType::STRING;
+        $value = 'default';
 
-        $string = $repository->getString($nameID, 'awesomeModule');
+        $settingEncoder = $this->getShopSettingEncoderMock($fieldType, $value, $value);
+        $repository = $this->getSut(shopSettingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, $fieldType, 'awesomeTheme')
+            ->willReturn($value);
 
-        $this->assertEquals('default', $string);
+        $string = $repository->getString($nameID, 'awesomeTheme');
+        $this->assertEquals($value, $string);
     }
 
     public function testGetNoThemeSettingString(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance(false);
+
+        $repository = $this->getSut();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::STRING, 'awesomeTheme')
+            ->willThrowException(new NotFound());
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a string configuration');
-        $repository->getString($nameID, 'awesomeModule');
+        $repository->getString($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingSelect(): void
     {
         $nameID = new ID('selectSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance('select');
+        $fieldType = FieldType::SELECT;
 
-        $select = $repository->getSelect($nameID, 'awesomeModule');
+        $settingEncoder = $this->getShopSettingEncoderMock($fieldType, 'select', 'select');
+        $repository = $this->getSut(shopSettingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, $fieldType, 'awesomeTheme')
+            ->willReturn('select');
 
+        $select = $repository->getSelect($nameID, 'awesomeTheme');
         $this->assertEquals('select', $select);
     }
 
     public function testGetNoThemeSettingSelect(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance(false);
+
+        $repository = $this->getSut();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::SELECT, 'awesomeTheme')
+            ->willThrowException(new NotFound());
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a select configuration');
-        $repository->getSelect($nameID, 'awesomeModule');
+        $repository->getSelect($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingCollection(): void
     {
         $nameID = new ID('arraySetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
+        $fieldType = FieldType::ARRAY;
+        $encodedArray = 'a:2:{i:0;s:4:"nice";i:1;s:6:"values";}';
+        $decodedArray = ['nice', 'values'];
 
-        $collection = $repository->getCollection($nameID, 'awesomeModule');
+        $settingEncoder = $this->getShopSettingEncoderMock(
+            $fieldType,
+            $encodedArray,
+            $decodedArray
+        );
+        $repository = $this->getSut(shopSettingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, $fieldType, 'awesomeTheme')
+            ->willReturn($encodedArray);
 
-        $this->assertEquals(['nice', 'values'], $collection);
+        $collection = $repository->getCollection($nameID, 'awesomeTheme');
+        $this->assertEquals($decodedArray, $collection);
     }
 
     public function testGetNoThemeSettingCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance(false);
+        $repository = $this->getSut();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::ARRAY, 'awesomeTheme')
+            ->willThrowException(new NotFound());
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
-        $repository->getCollection($nameID, 'awesomeModule');
+        $repository->getCollection($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingAssocCollection(): void
     {
         $nameID = new ID('aarraySetting');
+        $fieldType = FieldType::ASSOCIATIVE_ARRAY;
+        $encodedArray = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
+        $decodedArray = ['first' => '10', 'second' => '20', 'third' => '50'];
 
-        $serializeArrayString = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
-        $repository = $this->getFetchOneThemeSettingRepoInstance($serializeArrayString);
+        $settingEncoder = $this->getShopSettingEncoderMock(
+            $fieldType,
+            $encodedArray,
+            $decodedArray
+        );
+        $repository = $this->getSut(shopSettingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, $fieldType, 'awesomeTheme')
+            ->willReturn($encodedArray);
 
-        $assocCollection = $repository->getAssocCollection($nameID, 'awesomeModule');
-
-        $this->assertEquals(['first' => '10', 'second' => '20', 'third' => '50'], $assocCollection);
+        $assocCollection = $repository->getAssocCollection($nameID, 'awesomeTheme');
+        $this->assertEquals($decodedArray, $assocCollection);
     }
 
     public function testGetNoThemeSettingAssocCollection(): void
     {
         $nameID = new ID('NotExistingSetting');
-        $repository = $this->getFetchOneThemeSettingRepoInstance(false);
+        $repository = $this->getSut();
+        $repository->expects($this->once())
+            ->method('getSettingValue')
+            ->with($nameID, FieldType::ASSOCIATIVE_ARRAY, 'awesomeTheme')
+            ->willThrowException(new NotFound());
 
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('The queried name couldn\'t be found as an associative collection configuration');
-        $repository->getAssocCollection($nameID, 'awesomeModule');
+        $repository->getAssocCollection($nameID, 'awesomeTheme');
     }
 
     public function testGetSettingsList(): void
@@ -302,9 +378,33 @@ class GetThemeSettingRepositoryTest extends UnitTestCase
         return new ThemeSettingRepository($basicContext, $eventDispatcher, $queryBuilderFactory, $shopSettingEncoder);
     }
 
-    private function getFetchOneThemeSettingRepoInstance(string|bool $qbReturnedValue): ThemeSettingRepositoryInterface
-    {
-        $queryBuilderFactory = $this->getFetchOneQueryBuilderFactoryMock($qbReturnedValue);
-        return $this->getThemeSettingRepository($queryBuilderFactory);
+    private function getShopSettingEncoderMock(
+        string $fieldType,
+        string $value,
+        mixed $returnValue
+    ): ShopSettingEncoderInterface|MockObject {
+        $settingEncoder = $this->createMock(ShopSettingEncoderInterface::class);
+        $settingEncoder->expects($this->once())
+            ->method('decode')
+            ->with($fieldType, $value)
+            ->willReturn($returnValue);
+        return $settingEncoder;
+    }
+
+    private function getSut(
+        ?BasicContextInterface $basicContext = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
+        ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
+        ?ShopSettingEncoderInterface $shopSettingEncoder = null
+    ): ThemeSettingRepository|MockObject {
+        return $this->getMockBuilder(ThemeSettingRepository::class)
+            ->setConstructorArgs([
+                $basicContext ?? $this->createStub(BasicContextInterface::class),
+                $eventDispatcher ?? $this->createStub(EventDispatcherInterface::class),
+                $queryBuilderFactory ?? $this->createStub(QueryBuilderFactoryInterface::class),
+                $shopSettingEncoder ?? $this->createStub(ShopSettingEncoderInterface::class)
+            ])
+            ->onlyMethods(['getSettingValue'])
+            ->getMock();
     }
 }
