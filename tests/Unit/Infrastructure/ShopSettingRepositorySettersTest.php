@@ -4,7 +4,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 
 /**
@@ -20,14 +19,11 @@ class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
 
         $setting = $this->buildShopSettingStub($shopId, $settingType, $settingName, $settingValue);
 
-        $basicContextStub = $this->createStub(BasicContextInterface::class);
-        $basicContextStub->method('getCurrentShopId')->willReturn($shopId);
-
         $shopSettingDaoSpy = $this->createMock(ShopConfigurationSettingDaoInterface::class);
         $shopSettingDaoSpy->expects($this->once())->method('save')->with($setting);
 
         $sut = $this->getSut(
-            basicContext: $basicContextStub,
+            basicContext: $this->getBasicContextMock($shopId),
             shopSettingDao: $shopSettingDaoSpy
         );
 

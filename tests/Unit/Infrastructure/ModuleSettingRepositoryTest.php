@@ -228,12 +228,9 @@ class ModuleSettingRepositoryTest extends UnitTestCase
                 ])
             );
 
-        $basicContext = $this->createMock(BasicContextInterface::class);
-        $basicContext->method('getCurrentShopId')->willReturn($shopId);
-
         $moduleRepository = $this->getSut(
             moduleConfigurationDao: $moduleConfigurationDao,
-            basicContext: $basicContext,
+            basicContext: $this->getBasicContextMock($shopId),
         );
 
         $this->assertSame(

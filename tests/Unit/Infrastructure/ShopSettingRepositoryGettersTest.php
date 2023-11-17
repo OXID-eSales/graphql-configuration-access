@@ -4,7 +4,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
@@ -31,11 +30,8 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
                 ])
             );
 
-        $basicContext = $this->createStub(BasicContextInterface::class);
-        $basicContext->method('getCurrentShopId')->willReturn($shopId);
-
         $sut = $this->getSut(
-            basicContext: $basicContext,
+            basicContext: $this->getBasicContextMock($shopId),
             shopSettingDao: $shopSettingDaoStub
         );
 
