@@ -24,27 +24,100 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 {
     public function testSaveAndGetIntegerSetting(): void
     {
-        $configurationChangedEvent = new ThemeSettingChangedEvent(
-            "coolIntSetting",
-            1,
-            'awesomeTheme'
-        );
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->once())
-            ->method('dispatch')
-            ->with($configurationChangedEvent);
-        $basicContext = $this->get(BasicContextInterface::class);
+        $name = 'coolIntSetting';
+        $eventDispatcher = $this->getEventDispatcherMock($name);
         /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
         $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
-        $shopSettingEncoder = $this->get(ShopSettingEncoderInterface::class);
 
-        $repository = new ThemeSettingRepository(
-            $basicContext,
-            $eventDispatcher,
-            $queryBuilderFactory,
-            $shopSettingEncoder
+        $repository = $this->getSut(
+            eventDispatcher: $eventDispatcher,
+            queryBuilderFactory: $queryBuilderFactory
         );
 
+        $this->createThemeSetting(
+            $queryBuilderFactory,
+            $name,
+            FieldType::NUMBER,
+            123
+        );
+
+        $repository->saveIntegerSetting(new ID($name), 124, 'awesomeTheme');
+        $integerResult = $repository->getInteger(new ID($name), 'awesomeTheme');
+
+        $this->assertSame(124, $integerResult);
+    }
+
+    public function testSaveNotExistingIntegerSetting(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())
+            ->method('dispatch');
+        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The integer setting "notExistingSetting" doesn\'t exist');
+        $repository->saveIntegerSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
+    }
+
+    public function testSaveAndGetFloatSetting(): void
+    {
+        $name = "coolFloatSetting";
+        $eventDispatcher = $this->getEventDispatcherMock("coolFloatSetting");
+        /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+
+        $repository = $this->getSut(
+            eventDispatcher: $eventDispatcher,
+            queryBuilderFactory: $queryBuilderFactory
+        );
+
+        $this->createThemeSetting(
+            $queryBuilderFactory,
+            $name,
+            FieldType::NUMBER,
+            1.23
+        );
+
+        $repository->saveFloatSetting(new ID($name), 1.24, 'awesomeTheme');
+        $floatResult = $repository->getFloat(new ID($name), 'awesomeTheme');
+
+        $this->assertSame(1.24, $floatResult);
+    }
+
+    public function testSaveNotExistingFloatSetting(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())
+            ->method('dispatch');
+        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('The integer setting "notExistingSetting" doesn\'t exist');
+        $repository->saveIntegerSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
+    }
+
+    private function getSut(
+        ?BasicContextInterface $basicContext = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
+        ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
+        ?ShopSettingEncoderInterface $shopSettingEncoder = null
+    ): ThemeSettingRepository
+    {
+        return new ThemeSettingRepository(
+            $basicContext ?? $this->get(BasicContextInterface::class),
+            $eventDispatcher ?? $this->get(EventDispatcherInterface::class),
+            $queryBuilderFactory ?? $this->get(QueryBuilderFactoryInterface::class),
+            $shopSettingEncoder ?? $this->get(ShopSettingEncoderInterface::class)
+        );
+    }
+
+    private function createThemeSetting(
+        QueryBuilderFactoryInterface $queryBuilderFactory,
+        string $name,
+        string $fieldType,
+        mixed $value
+    ): void
+    {
         $uniqueId = uniqid();
         $queryBuilder = $queryBuilderFactory->create();
         $queryBuilder
@@ -59,32 +132,28 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
                 'oxid' => $uniqueId,
                 'oxshopid' => 1,
                 'oxmodule' => 'theme:awesomeTheme',
-                'oxvarname' => 'coolIntSetting',
-                'oxvartype' => FieldType::NUMBER,
-                'oxvarvalue' => 123
+                'oxvarname' => $name,
+                'oxvartype' => $fieldType,
+                'oxvarvalue' => $value
             ]);
         $queryBuilder->execute();
-
-        $repository->saveIntegerSetting(new ID('coolIntSetting'), 124, 'awesomeTheme');
-        $integerResult = $repository->getInteger(new ID('coolIntSetting'), 'awesomeTheme');
-
-        $this->assertSame(124, $integerResult);
     }
 
-    public function testSaveNotExistingSetting(): void
+    /**
+     * @param string $name
+     * @return \PHPUnit\Framework\MockObject\MockObject|EventDispatcherInterface|(EventDispatcherInterface&\PHPUnit\Framework\MockObject\MockObject)
+     */
+    public function getEventDispatcherMock(string $name): \PHPUnit\Framework\MockObject\MockObject|EventDispatcherInterface
     {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->never())
-            ->method('dispatch');
-        $repository = new ThemeSettingRepository(
-            $this->get(BasicContextInterface::class),
-            $eventDispatcher,
-            $this->get(QueryBuilderFactoryInterface::class),
-            $this->get(ShopSettingEncoderInterface::class)
+        $configurationChangedEvent = new ThemeSettingChangedEvent(
+            $name,
+            1,
+            'awesomeTheme'
         );
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The integer setting "notExistingSetting" doesn\'t exist');
-        $repository->saveIntegerSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with($configurationChangedEvent);
+        return $eventDispatcher;
     }
 }

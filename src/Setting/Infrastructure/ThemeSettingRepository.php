@@ -132,7 +132,13 @@ class ThemeSettingRepository extends AbstractDatabaseSettingRepository implement
 
     public function saveFloatSetting(ID $name, float $value, string $themeId): void
     {
-        // TODO: Implement saveFloatSetting() method.
+        $value = $this->shopSettingEncoder->encode(FieldType::NUMBER, $value);
+
+        try {
+            $this->saveSettingValue($name, $themeId, (string)$value);
+        } catch (NotFound $e) {
+            $this->throwSetterNotFoundException('float', $name->val());
+        }
     }
 
     public function saveBooleanSetting(ID $name, bool $value, string $themeId): void
