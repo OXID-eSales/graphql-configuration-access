@@ -106,7 +106,7 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals(
             new StringSetting($nameID, $repositoryResult),
-            $settingService->getSelectSetting($nameID)
+            $settingService->getSelectSetting((string)$nameID)
         );
     }
 
@@ -127,7 +127,7 @@ class ShopSettingServiceTest extends UnitTestCase
 
         $this->assertEquals(
             new StringSetting($nameID, $collectionEncodingResult),
-            $settingService->getCollectionSetting($nameID)
+            $settingService->getCollectionSetting((string)$nameID)
         );
     }
 

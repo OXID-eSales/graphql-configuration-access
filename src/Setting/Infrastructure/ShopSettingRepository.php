@@ -101,20 +101,22 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return (string)$setting->getValue();
     }
 
-    protected function getShopSetting(string $name): ShopConfigurationSetting
+    public function getCollection(string $name): array
     {
-        return $this->configurationSettingDao->get($name, $this->basicContext->getCurrentShopId());
-    }
+        $setting = $this->getShopSetting($name);
+        $this->checkSettingType($setting, FieldType::ARRAY);
 
-    public function getCollection(ID $name): array
-    {
-        try {
-            $value = $this->getSettingValue($name, FieldType::ARRAY);
-        } catch (NotFound $e) {
-            $this->throwGetterNotFoundException('collection');
+        $value = $setting->getValue();
+
+        if (!is_array($value) && $value !== ''){
+            throw new WrongSettingValueException();
         }
 
-        return unserialize($value);
+        if ($value === '') {
+            $value = [];
+        }
+
+        return $value;
     }
 
     public function getAssocCollection(ID $name): array
@@ -126,6 +128,11 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         }
 
         return unserialize($value);
+    }
+
+    protected function getShopSetting(string $name): ShopConfigurationSetting
+    {
+        return $this->configurationSettingDao->get($name, $this->basicContext->getCurrentShopId());
     }
 
     public function getSettingsList(): array
@@ -140,9 +147,6 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     }
 
     /**
-     * @param ShopConfigurationSetting $value
-     * @param string $requiredType
-     * @return void
      * @throws WrongSettingTypeException
      */
     public function checkSettingType(ShopConfigurationSetting $value, string $requiredType): void

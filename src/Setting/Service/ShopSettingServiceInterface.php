@@ -21,7 +21,7 @@ interface ShopSettingServiceInterface
 
     public function getSelectSetting(string $name): StringSetting;
 
-    public function getCollectionSetting(ID $name): StringSetting;
+    public function getCollectionSetting(string $name): StringSetting;
 
     public function getAssocCollectionSetting(ID $name): StringSetting;
 

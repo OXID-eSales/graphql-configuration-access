@@ -207,6 +207,34 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'possibleValue' => '',
             'expectedResult' => ''
         ];
+
+        yield 'empty string collection' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => '',
+            'expectedResult' => []
+        ];
+
+        yield 'empty array collection' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => [],
+            'expectedResult' => []
+        ];
+
+        yield 'filled array collection' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => ['one', 'two'],
+            'expectedResult' => ['one', 'two']
+        ];
+
+        yield 'associative array in collection is ok' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => ['one' => 'oneValue', 'two' => 'twoValue'],
+            'expectedResult' => ['one' => 'oneValue', 'two' => 'twoValue']
+        ];
     }
 
     /** @dataProvider wrongSettingsDataProvider */
@@ -216,7 +244,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $value,
         string $expectedException
     ): void {
-        $shopSettingDaoStub = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoStub = $this->createStub(ShopConfigurationSettingDaoInterface::class);
         $shopSettingDaoStub->method('get')->willReturn(
             $this->createConfiguredMock(ShopConfigurationSetting::class, [
                 'getType' => $type,
@@ -243,28 +271,28 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
         yield [
             'method' => 'getInteger',
-            'type' => 'num',
+            'type' => FieldType::NUMBER,
             'value' => 'any',
             'expectedException' => WrongSettingValueException::class
         ];
 
         yield [
             'method' => 'getInteger',
-            'type' => 'num',
+            'type' => FieldType::NUMBER,
             'value' => null,
             'expectedException' => WrongSettingValueException::class
         ];
 
         yield [
             'method' => 'getInteger',
-            'type' => 'num',
+            'type' => FieldType::NUMBER,
             'value' => 1.123,
             'expectedException' => WrongSettingValueException::class
         ];
 
         yield [
             'method' => 'getInteger',
-            'type' => 'num',
+            'type' => FieldType::NUMBER,
             'value' => '1.123',
             'expectedException' => WrongSettingValueException::class
         ];
@@ -278,7 +306,7 @@ class ShopSettingRepositoryTest extends UnitTestCase
 
         yield [
             'method' => 'getFloat',
-            'type' => 'num',
+            'type' => FieldType::NUMBER,
             'value' => 'any',
             'expectedException' => WrongSettingValueException::class
         ];
@@ -303,29 +331,48 @@ class ShopSettingRepositoryTest extends UnitTestCase
             'value' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
-    }
 
-    public function testGetShopSettingCollection(): void
-    {
-        $nameID = new ID('arraySetting');
+        yield [
+            'method' => 'getCollection',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
 
+        yield 'false as the error result of unserialize' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => false,
+            'expectedResult' => WrongSettingValueException::class
+        ];
 
-        $repository = $this->getFetchOneShopSettingRepoInstance('a:2:{i:0;s:4:"nice";i:1;s:6:"values";}', 1);
+        yield 'string instead of collection' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => 'some string',
+            'expectedResult' => WrongSettingValueException::class
+        ];
 
-        $collection = $repository->getCollection($nameID);
+        yield 'integer instead of collection' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => 123,
+            'expectedResult' => WrongSettingValueException::class
+        ];
 
-        $this->assertEquals(['nice', 'values'], $collection);
-    }
+        yield 'float instead of collection' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => 1.23,
+            'expectedResult' => WrongSettingValueException::class
+        ];
 
-    public function testGetNoShopSettingCollection(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getFetchOneShopSettingRepoInstance(false);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
-        $repository->getCollection($nameID);
+        yield 'null instead of collection' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => false,
+            'expectedResult' => WrongSettingValueException::class
+        ];
     }
 
     public function testGetShopSettingAssocCollection(): void
@@ -341,16 +388,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
         $this->assertEquals(['first' => '10', 'second' => '20', 'third' => '50'], $assocCollection);
     }
 
-    public function testGetNoShopSettingAssocCollection(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getFetchOneShopSettingRepoInstance(false);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as an associative collection configuration');
-        $repository->getAssocCollection($nameID);
-    }
 
     public function testGetNoSettingsList(): void
     {
