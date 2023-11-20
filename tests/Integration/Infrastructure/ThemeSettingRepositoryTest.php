@@ -63,7 +63,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
     public function testSaveAndGetFloatSetting(): void
     {
         $name = "coolFloatSetting";
-        $eventDispatcher = $this->getEventDispatcherMock("coolFloatSetting");
+        $eventDispatcher = $this->getEventDispatcherMock($name);
         /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
         $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
 
@@ -100,7 +100,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
     public function testSaveAndGetBooleanSetting(): void
     {
         $name = "coolBooleanSetting";
-        $eventDispatcher = $this->getEventDispatcherMock("coolBooleanSetting");
+        $eventDispatcher = $this->getEventDispatcherMock($name);
         /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
         $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
 
@@ -132,6 +132,43 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $this->expectException(NotFound::class);
         $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
         $repository->saveBooleanSetting(new ID('notExistingSetting'), true, 'awesomeTheme');
+    }
+
+    public function testSaveAndGetStringSetting(): void
+    {
+        $name = 'coolBooleanString';
+        $eventDispatcher = $this->getEventDispatcherMock($name);
+        /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+
+        $repository = $this->getSut(
+            eventDispatcher: $eventDispatcher,
+            queryBuilderFactory: $queryBuilderFactory
+        );
+
+        $this->createThemeSetting(
+            $queryBuilderFactory,
+            $name,
+            FieldType::STRING,
+            'default'
+        );
+
+        $repository->saveStringSetting(new ID($name), 'new value', 'awesomeTheme');
+        $stringResult = $repository->getString(new ID($name), 'awesomeTheme');
+
+        $this->assertSame('new value', $stringResult);
+    }
+
+    public function testSaveNotExistingStringSetting(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())
+            ->method('dispatch');
+        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
+        $repository->saveStringSetting(new ID('notExistingSetting'), 'new value', 'awesomeTheme');
     }
 
     private function getSut(

@@ -142,7 +142,9 @@ class ThemeSettingRepository extends AbstractDatabaseSettingRepository implement
 
     public function saveStringSetting(ID $name, string $value, string $themeId): void
     {
-        // TODO: Implement saveStringSetting() method.
+        $value = $this->shopSettingEncoder->encode(FieldType::STRING, $value);
+
+        $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
     public function saveSelectSetting(ID $name, string $value, string $themeId): void
