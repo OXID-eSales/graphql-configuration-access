@@ -214,6 +214,8 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
      */
     private function saveAsType(string $type, string $name, $value): void
     {
+        $this->validateOriginalSettingType($name, $type);
+
         $setting = (new ShopConfigurationSetting())
             ->setShopId($this->basicContext->getCurrentShopId())
             ->setName($name)
@@ -221,5 +223,13 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
             ->setValue($value);
 
         $this->configurationSettingDao->save($setting);
+    }
+
+    private function validateOriginalSettingType(string $originalSettingName, string $type): void
+    {
+        $originalSetting = $this->getShopSetting($originalSettingName);
+        if ($originalSetting->getType() !== $type) {
+            throw new WrongSettingTypeException();
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
@@ -19,21 +20,51 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
 {
     /** @dataProvider shopSettingsSaveMethodsDataProvider */
-    public function testSetShopSetting(string $method, $settingValue, string $settingType): void
-    {
+    public function testSetShopSetting(
+        string $method,
+        $settingValue,
+        string $settingType
+    ): void {
         $shopId = 3;
         $settingName = 'settingName';
 
-        $setting = $this->buildShopSettingStub($shopId, $settingType, $settingName, $settingValue);
+        $settingToSave = $this->buildShopSettingStub($shopId, $settingType, $settingName, $settingValue);
 
         $shopSettingDaoSpy = $this->createMock(ShopConfigurationSettingDaoInterface::class);
-        $shopSettingDaoSpy->expects($this->once())->method('save')->with($setting);
+        $shopSettingDaoSpy->method('get')->with($settingName, $shopId)->willReturn($settingToSave);
+        $shopSettingDaoSpy->expects($this->once())->method('save')->with($settingToSave);
 
         $sut = $this->getSut(
             basicContext: $this->getBasicContextMock($shopId),
             shopSettingDao: $shopSettingDaoSpy
         );
 
+        $sut->$method($settingName, $settingValue);
+    }
+
+    /** @dataProvider shopSettingsSaveMethodsDataProvider */
+    public function testSetShopIsNotCalledOnOriginalSettingTypeMissmatch(
+        string $method,
+        $settingValue,
+        string $settingType
+    ): void {
+        $shopId = 3;
+        $settingName = 'settingName';
+
+        $originalSetting = $this->buildShopSettingStub($shopId, 'differentType', $settingName, $settingValue);
+
+        $settingToSave = $this->buildShopSettingStub($shopId, $settingType, $settingName, $settingValue);
+
+        $shopSettingDaoSpy = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $shopSettingDaoSpy->method('get')->with($settingName, $shopId)->willReturn($originalSetting);
+        $shopSettingDaoSpy->expects($this->never())->method('save')->with($settingToSave);
+
+        $sut = $this->getSut(
+            basicContext: $this->getBasicContextMock($shopId),
+            shopSettingDao: $shopSettingDaoSpy
+        );
+
+        $this->expectException(WrongSettingTypeException::class);
         $sut->$method($settingName, $settingValue);
     }
 
