@@ -1,9 +1,13 @@
 <?php
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
-use TheCodingMachine\GraphQLite\Types\ID;
+declare(strict_types=1);
+
+namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 interface ShopSettingRepositoryInterface
 {
