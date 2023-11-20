@@ -308,9 +308,9 @@ class ShopSettingServiceTest extends UnitTestCase
         $name = 'someSettingName';
 
         $callValue = 'someCollectionValue';
-        $repositoryValue = ['someKey'=>'realDatabaseValue'];
+        $repositoryValue = ['someKey' => 'realDatabaseValue'];
 
-        $decodedValue = ['someKey'=>'decodedCollectionValue'];
+        $decodedValue = ['someKey' => 'decodedCollectionValue'];
         $repository = $this->createMock(ShopSettingRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('saveAssocCollectionSetting')

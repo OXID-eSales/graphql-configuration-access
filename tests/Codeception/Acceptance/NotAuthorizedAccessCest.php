@@ -25,6 +25,7 @@ final class NotAuthorizedAccessCest extends BaseCest
     #[DataProvider('moduleGettersDataProvider')]
     #[DataProvider('moduleMutationsDataProvider')]
     #[DataProvider('shopGettersDataProvider')]
+    #[DataProvider('shopMutationsDataProvider')]
     public function testGetSettingNotAuthorized(AcceptanceTester $I, \Codeception\Example $example): void
     {
         $I->login($this->getAgentUsername(), $this->getAgentPassword());
@@ -94,6 +95,17 @@ final class NotAuthorizedAccessCest extends BaseCest
         yield ['queryType' => 'query', 'queryName' => 'shopSettingSelect', 'field' => 'name'];
         yield ['queryType' => 'query', 'queryName' => 'shopSettingCollection', 'field' => 'name'];
         yield ['queryType' => 'query', 'queryName' => 'shopSettingAssocCollection', 'field' => 'name'];
+    }
+
+    protected function shopMutationsDataProvider(): \Generator
+    {
+        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingInteger', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingFloat', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingBoolean', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingString', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingSelect', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingCollection', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingAssocCollection', 'field' => 'name'];
     }
 
     private function runSimplifiedAccessCheckQuery(

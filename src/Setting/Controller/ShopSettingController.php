@@ -10,6 +10,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
+use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 use TheCodingMachine\GraphQLite\Types\ID;
@@ -82,6 +83,69 @@ final class ShopSettingController
     public function getShopSettingAssocCollection(ID $name): StringSetting
     {
         return $this->shopSettingService->getAssocCollectionSetting($name);
+    }
+
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function changeShopSettingInteger(string $name, int $value): IntegerSetting
+    {
+        return $this->shopSettingService->changeIntegerSetting($name, $value);
+    }
+
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function changeShopSettingFloat(string $name, float $value): FloatSetting
+    {
+        return $this->shopSettingService->changeFloatSetting($name, $value);
+    }
+
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function changeShopSettingBoolean(string $name, bool $value): BooleanSetting
+    {
+        return $this->shopSettingService->changeBooleanSetting($name, $value);
+    }
+
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function changeShopSettingString(string $name, string $value): StringSetting
+    {
+        return $this->shopSettingService->changeStringSetting($name, $value);
+    }
+
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function changeShopSettingSelect(string $name, string $value): StringSetting
+    {
+        return $this->shopSettingService->changeSelectSetting($name, $value);
+    }
+
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function changeShopSettingCollection(string $name, string $value): StringSetting
+    {
+        return $this->shopSettingService->changeCollectionSetting($name, $value);
+    }
+
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function changeShopSettingAssocCollection(string $name, string $value): StringSetting
+    {
+        return $this->shopSettingService->changeAssocCollectionSetting($name, $value);
     }
 
     /**
