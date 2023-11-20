@@ -13,6 +13,9 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
 
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingService
+ */
 class ShopSettingServiceTest extends UnitTestCase
 {
     /** @dataProvider getNotEncodableShopSettingDataProvider */
@@ -125,6 +128,208 @@ class ShopSettingServiceTest extends UnitTestCase
             ->with($nameID)
             ->willReturn($repositoryResult);
         return $repository;
+    }
+
+    public function testChangeShopSettingInteger(): void
+    {
+        $name = 'someSettingName';
+
+        $callValue = 123;
+        $repositoryValue = 321;
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getInteger')
+            ->with($name)
+            ->willReturn($repositoryValue);
+        $repository->expects($this->once())
+            ->method('saveIntegerSetting')
+            ->with($name, $callValue);
+
+        $sut = $this->getSut(
+            shopSettingRepository: $repository
+        );
+
+        $setting = $sut->changeIntegerSetting($name, $callValue);
+
+        $this->assertSame($name, (string)$setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
+    }
+
+    public function testChangeShopSettingFloat(): void
+    {
+        $name = 'someSettingName';
+
+        $callValue = 1.23;
+        $repositoryValue = 3.21;
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getFloat')
+            ->with($name)
+            ->willReturn($repositoryValue);
+        $repository->expects($this->once())
+            ->method('saveFloatSetting')
+            ->with($name, $callValue);
+
+        $sut = $this->getSut(
+            shopSettingRepository: $repository
+        );
+
+        $setting = $sut->changeFloatSetting($name, $callValue);
+
+        $this->assertSame($name, (string)$setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
+    }
+
+    public function testChangeShopSettingBoolean(): void
+    {
+        $name = 'someSettingName';
+
+        $callValue = false;
+        $repositoryValue = true;
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getBoolean')
+            ->with($name)
+            ->willReturn($repositoryValue);
+        $repository->expects($this->once())
+            ->method('saveBooleanSetting')
+            ->with($name, $callValue);
+
+        $sut = $this->getSut(
+            shopSettingRepository: $repository
+        );
+
+        $setting = $sut->changeBooleanSetting($name, $callValue);
+
+        $this->assertSame($name, (string)$setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
+    }
+
+    public function testChangeShopSettingString(): void
+    {
+        $name = 'someSettingName';
+
+        $callValue = 'call example';
+        $repositoryValue = 'response example';
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getString')
+            ->with($name)
+            ->willReturn($repositoryValue);
+        $repository->expects($this->once())
+            ->method('saveStringSetting')
+            ->with($name, $callValue);
+
+        $sut = $this->getSut(
+            shopSettingRepository: $repository
+        );
+
+        $setting = $sut->changeStringSetting($name, $callValue);
+
+        $this->assertSame($name, (string)$setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
+    }
+
+    public function testChangeShopSettingSelect(): void
+    {
+        $name = 'someSettingName';
+
+        $callValue = 'call select example';
+        $repositoryValue = 'response select example';
+
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('getSelect')
+            ->with($name)
+            ->willReturn($repositoryValue);
+        $repository->expects($this->once())
+            ->method('saveSelectSetting')
+            ->with($name, $callValue);
+
+        $sut = $this->getSut(
+            shopSettingRepository: $repository
+        );
+
+        $setting = $sut->changeSelectSetting($name, $callValue);
+
+        $this->assertSame($name, (string)$setting->getName());
+        $this->assertSame($repositoryValue, $setting->getValue());
+    }
+
+    public function testChangeModuleSettingCollection(): void
+    {
+        $name = 'someSettingName';
+
+        $callValue = 'someCollectionValue';
+        $repositoryValue = ['realDatabaseValue'];
+
+        $decodedValue = ['decodedCollectionValue'];
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('saveCollectionSetting')
+            ->with($name, $decodedValue);
+        $repository->method('getCollection')
+            ->with($name)
+            ->willReturn($repositoryValue);
+
+        $encoderResponse = 'encoderResponse';
+        $encoder = $this->createMock(JsonServiceInterface::class);
+        $encoder->method('jsonEncodeArray')
+            ->with($repositoryValue)
+            ->willReturn($encoderResponse);
+        $encoder->method('jsonDecodeCollection')
+            ->with($callValue)
+            ->willReturn($decodedValue);
+
+        $sut = $this->getSut(
+            shopSettingRepository: $repository,
+            jsonService: $encoder,
+        );
+
+        $setting = $sut->changeCollectionSetting($name, $callValue);
+
+        $this->assertSame($name, (string)$setting->getName());
+        $this->assertSame($encoderResponse, $setting->getValue());
+    }
+
+    public function testChangeModuleSettingAssocCollection(): void
+    {
+        $name = 'someSettingName';
+
+        $callValue = 'someCollectionValue';
+        $repositoryValue = ['someKey'=>'realDatabaseValue'];
+
+        $decodedValue = ['someKey'=>'decodedCollectionValue'];
+        $repository = $this->createMock(ShopSettingRepositoryInterface::class);
+        $repository->expects($this->once())
+            ->method('saveAssocCollectionSetting')
+            ->with($name, $decodedValue);
+        $repository->method('getAssocCollection')
+            ->with($name)
+            ->willReturn($repositoryValue);
+
+        $encoderResponse = 'encoderResponse';
+        $encoder = $this->createMock(JsonServiceInterface::class);
+        $encoder->method('jsonEncodeArray')
+            ->with($repositoryValue)
+            ->willReturn($encoderResponse);
+        $encoder->method('jsonDecodeCollection')
+            ->with($callValue)
+            ->willReturn($decodedValue);
+
+        $sut = $this->getSut(
+            shopSettingRepository: $repository,
+            jsonService: $encoder,
+        );
+
+        $setting = $sut->changeAssocCollectionSetting($name, $callValue);
+
+        $this->assertSame($name, (string)$setting->getName());
+        $this->assertSame($encoderResponse, $setting->getValue());
     }
 
     public function testListShopSettings(): void

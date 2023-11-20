@@ -29,4 +29,18 @@ interface ShopSettingServiceInterface
      * @return SettingType[]
      */
     public function getSettingsList(): array;
+
+    public function changeIntegerSetting(string $name, int $value): IntegerSetting;
+
+    public function changeFloatSetting(string $name, float $value): FloatSetting;
+
+    public function changeBooleanSetting(string $name, bool $value): BooleanSetting;
+
+    public function changeStringSetting(string $name, string $value): StringSetting;
+
+    public function changeSelectSetting(string $name, string $value): StringSetting;
+
+    public function changeCollectionSetting(string $name, string $value): StringSetting;
+
+    public function changeAssocCollectionSetting(string $name, string $value): StringSetting;
 }

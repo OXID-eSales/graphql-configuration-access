@@ -84,4 +84,59 @@ final class ShopSettingService implements ShopSettingServiceInterface
 
         return $settingsTypeList;
     }
+
+    public function changeIntegerSetting(string $name, int $value): IntegerSetting
+    {
+        $this->shopSettingRepository->saveIntegerSetting($name, $value);
+
+        return $this->getIntegerSetting($name);
+    }
+
+    public function changeFloatSetting(string $name, float $value): FloatSetting
+    {
+        $this->shopSettingRepository->saveFloatSetting($name, $value);
+
+        return $this->getFloatSetting($name);
+    }
+
+    public function changeBooleanSetting(string $name, bool $value): BooleanSetting
+    {
+        $this->shopSettingRepository->saveBooleanSetting($name, $value);
+
+        return $this->getBooleanSetting($name);
+    }
+
+    public function changeStringSetting(string $name, string $value): StringSetting
+    {
+        $this->shopSettingRepository->saveStringSetting($name, $value);
+
+        return $this->getStringSetting($name);
+    }
+
+    public function changeSelectSetting(string $name, string $value): StringSetting
+    {
+        $this->shopSettingRepository->saveSelectSetting($name, $value);
+
+        return $this->getSelectSetting($name);
+    }
+
+    public function changeCollectionSetting(string $name, string $value): StringSetting
+    {
+        $this->shopSettingRepository->saveCollectionSetting(
+            $name,
+            $this->jsonService->jsonDecodeCollection($value)
+        );
+
+        return $this->getCollectionSetting($name);
+    }
+
+    public function changeAssocCollectionSetting(string $name, string $value): StringSetting
+    {
+        $this->shopSettingRepository->saveAssocCollectionSetting(
+            $name,
+            $this->jsonService->jsonDecodeCollection($value)
+        );
+
+        return $this->getAssocCollectionSetting($name);
+    }
 }
