@@ -335,20 +335,6 @@ class GetThemeSettingRepositoryTest extends UnitTestCase
     }
 
     /**
-     * @param string|bool $returnedValue
-     * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
-     */
-    private function getFetchOneQueryBuilderFactoryMock(
-        string|bool $returnedValue
-    ): QueryBuilderFactoryInterface|MockObject {
-        $result = $this->createMock(Result::class);
-        $result->expects($this->once())
-            ->method('fetchOne')
-            ->willReturn($returnedValue);
-        return $this->getQueryBuilderFactoryMock($result);
-    }
-
-    /**
      * @param Result|MockObject|(Result&MockObject) $result
      * @return QueryBuilderFactoryInterface|(QueryBuilderFactoryInterface&MockObject)|MockObject
      */
