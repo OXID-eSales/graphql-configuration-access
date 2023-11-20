@@ -245,6 +245,51 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $repository->saveCollectionSetting(new ID('notExistingSetting'), ['nice', 'cool', 'values'], 'awesomeTheme');
     }
 
+    public function testSaveAndGetAssocCollectionSetting(): void
+    {
+        $name = 'coolAssocArraySetting';
+        $eventDispatcher = $this->getEventDispatcherMock($name);
+        /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+
+        $repository = $this->getSut(
+            eventDispatcher: $eventDispatcher,
+            queryBuilderFactory: $queryBuilderFactory
+        );
+
+        $this->createThemeSetting(
+            $queryBuilderFactory,
+            $name,
+            FieldType::ASSOCIATIVE_ARRAY,
+            'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}'
+        );
+
+        $repository->saveAssocCollectionSetting(
+            new ID($name),
+            ['first' => '10', 'second' => '20', 'third' => '60'],
+            'awesomeTheme'
+        );
+        $assocCollectionResult = $repository->getAssocCollection(new ID($name), 'awesomeTheme');
+
+        $this->assertSame(['first' => '10', 'second' => '20', 'third' => '60'], $assocCollectionResult);
+    }
+
+    public function testSaveNotExistingAssocCollectionSetting(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())
+            ->method('dispatch');
+        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
+        $repository->saveAssocCollectionSetting(
+            new ID('notExistingSetting'),
+            ['first' => 'nice', 'second' => 'values'],
+            'awesomeTheme'
+        );
+    }
+
     private function getSut(
         ?BasicContextInterface $basicContext = null,
         ?EventDispatcherInterface $eventDispatcher = null,

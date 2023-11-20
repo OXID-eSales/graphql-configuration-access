@@ -103,18 +103,39 @@ class ChangeThemeSettingRepositoryTest extends UnitTestCase
     public function testChangeThemeSettingCollection(): void
     {
         $nameID = new ID('arraySetting');
+        $decodedArray = ['nice', 'values'];
+        $encodedArray = 'a:2:{i:0;s:4:"nice";i:1;s:6:"values";}';
 
         $settingEncoder = $this->getShopSettingEncoderMock(
             FieldType::ARRAY,
-            ['nice', 'values'],
-            'a:2:{i:0;s:4:"nice";i:1;s:6:"values";}'
+            $decodedArray,
+            $encodedArray
         );
         $repository = $this->getSut(settingEncoder: $settingEncoder);
         $repository->expects($this->once())
             ->method('saveSettingValue')
-            ->with($nameID, 'awesomeTheme', 'a:2:{i:0;s:4:"nice";i:1;s:6:"values";}');
+            ->with($nameID, 'awesomeTheme', $encodedArray);
 
-        $repository->saveCollectionSetting($nameID, ['nice', 'values'], 'awesomeTheme');
+        $repository->saveCollectionSetting($nameID, $decodedArray, 'awesomeTheme');
+    }
+
+    public function testChangeThemeSettingAssocCollection(): void
+    {
+        $nameID = new ID('assocCollectionSetting');
+        $decodedArray = ['first' => '10', 'second' => '20', 'third' => '50'];
+        $encodedArray = 'a:3:{s:5:"first";s:2:"10";s:6:"second";s:2:"20";s:5:"third";s:2:"50";}';
+
+        $settingEncoder = $this->getShopSettingEncoderMock(
+            FieldType::ASSOCIATIVE_ARRAY,
+            $decodedArray,
+            $encodedArray
+        );
+        $repository = $this->getSut(settingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('saveSettingValue')
+            ->with($nameID, 'awesomeTheme', $encodedArray);
+
+        $repository->saveAssocCollectionSetting($nameID, $decodedArray, 'awesomeTheme');
     }
 
     public function getShopSettingEncoderMock(
