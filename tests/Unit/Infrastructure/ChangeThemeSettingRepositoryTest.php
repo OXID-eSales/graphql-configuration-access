@@ -83,6 +83,23 @@ class ChangeThemeSettingRepositoryTest extends UnitTestCase
         $repository->saveStringSetting($nameID, 'default', 'awesomeTheme');
     }
 
+    public function testChangeThemeSettingSelect(): void
+    {
+        $nameID = new ID('selectSetting');
+
+        $settingEncoder = $this->getShopSettingEncoderMock(
+            FieldType::SELECT,
+            'select',
+            'select'
+        );
+        $repository = $this->getSut(settingEncoder: $settingEncoder);
+        $repository->expects($this->once())
+            ->method('saveSettingValue')
+            ->with($nameID, 'awesomeTheme', 'select');
+
+        $repository->saveSelectSetting($nameID, 'select', 'awesomeTheme');
+    }
+
     public function testChangeThemeSettingCollection(): void
     {
         $nameID = new ID('arraySetting');

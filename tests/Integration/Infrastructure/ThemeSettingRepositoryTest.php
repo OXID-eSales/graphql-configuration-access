@@ -136,7 +136,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 
     public function testSaveAndGetStringSetting(): void
     {
-        $name = 'coolBooleanString';
+        $name = 'coolStringSetting';
         $eventDispatcher = $this->getEventDispatcherMock($name);
         /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
         $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
@@ -171,9 +171,46 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $repository->saveStringSetting(new ID('notExistingSetting'), 'new value', 'awesomeTheme');
     }
 
+    public function testSaveAndGetSelectSetting(): void
+    {
+        $name = 'coolSelectSetting';
+        $eventDispatcher = $this->getEventDispatcherMock($name);
+        /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+
+        $repository = $this->getSut(
+            eventDispatcher: $eventDispatcher,
+            queryBuilderFactory: $queryBuilderFactory
+        );
+
+        $this->createThemeSetting(
+            $queryBuilderFactory,
+            $name,
+            FieldType::SELECT,
+            'select'
+        );
+
+        $repository->saveSelectSetting(new ID($name), 'new select value', 'awesomeTheme');
+        $stringResult = $repository->getSelect(new ID($name), 'awesomeTheme');
+
+        $this->assertSame('new select value', $stringResult);
+    }
+
+    public function testSaveNotExistingSelectSetting(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())
+            ->method('dispatch');
+        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
+        $repository->saveSelectSetting(new ID('notExistingSetting'), 'new value', 'awesomeTheme');
+    }
+
     public function testSaveAndGetCollectionSetting(): void
     {
-        $name = 'coolArrayString';
+        $name = 'coolArraySetting';
         $eventDispatcher = $this->getEventDispatcherMock($name);
         /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
         $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);

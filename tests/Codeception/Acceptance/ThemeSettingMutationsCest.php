@@ -130,6 +130,34 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->assertSame('default', $setting['value']);
     }
 
+    public function testChangeSelectSettingAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $I->sendGQLQuery(
+            'mutation m($name: ID!, $value: String!, $themeId: String!){
+                changeThemeSettingSelect(name: $name, value: $value, themeId: $themeId) {
+                    name
+                    value
+                }
+            }',
+            [
+                'name' => 'selectSettingEditable',
+                'value' => 'new select',
+                'themeId' => self::TEST_THEME_ID
+            ]
+        );
+
+        $I->seeResponseIsJson();
+
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+
+        $setting = $result['data']['changeThemeSettingSelect'];
+        $I->assertSame('selectSettingEditable', $setting['name']);
+        $I->assertSame('new select', $setting['value']);
+    }
+
     public function testChangeCollectionSettingAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
@@ -155,7 +183,7 @@ final class ThemeSettingMutationsCest extends BaseCest
 
         $setting = $result['data']['changeThemeSettingCollection'];
         $I->assertSame('arraySettingEditable', $setting['name']);
-        $I->assertSame('[3, "interesting", "values"]', $setting['value']);
+        $I->assertSame('[3,"interesting","values"]', $setting['value']);
     }
 
     public function testChangeAssocCollectionSettingAuthorized(AcceptanceTester $I): void

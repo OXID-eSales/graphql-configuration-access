@@ -297,6 +297,30 @@ class ThemeSettingServiceTest extends UnitTestCase
         $this->assertSame($getterValue, $stringSetting->getValue());
     }
 
+    public function testChangeThemeSettingSelect(): void
+    {
+        $nameID = new ID('selectSetting');
+        $setterValue = 'select';
+        $getterValue = 'otherValue';
+        $themeID = 'awesomeTheme';
+        $repository = $this->getRepositorySettingGetterMock(
+            'getSelect',
+            $nameID,
+            $themeID,
+            $getterValue
+        );
+        $repository->expects($this->once())
+            ->method('saveSelectSetting')
+            ->with($nameID, $setterValue, $themeID);
+
+        $settingService = $this->getSut(themeSettingRepository: $repository);
+
+        $selectSetting = $settingService->changeSelectSetting($nameID, $setterValue, $themeID);
+
+        $this->assertSame($nameID, $selectSetting->getName());
+        $this->assertSame($getterValue, $selectSetting->getValue());
+    }
+
     /**
      * @dataProvider invalidCollectionDataProvider
      */
