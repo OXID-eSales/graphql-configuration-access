@@ -21,7 +21,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('integerSetting');
 
-
         $repository = $this->getFetchOneShopSettingRepoInstance('123');
 
         $integer = $repository->getInteger($nameID);
@@ -54,7 +53,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetShopSettingFloat(): void
     {
         $nameID = new ID('floatSetting');
-
 
         $repository = $this->getFetchOneShopSettingRepoInstance('1.23');
 
@@ -89,7 +87,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('booleanSetting');
 
-
         $repository = $this->getFetchOneShopSettingRepoInstance('');
 
         $boolean = $repository->getBoolean($nameID);
@@ -100,7 +97,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetShopSettingBooleanPositiv(): void
     {
         $nameID = new ID('booleanSetting');
-
 
         $repository = $this->getFetchOneShopSettingRepoInstance('1');
 
@@ -124,7 +120,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
     {
         $nameID = new ID('stringSetting');
 
-
         $repository = $this->getFetchOneShopSettingRepoInstance('default');
 
         $string = $repository->getString($nameID);
@@ -146,7 +141,6 @@ class ShopSettingRepositoryTest extends UnitTestCase
     public function testGetShopSettingSelect(): void
     {
         $nameID = new ID('selectSetting');
-
 
         $repository = $this->getFetchOneShopSettingRepoInstance('select');
 
