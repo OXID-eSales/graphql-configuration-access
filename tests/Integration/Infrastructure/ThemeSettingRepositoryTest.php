@@ -171,6 +171,43 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $repository->saveStringSetting(new ID('notExistingSetting'), 'new value', 'awesomeTheme');
     }
 
+    public function testSaveAndGetCollectionSetting(): void
+    {
+        $name = 'coolArrayString';
+        $eventDispatcher = $this->getEventDispatcherMock($name);
+        /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+
+        $repository = $this->getSut(
+            eventDispatcher: $eventDispatcher,
+            queryBuilderFactory: $queryBuilderFactory
+        );
+
+        $this->createThemeSetting(
+            $queryBuilderFactory,
+            $name,
+            FieldType::ARRAY,
+            'a:2:{i:0;s:4:"nice";i:1;s:6:"values";}'
+        );
+
+        $repository->saveCollectionSetting(new ID($name), ['nice', 'cool', 'values'], 'awesomeTheme');
+        $collectionResult = $repository->getCollection(new ID($name), 'awesomeTheme');
+
+        $this->assertSame(['nice','cool','values'], $collectionResult);
+    }
+
+    public function testSaveNotExistingCollectionSetting(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())
+            ->method('dispatch');
+        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
+
+        $this->expectException(NotFound::class);
+        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
+        $repository->saveCollectionSetting(new ID('notExistingSetting'), ['nice', 'cool', 'values'], 'awesomeTheme');
+    }
+
     private function getSut(
         ?BasicContextInterface $basicContext = null,
         ?EventDispatcherInterface $eventDispatcher = null,

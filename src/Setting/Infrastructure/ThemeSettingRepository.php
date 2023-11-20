@@ -154,7 +154,9 @@ class ThemeSettingRepository extends AbstractDatabaseSettingRepository implement
 
     public function saveCollectionSetting(ID $name, array $value, string $themeId): void
     {
-        // TODO: Implement saveCollectionSetting() method.
+        $value = $this->shopSettingEncoder->encode(FieldType::ARRAY, $value);
+
+        $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
     public function saveAssocCollectionSetting(ID $name, array $value, string $themeId): void
