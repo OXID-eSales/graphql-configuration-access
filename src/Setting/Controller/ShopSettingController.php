@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
@@ -26,7 +33,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingInteger(ID $name): IntegerSetting
+    public function getShopSettingInteger(string $name): IntegerSetting
     {
         return $this->shopSettingService->getIntegerSetting($name);
     }
@@ -35,7 +42,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingFloat(ID $name): FloatSetting
+    public function getShopSettingFloat(string $name): FloatSetting
     {
         return $this->shopSettingService->getFloatSetting($name);
     }
@@ -44,7 +51,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingBoolean(ID $name): BooleanSetting
+    public function getShopSettingBoolean(string $name): BooleanSetting
     {
         return $this->shopSettingService->getBooleanSetting($name);
     }
@@ -53,7 +60,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingString(ID $name): StringSetting
+    public function getShopSettingString(string $name): StringSetting
     {
         return $this->shopSettingService->getStringSetting($name);
     }
@@ -62,7 +69,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingSelect(ID $name): StringSetting
+    public function getShopSettingSelect(string $name): StringSetting
     {
         return $this->shopSettingService->getSelectSetting($name);
     }
@@ -71,7 +78,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingCollection(ID $name): StringSetting
+    public function getShopSettingCollection(string $name): StringSetting
     {
         return $this->shopSettingService->getCollectionSetting($name);
     }
@@ -80,7 +87,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingAssocCollection(ID $name): StringSetting
+    public function getShopSettingAssocCollection(string $name): StringSetting
     {
         return $this->shopSettingService->getAssocCollectionSetting($name);
     }
