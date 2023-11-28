@@ -81,7 +81,7 @@ final class ShopSettingGettersCest extends BaseCest
     private function runSettingGetterQuery(AcceptanceTester $I, string $queryName, string $settingName): array
     {
         $I->sendGQLQuery(
-            'query q($name: ID!){
+            'query q($name: String!){
                 ' . $queryName . '(name: $name) {
                     name
                     value

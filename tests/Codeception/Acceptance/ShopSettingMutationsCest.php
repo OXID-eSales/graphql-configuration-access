@@ -66,7 +66,7 @@ final class ShopSettingMutationsCest extends BaseCest
 
         yield [
             'mutationName' => 'changeShopSettingBoolean',
-            'settingName' => 'booleanSetting',
+            'settingName' => 'boolSetting',
             'settingValue' => true,
             'valueType' => 'Boolean!'
         ];
