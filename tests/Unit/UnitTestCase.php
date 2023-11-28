@@ -81,12 +81,10 @@ class UnitTestCase extends TestCase
         return [$intSetting, $stringSetting, $arraySetting];
     }
 
-    protected function getBasicContextMock(int $shopId = 1): BasicContextInterface|MockObject
+    protected function getBasicContextMock(int $shopId = 1): BasicContextInterface
     {
         $basicContext = $this->createMock(BasicContextInterface::class);
-        $basicContext->expects($this->any())
-            ->method('getCurrentShopId')
-            ->willReturn($shopId);
+        $basicContext->method('getCurrentShopId')->willReturn($shopId);
 
         return $basicContext;
     }
