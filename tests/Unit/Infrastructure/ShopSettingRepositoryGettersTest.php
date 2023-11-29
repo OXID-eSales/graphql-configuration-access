@@ -20,7 +20,15 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueEx
  */
 class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
 {
-    /** @dataProvider possibleGetterValuesDataProvider */
+    /**
+     * @dataProvider possibleGetIntegerValuesDataProvider
+     * @dataProvider possibleGetFloatValuesDataProvider
+     * @dataProvider possibleGetBooleanValuesDataProvider
+     * @dataProvider possibleGetStringValuesDataProvider
+     * @dataProvider possibleGetSelectValuesDataProvider
+     * @dataProvider possibleGetCollectionValuesDataProvider
+     * @dataProvider possibleGetAssocCollectionValuesDataProvider
+     */
     public function testGetShopSetting($method, $type, $possibleValue, $expectedResult): void
     {
         $settingName = 'settingName';
@@ -45,7 +53,7 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
         $this->assertSame($expectedResult, $sut->$method($settingName));
     }
 
-    public function possibleGetterValuesDataProvider(): \Generator
+    public function possibleGetIntegerValuesDataProvider(): \Generator
     {
         yield 'int regular' => [
             'method' => 'getInteger',
@@ -59,7 +67,10 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
             'possibleValue' => '123',
             'expectedResult' => 123
         ];
+    }
 
+    public function possibleGetFloatValuesDataProvider(): \Generator
+    {
         yield 'float regular' => [
             'method' => 'getFloat',
             'type' => FieldType::NUMBER,
@@ -78,56 +89,62 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
             'possibleValue' => '123',
             'expectedResult' => 123.0
         ];
+    }
 
-        yield [
+    public function possibleGetBooleanValuesDataProvider(): \Generator
+    {
+        yield 'boolean as positive int' => [
             'method' => 'getBoolean',
             'type' => FieldType::BOOLEAN,
             'possibleValue' => 1,
             'expectedResult' => true
         ];
-        yield [
+        yield 'boolean as numeric string' => [
             'method' => 'getBoolean',
             'type' => FieldType::BOOLEAN,
             'possibleValue' => '1',
             'expectedResult' => true
         ];
-        yield [
+        yield 'boolean as true boolean' => [
             'method' => 'getBoolean',
             'type' => FieldType::BOOLEAN,
             'possibleValue' => true,
             'expectedResult' => true
         ];
-        yield [
+        yield 'boolean as random string' => [
             'method' => 'getBoolean',
             'type' => FieldType::BOOLEAN,
             'possibleValue' => 'anything',
             'expectedResult' => true
         ];
-        yield [
+        yield 'boolean as null' => [
             'method' => 'getBoolean',
             'type' => FieldType::BOOLEAN,
             'possibleValue' => null,
             'expectedResult' => false
         ];
-        yield [
+        yield 'boolean as int zero' => [
             'method' => 'getBoolean',
             'type' => FieldType::BOOLEAN,
             'possibleValue' => 0,
             'expectedResult' => false
         ];
-        yield [
+        yield 'boolean as numeric zero string' => [
             'method' => 'getBoolean',
             'type' => FieldType::BOOLEAN,
             'possibleValue' => '0',
             'expectedResult' => false
         ];
-        yield [
+        yield 'boolean as false boolean' => [
             'method' => 'getBoolean',
             'type' => FieldType::BOOLEAN,
             'possibleValue' => false,
             'expectedResult' => false
         ];
+    }
 
+    public function possibleGetStringValuesDataProvider(): \Generator
+    {
         yield [
             'method' => 'getString',
             'type' => FieldType::STRING,
@@ -164,7 +181,10 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
             'possibleValue' => '',
             'expectedResult' => ''
         ];
+    }
 
+    public function possibleGetSelectValuesDataProvider(): \Generator
+    {
         yield [
             'method' => 'getSelect',
             'type' => FieldType::SELECT,
@@ -201,7 +221,10 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
             'possibleValue' => '',
             'expectedResult' => ''
         ];
+    }
 
+    public function possibleGetCollectionValuesDataProvider(): \Generator
+    {
         yield 'empty string collection' => [
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
@@ -229,7 +252,10 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
             'possibleValue' => ['one' => 'oneValue', 'two' => 'twoValue'],
             'expectedResult' => ['one' => 'oneValue', 'two' => 'twoValue']
         ];
+    }
 
+    public function possibleGetAssocCollectionValuesDataProvider(): \Generator
+    {
         yield 'empty string for assoc collection' => [
             'method' => 'getAssocCollection',
             'type' => FieldType::ASSOCIATIVE_ARRAY,
@@ -259,7 +285,10 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
         ];
     }
 
-    /** @dataProvider wrongSettingsDataProvider */
+    /**
+     * @dataProvider wrongSettingsTypeDataProvider
+     * @dataProvider wrongSettingsValueDataProvider
+     */
     public function testGetShopSettingWrongData(
         string $method,
         string $type,
@@ -282,7 +311,7 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
         $sut->$method('settingName');
     }
 
-    public function wrongSettingsDataProvider(): \Generator
+    public function wrongSettingsTypeDataProvider(): \Generator
     {
         yield [
             'method' => 'getInteger',
@@ -291,6 +320,44 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
             'expectedException' => WrongSettingTypeException::class
         ];
 
+        yield [
+            'method' => 'getFloat',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
+
+        yield [
+            'method' => 'getBoolean',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
+
+        yield [
+            'method' => 'getString',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
+
+        yield [
+            'method' => 'getSelect',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
+
+        yield [
+            'method' => 'getCollection',
+            'type' => 'wrong',
+            'value' => 'any',
+            'expectedException' => WrongSettingTypeException::class
+        ];
+    }
+
+    public function wrongSettingsValueDataProvider(): \Generator
+    {
         yield [
             'method' => 'getInteger',
             'type' => FieldType::NUMBER,
@@ -321,44 +388,9 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
 
         yield [
             'method' => 'getFloat',
-            'type' => 'wrong',
-            'value' => 'any',
-            'expectedException' => WrongSettingTypeException::class
-        ];
-
-        yield [
-            'method' => 'getFloat',
             'type' => FieldType::NUMBER,
             'value' => 'any',
             'expectedException' => WrongSettingValueException::class
-        ];
-
-        yield [
-            'method' => 'getBoolean',
-            'type' => 'wrong',
-            'value' => 'any',
-            'expectedException' => WrongSettingTypeException::class
-        ];
-
-        yield [
-            'method' => 'getString',
-            'type' => 'wrong',
-            'value' => 'any',
-            'expectedException' => WrongSettingTypeException::class
-        ];
-
-        yield [
-            'method' => 'getSelect',
-            'type' => 'wrong',
-            'value' => 'any',
-            'expectedException' => WrongSettingTypeException::class
-        ];
-
-        yield [
-            'method' => 'getCollection',
-            'type' => 'wrong',
-            'value' => 'any',
-            'expectedException' => WrongSettingTypeException::class
         ];
 
         yield 'false as the error result of unserialize' => [
