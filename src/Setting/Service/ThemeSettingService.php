@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -125,7 +125,7 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
         $arrayValue = json_decode($value, false);
 
         if (!is_array($arrayValue) || json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidCollection($value);
+            throw new InvalidCollectionException($value);
         }
 
         $this->themeSettingRepository->saveCollectionSetting($name, $arrayValue, $themeId);
@@ -138,7 +138,7 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
         $arrayValue = json_decode($value, true);
 
         if (!is_array($arrayValue) || json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidCollection($value);
+            throw new InvalidCollectionException($value);
         }
 
         $this->themeSettingRepository->saveAssocCollectionSetting($name, $arrayValue, $themeId);

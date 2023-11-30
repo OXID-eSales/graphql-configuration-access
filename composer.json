@@ -50,7 +50,6 @@
         "static": [
             "@phpcs",
             "@phpstan",
-            "@deptrac",
             "@phpmd"
         ],
 

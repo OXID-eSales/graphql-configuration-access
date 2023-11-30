@@ -7,7 +7,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
@@ -15,6 +15,9 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use TheCodingMachine\GraphQLite\Types\ID;
 
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService
+ */
 class ThemeSettingServiceTest extends UnitTestCase
 {
     public function testGetThemeSettingInteger(): void
@@ -330,7 +333,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $settingService = $this->getSut(themeSettingRepository: $repository);
         $nameID = new ID('collectionSetting');
 
-        $this->expectException(InvalidCollection::class);
+        $this->expectException(InvalidCollectionException::class);
         $this->expectExceptionMessage(sprintf('%s is not a valid collection string.', $value));
 
         $settingService->changeCollectionSetting($nameID, $value, 'awesomeTheme');
@@ -345,7 +348,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $settingService = $this->getSut(themeSettingRepository: $repository);
         $nameID = new ID('assocCollectionSetting');
 
-        $this->expectException(InvalidCollection::class);
+        $this->expectException(InvalidCollectionException::class);
         $this->expectExceptionMessage(sprintf('%s is not a valid collection string.', $value));
 
         $settingService->changeAssocCollectionSetting($nameID, $value, 'awesomeTheme');

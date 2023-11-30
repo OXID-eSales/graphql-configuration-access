@@ -5,6 +5,9 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType
+ */
 class FieldTypeTest extends TestCase
 {
     /** @dataProvider fieldTypesDataProvider */

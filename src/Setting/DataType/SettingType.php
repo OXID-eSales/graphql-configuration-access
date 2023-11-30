@@ -35,6 +35,9 @@ final class SettingType
         return $this->type;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     #[Field]
     public function isSupported(): bool
     {

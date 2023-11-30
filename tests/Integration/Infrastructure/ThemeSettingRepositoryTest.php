@@ -20,6 +20,9 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRe
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository
+ */
 class ThemeSettingRepositoryTest extends IntegrationTestCase
 {
     /**

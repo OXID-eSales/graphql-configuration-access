@@ -113,7 +113,32 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 
     public function getSettingsList(string $themeId): array
     {
-        return $this->getSettingTypes($themeId);
+        $themeCondition = (!empty($themeId)) ? 'theme:' . $themeId : '';
+        $shopId = $this->basicContext->getCurrentShopId();
+
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder->select('c.oxvarname')
+            ->addSelect('c.oxvartype')
+            ->from('oxconfig', 'c')
+            ->where('c.oxmodule = :module')
+            ->andWhere('c.oxshopid = :shopId')
+            ->setParameters([
+                ':module' => $themeCondition,
+                ':shopId' => $shopId
+            ]);
+
+        /** @var Result $result */
+        $result = $queryBuilder->execute();
+
+        /** @var array<string, string> $value */
+        $value = $result->fetchAllKeyValue();
+
+        $notFoundLocation = (!empty($themeId)) ? 'theme: "' . $themeId . '"' : 'shopID: "' . $shopId . '"';
+        if ($value === []) {
+            throw new NotFound('No configurations found for ' . $notFoundLocation);
+        }
+
+        return $value;
     }
 
     public function saveIntegerSetting(ID $name, int $value, string $themeId): void
@@ -201,34 +226,6 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 
         if ($value === false) {
             throw new NoSettingsFoundForThemeException($theme);
-        }
-
-        return $value;
-    }
-
-    protected function getSettingTypes(string $theme = ''): array
-    {
-        $themeCondition = (!empty($theme)) ? 'theme:' . $theme : '';
-        $shopId = $this->basicContext->getCurrentShopId();
-
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder->select('c.oxvarname')
-            ->addSelect('c.oxvartype')
-            ->from('oxconfig', 'c')
-            ->where('c.oxmodule = :module')
-            ->andWhere('c.oxshopid = :shopId')
-            ->setParameters([
-                ':module' => $themeCondition,
-                ':shopId' => $shopId
-            ]);
-
-        /** @var Result $result */
-        $result = $queryBuilder->execute();
-        $value = $result->fetchAllKeyValue();
-
-        $notFoundLocation = (!empty($theme)) ? 'theme: "' . $theme . '"' : 'shopID: "' . $shopId . '"';
-        if ($value === []) {
-            throw new NotFound('No configurations found for ' . $notFoundLocation);
         }
 
         return $value;

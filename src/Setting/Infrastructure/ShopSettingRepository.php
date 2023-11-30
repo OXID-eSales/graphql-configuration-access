@@ -209,10 +209,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $this->saveAsType(FieldType::ASSOCIATIVE_ARRAY, $name, $value);
     }
 
-    /**
-     * @param mixed $value
-     */
-    private function saveAsType(string $type, string $name, $value): void
+    private function saveAsType(string $type, string $name, mixed $value): void
     {
         $this->validateOriginalSettingType($name, $type);
 

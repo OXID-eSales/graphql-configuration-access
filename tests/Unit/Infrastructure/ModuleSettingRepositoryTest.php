@@ -11,6 +11,9 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingR
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use Symfony\Component\String\UnicodeString;
 
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepository
+ */
 class ModuleSettingRepositoryTest extends UnitTestCase
 {
     public function testGetModuleSettingInteger(): void

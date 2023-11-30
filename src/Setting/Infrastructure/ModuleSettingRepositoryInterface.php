@@ -3,7 +3,6 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 interface ModuleSettingRepositoryInterface
 {

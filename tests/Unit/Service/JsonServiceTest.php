@@ -3,7 +3,7 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollection;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonService;
 use PHPUnit\Framework\TestCase;
 
@@ -60,7 +60,7 @@ class JsonServiceTest extends TestCase
         $sut = new JsonService();
         $value = '[2, "values"';
 
-        $this->expectException(InvalidCollection::class);
+        $this->expectException(InvalidCollectionException::class);
         $sut->jsonDecodeCollection($value);
     }
 }

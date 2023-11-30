@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception;
 
 use Exception;
 
-final class InvalidCollection extends Exception
+final class InvalidCollectionException extends Exception
 {
     public function __construct(string $value)
     {
