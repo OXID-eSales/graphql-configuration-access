@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 use UnexpectedValueException;
 
-class GetThemeSettingRepositoryTest extends UnitTestCase
+class ThemeSettingRepositoryGettersTest extends UnitTestCase
 {
     public function testGetThemeSettingInteger(): void
     {

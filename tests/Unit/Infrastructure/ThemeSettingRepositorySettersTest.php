@@ -13,7 +13,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-class ChangeThemeSettingRepositoryTest extends UnitTestCase
+class ThemeSettingRepositorySettersTest extends UnitTestCase
 {
     public function testChangeThemeSettingInteger(): void
     {
