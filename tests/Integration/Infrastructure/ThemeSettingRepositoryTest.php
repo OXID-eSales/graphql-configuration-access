@@ -14,15 +14,38 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 class ThemeSettingRepositoryTest extends IntegrationTestCase
 {
+    /**
+     * @dataProvider getNotExistingSettingMethodsDataProvider
+     */
+    public function testGetNotExistingSetting(string $repositoryMethod): void
+    {
+        $sut = $this->getSut();
+
+        $this->expectException(NoSettingsFoundForThemeException::class);
+        $this->expectExceptionMessageMatches('/for theme: awesomeTheme$/');
+
+        $sut->$repositoryMethod(new ID('notExistingSetting'), 'awesomeTheme');
+    }
+
+    public function getNotExistingSettingMethodsDataProvider(): \Generator
+    {
+        yield "getInteger" => ['repositoryMethod' => 'getInteger'];
+        yield "getFloat" => ['repositoryMethod' => 'getFloat'];
+        yield "getBoolean" => ['repositoryMethod' => 'getBoolean'];
+        yield "getString" => ['repositoryMethod' => 'getString'];
+        yield "getSelect" => ['repositoryMethod' => 'getSelect'];
+        yield "getCollection" => ['repositoryMethod' => 'getCollection'];
+        yield "getAssocCollection" => ['repositoryMethod' => 'getAssocCollection'];
+    }
+
     public function testSaveAndGetIntegerSetting(): void
     {
         $name = 'coolIntSetting';
@@ -46,18 +69,6 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $integerResult = $repository->getInteger(new ID($name), 'awesomeTheme');
 
         $this->assertSame(124, $integerResult);
-    }
-
-    public function testSaveNotExistingIntegerSetting(): void
-    {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->never())
-            ->method('dispatch');
-        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
-        $repository->saveIntegerSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
     }
 
     public function testSaveAndGetFloatSetting(): void
@@ -85,18 +96,6 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $this->assertSame(1.24, $floatResult);
     }
 
-    public function testSaveNotExistingFloatSetting(): void
-    {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->never())
-            ->method('dispatch');
-        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
-        $repository->saveFloatSetting(new ID('notExistingSetting'), 1234, 'awesomeTheme');
-    }
-
     public function testSaveAndGetBooleanSetting(): void
     {
         $name = "coolBooleanSetting";
@@ -120,18 +119,6 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $floatResult = $repository->getBoolean(new ID($name), 'awesomeTheme');
 
         $this->assertSame(true, $floatResult);
-    }
-
-    public function testSaveNotExistingBooleanSetting(): void
-    {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->never())
-            ->method('dispatch');
-        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
-        $repository->saveBooleanSetting(new ID('notExistingSetting'), true, 'awesomeTheme');
     }
 
     public function testSaveAndGetStringSetting(): void
@@ -159,18 +146,6 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $this->assertSame('new value', $stringResult);
     }
 
-    public function testSaveNotExistingStringSetting(): void
-    {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->never())
-            ->method('dispatch');
-        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
-        $repository->saveStringSetting(new ID('notExistingSetting'), 'new value', 'awesomeTheme');
-    }
-
     public function testSaveAndGetSelectSetting(): void
     {
         $name = 'coolSelectSetting';
@@ -196,18 +171,6 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $this->assertSame('new select value', $stringResult);
     }
 
-    public function testSaveNotExistingSelectSetting(): void
-    {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->never())
-            ->method('dispatch');
-        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
-        $repository->saveSelectSetting(new ID('notExistingSetting'), 'new value', 'awesomeTheme');
-    }
-
     public function testSaveAndGetCollectionSetting(): void
     {
         $name = 'coolArraySetting';
@@ -230,19 +193,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $repository->saveCollectionSetting(new ID($name), ['nice', 'cool', 'values'], 'awesomeTheme');
         $collectionResult = $repository->getCollection(new ID($name), 'awesomeTheme');
 
-        $this->assertSame(['nice','cool','values'], $collectionResult);
-    }
-
-    public function testSaveNotExistingCollectionSetting(): void
-    {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->never())
-            ->method('dispatch');
-        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
-        $repository->saveCollectionSetting(new ID('notExistingSetting'), ['nice', 'cool', 'values'], 'awesomeTheme');
+        $this->assertSame(['nice', 'cool', 'values'], $collectionResult);
     }
 
     public function testSaveAndGetAssocCollectionSetting(): void
@@ -274,22 +225,6 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $this->assertSame(['first' => '10', 'second' => '20', 'third' => '60'], $assocCollectionResult);
     }
 
-    public function testSaveNotExistingAssocCollectionSetting(): void
-    {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->never())
-            ->method('dispatch');
-        $repository = $this->getSut(eventDispatcher: $eventDispatcher);
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('Configuration "notExistingSetting" was not found for awesomeTheme');
-        $repository->saveAssocCollectionSetting(
-            new ID('notExistingSetting'),
-            ['first' => 'nice', 'second' => 'values'],
-            'awesomeTheme'
-        );
-    }
-
     private function getSut(
         ?BasicContextInterface $basicContext = null,
         ?EventDispatcherInterface $eventDispatcher = null,
@@ -314,12 +249,14 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $queryBuilder = $queryBuilderFactory->create();
         $queryBuilder
             ->insert('oxconfig')
-            ->setValue('oxid', ':oxid')
-            ->setValue('oxshopid', ':oxshopid')
-            ->setValue('oxmodule', ':oxmodule')
-            ->setValue('oxvarname', ':oxvarname')
-            ->setValue('oxvartype', ':oxvartype')
-            ->setValue('oxvarvalue', ':oxvarvalue')
+            ->values([
+                'oxid' => ':oxid',
+                'oxshopid' => ':oxshopid',
+                'oxmodule' => ':oxmodule',
+                'oxvarname' => ':oxvarname',
+                'oxvartype' => ':oxvartype',
+                'oxvarvalue' => ':oxvarvalue',
+            ])
             ->setParameters([
                 'oxid' => $uniqueId,
                 'oxshopid' => 1,
@@ -331,11 +268,7 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         $queryBuilder->execute();
     }
 
-    /**
-     * @param string $name
-     * @return MockObject|EventDispatcherInterface|(EventDispatcherInterface&MockObject)
-     */
-    public function getEventDispatcherMock(string $name): MockObject|EventDispatcherInterface
+    private function getEventDispatcherMock(string $name): EventDispatcherInterface
     {
         $configurationChangedEvent = new ThemeSettingChangedEvent(
             $name,
