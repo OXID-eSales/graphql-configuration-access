@@ -27,7 +27,7 @@ final class FieldType
         self::SELECT
     ];
 
-    static public function validateFieldType(string $type): bool
+    public static function validateFieldType(string $type): bool
     {
         if (in_array($type, self::$enums)) {
             return true;
@@ -36,7 +36,7 @@ final class FieldType
         return false;
     }
 
-    static public function getEnums(): array
+    public static function getEnums(): array
     {
         return self::$enums;
     }
