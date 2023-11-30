@@ -36,22 +36,6 @@ class ThemeSettingRepositoryGettersTest extends UnitTestCase
         $this->assertEquals(123, $integer);
     }
 
-    public function testGetNoThemeSettingInteger(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getSut();
-        $repository->expects($this->once())
-            ->method('getSettingValue')
-            ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as an integer configuration');
-
-        $repository->getInteger($nameID, 'awesomeTheme');
-    }
-
     public function testGetThemeSettingInvalidInteger(): void
     {
         $nameID = new ID('floatSetting');
@@ -82,21 +66,6 @@ class ThemeSettingRepositoryGettersTest extends UnitTestCase
 
         $float = $repository->getFloat($nameID, 'awesomeTheme');
         $this->assertEquals(1.23, $float);
-    }
-
-    public function testGetNoThemeSettingFloat(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getSut();
-        $repository->expects($this->once())
-            ->method('getSettingValue')
-            ->with($nameID, FieldType::NUMBER, 'awesomeTheme')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a float configuration');
-        $repository->getFloat($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingInvalidFloat(): void
@@ -150,21 +119,6 @@ class ThemeSettingRepositoryGettersTest extends UnitTestCase
         $this->assertEquals($decodedValue, $boolean);
     }
 
-    public function testGetNoThemeSettingBoolean(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getSut();
-        $repository->expects($this->once())
-            ->method('getSettingValue')
-            ->with($nameID, FieldType::BOOLEAN, 'awesomeTheme')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a boolean configuration');
-        $repository->getBoolean($nameID, 'awesomeTheme');
-    }
-
     public function testGetThemeSettingString(): void
     {
         $nameID = new ID('stringSetting');
@@ -182,21 +136,6 @@ class ThemeSettingRepositoryGettersTest extends UnitTestCase
         $this->assertEquals($value, $string);
     }
 
-    public function testGetNoThemeSettingString(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getSut();
-        $repository->expects($this->once())
-            ->method('getSettingValue')
-            ->with($nameID, FieldType::STRING, 'awesomeTheme')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a string configuration');
-        $repository->getString($nameID, 'awesomeTheme');
-    }
-
     public function testGetThemeSettingSelect(): void
     {
         $nameID = new ID('selectSetting');
@@ -211,21 +150,6 @@ class ThemeSettingRepositoryGettersTest extends UnitTestCase
 
         $select = $repository->getSelect($nameID, 'awesomeTheme');
         $this->assertEquals('select', $select);
-    }
-
-    public function testGetNoThemeSettingSelect(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-
-        $repository = $this->getSut();
-        $repository->expects($this->once())
-            ->method('getSettingValue')
-            ->with($nameID, FieldType::SELECT, 'awesomeTheme')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a select configuration');
-        $repository->getSelect($nameID, 'awesomeTheme');
     }
 
     public function testGetThemeSettingCollection(): void
@@ -250,20 +174,6 @@ class ThemeSettingRepositoryGettersTest extends UnitTestCase
         $this->assertEquals($decodedArray, $collection);
     }
 
-    public function testGetNoThemeSettingCollection(): void
-    {
-        $nameID = new ID('NotExistingSetting');
-        $repository = $this->getSut();
-        $repository->expects($this->once())
-            ->method('getSettingValue')
-            ->with($nameID, FieldType::ARRAY, 'awesomeTheme')
-            ->willThrowException(new NotFound());
-
-        $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as a collection configuration');
-        $repository->getCollection($nameID, 'awesomeTheme');
-    }
-
     public function testGetThemeSettingAssocCollection(): void
     {
         $nameID = new ID('aarraySetting');
@@ -286,18 +196,36 @@ class ThemeSettingRepositoryGettersTest extends UnitTestCase
         $this->assertEquals($decodedArray, $assocCollection);
     }
 
-    public function testGetNoThemeSettingAssocCollection(): void
+    /**
+     * @dataProvider noSettingExceptionDataProvider
+     */
+    public function testGetNoThemeSetting(string $repositoryMethod, string $fieldType): void
     {
         $nameID = new ID('NotExistingSetting');
+
         $repository = $this->getSut();
         $repository->expects($this->once())
             ->method('getSettingValue')
-            ->with($nameID, FieldType::ASSOCIATIVE_ARRAY, 'awesomeTheme')
+            ->with($nameID, $fieldType, 'awesomeTheme')
             ->willThrowException(new NotFound());
 
         $this->expectException(NotFound::class);
-        $this->expectExceptionMessage('The queried name couldn\'t be found as an associative collection configuration');
-        $repository->getAssocCollection($nameID, 'awesomeTheme');
+
+        $repository->$repositoryMethod($nameID, 'awesomeTheme');
+    }
+
+    public function noSettingExceptionDataProvider(): \Generator
+    {
+        yield 'getInteger' => ['repositoryMethod' => 'getInteger', 'fieldType' => FieldType::NUMBER];
+        yield 'getFloat' => ['repositoryMethod' => 'getFloat', 'fieldType' => FieldType::NUMBER];
+        yield 'getBoolean' => ['repositoryMethod' => 'getBoolean', 'fieldType' => FieldType::BOOLEAN];
+        yield 'getString' => ['repositoryMethod' => 'getString', 'fieldType' => FieldType::STRING];
+        yield 'getSelect' => ['repositoryMethod' => 'getSelect', 'fieldType' => FieldType::SELECT];
+        yield 'getCollection' => ['repositoryMethod' => 'getCollection', 'fieldType' => FieldType::ARRAY];
+        yield 'getAssocCollection' => [
+            'repositoryMethod' => 'getAssocCollection',
+            'fieldType' => FieldType::ASSOCIATIVE_ARRAY
+        ];
     }
 
     public function testGetSettingsList(): void
