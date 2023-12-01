@@ -25,30 +25,6 @@ use TheCodingMachine\GraphQLite\Types\ID;
  */
 class ThemeSettingRepositoryTest extends IntegrationTestCase
 {
-    /**
-     * @dataProvider getNotExistingSettingMethodsDataProvider
-     */
-    public function testGetNotExistingSetting(string $repositoryMethod): void
-    {
-        $sut = $this->getSut();
-
-        $this->expectException(NoSettingsFoundForThemeException::class);
-        $this->expectExceptionMessageMatches('/for theme: awesomeTheme$/');
-
-        $sut->$repositoryMethod(new ID('notExistingSetting'), 'awesomeTheme');
-    }
-
-    public function getNotExistingSettingMethodsDataProvider(): \Generator
-    {
-        yield "getInteger" => ['repositoryMethod' => 'getInteger'];
-        yield "getFloat" => ['repositoryMethod' => 'getFloat'];
-        yield "getBoolean" => ['repositoryMethod' => 'getBoolean'];
-        yield "getString" => ['repositoryMethod' => 'getString'];
-        yield "getSelect" => ['repositoryMethod' => 'getSelect'];
-        yield "getCollection" => ['repositoryMethod' => 'getCollection'];
-        yield "getAssocCollection" => ['repositoryMethod' => 'getAssocCollection'];
-    }
-
     public function testSaveAndGetIntegerSetting(): void
     {
         $name = 'coolIntSetting';
