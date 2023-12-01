@@ -9,17 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
-use Doctrine\DBAL\Result;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\Base\Exception\NotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
-use UnexpectedValueException;
 
 class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 {
@@ -33,80 +32,91 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 
     public function getInteger(ID $name, string $themeId): int
     {
-        $fieldType = FieldType::NUMBER;
-        $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
+        $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
 
-        if ($this->isFloatString($encodedValue)) {
-            throw new UnexpectedValueException('The queried configuration was found as a float, not an integer');
+        if (
+            !is_int($value)
+            && !(is_string($value) && $this->matchesOnlyDigits($value))
+        ) {
+            throw new WrongSettingValueException();
         }
 
-        return (int)$this->shopSettingEncoder->decode($fieldType, $encodedValue);
+        return (int)$value;
+    }
+
+    private function matchesOnlyDigits(string $value): bool
+    {
+        return (bool)preg_match("/^\d+$/", $value);
     }
 
     public function getFloat(ID $name, string $themeId): float
     {
-        $fieldType = FieldType::NUMBER;
-        $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
+        $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
 
-        if (!$this->isFloatString($encodedValue)) {
-            throw new UnexpectedValueException('The queried configuration was found as an integer, not a float');
+        if (
+            !is_int($value)
+            && !is_float($value)
+            && !(is_string($value) && $this->matchesFloatDigits($value))
+        ) {
+            throw new WrongSettingValueException();
         }
-        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
 
         return (float)$value;
     }
 
-    protected function isFloatString(string $number): bool
+    private function matchesFloatDigits(string $value): bool
     {
-        return is_numeric($number) && str_contains($number, '.') !== false;
+        return (bool)preg_match("/^\d+(\.\d+)?$/", $value);
     }
 
     public function getBoolean(ID $name, string $themeId): bool
     {
-        $fieldType = FieldType::BOOLEAN;
-        $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
-
-        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
+        $value = $this->getSettingValue($name, FieldType::BOOLEAN, $themeId);
 
         return (bool)$value;
     }
 
     public function getString(ID $name, string $themeId): string
     {
-        $fieldType = FieldType::STRING;
-        $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
+        $value = $this->getSettingValue($name, FieldType::STRING, $themeId);
 
-        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
-
-        return $value;
+        return (string)$value;
     }
 
     public function getSelect(ID $name, string $themeId): string
     {
-        $fieldType = FieldType::SELECT;
-        $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
+        $value = $this->getSettingValue($name, FieldType::SELECT, $themeId);
 
-        $value = $this->shopSettingEncoder->decode($fieldType, $encodedValue);
-
-        return $value;
+        return (string)$value;
     }
 
     public function getCollection(ID $name, string $themeId): array
     {
-        $fieldType = FieldType::ARRAY;
-        $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
+        $value = $this->getSettingValue($name, FieldType::ARRAY, $themeId);
 
-        $value = (array)$this->shopSettingEncoder->decode($fieldType, $encodedValue);
-
-        return $value;
+        return $this->getArrayFromSettingValue($value);
     }
 
     public function getAssocCollection(ID $name, string $themeId): array
     {
         $fieldType = FieldType::ASSOCIATIVE_ARRAY;
-        $encodedValue = $this->getSettingValue($name, $fieldType, $themeId);
+        $value = $this->getSettingValue($name, $fieldType, $themeId);
 
-        $value = (array)$this->shopSettingEncoder->decode($fieldType, $encodedValue);
+        return $this->getArrayFromSettingValue($value);
+    }
+
+    /**
+     * @throws WrongSettingValueException
+     */
+    public function getArrayFromSettingValue(mixed $value): array
+    {
+        if ($value === '') {
+            $value = [];
+        }
+
+        if (!is_array($value)) {
+            throw new WrongSettingValueException();
+        }
 
         return $value;
     }
@@ -133,9 +143,8 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         /** @var array<string, string> $value */
         $value = $result->fetchAllKeyValue();
 
-        $notFoundLocation = (!empty($themeId)) ? 'theme: "' . $themeId . '"' : 'shopID: "' . $shopId . '"';
         if ($value === []) {
-            throw new NotFound('No configurations found for ' . $notFoundLocation);
+            throw new NoSettingsFoundForThemeException($themeId);
         }
 
         return $value;
@@ -204,7 +213,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
-    protected function getSettingValue(ID $name, string $fieldType, string $theme): string
+    protected function getSettingValue(ID $name, string $fieldType, string $theme): mixed
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder->select('c.oxvarvalue')
@@ -228,7 +237,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             throw new NoSettingsFoundForThemeException($theme);
         }
 
-        return $value;
+        return $this->shopSettingEncoder->decode($fieldType, $value);
     }
 
     protected function saveSettingValue(ID $name, string $themeId, string $value): void

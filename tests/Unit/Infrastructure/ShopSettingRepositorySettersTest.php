@@ -17,7 +17,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeExc
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
  */
-class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
+class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTestCase
 {
     /** @dataProvider shopSettingsSaveMethodsDataProvider */
     public function testSetShopSetting(

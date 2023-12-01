@@ -9,20 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository;
-use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository
  */
-class ThemeSettingRepositorySettersTest extends UnitTestCase
+class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTestCase
 {
     /**
      * @dataProvider notExistingSettingCheckTriggerDataProvider
@@ -35,14 +28,14 @@ class ThemeSettingRepositorySettersTest extends UnitTestCase
         $nameID = new ID('notExistingSetting');
         $themeId = 'awesomeTheme';
 
-        $repository = $this->getSut(methods: ['getInteger']);
-        $repository->method('getInteger')
+        $repository = $this->getSut(methods: [$checkMethod]);
+        $repository->method($checkMethod)
             ->with($nameID, $themeId)
             ->willThrowException(new NoSettingsFoundForThemeException($themeId));
 
         $this->expectException(NoSettingsFoundForThemeException::class);
 
-        $repository->saveIntegerSetting($nameID, 123, $themeId);
+        $repository->$repositoryMethod($nameID, $value, $themeId);
     }
 
     public function notExistingSettingCheckTriggerDataProvider(): \Generator
@@ -82,24 +75,5 @@ class ThemeSettingRepositorySettersTest extends UnitTestCase
             'repositoryMethod' => 'saveAssocCollectionSetting',
             'value' => ['collection']
         ];
-    }
-
-    public function getSut(
-        ?array $methods = null,
-        ?BasicContextInterface $basicContext = null,
-        ?EventDispatcherInterface $eventDispatcher = null,
-        ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
-        ?ShopSettingEncoderInterface $settingEncoder = null
-    ): MockObject|ThemeSettingRepository {
-        $repository = $this->getMockBuilder(ThemeSettingRepository::class)
-            ->setConstructorArgs([
-                $basicContext ?? $this->createMock(BasicContextInterface::class),
-                $eventDispatcher ?? $this->createMock(EventDispatcherInterface::class),
-                $queryBuilderFactory ?? $this->createMock(QueryBuilderFactoryInterface::class),
-                $settingEncoder ?? $this->createMock(ShopSettingEncoderInterface::class)
-            ])
-            ->onlyMethods($methods ?? ['saveSettingValue'])
-            ->getMock();
-        return $repository;
     }
 }

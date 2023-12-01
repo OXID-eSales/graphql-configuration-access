@@ -15,9 +15,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
-abstract class AbstractShopSettingRepositoryTest extends UnitTestCase
+abstract class AbstractShopSettingRepositoryTestCase extends AbstractDatabaseSettingsRepositoryTestCase
 {
     protected function getSut(
         ?BasicContextInterface $basicContext = null,
