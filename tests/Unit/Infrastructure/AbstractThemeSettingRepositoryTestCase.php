@@ -16,7 +16,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRe
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class AbstractThemeSettingRepositoryTestCase extends AbstractDatabaseSettingsRepositoryTestCase
+abstract class AbstractThemeSettingRepositoryTestCase extends AbstractDatabaseSettingsRepositoryTestCase
 {
     protected function getSut(
         ?array $methods = null,

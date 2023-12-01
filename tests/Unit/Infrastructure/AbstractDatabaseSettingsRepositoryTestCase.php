@@ -13,7 +13,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
-class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
+abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
 {
     public function possibleGetFloatValuesDataProvider(): \Generator
     {
