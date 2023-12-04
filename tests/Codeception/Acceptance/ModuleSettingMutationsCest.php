@@ -23,7 +23,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: Int!, $moduleId: String!){
+            'mutation m($name: String!, $value: Int!, $moduleId: String!){
                 changeModuleSettingInteger(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
@@ -52,7 +52,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: Float!, $moduleId: String!){
+            'mutation m($name: String!, $value: Float!, $moduleId: String!){
                 changeModuleSettingFloat(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
@@ -81,7 +81,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: Boolean!, $moduleId: String!){
+            'mutation m($name: String!, $value: Boolean!, $moduleId: String!){
                 changeModuleSettingBoolean(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
@@ -110,7 +110,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: String!, $moduleId: String!){
+            'mutation m($name: String!, $value: String!, $moduleId: String!){
                 changeModuleSettingString(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
@@ -139,7 +139,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: String!, $moduleId: String!){
+            'mutation m($name: String!, $value: String!, $moduleId: String!){
                 changeModuleSettingCollection(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value

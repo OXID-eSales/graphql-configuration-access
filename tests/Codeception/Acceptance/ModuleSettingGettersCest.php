@@ -69,7 +69,7 @@ final class ModuleSettingGettersCest extends ModuleSettingBaseCest
     private function runSettingGetterQuery(AcceptanceTester $I, string $queryName, string $settingName): array
     {
         $I->sendGQLQuery(
-            'query q($name: ID!, $moduleId: String!){
+            'query q($name: String!, $moduleId: String!){
                 ' . $queryName . '(name: $name, moduleId: $moduleId) {
                     name
                     value

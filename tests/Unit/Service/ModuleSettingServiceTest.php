@@ -43,7 +43,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $nameID = new ID($name);
         $this->assertEquals(
             new IntegerSetting($nameID, $repositoryResponse),
-            $sut->getIntegerSetting($nameID, $moduleId)
+            $sut->getIntegerSetting($name, $moduleId)
         );
     }
 
@@ -64,7 +64,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $nameID = new ID($name);
         $this->assertEquals(
             new FloatSetting($nameID, $repositoryResponse),
-            $sut->getFloatSetting($nameID, $moduleId)
+            $sut->getFloatSetting($name, $moduleId)
         );
     }
 
@@ -85,7 +85,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $nameID = new ID($name);
         $this->assertEquals(
             new BooleanSetting($nameID, $repositoryResponse),
-            $sut->getBooleanSetting($nameID, $moduleId)
+            $sut->getBooleanSetting($name, $moduleId)
         );
     }
 
@@ -106,7 +106,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $nameID = new ID($name);
         $this->assertEquals(
             new StringSetting($nameID, $repositoryResponse),
-            $sut->getStringSetting($nameID, $moduleId)
+            $sut->getStringSetting($name, $moduleId)
         );
     }
 
@@ -136,7 +136,7 @@ class ModuleSettingServiceTest extends UnitTestCase
         $nameID = new ID($name);
         $this->assertEquals(
             new StringSetting($nameID, $encoderResponse),
-            $sut->getCollectionSetting($nameID, $moduleId)
+            $sut->getCollectionSetting($name, $moduleId)
         );
     }
 
@@ -162,9 +162,9 @@ class ModuleSettingServiceTest extends UnitTestCase
         );
 
         $nameID = new ID($name);
-        $setting = $sut->changeIntegerSetting($nameID, $callValue, $moduleId);
+        $setting = $sut->changeIntegerSetting($name, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $setting->getName());
+        $this->assertEquals($nameID, $setting->getName());
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
@@ -190,9 +190,9 @@ class ModuleSettingServiceTest extends UnitTestCase
         );
 
         $nameID = new ID($name);
-        $setting = $sut->changeFloatSetting($nameID, $callValue, $moduleId);
+        $setting = $sut->changeFloatSetting($name, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $setting->getName());
+        $this->assertEquals($nameID, $setting->getName());
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
@@ -218,9 +218,9 @@ class ModuleSettingServiceTest extends UnitTestCase
         );
 
         $nameID = new ID($name);
-        $setting = $sut->changeBooleanSetting($nameID, $callValue, $moduleId);
+        $setting = $sut->changeBooleanSetting($name, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $setting->getName());
+        $this->assertEquals($nameID, $setting->getName());
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
@@ -246,9 +246,9 @@ class ModuleSettingServiceTest extends UnitTestCase
         );
 
         $nameID = new ID($name);
-        $setting = $sut->changeStringSetting($nameID, $callValue, $moduleId);
+        $setting = $sut->changeStringSetting($name, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $setting->getName());
+        $this->assertEquals($nameID, $setting->getName());
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
@@ -284,9 +284,9 @@ class ModuleSettingServiceTest extends UnitTestCase
         );
 
         $nameID = new ID($name);
-        $setting = $sut->changeCollectionSetting($nameID, $callValue, $moduleId);
+        $setting = $sut->changeCollectionSetting($name, $callValue, $moduleId);
 
-        $this->assertSame($nameID, $setting->getName());
+        $this->assertEquals($nameID, $setting->getName());
         $this->assertSame($encoderResponse, $setting->getValue());
     }
 

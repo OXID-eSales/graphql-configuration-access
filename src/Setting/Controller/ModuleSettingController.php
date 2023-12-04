@@ -20,7 +20,6 @@ use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ModuleSettingController
 {
@@ -33,7 +32,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getModuleSettingInteger(ID $name, string $moduleId): IntegerSetting
+    public function getModuleSettingInteger(string $name, string $moduleId): IntegerSetting
     {
         return $this->moduleSettingService->getIntegerSetting($name, $moduleId);
     }
@@ -42,7 +41,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getModuleSettingFloat(ID $name, string $moduleId): FloatSetting
+    public function getModuleSettingFloat(string $name, string $moduleId): FloatSetting
     {
         return $this->moduleSettingService->getFloatSetting($name, $moduleId);
     }
@@ -51,7 +50,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getModuleSettingBoolean(ID $name, string $moduleId): BooleanSetting
+    public function getModuleSettingBoolean(string $name, string $moduleId): BooleanSetting
     {
         return $this->moduleSettingService->getBooleanSetting($name, $moduleId);
     }
@@ -60,7 +59,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getModuleSettingString(ID $name, string $moduleId): StringSetting
+    public function getModuleSettingString(string $name, string $moduleId): StringSetting
     {
         return $this->moduleSettingService->getStringSetting($name, $moduleId);
     }
@@ -69,7 +68,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getModuleSettingCollection(ID $name, string $moduleId): StringSetting
+    public function getModuleSettingCollection(string $name, string $moduleId): StringSetting
     {
         return $this->moduleSettingService->getCollectionSetting($name, $moduleId);
     }
@@ -78,7 +77,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeModuleSettingInteger(ID $name, int $value, string $moduleId): IntegerSetting
+    public function changeModuleSettingInteger(string $name, int $value, string $moduleId): IntegerSetting
     {
         return $this->moduleSettingService->changeIntegerSetting($name, $value, $moduleId);
     }
@@ -87,7 +86,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeModuleSettingFloat(ID $name, float $value, string $moduleId): FloatSetting
+    public function changeModuleSettingFloat(string $name, float $value, string $moduleId): FloatSetting
     {
         return $this->moduleSettingService->changeFloatSetting($name, $value, $moduleId);
     }
@@ -96,7 +95,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeModuleSettingBoolean(ID $name, bool $value, string $moduleId): BooleanSetting
+    public function changeModuleSettingBoolean(string $name, bool $value, string $moduleId): BooleanSetting
     {
         return $this->moduleSettingService->changeBooleanSetting($name, $value, $moduleId);
     }
@@ -105,7 +104,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeModuleSettingString(ID $name, string $value, string $moduleId): StringSetting
+    public function changeModuleSettingString(string $name, string $value, string $moduleId): StringSetting
     {
         return $this->moduleSettingService->changeStringSetting($name, $value, $moduleId);
     }
@@ -114,7 +113,7 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeModuleSettingCollection(ID $name, string $value, string $moduleId): StringSetting
+    public function changeModuleSettingCollection(string $name, string $value, string $moduleId): StringSetting
     {
         return $this->moduleSettingService->changeCollectionSetting($name, $value, $moduleId);
     }

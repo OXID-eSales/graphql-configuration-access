@@ -26,77 +26,77 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
     ) {
     }
 
-    public function getIntegerSetting(ID $name, string $moduleId): IntegerSetting
+    public function getIntegerSetting(string $name, string $moduleId): IntegerSetting
     {
         return new IntegerSetting(
-            $name,
+            new ID($name),
             $this->moduleSettingRepository->getIntegerSetting((string)$name, $moduleId)
         );
     }
 
-    public function getFloatSetting(ID $name, string $moduleId): FloatSetting
+    public function getFloatSetting(string $name, string $moduleId): FloatSetting
     {
         return new FloatSetting(
-            $name,
+            new ID($name),
             $this->moduleSettingRepository->getFloatSetting((string)$name, $moduleId)
         );
     }
 
-    public function getBooleanSetting(ID $name, string $moduleId): BooleanSetting
+    public function getBooleanSetting(string $name, string $moduleId): BooleanSetting
     {
         return new BooleanSetting(
-            $name,
+            new ID($name),
             $this->moduleSettingRepository->getBooleanSetting((string)$name, $moduleId)
         );
     }
 
-    public function getStringSetting(ID $name, string $moduleId): StringSetting
+    public function getStringSetting(string $name, string $moduleId): StringSetting
     {
         return new StringSetting(
-            $name,
+            new ID($name),
             $this->moduleSettingRepository->getStringSetting((string)$name, $moduleId)
         );
     }
 
-    public function getCollectionSetting(ID $name, string $moduleId): StringSetting
+    public function getCollectionSetting(string $name, string $moduleId): StringSetting
     {
         $collection = $this->moduleSettingRepository->getCollectionSetting((string)$name, $moduleId);
 
         return new StringSetting(
-            $name,
+            new ID($name),
             $this->jsonService->jsonEncodeArray($collection)
         );
     }
 
-    public function changeIntegerSetting(ID $name, int $value, string $moduleId): IntegerSetting
+    public function changeIntegerSetting(string $name, int $value, string $moduleId): IntegerSetting
     {
         $this->moduleSettingRepository->saveIntegerSetting((string)$name, $value, $moduleId);
 
         return $this->getIntegerSetting($name, $moduleId);
     }
 
-    public function changeFloatSetting(ID $name, float $value, string $moduleId): FloatSetting
+    public function changeFloatSetting(string $name, float $value, string $moduleId): FloatSetting
     {
         $this->moduleSettingRepository->saveFloatSetting((string)$name, $value, $moduleId);
 
         return $this->getFloatSetting($name, $moduleId);
     }
 
-    public function changeBooleanSetting(ID $name, bool $value, string $moduleId): BooleanSetting
+    public function changeBooleanSetting(string $name, bool $value, string $moduleId): BooleanSetting
     {
         $this->moduleSettingRepository->saveBooleanSetting((string)$name, $value, $moduleId);
 
         return $this->getBooleanSetting($name, $moduleId);
     }
 
-    public function changeStringSetting(ID $name, string $value, string $moduleId): StringSetting
+    public function changeStringSetting(string $name, string $value, string $moduleId): StringSetting
     {
         $this->moduleSettingRepository->saveStringSetting((string)$name, $value, $moduleId);
 
         return $this->getStringSetting($name, $moduleId);
     }
 
-    public function changeCollectionSetting(ID $name, string $value, string $moduleId): StringSetting
+    public function changeCollectionSetting(string $name, string $value, string $moduleId): StringSetting
     {
         $this->moduleSettingRepository->saveCollectionSetting(
             (string)$name,

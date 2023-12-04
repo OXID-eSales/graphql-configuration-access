@@ -42,82 +42,83 @@ class ModuleSettingControllerTest extends TestCase
 
     public function proxyTestDataProvider(): \Generator
     {
-        $settingNameID = new ID('settingName');
+        $settingName = 'settingName';
+        $settingNameID = new ID($settingName);
 
         yield 'getter integer' => [
             'controllerMethod' => 'getModuleSettingInteger',
             'serviceMethod' => 'getIntegerSetting',
-            'params' => [$settingNameID, 'awesomeModule'],
+            'params' => [$settingName, 'awesomeModule'],
             'expectedValue' => new IntegerSetting($settingNameID, 123)
         ];
 
         yield 'getter float' => [
             'controllerMethod' => 'getModuleSettingFloat',
             'serviceMethod' => 'getFloatSetting',
-            'params' => [$settingNameID, 'awesomeModule'],
+            'params' => [$settingName, 'awesomeModule'],
             'expectedValue' => new FloatSetting($settingNameID, 1.23)
         ];
 
         yield 'getter bool' => [
             'controllerMethod' => 'getModuleSettingBoolean',
             'serviceMethod' => 'getBooleanSetting',
-            'params' => [$settingNameID, 'awesomeModule'],
+            'params' => [$settingName, 'awesomeModule'],
             'expectedValue' => new BooleanSetting($settingNameID, false)
         ];
 
         yield 'getter string' => [
             'controllerMethod' => 'getModuleSettingString',
             'serviceMethod' => 'getStringSetting',
-            'params' => [$settingNameID, 'awesomeModule'],
+            'params' => [$settingName, 'awesomeModule'],
             'expectedValue' => new StringSetting($settingNameID, 'default')
         ];
 
         yield 'getter collection' => [
             'controllerMethod' => 'getModuleSettingCollection',
             'serviceMethod' => 'getCollectionSetting',
-            'params' => [$settingNameID, 'awesomeModule'],
+            'params' => [$settingName, 'awesomeModule'],
             'expectedValue' => new StringSetting($settingNameID, 'someCollectionStringExample')
         ];
 
         yield 'setter integer' => [
             'controllerMethod' => 'changeModuleSettingInteger',
             'serviceMethod' => 'changeIntegerSetting',
-            'params' => [$settingNameID, 123, 'awesomeModule'],
+            'params' => [$settingName, 123, 'awesomeModule'],
             'expectedValue' => new IntegerSetting($settingNameID, 123)
         ];
 
         yield 'setter float' => [
             'controllerMethod' => 'changeModuleSettingFloat',
             'serviceMethod' => 'changeFloatSetting',
-            'params' => [$settingNameID, 1.23, 'awesomeModule'],
+            'params' => [$settingName, 1.23, 'awesomeModule'],
             'expectedValue' => new FloatSetting($settingNameID, 1.23)
         ];
 
         yield 'setter float with integer value' => [
             'controllerMethod' => 'changeModuleSettingFloat',
             'serviceMethod' => 'changeFloatSetting',
-            'params' => [$settingNameID, 123, 'awesomeModule'],
+            'params' => [$settingName, 123, 'awesomeModule'],
             'expectedValue' => new FloatSetting($settingNameID, 123)
         ];
 
         yield 'setter boolean' => [
             'controllerMethod' => 'changeModuleSettingBoolean',
             'serviceMethod' => 'changeBooleanSetting',
-            'params' => [$settingNameID, false, 'awesomeModule'],
+            'params' => [$settingName, false, 'awesomeModule'],
             'expectedValue' => new BooleanSetting($settingNameID, false)
         ];
 
         yield 'setter string' => [
             'controllerMethod' => 'changeModuleSettingString',
             'serviceMethod' => 'changeStringSetting',
-            'params' => [$settingNameID, 'some string', 'awesomeModule'],
+            'params' => [$settingName, 'some string', 'awesomeModule'],
             'expectedValue' => new StringSetting($settingNameID, 'some string')
         ];
 
         yield 'setter collection' => [
             'controllerMethod' => 'changeModuleSettingCollection',
             'serviceMethod' => 'changeCollectionSetting',
-            'params' => [$settingNameID, 'some collection string', 'awesomeModule'],
+            'params' => [$settingName, 'some collection string', 'awesomeModule'],
             'expectedValue' => new StringSetting($settingNameID, 'some collection string')
         ];
 
