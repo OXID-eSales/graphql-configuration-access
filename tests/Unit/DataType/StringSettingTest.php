@@ -11,7 +11,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use PHPUnit\Framework\TestCase;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting
@@ -19,7 +18,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 class StringSettingTest extends TestCase
 {
     /** @dataProvider stringSettingDataProvider */
-    public function testStringSetting(ID $name, $value): void
+    public function testStringSetting(string $name, $value): void
     {
         $sut = new StringSetting($name, $value);
 
@@ -29,6 +28,6 @@ class StringSettingTest extends TestCase
 
     public function stringSettingDataProvider(): \Generator
     {
-        yield "random strings" => [new ID(uniqid()), uniqid()];
+        yield "random strings" => [uniqid(), uniqid()];
     }
 }

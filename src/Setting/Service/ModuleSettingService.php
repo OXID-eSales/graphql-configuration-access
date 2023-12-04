@@ -16,7 +16,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ModuleSettingService implements ModuleSettingServiceInterface
 {
@@ -29,69 +28,69 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
     public function getIntegerSetting(string $name, string $moduleId): IntegerSetting
     {
         return new IntegerSetting(
-            new ID($name),
-            $this->moduleSettingRepository->getIntegerSetting((string)$name, $moduleId)
+            $name,
+            $this->moduleSettingRepository->getIntegerSetting($name, $moduleId)
         );
     }
 
     public function getFloatSetting(string $name, string $moduleId): FloatSetting
     {
         return new FloatSetting(
-            new ID($name),
-            $this->moduleSettingRepository->getFloatSetting((string)$name, $moduleId)
+            $name,
+            $this->moduleSettingRepository->getFloatSetting($name, $moduleId)
         );
     }
 
     public function getBooleanSetting(string $name, string $moduleId): BooleanSetting
     {
         return new BooleanSetting(
-            new ID($name),
-            $this->moduleSettingRepository->getBooleanSetting((string)$name, $moduleId)
+            $name,
+            $this->moduleSettingRepository->getBooleanSetting($name, $moduleId)
         );
     }
 
     public function getStringSetting(string $name, string $moduleId): StringSetting
     {
         return new StringSetting(
-            new ID($name),
-            $this->moduleSettingRepository->getStringSetting((string)$name, $moduleId)
+            $name,
+            $this->moduleSettingRepository->getStringSetting($name, $moduleId)
         );
     }
 
     public function getCollectionSetting(string $name, string $moduleId): StringSetting
     {
-        $collection = $this->moduleSettingRepository->getCollectionSetting((string)$name, $moduleId);
+        $collection = $this->moduleSettingRepository->getCollectionSetting($name, $moduleId);
 
         return new StringSetting(
-            new ID($name),
+            $name,
             $this->jsonService->jsonEncodeArray($collection)
         );
     }
 
     public function changeIntegerSetting(string $name, int $value, string $moduleId): IntegerSetting
     {
-        $this->moduleSettingRepository->saveIntegerSetting((string)$name, $value, $moduleId);
+        $this->moduleSettingRepository->saveIntegerSetting($name, $value, $moduleId);
 
         return $this->getIntegerSetting($name, $moduleId);
     }
 
     public function changeFloatSetting(string $name, float $value, string $moduleId): FloatSetting
     {
-        $this->moduleSettingRepository->saveFloatSetting((string)$name, $value, $moduleId);
+        $this->moduleSettingRepository->saveFloatSetting($name, $value, $moduleId);
 
         return $this->getFloatSetting($name, $moduleId);
     }
 
     public function changeBooleanSetting(string $name, bool $value, string $moduleId): BooleanSetting
     {
-        $this->moduleSettingRepository->saveBooleanSetting((string)$name, $value, $moduleId);
+        $this->moduleSettingRepository->saveBooleanSetting($name, $value, $moduleId);
 
         return $this->getBooleanSetting($name, $moduleId);
     }
 
     public function changeStringSetting(string $name, string $value, string $moduleId): StringSetting
     {
-        $this->moduleSettingRepository->saveStringSetting((string)$name, $value, $moduleId);
+        $this->moduleSettingRepository->saveStringSetting($name, $value, $moduleId);
 
         return $this->getStringSetting($name, $moduleId);
     }
@@ -99,7 +98,7 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
     public function changeCollectionSetting(string $name, string $value, string $moduleId): StringSetting
     {
         $this->moduleSettingRepository->saveCollectionSetting(
-            (string)$name,
+            $name,
             $this->jsonService->jsonDecodeCollection($value),
             $moduleId
         );
@@ -116,7 +115,7 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
         $settingTypes = [];
         /** @var Setting $setting */
         foreach ($settingsList as $setting) {
-            $settingTypes[] = new SettingType(new ID($setting->getName()), $setting->getType());
+            $settingTypes[] = new SettingType($setting->getName(), $setting->getType());
         }
 
         return $settingTypes;

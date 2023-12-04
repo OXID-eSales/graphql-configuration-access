@@ -12,19 +12,18 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 #[Type]
 final class SettingType
 {
     public function __construct(
-        private ID $name,
+        private string $name,
         private string $type
     ) {
     }
 
     #[Field]
-    public function getName(): ID
+    public function getName(): string
     {
         return $this->name;
     }

@@ -11,7 +11,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use PHPUnit\Framework\TestCase;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting
@@ -19,7 +18,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 class IntegerSettingTest extends TestCase
 {
     /** @dataProvider integerSettingDataProvider */
-    public function testIntegerSetting(ID $name, int $value): void
+    public function testIntegerSetting(string $name, int $value): void
     {
         $sut = new IntegerSetting($name, $value);
 
@@ -29,6 +28,6 @@ class IntegerSettingTest extends TestCase
 
     public function integerSettingDataProvider(): \Generator
     {
-        yield "random integer" => [new ID(uniqid()), rand(1, 100)];
+        yield "random integer" => [uniqid(), rand(1, 100)];
     }
 }

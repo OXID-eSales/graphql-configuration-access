@@ -18,7 +18,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingServiceInterface;
 use PHPUnit\Framework\TestCase;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller\ShopSettingController
@@ -43,111 +42,110 @@ class ShopSettingControllerTest extends TestCase
     public function proxyTestDataProvider(): \Generator
     {
         $settingName = 'settingName';
-        $settingNameID = new ID($settingName);
 
         yield 'getter integer' => [
             'controllerMethod' => 'getShopSettingInteger',
             'serviceMethod' => 'getIntegerSetting',
             'params' => [$settingName],
-            'expectedValue' => new IntegerSetting($settingNameID, 123)
+            'expectedValue' => new IntegerSetting($settingName, 123)
         ];
 
         yield 'getter float' => [
             'controllerMethod' => 'getShopSettingFloat',
             'serviceMethod' => 'getFloatSetting',
             'params' => [$settingName],
-            'expectedValue' => new FloatSetting($settingNameID, 1.23)
+            'expectedValue' => new FloatSetting($settingName, 1.23)
         ];
 
         yield 'getter bool' => [
             'controllerMethod' => 'getShopSettingBoolean',
             'serviceMethod' => 'getBooleanSetting',
             'params' => [$settingName],
-            'expectedValue' => new BooleanSetting($settingNameID, false)
+            'expectedValue' => new BooleanSetting($settingName, false)
         ];
 
         yield 'getter string' => [
             'controllerMethod' => 'getShopSettingString',
             'serviceMethod' => 'getStringSetting',
             'params' => [$settingName],
-            'expectedValue' => new StringSetting($settingNameID, 'default')
+            'expectedValue' => new StringSetting($settingName, 'default')
         ];
 
         yield 'getter select' => [
             'controllerMethod' => 'getShopSettingSelect',
             'serviceMethod' => 'getSelectSetting',
             'params' => [$settingName],
-            'expectedValue' => new StringSetting($settingNameID, 'some select setting value')
+            'expectedValue' => new StringSetting($settingName, 'some select setting value')
         ];
 
         yield 'getter collection' => [
             'controllerMethod' => 'getShopSettingCollection',
             'serviceMethod' => 'getCollectionSetting',
             'params' => [$settingName],
-            'expectedValue' => new StringSetting($settingNameID, 'some collection string example')
+            'expectedValue' => new StringSetting($settingName, 'some collection string example')
         ];
 
         yield 'getter associative collection' => [
             'controllerMethod' => 'getShopSettingAssocCollection',
             'serviceMethod' => 'getAssocCollectionSetting',
             'params' => [$settingName],
-            'expectedValue' => new StringSetting($settingNameID, 'some associative collection string example')
+            'expectedValue' => new StringSetting($settingName, 'some associative collection string example')
         ];
 
         yield 'setter integer' => [
             'controllerMethod' => 'changeShopSettingInteger',
             'serviceMethod' => 'changeIntegerSetting',
             'params' => [$settingName, 123],
-            'expectedValue' => new IntegerSetting($settingNameID, 123)
+            'expectedValue' => new IntegerSetting($settingName, 123)
         ];
 
         yield 'setter float' => [
             'controllerMethod' => 'changeShopSettingFloat',
             'serviceMethod' => 'changeFloatSetting',
             'params' => [$settingName, 1.23],
-            'expectedValue' => new FloatSetting($settingNameID, 1.23)
+            'expectedValue' => new FloatSetting($settingName, 1.23)
         ];
 
         yield 'setter float with integer value' => [
             'controllerMethod' => 'changeShopSettingFloat',
             'serviceMethod' => 'changeFloatSetting',
             'params' => [$settingName, 123],
-            'expectedValue' => new FloatSetting($settingNameID, 123)
+            'expectedValue' => new FloatSetting($settingName, 123)
         ];
 
         yield 'setter boolean' => [
             'controllerMethod' => 'changeShopSettingBoolean',
             'serviceMethod' => 'changeBooleanSetting',
             'params' => [$settingName, false],
-            'expectedValue' => new BooleanSetting($settingNameID, false)
+            'expectedValue' => new BooleanSetting($settingName, false)
         ];
 
         yield 'setter string' => [
             'controllerMethod' => 'changeShopSettingString',
             'serviceMethod' => 'changeStringSetting',
             'params' => [$settingName, 'some string'],
-            'expectedValue' => new StringSetting($settingNameID, 'some string')
+            'expectedValue' => new StringSetting($settingName, 'some string')
         ];
 
         yield 'setter select' => [
             'controllerMethod' => 'changeShopSettingSelect',
             'serviceMethod' => 'changeSelectSetting',
             'params' => [$settingName, 'some select value'],
-            'expectedValue' => new StringSetting($settingNameID, 'some select value')
+            'expectedValue' => new StringSetting($settingName, 'some select value')
         ];
 
         yield 'setter collection' => [
             'controllerMethod' => 'changeShopSettingCollection',
             'serviceMethod' => 'changeCollectionSetting',
             'params' => [$settingName, 'some collection string'],
-            'expectedValue' => new StringSetting($settingNameID, 'some collection string')
+            'expectedValue' => new StringSetting($settingName, 'some collection string')
         ];
 
         yield 'setter assoc collection' => [
             'controllerMethod' => 'changeShopSettingAssocCollection',
             'serviceMethod' => 'changeAssocCollectionSetting',
             'params' => [$settingName, 'some assoc collection string'],
-            'expectedValue' => new StringSetting($settingNameID, 'some assoc collection string')
+            'expectedValue' => new StringSetting($settingName, 'some assoc collection string')
         ];
 
         yield 'setting list getter' => [
@@ -155,8 +153,8 @@ class ShopSettingControllerTest extends TestCase
             'serviceMethod' => 'getSettingsList',
             'params' => [],
             'expectedValue' => [
-                new SettingType($settingNameID, FieldType::NUMBER),
-                new SettingType($settingNameID, FieldType::NUMBER),
+                new SettingType($settingName, FieldType::NUMBER),
+                new SettingType($settingName, FieldType::NUMBER),
             ]
         ];
     }

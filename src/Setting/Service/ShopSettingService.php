@@ -15,7 +15,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 final class ShopSettingService implements ShopSettingServiceInterface
 {
@@ -28,31 +27,31 @@ final class ShopSettingService implements ShopSettingServiceInterface
     public function getIntegerSetting(string $name): IntegerSetting
     {
         $integer = $this->shopSettingRepository->getInteger($name);
-        return new IntegerSetting(new ID($name), $integer);
+        return new IntegerSetting($name, $integer);
     }
 
     public function getFloatSetting(string $name): FloatSetting
     {
         $float = $this->shopSettingRepository->getFloat($name);
-        return new FloatSetting(new ID($name), $float);
+        return new FloatSetting($name, $float);
     }
 
     public function getBooleanSetting(string $name): BooleanSetting
     {
         $bool = $this->shopSettingRepository->getBoolean($name);
-        return new BooleanSetting(new ID($name), $bool);
+        return new BooleanSetting($name, $bool);
     }
 
     public function getStringSetting(string $name): StringSetting
     {
         $string = $this->shopSettingRepository->getString($name);
-        return new StringSetting(new ID($name), $string);
+        return new StringSetting($name, $string);
     }
 
     public function getSelectSetting(string $name): StringSetting
     {
         $select = $this->shopSettingRepository->getSelect($name);
-        return new StringSetting(new ID($name), $select);
+        return new StringSetting($name, $select);
     }
 
     public function getCollectionSetting(string $name): StringSetting
@@ -60,7 +59,7 @@ final class ShopSettingService implements ShopSettingServiceInterface
         $collectionString = $this->shopSettingRepository->getCollection($name);
         $collectionEncodingResult = $this->jsonService->jsonEncodeArray($collectionString);
 
-        return new StringSetting(new ID($name), $collectionEncodingResult);
+        return new StringSetting($name, $collectionEncodingResult);
     }
 
     public function getAssocCollectionSetting(string $name): StringSetting
@@ -68,7 +67,7 @@ final class ShopSettingService implements ShopSettingServiceInterface
         $assocCollectionString = $this->shopSettingRepository->getAssocCollection($name);
         $assocCollectionEncodingResult = $this->jsonService->jsonEncodeArray($assocCollectionString);
 
-        return new StringSetting(new ID($name), $assocCollectionEncodingResult);
+        return new StringSetting($name, $assocCollectionEncodingResult);
     }
 
     /**
@@ -79,7 +78,7 @@ final class ShopSettingService implements ShopSettingServiceInterface
         $settingsList = $this->shopSettingRepository->getSettingsList();
         $settingsTypeList = [];
         foreach ($settingsList as $name => $type) {
-            $settingsTypeList[] = new SettingType(new ID($name), $type);
+            $settingsTypeList[] = new SettingType($name, $type);
         }
 
         return $settingsTypeList;

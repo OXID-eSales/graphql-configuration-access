@@ -11,7 +11,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use PHPUnit\Framework\TestCase;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting
@@ -19,7 +18,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 class BooleanSettingTest extends TestCase
 {
     /** @dataProvider booleanSettingDataProvider */
-    public function testBooleanSetting(ID $name, bool $value): void
+    public function testBooleanSetting(string $name, bool $value): void
     {
         $sut = new BooleanSetting($name, $value);
 
@@ -29,7 +28,7 @@ class BooleanSettingTest extends TestCase
 
     public function booleanSettingDataProvider(): \Generator
     {
-        yield [new ID('boolean positive setting'), true];
-        yield [new ID('boolean negative setting'), false];
+        yield [uniqid(), true];
+        yield [uniqid(), false];
     }
 }

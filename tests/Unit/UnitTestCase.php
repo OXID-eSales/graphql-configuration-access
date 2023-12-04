@@ -27,9 +27,9 @@ class UnitTestCase extends TestCase
      */
     protected function getSettingTypeList(): array
     {
-        $intSetting = new SettingType(new ID('intSetting'), FieldType::NUMBER);
-        $stringSetting = new SettingType(new ID('stringSetting'), FieldType::STRING);
-        $arraySetting = new SettingType(new ID('arraySetting'), FieldType::ARRAY);
+        $intSetting = new SettingType('intSetting', FieldType::NUMBER);
+        $stringSetting = new SettingType('stringSetting', FieldType::STRING);
+        $arraySetting = new SettingType('arraySetting', FieldType::ARRAY);
         return [$intSetting, $stringSetting, $arraySetting];
     }
 

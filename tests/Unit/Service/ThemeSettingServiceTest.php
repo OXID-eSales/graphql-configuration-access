@@ -20,7 +20,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService
@@ -43,7 +42,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals(
-            new IntegerSetting(new ID($name), $repositoryResult),
+            new IntegerSetting($name, $repositoryResult),
             $sut->getIntegerSetting($name, $themeId)
         );
     }
@@ -64,7 +63,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals(
-            new FloatSetting(new ID($name), $repositoryResult),
+            new FloatSetting($name, $repositoryResult),
             $sut->getFloatSetting($name, $themeId)
         );
     }
@@ -85,7 +84,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals(
-            new BooleanSetting(new ID($name), $repositoryResult),
+            new BooleanSetting($name, $repositoryResult),
             $sut->getBooleanSetting($name, $themeId)
         );
     }
@@ -106,7 +105,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals(
-            new StringSetting(new ID($name), $repositoryResult),
+            new StringSetting($name, $repositoryResult),
             $sut->getStringSetting($name, $themeId)
         );
     }
@@ -127,7 +126,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals(
-            new StringSetting(new ID($name), $repositoryResult),
+            new StringSetting($name, $repositoryResult),
             $sut->getSelectSetting($name, $themeId)
         );
     }
@@ -151,7 +150,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals(
-            new StringSetting(new ID($name), $collectionEncodingResult),
+            new StringSetting($name, $collectionEncodingResult),
             $sut->getCollectionSetting($name, $themeId)
         );
     }
@@ -175,7 +174,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals(
-            new StringSetting(new ID($name), $collectionEncodingResult),
+            new StringSetting($name, $collectionEncodingResult),
             $sut->getAssocCollectionSetting($name, $themeId)
         );
     }
@@ -233,7 +232,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $settingService = $this->getSut(themeSettingRepository: $repository);
         $integerSetting = $settingService->changeIntegerSetting($name, $setterValue, $themeID);
 
-        $this->assertEquals(new ID($name), $integerSetting->getName());
+        $this->assertEquals($name, $integerSetting->getName());
         $this->assertSame($getterValue, $integerSetting->getValue());
     }
 
@@ -257,7 +256,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $settingService = $this->getSut(themeSettingRepository: $repository);
         $floatSetting = $settingService->changeFloatSetting($name, $setterValue, $themeID);
 
-        $this->assertEquals(new ID($name), $floatSetting->getName());
+        $this->assertEquals($name, $floatSetting->getName());
         $this->assertSame($getterValue, $floatSetting->getValue());
     }
 
@@ -282,7 +281,7 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $booleanSetting = $settingService->changeBooleanSetting($name, $setterValue, $themeID);
 
-        $this->assertEquals(new ID($name), $booleanSetting->getName());
+        $this->assertEquals($name, $booleanSetting->getName());
         $this->assertSame($getterValue, $booleanSetting->getValue());
     }
 
@@ -307,7 +306,7 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $stringSetting = $settingService->changeStringSetting($name, $setterValue, $themeID);
 
-        $this->assertEquals(new ID($name), $stringSetting->getName());
+        $this->assertEquals($name, $stringSetting->getName());
         $this->assertSame($getterValue, $stringSetting->getValue());
     }
 
@@ -331,7 +330,7 @@ class ThemeSettingServiceTest extends UnitTestCase
 
         $selectSetting = $settingService->changeSelectSetting($name, $setterValue, $themeID);
 
-        $this->assertEquals(new ID($name), $selectSetting->getName());
+        $this->assertEquals($name, $selectSetting->getName());
         $this->assertSame($getterValue, $selectSetting->getValue());
     }
 
@@ -400,7 +399,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $settingService = $this->getSut(themeSettingRepository: $repository, jsonService: $jsonService);
         $collectionSetting = $settingService->changeCollectionSetting($name, $setterEncodedCollection, $themeID);
 
-        $this->assertEquals(new ID($name), $collectionSetting->getName());
+        $this->assertEquals($name, $collectionSetting->getName());
         $this->assertSame($getterEncodedCollection, $collectionSetting->getValue());
     }
 
@@ -427,7 +426,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $settingService = $this->getSut(themeSettingRepository: $repository, jsonService: $jsonService);
         $collectionSetting = $settingService->changeAssocCollectionSetting($name, $setterEncodedCollection, $themeID);
 
-        $this->assertEquals(new ID($name), $collectionSetting->getName());
+        $this->assertEquals($name, $collectionSetting->getName());
         $this->assertSame($getterEncodedCollection, $collectionSetting->getValue());
     }
 

@@ -19,7 +19,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingR
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService
@@ -40,9 +39,8 @@ class ModuleSettingServiceTest extends UnitTestCase
 
         $sut = $this->getSut($repository);
 
-        $nameID = new ID($name);
         $this->assertEquals(
-            new IntegerSetting($nameID, $repositoryResponse),
+            new IntegerSetting($name, $repositoryResponse),
             $sut->getIntegerSetting($name, $moduleId)
         );
     }
@@ -61,9 +59,8 @@ class ModuleSettingServiceTest extends UnitTestCase
 
         $sut = $this->getSut($repository);
 
-        $nameID = new ID($name);
         $this->assertEquals(
-            new FloatSetting($nameID, $repositoryResponse),
+            new FloatSetting($name, $repositoryResponse),
             $sut->getFloatSetting($name, $moduleId)
         );
     }
@@ -82,9 +79,8 @@ class ModuleSettingServiceTest extends UnitTestCase
 
         $sut = $this->getSut($repository);
 
-        $nameID = new ID($name);
         $this->assertEquals(
-            new BooleanSetting($nameID, $repositoryResponse),
+            new BooleanSetting($name, $repositoryResponse),
             $sut->getBooleanSetting($name, $moduleId)
         );
     }
@@ -103,9 +99,8 @@ class ModuleSettingServiceTest extends UnitTestCase
 
         $sut = $this->getSut($repository);
 
-        $nameID = new ID($name);
         $this->assertEquals(
-            new StringSetting($nameID, $repositoryResponse),
+            new StringSetting($name, $repositoryResponse),
             $sut->getStringSetting($name, $moduleId)
         );
     }
@@ -133,9 +128,8 @@ class ModuleSettingServiceTest extends UnitTestCase
             jsonService: $encoder
         );
 
-        $nameID = new ID($name);
         $this->assertEquals(
-            new StringSetting($nameID, $encoderResponse),
+            new StringSetting($name, $encoderResponse),
             $sut->getCollectionSetting($name, $moduleId)
         );
     }
@@ -161,10 +155,9 @@ class ModuleSettingServiceTest extends UnitTestCase
             repository: $repository
         );
 
-        $nameID = new ID($name);
         $setting = $sut->changeIntegerSetting($name, $callValue, $moduleId);
 
-        $this->assertEquals($nameID, $setting->getName());
+        $this->assertEquals($name, $setting->getName());
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
@@ -189,10 +182,9 @@ class ModuleSettingServiceTest extends UnitTestCase
             repository: $repository
         );
 
-        $nameID = new ID($name);
         $setting = $sut->changeFloatSetting($name, $callValue, $moduleId);
 
-        $this->assertEquals($nameID, $setting->getName());
+        $this->assertEquals($name, $setting->getName());
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
@@ -217,10 +209,9 @@ class ModuleSettingServiceTest extends UnitTestCase
             repository: $repository
         );
 
-        $nameID = new ID($name);
         $setting = $sut->changeBooleanSetting($name, $callValue, $moduleId);
 
-        $this->assertEquals($nameID, $setting->getName());
+        $this->assertEquals($name, $setting->getName());
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
@@ -245,10 +236,9 @@ class ModuleSettingServiceTest extends UnitTestCase
             repository: $repository
         );
 
-        $nameID = new ID($name);
         $setting = $sut->changeStringSetting($name, $callValue, $moduleId);
 
-        $this->assertEquals($nameID, $setting->getName());
+        $this->assertEquals($name, $setting->getName());
         $this->assertSame($repositoryValue, $setting->getValue());
     }
 
@@ -283,10 +273,9 @@ class ModuleSettingServiceTest extends UnitTestCase
             jsonService: $encoder,
         );
 
-        $nameID = new ID($name);
         $setting = $sut->changeCollectionSetting($name, $callValue, $moduleId);
 
-        $this->assertEquals($nameID, $setting->getName());
+        $this->assertEquals($name, $setting->getName());
         $this->assertSame($encoderResponse, $setting->getValue());
     }
 

@@ -17,13 +17,13 @@ use TheCodingMachine\GraphQLite\Types\ID;
 final class FloatSetting
 {
     public function __construct(
-        private ID $name,
+        private string $name,
         private float $value
     ) {
     }
 
     #[Field]
-    public function getName(): ID
+    public function getName(): string
     {
         return $this->name;
     }
