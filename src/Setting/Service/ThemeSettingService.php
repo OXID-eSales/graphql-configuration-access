@@ -26,50 +26,50 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
     ) {
     }
 
-    public function getIntegerSetting(ID $name, string $themeId): IntegerSetting
+    public function getIntegerSetting(string $name, string $themeId): IntegerSetting
     {
         $integer = $this->themeSettingRepository->getInteger($name, $themeId);
-        return new IntegerSetting($name, $integer);
+        return new IntegerSetting(new ID($name), $integer);
     }
 
-    public function getFloatSetting(ID $name, string $themeId): FloatSetting
+    public function getFloatSetting(string $name, string $themeId): FloatSetting
     {
         $float = $this->themeSettingRepository->getFloat($name, $themeId);
-        return new FloatSetting($name, $float);
+        return new FloatSetting(new ID($name), $float);
     }
 
-    public function getBooleanSetting(ID $name, string $themeId): BooleanSetting
+    public function getBooleanSetting(string $name, string $themeId): BooleanSetting
     {
         $bool = $this->themeSettingRepository->getBoolean($name, $themeId);
-        return new BooleanSetting($name, $bool);
+        return new BooleanSetting(new ID($name), $bool);
     }
 
-    public function getStringSetting(ID $name, string $themeId): StringSetting
+    public function getStringSetting(string $name, string $themeId): StringSetting
     {
         $string = $this->themeSettingRepository->getString($name, $themeId);
-        return new StringSetting($name, $string);
+        return new StringSetting(new ID($name), $string);
     }
 
-    public function getSelectSetting(ID $name, string $themeId): StringSetting
+    public function getSelectSetting(string $name, string $themeId): StringSetting
     {
         $select = $this->themeSettingRepository->getSelect($name, $themeId);
-        return new StringSetting($name, $select);
+        return new StringSetting(new ID($name), $select);
     }
 
-    public function getCollectionSetting(ID $name, string $themeId): StringSetting
+    public function getCollectionSetting(string $name, string $themeId): StringSetting
     {
         $collection = $this->themeSettingRepository->getCollection($name, $themeId);
         $collectionEncodingResult = $this->jsonService->jsonEncodeArray($collection);
 
-        return new StringSetting($name, $collectionEncodingResult);
+        return new StringSetting(new ID($name), $collectionEncodingResult);
     }
 
-    public function getAssocCollectionSetting(ID $name, string $themeId): StringSetting
+    public function getAssocCollectionSetting(string $name, string $themeId): StringSetting
     {
         $assocCollection = $this->themeSettingRepository->getAssocCollection($name, $themeId);
         $collectionEncodingResult = $this->jsonService->jsonEncodeArray($assocCollection);
 
-        return new StringSetting($name, $collectionEncodingResult);
+        return new StringSetting(new ID($name), $collectionEncodingResult);
     }
 
     /**
@@ -86,41 +86,41 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
         return $settingsTypeList;
     }
 
-    public function changeIntegerSetting(ID $name, int $value, string $themeId): IntegerSetting
+    public function changeIntegerSetting(string $name, int $value, string $themeId): IntegerSetting
     {
         $this->themeSettingRepository->saveIntegerSetting($name, $value, $themeId);
 
         return $this->getIntegerSetting($name, $themeId);
     }
 
-    public function changeFloatSetting(ID $name, float $value, string $themeId): FloatSetting
+    public function changeFloatSetting(string $name, float $value, string $themeId): FloatSetting
     {
         $this->themeSettingRepository->saveFloatSetting($name, $value, $themeId);
         return $this->getFloatSetting($name, $themeId);
     }
 
-    public function changeBooleanSetting(ID $name, bool $value, string $themeId): BooleanSetting
+    public function changeBooleanSetting(string $name, bool $value, string $themeId): BooleanSetting
     {
         $this->themeSettingRepository->saveBooleanSetting($name, $value, $themeId);
 
         return $this->getBooleanSetting($name, $themeId);
     }
 
-    public function changeStringSetting(ID $name, string $value, string $themeId): StringSetting
+    public function changeStringSetting(string $name, string $value, string $themeId): StringSetting
     {
         $this->themeSettingRepository->saveStringSetting($name, $value, $themeId);
 
         return $this->getStringSetting($name, $themeId);
     }
 
-    public function changeSelectSetting(ID $name, string $value, string $themeId): StringSetting
+    public function changeSelectSetting(string $name, string $value, string $themeId): StringSetting
     {
         $this->themeSettingRepository->saveSelectSetting($name, $value, $themeId);
 
         return $this->getSelectSetting($name, $themeId);
     }
 
-    public function changeCollectionSetting(ID $name, string $value, string $themeId): StringSetting
+    public function changeCollectionSetting(string $name, string $value, string $themeId): StringSetting
     {
         $arrayValue = json_decode($value, false);
 
@@ -133,7 +133,7 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
         return $this->getCollectionSetting($name, $themeId);
     }
 
-    public function changeAssocCollectionSetting(ID $name, string $value, string $themeId): StringSetting
+    public function changeAssocCollectionSetting(string $name, string $value, string $themeId): StringSetting
     {
         $arrayValue = json_decode($value, true);
 

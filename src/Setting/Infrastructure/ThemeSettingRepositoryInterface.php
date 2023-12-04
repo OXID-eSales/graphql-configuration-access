@@ -7,40 +7,38 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 
-use TheCodingMachine\GraphQLite\Types\ID;
-
 interface ThemeSettingRepositoryInterface
 {
-    public function getInteger(ID $name, string $themeId): int;
+    public function getInteger(string $name, string $themeId): int;
 
-    public function getFloat(ID $name, string $themeId): float;
+    public function getFloat(string $name, string $themeId): float;
 
-    public function getBoolean(ID $name, string $themeId): bool;
+    public function getBoolean(string $name, string $themeId): bool;
 
-    public function getString(ID $name, string $themeId): string;
+    public function getString(string $name, string $themeId): string;
 
-    public function getSelect(ID $name, string $themeId): string;
+    public function getSelect(string $name, string $themeId): string;
 
-    public function getCollection(ID $name, string $themeId): array;
+    public function getCollection(string $name, string $themeId): array;
 
-    public function getAssocCollection(ID $name, string $themeId): array;
+    public function getAssocCollection(string $name, string $themeId): array;
 
     /**
      * @return array<string, string>
      */
     public function getSettingsList(string $themeId): array;
 
-    public function saveIntegerSetting(ID $name, int $value, string $themeId): void;
+    public function saveIntegerSetting(string $name, int $value, string $themeId): void;
 
-    public function saveFloatSetting(ID $name, float $value, string $themeId): void;
+    public function saveFloatSetting(string $name, float $value, string $themeId): void;
 
-    public function saveBooleanSetting(ID $name, bool $value, string $themeId): void;
+    public function saveBooleanSetting(string $name, bool $value, string $themeId): void;
 
-    public function saveStringSetting(ID $name, string $value, string $themeId): void;
+    public function saveStringSetting(string $name, string $value, string $themeId): void;
 
-    public function saveSelectSetting(ID $name, string $value, string $themeId): void;
+    public function saveSelectSetting(string $name, string $value, string $themeId): void;
 
-    public function saveCollectionSetting(ID $name, array $value, string $themeId): void;
+    public function saveCollectionSetting(string $name, array $value, string $themeId): void;
 
-    public function saveAssocCollectionSetting(ID $name, array $value, string $themeId): void;
+    public function saveAssocCollectionSetting(string $name, array $value, string $themeId): void;
 }

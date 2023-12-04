@@ -42,110 +42,111 @@ class ThemeSettingControllerTest extends TestCase
 
     public function proxyTestDataProvider(): \Generator
     {
-        $settingNameID = new ID('settingName');
+        $name = 'settingName';
+        $settingNameID = new ID($name);
 
         yield 'getter integer' => [
             'controllerMethod' => 'getThemeSettingInteger',
             'serviceMethod' => 'getIntegerSetting',
-            'params' => [$settingNameID, 'awesomeTheme'],
+            'params' => [$name, 'awesomeTheme'],
             'expectedValue' => new IntegerSetting($settingNameID, 123)
         ];
 
         yield 'getter float' => [
             'controllerMethod' => 'getThemeSettingFloat',
             'serviceMethod' => 'getFloatSetting',
-            'params' => [$settingNameID, 'awesomeTheme'],
+            'params' => [$name, 'awesomeTheme'],
             'expectedValue' => new FloatSetting($settingNameID, 1.23)
         ];
 
         yield 'getter bool' => [
             'controllerMethod' => 'getThemeSettingBoolean',
             'serviceMethod' => 'getBooleanSetting',
-            'params' => [$settingNameID, 'awesomeTheme'],
+            'params' => [$name, 'awesomeTheme'],
             'expectedValue' => new BooleanSetting($settingNameID, false)
         ];
 
         yield 'getter string' => [
             'controllerMethod' => 'getThemeSettingString',
             'serviceMethod' => 'getStringSetting',
-            'params' => [$settingNameID, 'awesomeTheme'],
+            'params' => [$name, 'awesomeTheme'],
             'expectedValue' => new StringSetting($settingNameID, 'default')
         ];
 
         yield 'getter select' => [
             'controllerMethod' => 'getThemeSettingSelect',
             'serviceMethod' => 'getSelectSetting',
-            'params' => [$settingNameID, 'awesomeTheme'],
+            'params' => [$name, 'awesomeTheme'],
             'expectedValue' => new StringSetting($settingNameID, 'some select setting value')
         ];
 
         yield 'getter collection' => [
             'controllerMethod' => 'getThemeSettingCollection',
             'serviceMethod' => 'getCollectionSetting',
-            'params' => [$settingNameID, 'awesomeTheme'],
+            'params' => [$name, 'awesomeTheme'],
             'expectedValue' => new StringSetting($settingNameID, 'someCollectionStringExample')
         ];
 
         yield 'getter associative collection' => [
             'controllerMethod' => 'getThemeSettingAssocCollection',
             'serviceMethod' => 'getAssocCollectionSetting',
-            'params' => [$settingNameID, 'awesomeTheme'],
+            'params' => [$name, 'awesomeTheme'],
             'expectedValue' => new StringSetting($settingNameID, 'some associative collection string example')
         ];
 
         yield 'setter integer' => [
             'controllerMethod' => 'changeThemeSettingInteger',
             'serviceMethod' => 'changeIntegerSetting',
-            'params' => [$settingNameID, 123, 'awesomeTheme'],
+            'params' => [$name, 123, 'awesomeTheme'],
             'expectedValue' => new IntegerSetting($settingNameID, 123)
         ];
 
         yield 'setter float' => [
             'controllerMethod' => 'changeThemeSettingFloat',
             'serviceMethod' => 'changeFloatSetting',
-            'params' => [$settingNameID, 1.23, 'awesomeTheme'],
+            'params' => [$name, 1.23, 'awesomeTheme'],
             'expectedValue' => new FloatSetting($settingNameID, 1.23)
         ];
 
         yield 'setter float with integer value' => [
             'controllerMethod' => 'changeThemeSettingFloat',
             'serviceMethod' => 'changeFloatSetting',
-            'params' => [$settingNameID, 123, 'awesomeTheme'],
+            'params' => [$name, 123, 'awesomeTheme'],
             'expectedValue' => new FloatSetting($settingNameID, 123)
         ];
 
         yield 'setter boolean' => [
             'controllerMethod' => 'changeThemeSettingBoolean',
             'serviceMethod' => 'changeBooleanSetting',
-            'params' => [$settingNameID, false, 'awesomeTheme'],
+            'params' => [$name, false, 'awesomeTheme'],
             'expectedValue' => new BooleanSetting($settingNameID, false)
         ];
 
         yield 'setter string' => [
             'controllerMethod' => 'changeThemeSettingString',
             'serviceMethod' => 'changeStringSetting',
-            'params' => [$settingNameID, 'some string', 'awesomeTheme'],
+            'params' => [$name, 'some string', 'awesomeTheme'],
             'expectedValue' => new StringSetting($settingNameID, 'some string')
         ];
 
         yield 'setter select' => [
             'controllerMethod' => 'changeThemeSettingSelect',
             'serviceMethod' => 'changeSelectSetting',
-            'params' => [$settingNameID, 'some string', 'awesomeTheme'],
+            'params' => [$name, 'some string', 'awesomeTheme'],
             'expectedValue' => new StringSetting($settingNameID, 'some string')
         ];
 
         yield 'setter collection' => [
             'controllerMethod' => 'changeThemeSettingCollection',
             'serviceMethod' => 'changeCollectionSetting',
-            'params' => [$settingNameID, 'some collection string', 'awesomeTheme'],
+            'params' => [$name, 'some collection string', 'awesomeTheme'],
             'expectedValue' => new StringSetting($settingNameID, 'some collection string')
         ];
 
         yield 'setter assoc collection' => [
             'controllerMethod' => 'changeThemeSettingAssocCollection',
             'serviceMethod' => 'changeAssocCollectionSetting',
-            'params' => [$settingNameID, 'some assoc collection string', 'awesomeTheme'],
+            'params' => [$name, 'some assoc collection string', 'awesomeTheme'],
             'expectedValue' => new StringSetting($settingNameID, 'some assoc collection string')
         ];
 

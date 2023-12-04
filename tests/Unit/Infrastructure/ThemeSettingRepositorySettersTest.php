@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository
@@ -25,17 +24,17 @@ class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTe
         string $repositoryMethod,
         mixed $value,
     ): void {
-        $nameID = new ID('notExistingSetting');
+        $name = 'notExistingSetting';
         $themeId = 'awesomeTheme';
 
         $repository = $this->getSut(methods: [$checkMethod]);
         $repository->method($checkMethod)
-            ->with($nameID, $themeId)
+            ->with($name, $themeId)
             ->willThrowException(new NoSettingsFoundForThemeException($themeId));
 
         $this->expectException(NoSettingsFoundForThemeException::class);
 
-        $repository->$repositoryMethod($nameID, $value, $themeId);
+        $repository->$repositoryMethod($name, $value, $themeId);
     }
 
     public function notExistingSettingCheckTriggerDataProvider(): \Generator

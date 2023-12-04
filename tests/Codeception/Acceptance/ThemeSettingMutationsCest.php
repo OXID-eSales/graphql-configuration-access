@@ -23,7 +23,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: Int!, $themeId: String!){
+            'mutation m($name: String!, $value: Int!, $themeId: String!){
                 changeThemeSettingInteger(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
@@ -51,7 +51,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: Float!, $themeId: String!){
+            'mutation m($name: String!, $value: Float!, $themeId: String!){
                 changeThemeSettingFloat(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
@@ -79,7 +79,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: Boolean!, $themeId: String!){
+            'mutation m($name: String!, $value: Boolean!, $themeId: String!){
                 changeThemeSettingBoolean(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
@@ -107,7 +107,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: String!, $themeId: String!){
+            'mutation m($name: String!, $value: String!, $themeId: String!){
                 changeThemeSettingString(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
@@ -135,7 +135,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: String!, $themeId: String!){
+            'mutation m($name: String!, $value: String!, $themeId: String!){
                 changeThemeSettingSelect(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
@@ -163,7 +163,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: String!, $themeId: String!){
+            'mutation m($name: String!, $value: String!, $themeId: String!){
                 changeThemeSettingCollection(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
@@ -191,7 +191,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'mutation m($name: ID!, $value: String!, $themeId: String!){
+            'mutation m($name: String!, $value: String!, $themeId: String!){
                 changeThemeSettingAssocCollection(name: $name, value: $value, themeId: $themeId) {
                     name
                     value

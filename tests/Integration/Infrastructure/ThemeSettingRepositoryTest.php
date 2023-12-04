@@ -39,8 +39,8 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
             value: 123
         );
 
-        $sut->saveIntegerSetting(new ID($name), 124, 'awesomeTheme');
-        $integerResult = $sut->getInteger(new ID($name), 'awesomeTheme');
+        $sut->saveIntegerSetting($name, 124, 'awesomeTheme');
+        $integerResult = $sut->getInteger($name, 'awesomeTheme');
 
         $this->assertSame(124, $integerResult);
     }
@@ -60,8 +60,8 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
             value: 1.23
         );
 
-        $sut->saveFloatSetting(new ID($name), 1.24, 'awesomeTheme');
-        $floatResult = $sut->getFloat(new ID($name), 'awesomeTheme');
+        $sut->saveFloatSetting($name, 1.24, 'awesomeTheme');
+        $floatResult = $sut->getFloat($name, 'awesomeTheme');
 
         $this->assertSame(1.24, $floatResult);
     }
@@ -81,8 +81,8 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
             value: ''
         );
 
-        $sut->saveBooleanSetting(new ID($name), true, 'awesomeTheme');
-        $floatResult = $sut->getBoolean(new ID($name), 'awesomeTheme');
+        $sut->saveBooleanSetting($name, true, 'awesomeTheme');
+        $floatResult = $sut->getBoolean($name, 'awesomeTheme');
 
         $this->assertSame(true, $floatResult);
     }
@@ -102,8 +102,8 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
             value: 'default'
         );
 
-        $sut->saveStringSetting(new ID($name), 'new value', 'awesomeTheme');
-        $stringResult = $sut->getString(new ID($name), 'awesomeTheme');
+        $sut->saveStringSetting($name, 'new value', 'awesomeTheme');
+        $stringResult = $sut->getString($name, 'awesomeTheme');
 
         $this->assertSame('new value', $stringResult);
     }
@@ -123,8 +123,8 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
             value: 'select'
         );
 
-        $sut->saveSelectSetting(new ID($name), 'new select value', 'awesomeTheme');
-        $stringResult = $sut->getSelect(new ID($name), 'awesomeTheme');
+        $sut->saveSelectSetting($name, 'new select value', 'awesomeTheme');
+        $stringResult = $sut->getSelect($name, 'awesomeTheme');
 
         $this->assertSame('new select value', $stringResult);
     }
@@ -144,8 +144,8 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
             value: 'a:2:{i:0;s:4:"nice";i:1;s:6:"values";}'
         );
 
-        $sut->saveCollectionSetting(new ID($name), ['nice', 'cool', 'values'], 'awesomeTheme');
-        $collectionResult = $sut->getCollection(new ID($name), 'awesomeTheme');
+        $sut->saveCollectionSetting($name, ['nice', 'cool', 'values'], 'awesomeTheme');
+        $collectionResult = $sut->getCollection($name, 'awesomeTheme');
 
         $this->assertSame(['nice', 'cool', 'values'], $collectionResult);
     }
@@ -166,11 +166,11 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         );
 
         $sut->saveAssocCollectionSetting(
-            new ID($name),
+            $name,
             ['first' => '10', 'second' => '20', 'third' => '60'],
             'awesomeTheme'
         );
-        $assocCollectionResult = $sut->getAssocCollection(new ID($name), 'awesomeTheme');
+        $assocCollectionResult = $sut->getAssocCollection($name, 'awesomeTheme');
 
         $this->assertSame(['first' => '10', 'second' => '20', 'third' => '60'], $assocCollectionResult);
     }

@@ -14,7 +14,6 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository
@@ -32,15 +31,15 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
      */
     public function testGetShopSetting($method, $type, $possibleValue, $expectedResult): void
     {
-        $nameID = new ID(uniqid());
+        $name = uniqid();
         $sut = $this->getSut(methods: ['getSettingValue']);
 
         $sut->expects($this->once())
             ->method('getSettingValue')
-            ->with($nameID, $type, 'awesomeTheme')
+            ->with($name, $type, 'awesomeTheme')
             ->willReturn($possibleValue);
 
-        $this->assertEquals($expectedResult, $sut->$method($nameID, 'awesomeTheme'));
+        $this->assertEquals($expectedResult, $sut->$method($name, 'awesomeTheme'));
     }
 
     /**
@@ -52,16 +51,16 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
         $value,
         string $expectedException
     ): void {
-        $nameID = new ID(uniqid());
+        $name = uniqid();
         $sut = $this->getSut(methods: ['getSettingValue']);
 
         $sut->expects($this->once())
             ->method('getSettingValue')
-            ->with($nameID, $type, 'awesomeTheme')
+            ->with($name, $type, 'awesomeTheme')
             ->willReturn($value);
 
         $this->expectException($expectedException);
-        $sut->$method($nameID, 'awesomeTheme');
+        $sut->$method($name, 'awesomeTheme');
     }
 
     /**
@@ -74,7 +73,7 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
         );
 
         $this->expectException(NoSettingsFoundForThemeException::class);
-        $sut->$repositoryMethod(new ID('NotExistingSetting'), 'awesomeTheme');
+        $sut->$repositoryMethod('NotExistingSetting', 'awesomeTheme');
     }
 
     public function noSettingExceptionDataProvider(): \Generator

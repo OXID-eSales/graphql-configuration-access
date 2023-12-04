@@ -81,7 +81,7 @@ final class ThemeSettingGettersCest extends BaseCest
     private function runSettingGetterQuery(AcceptanceTester $I, string $queryName, string $settingName): array
     {
         $I->sendGQLQuery(
-            'query q($name: ID!, $themeId: String!){
+            'query q($name: String!, $themeId: String!){
                 ' . $queryName . '(name: $name, themeId: $themeId) {
                     name
                     value

@@ -18,7 +18,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 {
@@ -30,7 +29,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
     ) {
     }
 
-    public function getInteger(ID $name, string $themeId): int
+    public function getInteger(string $name, string $themeId): int
     {
         $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
 
@@ -49,7 +48,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         return (bool)preg_match("/^\d+$/", $value);
     }
 
-    public function getFloat(ID $name, string $themeId): float
+    public function getFloat(string $name, string $themeId): float
     {
         $value = $this->getSettingValue($name, FieldType::NUMBER, $themeId);
 
@@ -69,35 +68,35 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         return (bool)preg_match("/^\d+(\.\d+)?$/", $value);
     }
 
-    public function getBoolean(ID $name, string $themeId): bool
+    public function getBoolean(string $name, string $themeId): bool
     {
         $value = $this->getSettingValue($name, FieldType::BOOLEAN, $themeId);
 
         return (bool)$value;
     }
 
-    public function getString(ID $name, string $themeId): string
+    public function getString(string $name, string $themeId): string
     {
         $value = $this->getSettingValue($name, FieldType::STRING, $themeId);
 
         return (string)$value;
     }
 
-    public function getSelect(ID $name, string $themeId): string
+    public function getSelect(string $name, string $themeId): string
     {
         $value = $this->getSettingValue($name, FieldType::SELECT, $themeId);
 
         return (string)$value;
     }
 
-    public function getCollection(ID $name, string $themeId): array
+    public function getCollection(string $name, string $themeId): array
     {
         $value = $this->getSettingValue($name, FieldType::ARRAY, $themeId);
 
         return $this->getArrayFromSettingValue($value);
     }
 
-    public function getAssocCollection(ID $name, string $themeId): array
+    public function getAssocCollection(string $name, string $themeId): array
     {
         $fieldType = FieldType::ASSOCIATIVE_ARRAY;
         $value = $this->getSettingValue($name, $fieldType, $themeId);
@@ -150,7 +149,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         return $value;
     }
 
-    public function saveIntegerSetting(ID $name, int $value, string $themeId): void
+    public function saveIntegerSetting(string $name, int $value, string $themeId): void
     {
         $this->getInteger($name, $themeId);
 
@@ -159,7 +158,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
-    public function saveFloatSetting(ID $name, float $value, string $themeId): void
+    public function saveFloatSetting(string $name, float $value, string $themeId): void
     {
         $this->getFloat($name, $themeId);
 
@@ -168,7 +167,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
-    public function saveBooleanSetting(ID $name, bool $value, string $themeId): void
+    public function saveBooleanSetting(string $name, bool $value, string $themeId): void
     {
         $this->getBoolean($name, $themeId);
 
@@ -177,7 +176,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
-    public function saveStringSetting(ID $name, string $value, string $themeId): void
+    public function saveStringSetting(string $name, string $value, string $themeId): void
     {
         $this->getString($name, $themeId);
 
@@ -186,7 +185,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
-    public function saveSelectSetting(ID $name, string $value, string $themeId): void
+    public function saveSelectSetting(string $name, string $value, string $themeId): void
     {
         $this->getSelect($name, $themeId);
 
@@ -195,7 +194,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
-    public function saveCollectionSetting(ID $name, array $value, string $themeId): void
+    public function saveCollectionSetting(string $name, array $value, string $themeId): void
     {
         $this->getCollection($name, $themeId);
 
@@ -204,7 +203,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
-    public function saveAssocCollectionSetting(ID $name, array $value, string $themeId): void
+    public function saveAssocCollectionSetting(string $name, array $value, string $themeId): void
     {
         $this->getAssocCollection($name, $themeId);
 
@@ -213,7 +212,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingValue($name, $themeId, (string)$value);
     }
 
-    protected function getSettingValue(ID $name, string $fieldType, string $theme): mixed
+    protected function getSettingValue(string $name, string $fieldType, string $theme): mixed
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder->select('c.oxvarvalue')
@@ -224,7 +223,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             ->andWhere('c.oxshopid = :shopId')
             ->setParameters([
                 'module' => 'theme:' . $theme,
-                'name' => $name->val(),
+                'name' => $name,
                 'type' => $fieldType,
                 'shopId' => $this->basicContext->getCurrentShopId(),
             ]);
@@ -240,7 +239,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         return $this->shopSettingEncoder->decode($fieldType, $value);
     }
 
-    protected function saveSettingValue(ID $name, string $themeId, string $value): void
+    protected function saveSettingValue(string $name, string $themeId, string $value): void
     {
         $shopId = $this->basicContext->getCurrentShopId();
 
@@ -253,7 +252,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
             ->set('oxvarvalue', ':value')
             ->setParameters([
                 'shopId' => $shopId,
-                'name' => $name->val(),
+                'name' => $name,
                 'themeId' => 'theme:' . $themeId,
                 'value' => $value
             ]);
@@ -262,7 +261,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 
         $this->eventDispatcher->dispatch(
             new ThemeSettingChangedEvent(
-                (string)$name,
+                $name,
                 $shopId,
                 $themeId
             )
