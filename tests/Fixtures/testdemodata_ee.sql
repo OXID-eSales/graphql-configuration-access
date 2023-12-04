@@ -32,5 +32,5 @@ REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE
 ('changeBoolSetting',	1,	'theme:awesomeTheme',	'boolSettingEditable',	'bool',	'',	'2023-10-11 19:21:11'),
 ('changeStringSetting',	1,	'theme:awesomeTheme',	'stringSettingEditable',	'str',	'',	'2023-10-11 19:21:11'),
 ('changeSelectSetting',	1,	'theme:awesomeTheme',	'selectSettingEditable',	'select',	'',	'2023-10-11 19:21:11'),
-('changeArraySetting',	1,	'theme:awesomeTheme',	'arraySettingEditable',	'arr',	'',	'2023-10-11 19:21:11'),
-('changeAssocArraySetting',	1,	'theme:awesomeTheme',	'assocArraySettingEditable',	'aarr',	'',	'2023-10-11 19:21:11');
+('changeArraySetting',	1,	'theme:awesomeTheme',	'arraySettingEditable',	'arr',	'a:0:{}',	'2023-10-11 19:21:11'),
+('changeAssocArraySetting',	1,	'theme:awesomeTheme',	'assocArraySettingEditable',	'aarr',	'a:0:{}',	'2023-10-11 19:21:11');
