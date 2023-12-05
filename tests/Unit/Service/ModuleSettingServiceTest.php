@@ -9,7 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
@@ -19,6 +23,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingR
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use Symfony\Component\String\UnicodeString;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService
@@ -27,20 +32,21 @@ class ModuleSettingServiceTest extends UnitTestCase
 {
     public function testGetModuleSettingInteger(): void
     {
-        $name = 'integerSetting';
+        $name = 'someSetting';
         $moduleId = 'awesomeModule';
 
-        $repositoryResponse = 123;
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getIntegerSetting')
-            ->with($name, $moduleId)
-            ->willReturn($repositoryResponse);
-
-        $sut = $this->getSut($repository);
+        $shopServiceReturn = 123;
+        $sut = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
+                'getInteger',
+                $name,
+                $moduleId,
+                $shopServiceReturn
+            )
+        );
 
         $this->assertEquals(
-            new IntegerSetting($name, $repositoryResponse),
+            new IntegerSetting($name, $shopServiceReturn),
             $sut->getIntegerSetting($name, $moduleId)
         );
     }
@@ -50,17 +56,18 @@ class ModuleSettingServiceTest extends UnitTestCase
         $name = 'floatSetting';
         $moduleId = 'awesomeModule';
 
-        $repositoryResponse = 1.23;
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getFloatSetting')
-            ->with($name, $moduleId)
-            ->willReturn($repositoryResponse);
-
-        $sut = $this->getSut($repository);
+        $shopServiceReturn = 1.23;
+        $sut = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
+                'getFloat',
+                $name,
+                $moduleId,
+                $shopServiceReturn
+            ),
+        );
 
         $this->assertEquals(
-            new FloatSetting($name, $repositoryResponse),
+            new FloatSetting($name, $shopServiceReturn),
             $sut->getFloatSetting($name, $moduleId)
         );
     }
@@ -70,17 +77,18 @@ class ModuleSettingServiceTest extends UnitTestCase
         $name = 'booleanSetting';
         $moduleId = 'awesomeModule';
 
-        $repositoryResponse = false;
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getBooleanSetting')
-            ->with($name, $moduleId)
-            ->willReturn($repositoryResponse);
-
-        $sut = $this->getSut($repository);
+        $shopServiceReturn = false;
+        $sut = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
+                'getBoolean',
+                $name,
+                $moduleId,
+                $shopServiceReturn
+            ),
+        );
 
         $this->assertEquals(
-            new BooleanSetting($name, $repositoryResponse),
+            new BooleanSetting($name, $shopServiceReturn),
             $sut->getBooleanSetting($name, $moduleId)
         );
     }
@@ -90,17 +98,18 @@ class ModuleSettingServiceTest extends UnitTestCase
         $name = 'stringSetting';
         $moduleId = 'awesomeModule';
 
-        $repositoryResponse = 'default';
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getStringSetting')
-            ->with($name, $moduleId)
-            ->willReturn($repositoryResponse);
-
-        $sut = $this->getSut($repository);
+        $shopServiceReturn = 'default';
+        $sut = $this->getSut(
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
+                'getString',
+                $name,
+                $moduleId,
+                new UnicodeString($shopServiceReturn)
+            ),
+        );
 
         $this->assertEquals(
-            new StringSetting($name, $repositoryResponse),
+            new StringSetting($name, $shopServiceReturn),
             $sut->getStringSetting($name, $moduleId)
         );
     }
@@ -109,23 +118,22 @@ class ModuleSettingServiceTest extends UnitTestCase
     {
         $name = 'arraySetting';
         $moduleId = 'awesomeModule';
-
-        $repositoryResponse = ['nice', 'values'];
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getCollectionSetting')
-            ->with($name, $moduleId)
-            ->willReturn($repositoryResponse);
+        $shopServiceReturn = ['nice', 'values'];
 
         $encoderResponse = 'encoderResponse';
         $encoder = $this->createMock(JsonServiceInterface::class);
         $encoder->method('jsonEncodeArray')
-            ->with($repositoryResponse)
+            ->with($shopServiceReturn)
             ->willReturn($encoderResponse);
 
         $sut = $this->getSut(
-            repository: $repository,
-            jsonService: $encoder
+            jsonService: $encoder,
+            moduleSettingService: $this->getShopModuleSettingServiceMethodStub(
+                'getCollection',
+                $name,
+                $moduleId,
+                $shopServiceReturn
+            )
         );
 
         $this->assertEquals(
@@ -142,17 +150,16 @@ class ModuleSettingServiceTest extends UnitTestCase
         $callValue = 123;
         $repositoryValue = 321;
 
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('saveIntegerSetting')
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveInteger')
             ->with($name, $callValue, $moduleId);
-        $repository->expects($this->once())
-            ->method('getIntegerSetting')
+        $moduleSettingService->method('getInteger')
             ->with($name, $moduleId)
             ->willReturn($repositoryValue);
 
         $sut = $this->getSut(
-            repository: $repository
+            moduleSettingService: $moduleSettingService
         );
 
         $setting = $sut->changeIntegerSetting($name, $callValue, $moduleId);
@@ -169,17 +176,16 @@ class ModuleSettingServiceTest extends UnitTestCase
         $callValue = 1.23;
         $repositoryValue = 3.21;
 
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('saveFloatSetting')
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveFloat')
             ->with($name, $callValue, $moduleId);
-        $repository->expects($this->once())
-            ->method('getFloatSetting')
+        $moduleSettingService->method('getFloat')
             ->with($name, $moduleId)
             ->willReturn($repositoryValue);
 
         $sut = $this->getSut(
-            repository: $repository
+            moduleSettingService: $moduleSettingService
         );
 
         $setting = $sut->changeFloatSetting($name, $callValue, $moduleId);
@@ -196,17 +202,16 @@ class ModuleSettingServiceTest extends UnitTestCase
         $callValue = true;
         $repositoryValue = false;
 
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('saveBooleanSetting')
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveBoolean')
             ->with($name, $callValue, $moduleId);
-        $repository->expects($this->once())
-            ->method('getBooleanSetting')
+        $moduleSettingService->method('getBoolean')
             ->with($name, $moduleId)
             ->willReturn($repositoryValue);
 
         $sut = $this->getSut(
-            repository: $repository
+            moduleSettingService: $moduleSettingService
         );
 
         $setting = $sut->changeBooleanSetting($name, $callValue, $moduleId);
@@ -223,17 +228,16 @@ class ModuleSettingServiceTest extends UnitTestCase
         $callValue = 'someNewValue';
         $repositoryValue = 'realDatabaseValue';
 
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('saveStringSetting')
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveString')
             ->with($name, $callValue, $moduleId);
-        $repository->expects($this->once())
-            ->method('getStringSetting')
+        $moduleSettingService->method('getString')
             ->with($name, $moduleId)
-            ->willReturn($repositoryValue);
+            ->willReturn(new UnicodeString($repositoryValue));
 
         $sut = $this->getSut(
-            repository: $repository
+            moduleSettingService: $moduleSettingService
         );
 
         $setting = $sut->changeStringSetting($name, $callValue, $moduleId);
@@ -251,13 +255,6 @@ class ModuleSettingServiceTest extends UnitTestCase
         $repositoryValue = ['realDatabaseValue'];
 
         $decodedValue = ['decodedCollectionValue'];
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('saveCollectionSetting')
-            ->with($name, $decodedValue, $moduleId);
-        $repository->method('getCollectionSetting')
-            ->with($name, $moduleId)
-            ->willReturn($repositoryValue);
 
         $encoderResponse = 'encoderResponse';
         $encoder = $this->createMock(JsonServiceInterface::class);
@@ -268,9 +265,17 @@ class ModuleSettingServiceTest extends UnitTestCase
             ->with($callValue)
             ->willReturn($decodedValue);
 
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method('saveCollection')
+            ->with($name, $decodedValue, $moduleId);
+        $moduleSettingService->method('getCollection')
+            ->with($name, $moduleId)
+            ->willReturn($repositoryValue);
+
         $sut = $this->getSut(
-            repository: $repository,
             jsonService: $encoder,
+            moduleSettingService: $moduleSettingService
         );
 
         $setting = $sut->changeCollectionSetting($name, $callValue, $moduleId);
@@ -281,29 +286,58 @@ class ModuleSettingServiceTest extends UnitTestCase
 
     public function testListModuleSettings(): void
     {
+        $shopId = 3;
         $moduleId = 'awesomeModule';
 
-        $intSetting = (new Setting())->setName('intSetting')->setType(FieldType::NUMBER);
-        $stringSetting = (new Setting())->setName('stringSetting')->setType(FieldType::STRING);
-        $arraySetting = (new Setting())->setName('arraySetting')->setType(FieldType::ARRAY);
+        $response = [
+            (new Setting())->setName('intSetting')->setType(FieldType::NUMBER),
+            (new Setting())->setName('stringSetting')->setType(FieldType::STRING),
+            (new Setting())->setName('arraySetting')->setType(FieldType::ARRAY)
+        ];
 
-        $repository = $this->createMock(ModuleSettingRepositoryInterface::class);
-        $repository->expects($this->once())
-            ->method('getSettingsList')
-            ->with($moduleId)
-            ->willReturn([$intSetting, $stringSetting, $arraySetting]);
+        $moduleConfigurationDao = $this->createMock(ModuleConfigurationDaoInterface::class);
+        $moduleConfigurationDao->expects($this->once())
+            ->method('get')
+            ->with($moduleId, $shopId)
+            ->willReturn(
+                $this->createConfiguredMock(ModuleConfiguration::class, [
+                    'getModuleSettings' => $response
+                ])
+            );
 
-        $sut = $this->getSut($repository);
+        $sut = $this->getSut(
+            moduleConfigDao: $moduleConfigurationDao,
+            basicContext: $this->getBasicContextMock(3)
+        );
+
         $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList($moduleId));
     }
 
     private function getSut(
-        ?ModuleSettingRepositoryInterface $repository = null,
         ?JsonServiceInterface $jsonService = null,
+        ?ModuleSettingServiceInterface $moduleSettingService = null,
+        ?ModuleConfigurationDaoInterface $moduleConfigDao = null,
+        ?BasicContextInterface $basicContext = null,
     ): ModuleSettingService {
         return new ModuleSettingService(
-            moduleSettingRepository: $repository ?? $this->createStub(ModuleSettingRepositoryInterface::class),
             jsonService: $jsonService ?? $this->createStub(JsonServiceInterface::class),
+            moduleSettingService: $moduleSettingService ?? $this->createStub(ModuleSettingServiceInterface::class),
+            moduleConfigurationDao: $moduleConfigDao ?? $this->createStub(ModuleConfigurationDaoInterface::class),
+            basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class),
         );
+    }
+
+    private function getShopModuleSettingServiceMethodStub(
+        string $methodName,
+        string $name,
+        string $moduleId,
+        mixed $shopServiceReturn
+    ): ModuleSettingServiceInterface {
+        $moduleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $moduleSettingService->expects($this->once())
+            ->method($methodName)
+            ->with($name, $moduleId)
+            ->willReturn($shopServiceReturn);
+        return $moduleSettingService;
     }
 }
