@@ -207,9 +207,6 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $this->saveAsType(FieldType::ASSOCIATIVE_ARRAY, $name, $value);
     }
 
-    /**
-     * @throws WrongSettingTypeException
-     */
     private function saveAsType(string $type, string $name, mixed $value): void
     {
         $this->validateOriginalSettingType($name, $type);
@@ -223,6 +220,9 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $this->configurationSettingDao->save($setting);
     }
 
+    /**
+     * @throws WrongSettingTypeException
+     */
     private function validateOriginalSettingType(string $originalSettingName, string $type): void
     {
         $originalSetting = $this->getShopSetting($originalSettingName);

@@ -184,6 +184,9 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         $this->saveSettingAsType(FieldType::ASSOCIATIVE_ARRAY, $name, $themeId, $value);
     }
 
+    /**
+     * @throws NoSettingsFoundForThemeException
+     */
     protected function getSettingValue(string $name, string $fieldType, string $theme): mixed
     {
         $queryBuilder = $this->queryBuilderFactory->create();
@@ -240,9 +243,6 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
         );
     }
 
-    /**
-     * @throws NoSettingsFoundForThemeException
-     */
     protected function saveSettingAsType(string $settingType, string $name, string $themeId, mixed $value): void
     {
         $this->getSettingValue($name, $settingType, $themeId);
