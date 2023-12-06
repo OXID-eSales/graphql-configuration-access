@@ -29,7 +29,7 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
      * @dataProvider possibleGetCollectionValuesDataProvider
      * @dataProvider possibleGetAssocCollectionValuesDataProvider
      */
-    public function testGetShopSetting($method, $type, $possibleValue, $expectedResult): void
+    public function testGetThemeSetting(string $method, string $type, mixed $possibleValue, mixed $expectedResult): void
     {
         $name = uniqid();
         $sut = $this->getSut(methods: ['getSettingValue']);
@@ -45,10 +45,10 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
     /**
      * @dataProvider wrongSettingsValueDataProvider
      */
-    public function testGetShopSettingWrongData(
+    public function testGetThemeSettingWrongData(
         string $method,
         string $type,
-        $value,
+        mixed $value,
         string $expectedException
     ): void {
         $name = uniqid();
