@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Controller;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;

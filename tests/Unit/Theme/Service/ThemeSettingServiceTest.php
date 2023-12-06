@@ -7,10 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
@@ -19,10 +18,11 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingService;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingService
  */
 class ThemeSettingServiceTest extends UnitTestCase
 {

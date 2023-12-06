@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;

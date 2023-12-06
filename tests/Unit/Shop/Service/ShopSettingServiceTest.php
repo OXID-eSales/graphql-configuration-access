@@ -7,20 +7,20 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shop\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingService
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingService
  */
 class ShopSettingServiceTest extends UnitTestCase
 {

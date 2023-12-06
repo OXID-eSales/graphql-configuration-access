@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shop\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;

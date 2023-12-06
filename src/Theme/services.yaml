@@ -6,3 +6,6 @@ services:
   OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\:
     resource: 'Controller/'
     public: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingService

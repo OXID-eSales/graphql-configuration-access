@@ -7,15 +7,15 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
@@ -26,7 +26,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use Symfony\Component\String\UnicodeString;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingService
  */
 class ModuleSettingServiceTest extends UnitTestCase
 {

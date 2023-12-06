@@ -6,3 +6,6 @@ services:
   OxidEsales\GraphQL\ConfigurationAccess\Shop\Controller\:
     resource: 'Controller/'
     public: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingService
