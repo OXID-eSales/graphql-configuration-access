@@ -151,65 +151,37 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 
     public function saveIntegerSetting(string $name, int $value, string $themeId): void
     {
-        $this->getInteger($name, $themeId);
-
-        $value = $this->shopSettingEncoder->encode(FieldType::NUMBER, $value);
-
-        $this->saveSettingValue($name, $themeId, (string)$value);
+        $this->saveSettingAsType(FieldType::NUMBER, $name, $themeId, $value);
     }
 
     public function saveFloatSetting(string $name, float $value, string $themeId): void
     {
-        $this->getFloat($name, $themeId);
-
-        $value = $this->shopSettingEncoder->encode(FieldType::NUMBER, $value);
-
-        $this->saveSettingValue($name, $themeId, (string)$value);
+        $this->saveSettingAsType(FieldType::NUMBER, $name, $themeId, $value);
     }
 
     public function saveBooleanSetting(string $name, bool $value, string $themeId): void
     {
-        $this->getBoolean($name, $themeId);
-
-        $value = $this->shopSettingEncoder->encode(FieldType::BOOLEAN, $value);
-
-        $this->saveSettingValue($name, $themeId, (string)$value);
+        $this->saveSettingAsType(FieldType::BOOLEAN, $name, $themeId, $value);
     }
 
     public function saveStringSetting(string $name, string $value, string $themeId): void
     {
-        $this->getString($name, $themeId);
-
-        $value = $this->shopSettingEncoder->encode(FieldType::STRING, $value);
-
-        $this->saveSettingValue($name, $themeId, (string)$value);
+        $this->saveSettingAsType(FieldType::STRING, $name, $themeId, $value);
     }
 
     public function saveSelectSetting(string $name, string $value, string $themeId): void
     {
-        $this->getSelect($name, $themeId);
-
-        $value = $this->shopSettingEncoder->encode(FieldType::SELECT, $value);
-
-        $this->saveSettingValue($name, $themeId, (string)$value);
+        $this->saveSettingAsType(FieldType::SELECT, $name, $themeId, $value);
     }
 
     public function saveCollectionSetting(string $name, array $value, string $themeId): void
     {
-        $this->getCollection($name, $themeId);
-
-        $value = $this->shopSettingEncoder->encode(FieldType::ARRAY, $value);
-
-        $this->saveSettingValue($name, $themeId, (string)$value);
+        $this->saveSettingAsType(FieldType::ARRAY, $name, $themeId, $value);
     }
 
     public function saveAssocCollectionSetting(string $name, array $value, string $themeId): void
     {
-        $this->getAssocCollection($name, $themeId);
-
-        $value = $this->shopSettingEncoder->encode(FieldType::ASSOCIATIVE_ARRAY, $value);
-
-        $this->saveSettingValue($name, $themeId, (string)$value);
+        $this->saveSettingAsType(FieldType::ASSOCIATIVE_ARRAY, $name, $themeId, $value);
     }
 
     protected function getSettingValue(string $name, string $fieldType, string $theme): mixed
@@ -266,5 +238,17 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
                 $themeId
             )
         );
+    }
+
+    /**
+     * @throws NoSettingsFoundForThemeException
+     */
+    protected function saveSettingAsType(string $settingType, string $name, string $themeId, mixed $value): void
+    {
+        $this->getSettingValue($name, $settingType, $themeId);
+
+        $value = $this->shopSettingEncoder->encode($settingType, $value);
+
+        $this->saveSettingValue($name, $themeId, (string)$value);
     }
 }

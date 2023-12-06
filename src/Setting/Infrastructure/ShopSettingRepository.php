@@ -149,7 +149,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     /**
      * @throws WrongSettingTypeException
      */
-    public function checkSettingType(ShopConfigurationSetting $value, string $requiredType): void
+    protected function checkSettingType(ShopConfigurationSetting $value, string $requiredType): void
     {
         if ($value->getType() !== $requiredType) {
             throw new WrongSettingTypeException();
@@ -159,7 +159,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     /**
      * @throws WrongSettingValueException
      */
-    public function getArrayFromSettingValue(ShopConfigurationSetting $setting): array
+    protected function getArrayFromSettingValue(ShopConfigurationSetting $setting): array
     {
         $value = $setting->getValue();
 
@@ -209,6 +209,9 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $this->saveAsType(FieldType::ASSOCIATIVE_ARRAY, $name, $value);
     }
 
+    /**
+     * @throws WrongSettingTypeException
+     */
     private function saveAsType(string $type, string $name, mixed $value): void
     {
         $this->validateOriginalSettingType($name, $type);

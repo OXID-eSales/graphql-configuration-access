@@ -20,16 +20,15 @@ class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTe
      * @dataProvider notExistingSettingCheckTriggerDataProvider
      */
     public function testSetterThrowsExceptionOnNotExistingSetting(
-        string $checkMethod,
         string $repositoryMethod,
         mixed $value,
     ): void {
         $name = 'notExistingSetting';
         $themeId = 'awesomeTheme';
 
-        $repository = $this->getSut(methods: [$checkMethod]);
-        $repository->method($checkMethod)
-            ->with($name, $themeId)
+        $repository = $this->getSut(methods: ['getSettingValue']);
+        $repository->method('getSettingValue')
+            ->with($name, $this->anything(), $themeId)
             ->willThrowException(new NoSettingsFoundForThemeException($themeId));
 
         $this->expectException(NoSettingsFoundForThemeException::class);
@@ -40,37 +39,30 @@ class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTe
     public function notExistingSettingCheckTriggerDataProvider(): \Generator
     {
         yield "saveIntegerSetting" => [
-            'checkMethod' => 'getInteger',
             'repositoryMethod' => 'saveIntegerSetting',
             'value' => 1234
         ];
         yield "saveFloatSetting" => [
-            'checkMethod' => 'getFloat',
             'repositoryMethod' => 'saveFloatSetting',
             'value' => 1_23
         ];
         yield "saveBooleanSetting" => [
-            'checkMethod' => 'getBoolean',
             'repositoryMethod' => 'saveBooleanSetting',
             'value' => true
         ];
         yield "saveStringSetting" => [
-            'checkMethod' => 'getString',
             'repositoryMethod' => 'saveStringSetting',
             'value' => 'some string'
         ];
         yield "saveSelectSetting" => [
-            'checkMethod' => 'getSelect',
             'repositoryMethod' => 'saveSelectSetting',
             'value' => 'some select'
         ];
         yield "saveCollectionSetting" => [
-            'checkMethod' => 'getCollection',
             'repositoryMethod' => 'saveCollectionSetting',
             'value' => ['collection']
         ];
         yield "saveAssocCollectionSetting" => [
-            'checkMethod' => 'getAssocCollection',
             'repositoryMethod' => 'saveAssocCollectionSetting',
             'value' => ['collection']
         ];
