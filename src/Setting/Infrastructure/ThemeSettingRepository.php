@@ -109,10 +109,6 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
      */
     public function getArrayFromSettingValue(mixed $value): array
     {
-        if ($value === '') {
-            $value = [];
-        }
-
         if (!is_array($value)) {
             throw new WrongSettingValueException();
         }

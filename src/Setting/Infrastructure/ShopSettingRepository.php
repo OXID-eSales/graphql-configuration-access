@@ -163,10 +163,6 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     {
         $value = $setting->getValue();
 
-        if ($value === '') {
-            $value = [];
-        }
-
         if (!is_array($value)) {
             throw new WrongSettingValueException();
         }

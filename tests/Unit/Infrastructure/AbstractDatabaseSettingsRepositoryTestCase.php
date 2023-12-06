@@ -45,13 +45,6 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
 
     public function possibleGetAssocCollectionValuesDataProvider(): \Generator
     {
-        yield 'empty string for assoc collection' => [
-            'method' => 'getAssocCollection',
-            'type' => FieldType::ASSOCIATIVE_ARRAY,
-            'possibleValue' => '',
-            'expectedResult' => []
-        ];
-
         yield 'empty array for assoc collection' => [
             'method' => 'getAssocCollection',
             'type' => FieldType::ASSOCIATIVE_ARRAY,
@@ -225,13 +218,6 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
 
     public function possibleGetCollectionValuesDataProvider(): \Generator
     {
-        yield 'empty string collection' => [
-            'method' => 'getCollection',
-            'type' => FieldType::ARRAY,
-            'possibleValue' => '',
-            'expectedResult' => []
-        ];
-
         yield 'empty array collection' => [
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
@@ -298,6 +284,13 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
             'expectedResult' => WrongSettingValueException::class
         ];
 
+        yield 'empty string instead of collection' => [
+            'method' => 'getCollection',
+            'type' => FieldType::ARRAY,
+            'possibleValue' => '',
+            'expectedResult' => WrongSettingValueException::class
+        ];
+
         yield 'string instead of collection' => [
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
@@ -323,6 +316,13 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
             'possibleValue' => false,
+            'expectedResult' => WrongSettingValueException::class
+        ];
+
+        yield 'empty string instead of assoc collection' => [
+            'method' => 'getAssocCollection',
+            'type' => FieldType::ASSOCIATIVE_ARRAY,
+            'possibleValue' => '',
             'expectedResult' => WrongSettingValueException::class
         ];
 
