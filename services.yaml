@@ -19,8 +19,9 @@ services:
     class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\PermissionProvider
     tags: [ 'graphql_permission_provider' ]
 
-  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\Authorization:
-    class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\Authorization
+  OxidEsales\GraphQL\ConfigurationAccess\DependencyCheckTrigger:
+    alias: OxidEsales\GraphQL\Base\Framework\GraphQLQueryHandler
+    public: true
 
   OxidEsales\GraphQL\ConfigurationAccess\Shared\Subscriber\BeforeModuleDeactivation:
     class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Subscriber\BeforeModuleDeactivation
