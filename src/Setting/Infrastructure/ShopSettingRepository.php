@@ -111,7 +111,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return $this->getArrayFromSettingValue($setting);
     }
 
-    protected function getShopSetting(string $name): ShopConfigurationSetting
+    private function getShopSetting(string $name): ShopConfigurationSetting
     {
         return $this->configurationSettingDao->get($name, $this->basicContext->getCurrentShopId());
     }
@@ -147,7 +147,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     /**
      * @throws WrongSettingTypeException
      */
-    protected function checkSettingType(ShopConfigurationSetting $value, string $requiredType): void
+    private function checkSettingType(ShopConfigurationSetting $value, string $requiredType): void
     {
         if ($value->getType() !== $requiredType) {
             throw new WrongSettingTypeException();
@@ -157,7 +157,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     /**
      * @throws WrongSettingValueException
      */
-    protected function getArrayFromSettingValue(ShopConfigurationSetting $setting): array
+    private function getArrayFromSettingValue(ShopConfigurationSetting $setting): array
     {
         $value = $setting->getValue();
 
