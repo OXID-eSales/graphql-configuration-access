@@ -27,14 +27,16 @@ class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTe
         $name = 'notExistingSetting';
         $themeId = 'awesomeTheme';
 
-        $repository = $this->getSut(methods: [$checkMethod]);
-        $repository->method($checkMethod)
+        $sut = $this->getSut(methods: [$checkMethod, 'saveSettingValue']);
+        $sut->method($checkMethod)
             ->with($name, $themeId)
             ->willThrowException(new NoSettingsFoundForThemeException($themeId));
+        $sut->expects($this->never())
+            ->method('saveSettingValue');
 
         $this->expectException(NoSettingsFoundForThemeException::class);
 
-        $repository->$repositoryMethod($name, $value, $themeId);
+        $sut->$repositoryMethod($name, $value, $themeId);
     }
 
     public function notExistingSettingCheckTriggerDataProvider(): \Generator
@@ -47,7 +49,7 @@ class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTe
         yield "saveFloatSetting" => [
             'checkMethod' => 'getFloat',
             'repositoryMethod' => 'saveFloatSetting',
-            'value' => 1_23
+            'value' => 1.23
         ];
         yield "saveBooleanSetting" => [
             'checkMethod' => 'getBoolean',
