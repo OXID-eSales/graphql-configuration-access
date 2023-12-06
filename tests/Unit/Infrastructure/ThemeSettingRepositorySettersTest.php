@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
 
 /**
@@ -28,7 +29,7 @@ class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTe
 
         $repository = $this->getSut(methods: ['getSettingValue']);
         $repository->method('getSettingValue')
-            ->with($name, $this->anything(), $themeId)
+            ->with($name, $this->logicalOr(...FieldType::getEnums()), $themeId)
             ->willThrowException(new NoSettingsFoundForThemeException($themeId));
 
         $this->expectException(NoSettingsFoundForThemeException::class);
