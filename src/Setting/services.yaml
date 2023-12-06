@@ -17,6 +17,3 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
-
-  OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\CollectionEncodingServiceInterface:
-    class: OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonCollectionEncodingService

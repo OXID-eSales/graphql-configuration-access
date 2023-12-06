@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Service;
 
 interface CollectionEncodingServiceInterface
 {

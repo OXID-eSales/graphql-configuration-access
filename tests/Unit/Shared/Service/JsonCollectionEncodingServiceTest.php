@@ -7,15 +7,15 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonCollectionEncodingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\CollectionEncodingException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\InvalidCollectionException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonCollectionEncodingService
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService
  */
 class JsonCollectionEncodingServiceTest extends TestCase
 {

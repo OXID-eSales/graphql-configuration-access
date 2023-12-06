@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\CollectionEncodingException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\InvalidCollectionException;
