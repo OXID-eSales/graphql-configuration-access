@@ -7,20 +7,20 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Controller;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shop\Controller;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller\ShopSettingController;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shop\Controller\ShopSettingController;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller\ShopSettingController
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Controller\ShopSettingController
  */
 class ShopSettingControllerTest extends TestCase
 {

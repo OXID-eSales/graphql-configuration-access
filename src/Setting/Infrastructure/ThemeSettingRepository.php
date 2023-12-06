@@ -14,9 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncod
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ThemeSettingRepository implements ThemeSettingRepositoryInterface

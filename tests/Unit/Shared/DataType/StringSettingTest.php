@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting
  */
 class StringSettingTest extends TestCase
 {

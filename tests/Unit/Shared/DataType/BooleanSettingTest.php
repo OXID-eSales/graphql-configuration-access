@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting
  */
 class BooleanSettingTest extends TestCase
 {

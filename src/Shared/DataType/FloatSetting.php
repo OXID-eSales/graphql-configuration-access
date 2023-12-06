@@ -7,17 +7,17 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType;
 
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 #[Type]
-final class StringSetting
+final class FloatSetting
 {
     public function __construct(
         private string $name,
-        private string $value
+        private float $value
     ) {
     }
 
@@ -28,7 +28,7 @@ final class StringSetting
     }
 
     #[Field]
-    public function getValue(): string
+    public function getValue(): float
     {
         return $this->value;
     }

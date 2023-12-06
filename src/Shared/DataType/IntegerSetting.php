@@ -7,17 +7,17 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType;
 
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 #[Type]
-final class BooleanSetting
+final class IntegerSetting
 {
     public function __construct(
         private string $name,
-        private bool $value
+        private int $value
     ) {
     }
 
@@ -28,7 +28,7 @@ final class BooleanSetting
     }
 
     #[Field]
-    public function getValue(): bool
+    public function getValue(): int
     {
         return $this->value;
     }

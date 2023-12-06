@@ -15,10 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForShopException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 
 final class ShopSettingRepository implements ShopSettingRepositoryInterface
 {

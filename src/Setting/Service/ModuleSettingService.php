@@ -11,15 +11,14 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\{
-    ModuleSettingServiceInterface as ShopModuleSettingServiceInterface
-};
+    ModuleSettingServiceInterface as ShopModuleSettingServiceInterface};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\BooleanSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\FloatSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
 
 final class ModuleSettingService implements ModuleSettingServiceInterface
 {

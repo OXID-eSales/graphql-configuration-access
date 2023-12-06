@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum;
 
 final class FieldType
 {

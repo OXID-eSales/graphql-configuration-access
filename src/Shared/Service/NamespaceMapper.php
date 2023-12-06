@@ -18,14 +18,16 @@ final class NamespaceMapper implements NamespaceMapperInterface
     public function getControllerNamespaceMapping(): array
     {
         return [
-            self::SPACE . 'Setting\\Controller' => __DIR__ . '/../../Setting/Controller/',
+            self::SPACE . 'Module\\Controller' => __DIR__ . '/../../Module/Controller/',
+            self::SPACE . 'Shop\\Controller' => __DIR__ . '/../../Shop/Controller/',
+            self::SPACE . 'Theme\\Controller' => __DIR__ . '/../../Theme/Controller/',
         ];
     }
 
     public function getTypeNamespaceMapping(): array
     {
         return [
-            self::SPACE . 'Setting\\DataType' => __DIR__ . '/../../Setting/DataType/',
+            self::SPACE . 'Shared\\DataType' => __DIR__ . '/../../Shared/DataType/',
         ];
     }
 }

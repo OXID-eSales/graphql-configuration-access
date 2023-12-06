@@ -7,17 +7,18 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 #[Type]
-final class IntegerSetting
+final class SettingType
 {
     public function __construct(
         private string $name,
-        private int $value
+        private string $type
     ) {
     }
 
@@ -28,8 +29,17 @@ final class IntegerSetting
     }
 
     #[Field]
-    public function getValue(): int
+    public function getType(): string
     {
-        return $this->value;
+        return $this->type;
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    #[Field]
+    public function isSupported(): bool
+    {
+        return FieldType::validateFieldType($this->getType());
     }
 }

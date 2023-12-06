@@ -3,10 +3,6 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\GraphQL\ConfigurationAccess\Setting\Controller\:
-    resource: 'Controller/'
-    public: true
-
   OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService
 

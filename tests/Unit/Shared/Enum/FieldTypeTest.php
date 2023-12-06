@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\DataType;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Enum;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType
  */
 class FieldTypeTest extends TestCase
 {
