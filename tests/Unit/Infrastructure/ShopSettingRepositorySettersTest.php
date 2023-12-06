@@ -15,7 +15,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingTypeException;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository
  */
 class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTestCase
 {

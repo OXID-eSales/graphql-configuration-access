@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure;
 
 interface ThemeSettingRepositoryInterface
 {

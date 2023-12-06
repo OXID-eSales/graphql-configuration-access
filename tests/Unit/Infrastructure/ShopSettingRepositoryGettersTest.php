@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingTypeException;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepository
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository
  */
 class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTestCase
 {

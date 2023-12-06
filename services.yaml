@@ -1,5 +1,4 @@
 imports:
-  - { resource: src/Setting/services.yaml }
   - { resource: src/Shared/services.yaml }
   - { resource: src/Module/services.yaml }
   - { resource: src/Shop/services.yaml }
