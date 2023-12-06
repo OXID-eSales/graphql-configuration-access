@@ -16,7 +16,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\CollectionEncodingServiceInterface;
 use PHPUnit\Framework\TestCase;
 use TheCodingMachine\GraphQLite\Types\ID;
 
@@ -44,9 +44,9 @@ class UnitTestCase extends TestCase
     protected function getJsonEncodeServiceMock(
         array $repositoryResult,
         string $collectionEncodingResult
-    ): JsonServiceInterface {
-        $jsonService = $this->createMock(JsonServiceInterface::class);
-        $jsonService->method('jsonEncodeArray')
+    ): CollectionEncodingServiceInterface {
+        $jsonService = $this->createMock(CollectionEncodingServiceInterface::class);
+        $jsonService->method('encodeArrayToString')
             ->with($repositoryResult)
             ->willReturn($collectionEncodingResult);
         return $jsonService;

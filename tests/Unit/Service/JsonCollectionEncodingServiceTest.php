@@ -11,37 +11,37 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonService;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonCollectionEncodingService;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonService
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonCollectionEncodingService
  */
-class JsonServiceTest extends TestCase
+class JsonCollectionEncodingServiceTest extends TestCase
 {
     public function testJsonEncodeArray(): void
     {
-        $sut = new JsonService();
+        $sut = new JsonCollectionEncodingService();
         $value = ['some' => 'value'];
 
-        $this->assertSame('{"some":"value"}', $sut->jsonEncodeArray($value));
+        $this->assertSame('{"some":"value"}', $sut->encodeArrayToString($value));
     }
 
     public function testJsonEncodeArrayException(): void
     {
-        $sut = new JsonService();
+        $sut = new JsonCollectionEncodingService();
         $value = [&$value];
 
         $this->expectException(CollectionEncodingException::class);
-        $sut->jsonEncodeArray($value);
+        $sut->encodeArrayToString($value);
     }
 
     /** @dataProvider jsonDecodeCollectionDataProvider */
     public function testJsonDecodeCollection(string $value, array $expectedResult): void
     {
-        $sut = new JsonService();
+        $sut = new JsonCollectionEncodingService();
 
-        $this->assertEquals($expectedResult, $sut->jsonDecodeCollection($value));
+        $this->assertEquals($expectedResult, $sut->decodeStringCollectionToArray($value));
     }
 
     public function jsonDecodeCollectionDataProvider(): \Generator
@@ -64,10 +64,10 @@ class JsonServiceTest extends TestCase
 
     public function testJsonDecodeCollectionException(): void
     {
-        $sut = new JsonService();
+        $sut = new JsonCollectionEncodingService();
         $value = '[2, "values"';
 
         $this->expectException(InvalidCollectionException::class);
-        $sut->jsonDecodeCollection($value);
+        $sut->decodeStringCollectionToArray($value);
     }
 }

@@ -20,7 +20,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\CollectionEncodingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use Symfony\Component\String\UnicodeString;
@@ -121,8 +121,8 @@ class ModuleSettingServiceTest extends UnitTestCase
         $shopServiceReturn = ['nice', 'values'];
 
         $encoderResponse = 'encoderResponse';
-        $encoder = $this->createMock(JsonServiceInterface::class);
-        $encoder->method('jsonEncodeArray')
+        $encoder = $this->createMock(CollectionEncodingServiceInterface::class);
+        $encoder->method('encodeArrayToString')
             ->with($shopServiceReturn)
             ->willReturn($encoderResponse);
 
@@ -257,11 +257,11 @@ class ModuleSettingServiceTest extends UnitTestCase
         $decodedValue = ['decodedCollectionValue'];
 
         $encoderResponse = 'encoderResponse';
-        $encoder = $this->createMock(JsonServiceInterface::class);
-        $encoder->method('jsonEncodeArray')
+        $encoder = $this->createMock(CollectionEncodingServiceInterface::class);
+        $encoder->method('encodeArrayToString')
             ->with($repositoryValue)
             ->willReturn($encoderResponse);
-        $encoder->method('jsonDecodeCollection')
+        $encoder->method('decodeStringCollectionToArray')
             ->with($callValue)
             ->willReturn($decodedValue);
 
@@ -314,13 +314,13 @@ class ModuleSettingServiceTest extends UnitTestCase
     }
 
     private function getSut(
-        ?JsonServiceInterface $jsonService = null,
+        ?CollectionEncodingServiceInterface $jsonService = null,
         ?ModuleSettingServiceInterface $moduleSettingService = null,
         ?ModuleConfigurationDaoInterface $moduleConfigDao = null,
         ?BasicContextInterface $basicContext = null,
     ): ModuleSettingService {
         return new ModuleSettingService(
-            jsonService: $jsonService ?? $this->createStub(JsonServiceInterface::class),
+            jsonService: $jsonService ?? $this->createStub(CollectionEncodingServiceInterface::class),
             moduleSettingService: $moduleSettingService ?? $this->createStub(ModuleSettingServiceInterface::class),
             moduleConfigurationDao: $moduleConfigDao ?? $this->createStub(ModuleConfigurationDaoInterface::class),
             basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class),

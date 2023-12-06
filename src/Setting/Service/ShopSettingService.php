@@ -20,7 +20,7 @@ final class ShopSettingService implements ShopSettingServiceInterface
 {
     public function __construct(
         private ShopSettingRepositoryInterface $shopSettingRepository,
-        private JsonServiceInterface $jsonService,
+        private CollectionEncodingServiceInterface $jsonService,
     ) {
     }
 
@@ -57,7 +57,7 @@ final class ShopSettingService implements ShopSettingServiceInterface
     public function getCollectionSetting(string $name): StringSetting
     {
         $collectionString = $this->shopSettingRepository->getCollection($name);
-        $collectionEncodingResult = $this->jsonService->jsonEncodeArray($collectionString);
+        $collectionEncodingResult = $this->jsonService->encodeArrayToString($collectionString);
 
         return new StringSetting($name, $collectionEncodingResult);
     }
@@ -65,7 +65,7 @@ final class ShopSettingService implements ShopSettingServiceInterface
     public function getAssocCollectionSetting(string $name): StringSetting
     {
         $assocCollectionString = $this->shopSettingRepository->getAssocCollection($name);
-        $assocCollectionEncodingResult = $this->jsonService->jsonEncodeArray($assocCollectionString);
+        $assocCollectionEncodingResult = $this->jsonService->encodeArrayToString($assocCollectionString);
 
         return new StringSetting($name, $assocCollectionEncodingResult);
     }
@@ -123,7 +123,7 @@ final class ShopSettingService implements ShopSettingServiceInterface
     {
         $this->shopSettingRepository->saveCollectionSetting(
             $name,
-            $this->jsonService->jsonDecodeCollection($value)
+            $this->jsonService->decodeStringCollectionToArray($value)
         );
 
         return $this->getCollectionSetting($name);
@@ -133,7 +133,7 @@ final class ShopSettingService implements ShopSettingServiceInterface
     {
         $this->shopSettingRepository->saveAssocCollectionSetting(
             $name,
-            $this->jsonService->jsonDecodeCollection($value)
+            $this->jsonService->decodeStringCollectionToArray($value)
         );
 
         return $this->getAssocCollectionSetting($name);

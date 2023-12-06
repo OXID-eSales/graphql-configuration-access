@@ -24,7 +24,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 final class ModuleSettingService implements ModuleSettingServiceInterface
 {
     public function __construct(
-        private JsonServiceInterface $jsonService,
+        private CollectionEncodingServiceInterface $jsonService,
         private ShopModuleSettingServiceInterface $moduleSettingService,
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
         private BasicContextInterface $basicContext,
@@ -69,7 +69,7 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
         return new StringSetting(
             $name,
-            $this->jsonService->jsonEncodeArray($collection)
+            $this->jsonService->encodeArrayToString($collection)
         );
     }
 
@@ -105,7 +105,7 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
     {
         $this->moduleSettingService->saveCollection(
             $name,
-            $this->jsonService->jsonDecodeCollection($value),
+            $this->jsonService->decodeStringCollectionToArray($value),
             $moduleId
         );
 

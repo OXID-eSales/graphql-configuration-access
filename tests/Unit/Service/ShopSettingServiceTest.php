@@ -15,7 +15,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ShopSettingRepositoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\CollectionEncodingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ShopSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
@@ -283,11 +283,11 @@ class ShopSettingServiceTest extends UnitTestCase
             ->willReturn($repositoryValue);
 
         $encoderResponse = 'encoderResponse';
-        $encoder = $this->createMock(JsonServiceInterface::class);
-        $encoder->method('jsonEncodeArray')
+        $encoder = $this->createMock(CollectionEncodingServiceInterface::class);
+        $encoder->method('encodeArrayToString')
             ->with($repositoryValue)
             ->willReturn($encoderResponse);
-        $encoder->method('jsonDecodeCollection')
+        $encoder->method('decodeStringCollectionToArray')
             ->with($callValue)
             ->willReturn($decodedValue);
 
@@ -319,11 +319,11 @@ class ShopSettingServiceTest extends UnitTestCase
             ->willReturn($repositoryValue);
 
         $encoderResponse = 'encoderResponse';
-        $encoder = $this->createMock(JsonServiceInterface::class);
-        $encoder->method('jsonEncodeArray')
+        $encoder = $this->createMock(CollectionEncodingServiceInterface::class);
+        $encoder->method('encodeArrayToString')
             ->with($repositoryValue)
             ->willReturn($encoderResponse);
-        $encoder->method('jsonDecodeCollection')
+        $encoder->method('decodeStringCollectionToArray')
             ->with($callValue)
             ->willReturn($decodedValue);
 
@@ -358,12 +358,12 @@ class ShopSettingServiceTest extends UnitTestCase
 
     private function getSut(
         ?ShopSettingRepositoryInterface $shopSettingRepository = null,
-        ?JsonServiceInterface $jsonService = null,
+        ?CollectionEncodingServiceInterface $jsonService = null,
     ): ShopSettingService {
         $shopSettingRepository = $shopSettingRepository ?? $this->createStub(ShopSettingRepositoryInterface::class);
         return new ShopSettingService(
             shopSettingRepository: $shopSettingRepository,
-            jsonService: $jsonService ?? $this->createStub(JsonServiceInterface::class)
+            jsonService: $jsonService ?? $this->createStub(CollectionEncodingServiceInterface::class)
         );
     }
 }

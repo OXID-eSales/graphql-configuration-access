@@ -12,12 +12,12 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
 
-class JsonService implements JsonServiceInterface
+class JsonCollectionEncodingService implements CollectionEncodingServiceInterface
 {
     /**
      * @throws CollectionEncodingException
      */
-    public function jsonEncodeArray(array $collection): string
+    public function encodeArrayToString(array $collection): string
     {
         $jsonValue = json_encode($collection);
 
@@ -30,7 +30,7 @@ class JsonService implements JsonServiceInterface
     /**
      * @throws InvalidCollectionException
      */
-    public function jsonDecodeCollection(string $value): array
+    public function decodeStringCollectionToArray(string $value): array
     {
         if ($value === '') {
             return [];

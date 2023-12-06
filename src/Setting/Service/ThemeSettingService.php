@@ -21,7 +21,7 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
 {
     public function __construct(
         private ThemeSettingRepositoryInterface $themeSettingRepository,
-        private JsonServiceInterface $jsonService,
+        private CollectionEncodingServiceInterface $jsonService,
     ) {
     }
 
@@ -58,7 +58,7 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
     public function getCollectionSetting(string $name, string $themeId): StringSetting
     {
         $collection = $this->themeSettingRepository->getCollection($name, $themeId);
-        $collectionEncodingResult = $this->jsonService->jsonEncodeArray($collection);
+        $collectionEncodingResult = $this->jsonService->encodeArrayToString($collection);
 
         return new StringSetting($name, $collectionEncodingResult);
     }
@@ -66,7 +66,7 @@ final class ThemeSettingService implements ThemeSettingServiceInterface
     public function getAssocCollectionSetting(string $name, string $themeId): StringSetting
     {
         $assocCollection = $this->themeSettingRepository->getAssocCollection($name, $themeId);
-        $collectionEncodingResult = $this->jsonService->jsonEncodeArray($assocCollection);
+        $collectionEncodingResult = $this->jsonService->encodeArrayToString($assocCollection);
 
         return new StringSetting($name, $collectionEncodingResult);
     }

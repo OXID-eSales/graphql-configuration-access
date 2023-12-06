@@ -16,7 +16,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\CollectionEncodingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -432,12 +432,12 @@ class ThemeSettingServiceTest extends UnitTestCase
 
     private function getSut(
         ?ThemeSettingRepositoryInterface $themeSettingRepository = null,
-        ?JsonServiceInterface $jsonService = null,
+        ?CollectionEncodingServiceInterface $jsonService = null,
     ): ThemeSettingService {
         $themeSettingRepository = $themeSettingRepository ?? $this->createStub(ThemeSettingRepositoryInterface::class);
         return new ThemeSettingService(
             themeSettingRepository: $themeSettingRepository,
-            jsonService: $jsonService ?? $this->createStub(JsonServiceInterface::class)
+            jsonService: $jsonService ?? $this->createStub(CollectionEncodingServiceInterface::class)
         );
     }
 }
