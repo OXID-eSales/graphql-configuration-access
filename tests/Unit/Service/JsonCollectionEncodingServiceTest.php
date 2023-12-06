@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\JsonCollectionEncodingService;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\CollectionEncodingException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\InvalidCollectionException;
 use PHPUnit\Framework\TestCase;
 
 /**

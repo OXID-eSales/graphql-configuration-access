@@ -12,8 +12,8 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\NoSettingsFoundForThemeException;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepository

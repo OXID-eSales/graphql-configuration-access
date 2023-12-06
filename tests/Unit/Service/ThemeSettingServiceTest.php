@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ThemeSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\CollectionEncodingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\ThemeSettingService;
@@ -18,6 +17,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 

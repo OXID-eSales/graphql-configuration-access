@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception;
 
 class NoSettingsFoundForShopException extends NoSettingsFoundException
 {

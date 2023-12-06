@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception;
 
-final class WrongSettingTypeException extends \Exception
+final class WrongSettingValueException extends \Exception
 {
 }
