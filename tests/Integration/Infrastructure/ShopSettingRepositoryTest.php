@@ -11,7 +11,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Integration\Infrastructur
 
 use Doctrine\DBAL\Connection;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -87,7 +86,6 @@ class ShopSettingRepositoryTest extends IntegrationTestCase
         $sut = new ShopSettingRepository(
             basicContext: $basicContext,
             queryBuilderFactory: $this->get(QueryBuilderFactoryInterface::class),
-            shopSettingEncoder: $this->get(ShopSettingEncoderInterface::class),
             configurationSettingDao: $this->get(ShopConfigurationSettingDaoInterface::class)
         );
 

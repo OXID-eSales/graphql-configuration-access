@@ -12,7 +12,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
@@ -25,8 +24,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     public function __construct(
         private BasicContextInterface $basicContext,
         private QueryBuilderFactoryInterface $queryBuilderFactory,
-        protected ShopSettingEncoderInterface $shopSettingEncoder,
-        protected ShopConfigurationSettingDaoInterface $configurationSettingDao,
+        private ShopConfigurationSettingDaoInterface $configurationSettingDao,
     ) {
     }
 
