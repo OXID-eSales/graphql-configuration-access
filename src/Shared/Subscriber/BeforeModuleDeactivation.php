@@ -16,11 +16,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class BeforeModuleDeactivation implements EventSubscriberInterface
 {
-    private array $dependencies;
-
-    public function __construct(array $dependencies)
-    {
-        $this->dependencies = $dependencies;
+    public function __construct(
+        private array $dependencies
+    ) {
     }
 
     public function handle(OriginalEvent $event): OriginalEvent
