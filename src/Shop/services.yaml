@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shop\Controller\:
+    resource: 'Controller/'
+    public: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingService
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepositoryInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository

@@ -1,5 +1,8 @@
 imports:
-  - { resource: src/Setting/services.yaml }
+  - { resource: src/Shared/services.yaml }
+  - { resource: src/Module/services.yaml }
+  - { resource: src/Shop/services.yaml }
+  - { resource: src/Theme/services.yaml }
 
 parameters:
   oxidesales.graphqlconfigurationaccess.depends_on_modules: [ 'oe_graphql_base' ]

@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\:
+    resource: 'Controller/'
+    public: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingService
+
+  OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepositoryInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository

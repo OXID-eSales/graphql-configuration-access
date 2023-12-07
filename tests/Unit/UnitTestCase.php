@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\DataType\SettingType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Service\CollectionEncodingServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface;
 use PHPUnit\Framework\TestCase;
 
 class UnitTestCase extends TestCase
