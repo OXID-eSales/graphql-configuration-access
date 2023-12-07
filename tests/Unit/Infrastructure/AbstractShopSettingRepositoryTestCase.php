@@ -21,13 +21,11 @@ abstract class AbstractShopSettingRepositoryTestCase extends AbstractDatabaseSet
     protected function getSut(
         ?BasicContextInterface $basicContext = null,
         ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
-        ?ShopSettingEncoderInterface $shopSettingEncoder = null,
         ?ShopConfigurationSettingDaoInterface $shopSettingDao = null,
     ): ShopSettingRepositoryInterface {
         return new ShopSettingRepository(
             basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class),
             queryBuilderFactory: $queryBuilderFactory ?? $this->createStub(QueryBuilderFactoryInterface::class),
-            shopSettingEncoder: $shopSettingEncoder ?? $this->createStub(ShopSettingEncoderInterface::class),
             configurationSettingDao: $shopSettingDao ?? $this->createStub(ShopConfigurationSettingDaoInterface::class),
         );
     }

@@ -7,9 +7,18 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
+use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
+
 interface CollectionEncodingServiceInterface
 {
+    /**
+     * @throws CollectionEncodingException
+     */
     public function encodeArrayToString(array $collection): string;
 
+    /**
+     * @throws InvalidCollectionException
+     */
     public function decodeStringCollectionToArray(string $value): array;
 }

@@ -14,9 +14,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionEx
 
 class JsonCollectionEncodingService implements CollectionEncodingServiceInterface
 {
-    /**
-     * @throws CollectionEncodingException
-     */
     public function encodeArrayToString(array $collection): string
     {
         $jsonValue = json_encode($collection);
@@ -27,9 +24,6 @@ class JsonCollectionEncodingService implements CollectionEncodingServiceInterfac
         return $jsonValue;
     }
 
-    /**
-     * @throws InvalidCollectionException
-     */
     public function decodeStringCollectionToArray(string $value): array
     {
         if ($value === '') {

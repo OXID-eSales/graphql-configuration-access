@@ -12,7 +12,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure;
 use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Setting\Enum\FieldType;
@@ -25,8 +24,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     public function __construct(
         private BasicContextInterface $basicContext,
         private QueryBuilderFactoryInterface $queryBuilderFactory,
-        protected ShopSettingEncoderInterface $shopSettingEncoder,
-        protected ShopConfigurationSettingDaoInterface $configurationSettingDao,
+        private ShopConfigurationSettingDaoInterface $configurationSettingDao,
     ) {
     }
 
@@ -113,7 +111,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         return $this->getArrayFromSettingValue($setting);
     }
 
-    protected function getShopSetting(string $name): ShopConfigurationSetting
+    private function getShopSetting(string $name): ShopConfigurationSetting
     {
         return $this->configurationSettingDao->get($name, $this->basicContext->getCurrentShopId());
     }
@@ -149,7 +147,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     /**
      * @throws WrongSettingTypeException
      */
-    public function checkSettingType(ShopConfigurationSetting $value, string $requiredType): void
+    private function checkSettingType(ShopConfigurationSetting $value, string $requiredType): void
     {
         if ($value->getType() !== $requiredType) {
             throw new WrongSettingTypeException();
@@ -159,7 +157,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
     /**
      * @throws WrongSettingValueException
      */
-    public function getArrayFromSettingValue(ShopConfigurationSetting $setting): array
+    private function getArrayFromSettingValue(ShopConfigurationSetting $setting): array
     {
         $value = $setting->getValue();
 
@@ -218,6 +216,9 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $this->configurationSettingDao->save($setting);
     }
 
+    /**
+     * @throws WrongSettingTypeException
+     */
     private function validateOriginalSettingType(string $originalSettingName, string $type): void
     {
         $originalSetting = $this->getShopSetting($originalSettingName);
