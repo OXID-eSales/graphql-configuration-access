@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Infrastructure;
 
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\NoSettingsFoundForThemeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\NoSettingsFoundForThemeException;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository

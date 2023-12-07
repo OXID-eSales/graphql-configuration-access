@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Infrastructure;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\NoSettingsFoundForThemeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\NoSettingsFoundForThemeException;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository

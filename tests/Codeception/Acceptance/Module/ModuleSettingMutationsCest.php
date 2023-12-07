@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Module;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 

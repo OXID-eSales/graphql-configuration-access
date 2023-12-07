@@ -7,7 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception;
+
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\NoSettingsFoundException;
 
 class NoSettingsFoundForThemeException extends NoSettingsFoundException
 {

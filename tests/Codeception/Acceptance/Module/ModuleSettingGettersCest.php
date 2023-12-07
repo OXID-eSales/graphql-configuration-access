@@ -7,17 +7,17 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Module;
 
 use Codeception\Attribute\DataProvider;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
- * @group shop_setting
+ * @group module_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
  */
-final class ShopSettingGettersCest extends BaseCest
+final class ModuleSettingGettersCest extends ModuleSettingBaseCest
 {
     #[DataProvider('queryMethodsDataProvider')]
     public function testGetSettingAuthorized(AcceptanceTester $I, \Codeception\Example $example): void
@@ -36,59 +36,48 @@ final class ShopSettingGettersCest extends BaseCest
     protected function queryMethodsDataProvider(): \Generator
     {
         yield [
-            'queryName' => 'shopSettingInteger',
+            'queryName' => 'moduleSettingInteger',
             'settingName' => 'intSetting',
             'expectedValue' => 123
         ];
 
         yield [
-            'queryName' => 'shopSettingFloat',
+            'queryName' => 'moduleSettingFloat',
             'settingName' => 'floatSetting',
             'expectedValue' => 1.23
         ];
 
         yield [
-            'queryName' => 'shopSettingBoolean',
+            'queryName' => 'moduleSettingBoolean',
             'settingName' => 'boolSetting',
             'expectedValue' => false
         ];
 
         yield [
-            'queryName' => 'shopSettingString',
+            'queryName' => 'moduleSettingString',
             'settingName' => 'stringSetting',
             'expectedValue' => 'default'
         ];
 
         yield [
-            'queryName' => 'shopSettingSelect',
-            'settingName' => 'selectSetting',
-            'expectedValue' => 'selectString'
-        ];
-
-        yield [
-            'queryName' => 'shopSettingCollection',
+            'queryName' => 'moduleSettingCollection',
             'settingName' => 'arraySetting',
-            'expectedValue' => '["10","20","50","100"]'
-        ];
-
-        yield [
-            'queryName' => 'shopSettingAssocCollection',
-            'settingName' => 'aarraySetting',
-            'expectedValue' => '{"first":"10","second":"20","third":"50"}'
+            'expectedValue' => '["nice","values"]'
         ];
     }
 
     private function runSettingGetterQuery(AcceptanceTester $I, string $queryName, string $settingName): array
     {
         $I->sendGQLQuery(
-            'query q($name: String!){
-                ' . $queryName . '(name: $name) {
+            'query q($name: String!, $moduleId: String!){
+                ' . $queryName . '(name: $name, moduleId: $moduleId) {
                     name
                     value
                 }
             }',
             [
-                'name' => $settingName
+                'name' => $settingName,
+                'moduleId' => self::TEST_MODULE_ID
             ]
         );
 

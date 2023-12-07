@@ -7,17 +7,18 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Theme;
 
 use Codeception\Attribute\DataProvider;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
- * @group module_setting
+ * @group theme_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
  */
-final class ModuleSettingGettersCest extends ModuleSettingBaseCest
+final class ThemeSettingGettersCest extends BaseCest
 {
     #[DataProvider('queryMethodsDataProvider')]
     public function testGetSettingAuthorized(AcceptanceTester $I, \Codeception\Example $example): void
@@ -36,48 +37,60 @@ final class ModuleSettingGettersCest extends ModuleSettingBaseCest
     protected function queryMethodsDataProvider(): \Generator
     {
         yield [
-            'queryName' => 'moduleSettingInteger',
+            'queryName' => 'themeSettingInteger',
             'settingName' => 'intSetting',
             'expectedValue' => 123
         ];
 
         yield [
-            'queryName' => 'moduleSettingFloat',
+            'queryName' => 'themeSettingFloat',
             'settingName' => 'floatSetting',
             'expectedValue' => 1.23
         ];
 
         yield [
-            'queryName' => 'moduleSettingBoolean',
+            'queryName' => 'themeSettingBoolean',
             'settingName' => 'boolSetting',
             'expectedValue' => false
         ];
 
         yield [
-            'queryName' => 'moduleSettingString',
+            'queryName' => 'themeSettingString',
             'settingName' => 'stringSetting',
             'expectedValue' => 'default'
         ];
 
         yield [
-            'queryName' => 'moduleSettingCollection',
+            'queryName' => 'themeSettingSelect',
+            'settingName' => 'selectSetting',
+            'expectedValue' => 'selectString'
+        ];
+
+        yield [
+            'queryName' => 'themeSettingCollection',
             'settingName' => 'arraySetting',
-            'expectedValue' => '["nice","values"]'
+            'expectedValue' => '["10","20","50","100"]'
+        ];
+
+        yield [
+            'queryName' => 'themeSettingAssocCollection',
+            'settingName' => 'aarraySetting',
+            'expectedValue' => '{"first":"10","second":"20","third":"50"}'
         ];
     }
 
     private function runSettingGetterQuery(AcceptanceTester $I, string $queryName, string $settingName): array
     {
         $I->sendGQLQuery(
-            'query q($name: String!, $moduleId: String!){
-                ' . $queryName . '(name: $name, moduleId: $moduleId) {
+            'query q($name: String!, $themeId: String!){
+                ' . $queryName . '(name: $name, themeId: $themeId) {
                     name
                     value
                 }
             }',
             [
                 'name' => $settingName,
-                'moduleId' => self::TEST_MODULE_ID
+                'themeId' => self::TEST_THEME_ID
             ]
         );
 

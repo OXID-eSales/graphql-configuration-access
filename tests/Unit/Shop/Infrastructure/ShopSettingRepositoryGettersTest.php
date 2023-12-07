@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shop\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingTypeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository

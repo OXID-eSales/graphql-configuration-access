@@ -7,11 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Infrastructure\AbstractDatabaseSettingsRepositoryTestCase;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

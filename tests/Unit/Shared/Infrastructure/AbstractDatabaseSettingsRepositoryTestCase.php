@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Infrastructure;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingValueException;

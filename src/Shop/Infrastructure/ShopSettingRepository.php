@@ -16,8 +16,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncod
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\NoSettingsFoundForShopException;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingTypeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\NoSettingsFoundForShopException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingValueException;
 
 final class ShopSettingRepository implements ShopSettingRepositoryInterface

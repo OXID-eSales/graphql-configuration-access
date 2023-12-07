@@ -7,31 +7,31 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Shop;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
- * @group module_setting
+ * @group shop_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
  */
-final class ModuleSettingListCest extends ModuleSettingBaseCest
+final class ShopSettingListCest extends BaseCest
 {
-    public function testGetModuleSettingsListAuthorized(AcceptanceTester $I): void
+    public function testGetShopSettingsListAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
-            'query getSettings($moduleId: String!){
-                moduleSettingsList(moduleId:  $moduleId) {
+            'query{
+                shopSettingsList {
                     name
                     type
                     supported
                 }
-            }',
-            ['moduleId' => self::TEST_MODULE_ID]
+            }'
         );
 
         $I->seeResponseIsJson();
@@ -39,8 +39,7 @@ final class ModuleSettingListCest extends ModuleSettingBaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $settingsList = $result['data']['moduleSettingsList'];
-        $I->assertCount(5, $settingsList);
+        $settingsList = $result['data']['shopSettingsList'];
         $I->assertContains(
             ['name' => 'intSetting', 'type' => FieldType::NUMBER, 'supported' => true],
             $settingsList
@@ -58,7 +57,15 @@ final class ModuleSettingListCest extends ModuleSettingBaseCest
             $settingsList
         );
         $I->assertContains(
+            ['name' => 'selectSetting', 'type' => FieldType::SELECT, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
             ['name' => 'arraySetting', 'type' => FieldType::ARRAY, 'supported' => true],
+            $settingsList
+        );
+        $I->assertContains(
+            ['name' => 'aarraySetting', 'type' => FieldType::ASSOCIATIVE_ARRAY, 'supported' => true],
             $settingsList
         );
     }

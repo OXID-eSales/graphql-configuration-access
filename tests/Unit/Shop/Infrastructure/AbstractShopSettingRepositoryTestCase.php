@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shop\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepositoryInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Infrastructure\AbstractDatabaseSettingsRepositoryTestCase;
 
 abstract class AbstractShopSettingRepositoryTestCase extends AbstractDatabaseSettingsRepositoryTestCase
 {

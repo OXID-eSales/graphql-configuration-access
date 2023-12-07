@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\NoSettingsFoundForThemeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\NoSettingsFoundForThemeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingValueException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
