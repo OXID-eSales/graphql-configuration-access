@@ -7,8 +7,8 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForThemeException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\NoSettingsFoundForThemeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingValueException;
 
 interface ThemeSettingRepositoryInterface
 {

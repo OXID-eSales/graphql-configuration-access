@@ -7,9 +7,9 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\NoSettingsFoundForShopException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingTypeException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\WrongSettingValueException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\NoSettingsFoundForShopException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingValueException;
 
 interface ShopSettingRepositoryInterface
 {

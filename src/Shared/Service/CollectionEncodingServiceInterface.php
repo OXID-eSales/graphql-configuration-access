@@ -7,8 +7,8 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\CollectionEncodingException;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Exception\InvalidCollectionException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\CollectionEncodingException;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\InvalidCollectionException;
 
 interface CollectionEncodingServiceInterface
 {
