@@ -36,6 +36,8 @@
         }
     },
     "scripts": {
+        "post-install-cmd": "git-hooks/init.sh",
+        "post-update-cmd": "git-hooks/init.sh",
         "phpcs": "phpcs --standard=tests/phpcs.xml",
         "phpcbf": "phpcbf --standard=tests/phpcs.xml",
 
