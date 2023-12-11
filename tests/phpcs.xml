@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="Oxid Coding Standard">
+    <description>Oxid Coding Standard</description>
+
+    <!-- Paths to check -->
+    <file>../src/</file>
+    <file>./</file>
+    <exclude-pattern>./tests/Codeception/Config</exclude-pattern>
+
+    <!-- display progress -->
+    <arg value="p"/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php,dist,phtml"/>
+
+    <!-- inherit rules from: -->
+    <rule ref="PSR12"/>
+
+    <!-- ignore length of SQLs in migrations -->
+    <rule ref="Generic.Files.LineLength">
+        <exclude-pattern>./migration</exclude-pattern>
+    </rule>
+
+    <!-- ignore method declaration rules for tests -->
+    <rule ref="PSR2.Methods.MethodDeclaration">
+        <exclude-pattern>./tests</exclude-pattern>
+    </rule>
+
+</ruleset>

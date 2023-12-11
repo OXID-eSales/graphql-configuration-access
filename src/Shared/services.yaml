@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\:
+    resource: 'Service/'
+    public: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService

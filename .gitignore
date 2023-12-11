@@ -1,0 +1,8 @@
+.idea
+.php_cs.cache
+tests/.phpunit.result.cache
+.deptrac.cache
+composer.lock
+/vendor/
+tests/reports/
+tests/Codeception/_data/
