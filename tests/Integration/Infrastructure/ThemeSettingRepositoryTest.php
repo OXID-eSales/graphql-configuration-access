@@ -40,8 +40,10 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 
         $sut->saveIntegerSetting($name, 124, 'awesomeTheme');
         $integerResult = $sut->getInteger($name, 'awesomeTheme');
-
         $this->assertSame(124, $integerResult);
+
+        // Check if dispatcher isn't executed again if value is the same
+        $sut->saveIntegerSetting($name, 124, 'awesomeTheme');
     }
 
     public function testSaveAndGetFloatSetting(): void
@@ -61,8 +63,10 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 
         $sut->saveFloatSetting($name, 1.24, 'awesomeTheme');
         $floatResult = $sut->getFloat($name, 'awesomeTheme');
-
         $this->assertSame(1.24, $floatResult);
+
+        // Check if dispatcher isn't executed again if value is the same
+        $sut->saveFloatSetting($name, 1.24, 'awesomeTheme');
     }
 
     public function testSaveAndGetBooleanSetting(): void
@@ -81,9 +85,11 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
         );
 
         $sut->saveBooleanSetting($name, true, 'awesomeTheme');
-        $floatResult = $sut->getBoolean($name, 'awesomeTheme');
+        $booleanResult = $sut->getBoolean($name, 'awesomeTheme');
+        $this->assertSame(true, $booleanResult);
 
-        $this->assertSame(true, $floatResult);
+        // Check if dispatcher isn't executed again if value is the same
+        $sut->saveBooleanSetting($name, true, 'awesomeTheme');
     }
 
     public function testSaveAndGetStringSetting(): void
@@ -103,8 +109,10 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 
         $sut->saveStringSetting($name, 'new value', 'awesomeTheme');
         $stringResult = $sut->getString($name, 'awesomeTheme');
-
         $this->assertSame('new value', $stringResult);
+
+        // Check if dispatcher isn't executed again if value is the same
+        $sut->saveStringSetting($name, 'new value', 'awesomeTheme');
     }
 
     public function testSaveAndGetSelectSetting(): void
@@ -124,8 +132,10 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 
         $sut->saveSelectSetting($name, 'new select value', 'awesomeTheme');
         $stringResult = $sut->getSelect($name, 'awesomeTheme');
-
         $this->assertSame('new select value', $stringResult);
+
+        // Check if dispatcher isn't executed again if value is the same
+        $sut->saveSelectSetting($name, 'new select value', 'awesomeTheme');
     }
 
     public function testSaveAndGetCollectionSetting(): void
@@ -145,8 +155,10 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
 
         $sut->saveCollectionSetting($name, ['nice', 'cool', 'values'], 'awesomeTheme');
         $collectionResult = $sut->getCollection($name, 'awesomeTheme');
-
         $this->assertSame(['nice', 'cool', 'values'], $collectionResult);
+
+        // Check if dispatcher isn't executed again if value is the same
+        $sut->saveCollectionSetting($name, ['nice', 'cool', 'values'], 'awesomeTheme');
     }
 
     public function testSaveAndGetAssocCollectionSetting(): void
@@ -170,8 +182,14 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
             'awesomeTheme'
         );
         $assocCollectionResult = $sut->getAssocCollection($name, 'awesomeTheme');
-
         $this->assertSame(['first' => '10', 'second' => '20', 'third' => '60'], $assocCollectionResult);
+
+        // Check if dispatcher isn't executed again if value is the same
+        $sut->saveAssocCollectionSetting(
+            $name,
+            ['first' => '10', 'second' => '20', 'third' => '60'],
+            'awesomeTheme'
+        );
     }
 
     public function testGetSettingsList(): void

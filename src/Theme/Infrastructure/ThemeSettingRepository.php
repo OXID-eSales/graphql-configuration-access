@@ -228,15 +228,17 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
                 'value' => $value
             ]);
 
-        $queryBuilder->execute();
+        $result = $queryBuilder->execute();
 
-        $this->eventDispatcher->dispatch(
-            new ThemeSettingChangedEvent(
-                $name,
-                $shopId,
-                $themeId
-            )
-        );
+        if ($result !== 0) {
+            $this->eventDispatcher->dispatch(
+                new ThemeSettingChangedEvent(
+                    $name,
+                    $shopId,
+                    $themeId
+                )
+            );
+        }
     }
 
     protected function saveSettingAsType(string $settingType, string $name, string $themeId, mixed $value): void
