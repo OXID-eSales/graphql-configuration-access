@@ -11,6 +11,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Integration\Infrastructur
 
 use Doctrine\DBAL\Connection;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -51,6 +52,73 @@ class ShopSettingRepositoryTest extends IntegrationTestCase
 
         $this->expectException(NoSettingsFoundForShopException::class);
         $sut->getSettingsList();
+    }
+
+    /**
+     * @dataProvider exceptionGetterDataProvider
+     */
+    public function testGetterExceptionIfSettingNotExist(string $getterMethod): void
+    {
+        $sut = $this->getSutForShop(2);
+
+        $this->expectException(EntryDoesNotExistDaoException::class);
+        $this->expectExceptionMessage('Setting NotExistant doesn\'t exist in the shop with id 2');
+        $sut->$getterMethod('NotExistant');
+    }
+
+    public function exceptionGetterDataProvider(): \Generator
+    {
+        yield ['getInteger'];
+        yield ['getFloat'];
+        yield ['getBoolean'];
+        yield ['getString'];
+        yield ['getSelect'];
+        yield ['getCollection'];
+        yield ['getAssocCollection'];
+    }
+
+    /**
+     * @dataProvider exceptionSetterDataProvider
+     */
+    public function testSetterExceptionIfSettingNotExist(string $setterMethod, mixed $value): void
+    {
+        $sut = $this->getSutForShop(2);
+
+        $this->expectException(EntryDoesNotExistDaoException::class);
+        $this->expectExceptionMessage('Setting NotExistant doesn\'t exist in the shop with id 2');
+        $sut->$setterMethod('NotExistant', $value);
+    }
+
+    public function exceptionSetterDataProvider(): \Generator
+    {
+        yield [
+            'setterMethod' => 'saveIntegerSetting',
+            'value' => 123
+        ];
+        yield [
+            'setterMethod' => 'saveFloatSetting',
+            'value' => 1.23
+        ];
+        yield [
+            'setterMethod' => 'saveBooleanSetting',
+            'value' => true
+        ];
+        yield [
+            'setterMethod' => 'saveStringSetting',
+            'value' => 'string'
+        ];
+        yield [
+            'setterMethod' => 'saveSelectSetting',
+            'value' => 'select'
+        ];
+        yield [
+            'setterMethod' => 'saveCollectionSetting',
+            'value' => ['nice', 'collection']
+        ];
+        yield [
+            'setterMethod' => 'saveAssocCollectionSetting',
+            'value' => ['first' => 'nice', 'second' => 'collection']
+        ];
     }
 
     private function getDbConnection(): Connection
