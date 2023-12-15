@@ -52,49 +52,49 @@ final class ShopSettingMutationsCest extends BaseCest
     protected function mutationMethodsDataProvider(): \Generator
     {
         yield [
-            'mutationName' => 'changeShopSettingInteger',
+            'mutationName' => 'shopSettingIntegerChange',
             'settingName' => 'intSetting',
             'settingValue' => 235,
             'valueType' => 'Int!'
         ];
 
         yield [
-            'mutationName' => 'changeShopSettingFloat',
+            'mutationName' => 'shopSettingFloatChange',
             'settingName' => 'floatSetting',
             'settingValue' => 2.35,
             'valueType' => 'Float!'
         ];
 
         yield [
-            'mutationName' => 'changeShopSettingBoolean',
+            'mutationName' => 'shopSettingBooleanChange',
             'settingName' => 'boolSetting',
             'settingValue' => true,
             'valueType' => 'Boolean!'
         ];
 
         yield [
-            'mutationName' => 'changeShopSettingString',
+            'mutationName' => 'shopSettingStringChange',
             'settingName' => 'stringSetting',
             'settingValue' => 'some string value',
             'valueType' => 'String!'
         ];
 
         yield [
-            'mutationName' => 'changeShopSettingSelect',
+            'mutationName' => 'shopSettingSelectChange',
             'settingName' => 'selectSetting',
             'settingValue' => 'some select value',
             'valueType' => 'String!'
         ];
 
         yield [
-            'mutationName' => 'changeShopSettingCollection',
+            'mutationName' => 'shopSettingCollectionChange',
             'settingName' => 'arraySetting',
             'settingValue' => '["10","20","50","100"]',
             'valueType' => 'String!'
         ];
 
         yield [
-            'mutationName' => 'changeShopSettingAssocCollection',
+            'mutationName' => 'shopSettingAssocCollectionChange',
             'settingName' => 'aarraySetting',
             'settingValue' => '{"first":"10","second":"20","third":"50"}',
             'valueType' => 'String!'

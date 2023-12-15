@@ -21,6 +21,9 @@ use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 final class ShopSettingController
 {
     public function __construct(
@@ -32,7 +35,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingInteger(string $name): IntegerSetting
+    public function shopSettingInteger(string $name): IntegerSetting
     {
         return $this->shopSettingService->getIntegerSetting($name);
     }
@@ -41,7 +44,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingFloat(string $name): FloatSetting
+    public function shopSettingFloat(string $name): FloatSetting
     {
         return $this->shopSettingService->getFloatSetting($name);
     }
@@ -50,7 +53,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingBoolean(string $name): BooleanSetting
+    public function shopSettingBoolean(string $name): BooleanSetting
     {
         return $this->shopSettingService->getBooleanSetting($name);
     }
@@ -59,7 +62,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingString(string $name): StringSetting
+    public function shopSettingString(string $name): StringSetting
     {
         return $this->shopSettingService->getStringSetting($name);
     }
@@ -68,7 +71,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingSelect(string $name): StringSetting
+    public function shopSettingSelect(string $name): StringSetting
     {
         return $this->shopSettingService->getSelectSetting($name);
     }
@@ -77,7 +80,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingCollection(string $name): StringSetting
+    public function shopSettingCollection(string $name): StringSetting
     {
         return $this->shopSettingService->getCollectionSetting($name);
     }
@@ -86,7 +89,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingAssocCollection(string $name): StringSetting
+    public function shopSettingAssocCollection(string $name): StringSetting
     {
         return $this->shopSettingService->getAssocCollectionSetting($name);
     }
@@ -95,7 +98,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeShopSettingInteger(string $name, int $value): IntegerSetting
+    public function shopSettingIntegerChange(string $name, int $value): IntegerSetting
     {
         return $this->shopSettingService->changeIntegerSetting($name, $value);
     }
@@ -104,7 +107,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeShopSettingFloat(string $name, float $value): FloatSetting
+    public function shopSettingFloatChange(string $name, float $value): FloatSetting
     {
         return $this->shopSettingService->changeFloatSetting($name, $value);
     }
@@ -113,7 +116,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeShopSettingBoolean(string $name, bool $value): BooleanSetting
+    public function shopSettingBooleanChange(string $name, bool $value): BooleanSetting
     {
         return $this->shopSettingService->changeBooleanSetting($name, $value);
     }
@@ -122,7 +125,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeShopSettingString(string $name, string $value): StringSetting
+    public function shopSettingStringChange(string $name, string $value): StringSetting
     {
         return $this->shopSettingService->changeStringSetting($name, $value);
     }
@@ -131,7 +134,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeShopSettingSelect(string $name, string $value): StringSetting
+    public function shopSettingSelectChange(string $name, string $value): StringSetting
     {
         return $this->shopSettingService->changeSelectSetting($name, $value);
     }
@@ -140,7 +143,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeShopSettingCollection(string $name, string $value): StringSetting
+    public function shopSettingCollectionChange(string $name, string $value): StringSetting
     {
         return $this->shopSettingService->changeCollectionSetting($name, $value);
     }
@@ -149,7 +152,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeShopSettingAssocCollection(string $name, string $value): StringSetting
+    public function shopSettingAssocCollectionChange(string $name, string $value): StringSetting
     {
         return $this->shopSettingService->changeAssocCollectionSetting($name, $value);
     }
@@ -161,7 +164,7 @@ final class ShopSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getShopSettingsList(): array
+    public function shopSettings(): array
     {
         return $this->shopSettingService->getSettingsList();
     }

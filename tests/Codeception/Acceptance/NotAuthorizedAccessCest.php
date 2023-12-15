@@ -53,20 +53,20 @@ final class NotAuthorizedAccessCest extends BaseCest
 
     protected function themeMutationsDataProvider(): \Generator
     {
-        yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingInteger', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingFloat', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingBoolean', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingString', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingSelect', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingCollection', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeThemeSettingAssocCollection', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'themeSettingIntegerChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'themeSettingFloatChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'themeSettingBooleanChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'themeSettingStringChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'themeSettingSelectChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'themeSettingCollectionChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'themeSettingAssocCollectionChange', 'field' => 'name'];
     }
 
     protected function listQueriesDataProvider(): \Generator
     {
-        yield ['queryType' => 'query', 'queryName' => 'themeSettingsList', 'field' => 'name'];
-        yield ['queryType' => 'query', 'queryName' => 'moduleSettingsList', 'field' => 'name'];
-        yield ['queryType' => 'query', 'queryName' => 'shopSettingsList', 'field' => 'name'];
+        yield ['queryType' => 'query', 'queryName' => 'themeSettings', 'field' => 'name'];
+        yield ['queryType' => 'query', 'queryName' => 'moduleSettings', 'field' => 'name'];
+        yield ['queryType' => 'query', 'queryName' => 'shopSettings', 'field' => 'name'];
     }
 
     protected function moduleGettersDataProvider(): \Generator
@@ -80,11 +80,11 @@ final class NotAuthorizedAccessCest extends BaseCest
 
     protected function moduleMutationsDataProvider(): \Generator
     {
-        yield ['queryType' => 'mutation', 'queryName' => 'changeModuleSettingInteger', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeModuleSettingFloat', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeModuleSettingBoolean', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeModuleSettingString', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeModuleSettingCollection', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'moduleSettingIntegerChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'moduleSettingFloatChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'moduleSettingBooleanChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'moduleSettingStringString', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'moduleSettingCollectionChange', 'field' => 'name'];
     }
 
     protected function shopGettersDataProvider(): \Generator
@@ -100,13 +100,13 @@ final class NotAuthorizedAccessCest extends BaseCest
 
     protected function shopMutationsDataProvider(): \Generator
     {
-        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingInteger', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingFloat', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingBoolean', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingString', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingSelect', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingCollection', 'field' => 'name'];
-        yield ['queryType' => 'mutation', 'queryName' => 'changeShopSettingAssocCollection', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'shopSettingIntegerChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'shopSettingFloatChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'shopSettingBooleanChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'shopSettingStringChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'shopSettingSelectChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'shopSettingCollectionChange', 'field' => 'name'];
+        yield ['queryType' => 'mutation', 'queryName' => 'shopSettingAssocCollectionChange', 'field' => 'name'];
     }
 
     private function runSimplifiedAccessCheckQuery(

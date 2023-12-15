@@ -24,7 +24,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: Int!, $moduleId: String!){
-                changeModuleSettingInteger(name: $name, value: $value, moduleId: $moduleId) {
+                moduleSettingIntegerChange(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
@@ -42,7 +42,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeModuleSettingInteger'];
+        $setting = $result['data']['moduleSettingIntegerChange'];
         $I->assertSame('intSetting', $setting['name']);
         $I->assertSame(124, $setting['value']);
     }
@@ -53,7 +53,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: Float!, $moduleId: String!){
-                changeModuleSettingFloat(name: $name, value: $value, moduleId: $moduleId) {
+                moduleSettingFloatChange(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
@@ -71,7 +71,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeModuleSettingFloat'];
+        $setting = $result['data']['moduleSettingFloatChange'];
         $I->assertSame('floatSetting', $setting['name']);
         $I->assertSame(1.24, $setting['value']);
     }
@@ -82,7 +82,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: Boolean!, $moduleId: String!){
-                changeModuleSettingBoolean(name: $name, value: $value, moduleId: $moduleId) {
+                moduleSettingBooleanChange(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
@@ -100,7 +100,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeModuleSettingBoolean'];
+        $setting = $result['data']['moduleSettingBooleanChange'];
         $I->assertSame('boolSetting', $setting['name']);
         $I->assertSame(false, $setting['value']);
     }
@@ -111,7 +111,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: String!, $moduleId: String!){
-                changeModuleSettingString(name: $name, value: $value, moduleId: $moduleId) {
+                moduleSettingStringChange(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
@@ -129,7 +129,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeModuleSettingString'];
+        $setting = $result['data']['moduleSettingStringChange'];
         $I->assertSame('stringSetting', $setting['name']);
         $I->assertSame('default', $setting['value']);
     }
@@ -140,7 +140,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: String!, $moduleId: String!){
-                changeModuleSettingCollection(name: $name, value: $value, moduleId: $moduleId) {
+                moduleSettingCollectionChange(name: $name, value: $value, moduleId: $moduleId) {
                     name
                     value
                 }
@@ -158,7 +158,7 @@ final class ModuleSettingMutationsCest extends ModuleSettingBaseCest
 
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeModuleSettingCollection'];
+        $setting = $result['data']['moduleSettingCollectionChange'];
         $I->assertSame('arraySetting', $setting['name']);
         $I->assertSame('[3,"interesting","values"]', $setting['value']);
     }

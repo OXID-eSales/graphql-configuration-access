@@ -20,12 +20,12 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
  */
 final class ThemeSettingListCest extends BaseCest
 {
-    public function testGetThemeSettingsListAuthorized(AcceptanceTester $I): void
+    public function testGetThemeSettingsAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
         $I->sendGQLQuery(
             'query getSettings($themeId: String!){
-                    themeSettingsList(themeId:  $themeId) {
+                    themeSettings(themeId:  $themeId) {
                       name
                       type
                       supported
@@ -36,7 +36,7 @@ final class ThemeSettingListCest extends BaseCest
         $I->seeResponseIsJson();
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
-        $settingsList = $result['data']['themeSettingsList'];
+        $settingsList = $result['data']['themeSettings'];
         $I->assertCount(14, $settingsList);
         $I->assertContains(
             ['name' => 'intSetting', 'type' => FieldType::NUMBER, 'supported' => true],

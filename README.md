@@ -9,7 +9,7 @@ the API consumer would always have to convert the value after queries or before 
 we decided to use json encoded strings instead.
 
 To get the specific type of a configuration, we provide queries like
-`getShopSettingsList`/`getModuleSettingsList`/`getThemeSettingsList` to figure out the type for configurations.
+`shopSettings`/`moduleSettings`/`themeSettings` to figure out the type for configurations.
 As a result you get an array of setting types:
 
 ```

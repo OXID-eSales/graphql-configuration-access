@@ -25,7 +25,7 @@ final class ThemeSettingMutationsCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: Int!, $themeId: String!){
-                changeThemeSettingInteger(name: $name, value: $value, themeId: $themeId) {
+                themeSettingIntegerChange(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
@@ -42,7 +42,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeThemeSettingInteger'];
+        $setting = $result['data']['themeSettingIntegerChange'];
         $I->assertSame('intSettingEditable', $setting['name']);
         $I->assertSame(124, $setting['value']);
     }
@@ -53,7 +53,7 @@ final class ThemeSettingMutationsCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: Float!, $themeId: String!){
-                changeThemeSettingFloat(name: $name, value: $value, themeId: $themeId) {
+                themeSettingFloatChange(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
@@ -70,7 +70,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeThemeSettingFloat'];
+        $setting = $result['data']['themeSettingFloatChange'];
         $I->assertSame('floatSettingEditable', $setting['name']);
         $I->assertSame(1.24, $setting['value']);
     }
@@ -81,7 +81,7 @@ final class ThemeSettingMutationsCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: Boolean!, $themeId: String!){
-                changeThemeSettingBoolean(name: $name, value: $value, themeId: $themeId) {
+                themeSettingBooleanChange(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
@@ -98,7 +98,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeThemeSettingBoolean'];
+        $setting = $result['data']['themeSettingBooleanChange'];
         $I->assertSame('boolSettingEditable', $setting['name']);
         $I->assertSame(true, $setting['value']);
     }
@@ -109,7 +109,7 @@ final class ThemeSettingMutationsCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: String!, $themeId: String!){
-                changeThemeSettingString(name: $name, value: $value, themeId: $themeId) {
+                themeSettingStringChange(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
@@ -126,7 +126,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeThemeSettingString'];
+        $setting = $result['data']['themeSettingStringChange'];
         $I->assertSame('stringSettingEditable', $setting['name']);
         $I->assertSame('default', $setting['value']);
     }
@@ -137,7 +137,7 @@ final class ThemeSettingMutationsCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: String!, $themeId: String!){
-                changeThemeSettingSelect(name: $name, value: $value, themeId: $themeId) {
+                themeSettingSelectChange(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
@@ -154,7 +154,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeThemeSettingSelect'];
+        $setting = $result['data']['themeSettingSelectChange'];
         $I->assertSame('selectSettingEditable', $setting['name']);
         $I->assertSame('new select', $setting['value']);
     }
@@ -165,7 +165,7 @@ final class ThemeSettingMutationsCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: String!, $themeId: String!){
-                changeThemeSettingCollection(name: $name, value: $value, themeId: $themeId) {
+                themeSettingCollectionChange(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
@@ -182,7 +182,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeThemeSettingCollection'];
+        $setting = $result['data']['themeSettingCollectionChange'];
         $I->assertSame('arraySettingEditable', $setting['name']);
         $I->assertSame('[3,"interesting","values"]', $setting['value']);
     }
@@ -193,7 +193,7 @@ final class ThemeSettingMutationsCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation m($name: String!, $value: String!, $themeId: String!){
-                changeThemeSettingAssocCollection(name: $name, value: $value, themeId: $themeId) {
+                themeSettingAssocCollectionChange(name: $name, value: $value, themeId: $themeId) {
                     name
                     value
                 }
@@ -210,7 +210,7 @@ final class ThemeSettingMutationsCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $setting = $result['data']['changeThemeSettingAssocCollection'];
+        $setting = $result['data']['themeSettingAssocCollectionChange'];
         $I->assertSame('assocArraySettingEditable', $setting['name']);
         $I->assertSame('{"first":"10","second":"20","third":"50"}', $setting['value']);
     }

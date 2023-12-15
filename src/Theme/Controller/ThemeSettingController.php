@@ -21,6 +21,9 @@ use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 final class ThemeSettingController
 {
     public function __construct(
@@ -32,7 +35,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getThemeSettingInteger(string $name, string $themeId): IntegerSetting
+    public function themeSettingInteger(string $name, string $themeId): IntegerSetting
     {
         return $this->themeSettingService->getIntegerSetting($name, $themeId);
     }
@@ -41,7 +44,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getThemeSettingFloat(string $name, string $themeId): FloatSetting
+    public function themeSettingFloat(string $name, string $themeId): FloatSetting
     {
         return $this->themeSettingService->getFloatSetting($name, $themeId);
     }
@@ -50,7 +53,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getThemeSettingBoolean(string $name, string $themeId): BooleanSetting
+    public function themeSettingBoolean(string $name, string $themeId): BooleanSetting
     {
         return $this->themeSettingService->getBooleanSetting($name, $themeId);
     }
@@ -59,7 +62,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getThemeSettingString(string $name, string $themeId): StringSetting
+    public function themeSettingString(string $name, string $themeId): StringSetting
     {
         return $this->themeSettingService->getStringSetting($name, $themeId);
     }
@@ -68,7 +71,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getThemeSettingSelect(string $name, string $themeId): StringSetting
+    public function themeSettingSelect(string $name, string $themeId): StringSetting
     {
         return $this->themeSettingService->getSelectSetting($name, $themeId);
     }
@@ -77,7 +80,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getThemeSettingCollection(string $name, string $themeId): StringSetting
+    public function themeSettingCollection(string $name, string $themeId): StringSetting
     {
         return $this->themeSettingService->getCollectionSetting($name, $themeId);
     }
@@ -86,7 +89,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getThemeSettingAssocCollection(string $name, string $themeId): StringSetting
+    public function themeSettingAssocCollection(string $name, string $themeId): StringSetting
     {
         return $this->themeSettingService->getAssocCollectionSetting($name, $themeId);
     }
@@ -98,7 +101,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function getThemeSettingsList(string $themeId): array
+    public function themeSettings(string $themeId): array
     {
         return $this->themeSettingService->getSettingsList($themeId);
     }
@@ -107,7 +110,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeThemeSettingInteger(string $name, int $value, string $themeId): IntegerSetting
+    public function themeSettingIntegerChange(string $name, int $value, string $themeId): IntegerSetting
     {
         return $this->themeSettingService->changeIntegerSetting($name, $value, $themeId);
     }
@@ -116,7 +119,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeThemeSettingFloat(string $name, float $value, string $themeId): FloatSetting
+    public function themeSettingFloatChange(string $name, float $value, string $themeId): FloatSetting
     {
         return $this->themeSettingService->changeFloatSetting($name, $value, $themeId);
     }
@@ -125,7 +128,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeThemeSettingBoolean(string $name, bool $value, string $themeId): BooleanSetting
+    public function themeSettingBooleanChange(string $name, bool $value, string $themeId): BooleanSetting
     {
         return $this->themeSettingService->changeBooleanSetting($name, $value, $themeId);
     }
@@ -134,7 +137,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeThemeSettingString(string $name, string $value, string $themeId): StringSetting
+    public function themeSettingStringChange(string $name, string $value, string $themeId): StringSetting
     {
         return $this->themeSettingService->changeStringSetting($name, $value, $themeId);
     }
@@ -143,7 +146,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeThemeSettingSelect(string $name, string $value, string $themeId): StringSetting
+    public function themeSettingSelectChange(string $name, string $value, string $themeId): StringSetting
     {
         return $this->themeSettingService->changeSelectSetting($name, $value, $themeId);
     }
@@ -152,7 +155,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeThemeSettingCollection(string $name, string $value, string $themeId): StringSetting
+    public function themeSettingCollectionChange(string $name, string $value, string $themeId): StringSetting
     {
         return $this->themeSettingService->changeCollectionSetting($name, $value, $themeId);
     }
@@ -161,7 +164,7 @@ final class ThemeSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function changeThemeSettingAssocCollection(string $name, string $value, string $themeId): StringSetting
+    public function themeSettingAssocCollectionChange(string $name, string $value, string $themeId): StringSetting
     {
         return $this->themeSettingService->changeAssocCollectionSetting($name, $value, $themeId);
     }

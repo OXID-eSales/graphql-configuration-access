@@ -19,13 +19,13 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
  */
 final class ModuleSettingListCest extends ModuleSettingBaseCest
 {
-    public function testGetModuleSettingsListAuthorized(AcceptanceTester $I): void
+    public function testGetModuleSettingsAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query getSettings($moduleId: String!){
-                moduleSettingsList(moduleId:  $moduleId) {
+                moduleSettings(moduleId:  $moduleId) {
                     name
                     type
                     supported
@@ -39,7 +39,7 @@ final class ModuleSettingListCest extends ModuleSettingBaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $settingsList = $result['data']['moduleSettingsList'];
+        $settingsList = $result['data']['moduleSettings'];
         $I->assertCount(5, $settingsList);
         $I->assertContains(
             ['name' => 'intSetting', 'type' => FieldType::NUMBER, 'supported' => true],

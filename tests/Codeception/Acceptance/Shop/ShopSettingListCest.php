@@ -20,13 +20,13 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
  */
 final class ShopSettingListCest extends BaseCest
 {
-    public function testGetShopSettingsListAuthorized(AcceptanceTester $I): void
+    public function testGetShopSettingsAuthorized(AcceptanceTester $I): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $I->sendGQLQuery(
             'query{
-                shopSettingsList {
+                shopSettings {
                     name
                     type
                     supported
@@ -39,7 +39,7 @@ final class ShopSettingListCest extends BaseCest
         $result = $I->grabJsonResponseAsArray();
         $I->assertArrayNotHasKey('errors', $result);
 
-        $settingsList = $result['data']['shopSettingsList'];
+        $settingsList = $result['data']['shopSettings'];
         $I->assertContains(
             ['name' => 'intSetting', 'type' => FieldType::NUMBER, 'supported' => true],
             $settingsList
