@@ -35,9 +35,18 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function moduleSettingInteger(string $name, string $moduleId): IntegerSetting
+    public function moduleSettingBoolean(string $name, string $moduleId): BooleanSetting
     {
-        return $this->moduleSettingService->getIntegerSetting($name, $moduleId);
+        return $this->moduleSettingService->getBooleanSetting($name, $moduleId);
+    }
+
+    #[Query]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function moduleSettingCollection(string $name, string $moduleId): StringSetting
+    {
+        return $this->moduleSettingService->getCollectionSetting($name, $moduleId);
     }
 
     #[Query]
@@ -53,9 +62,9 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function moduleSettingBoolean(string $name, string $moduleId): BooleanSetting
+    public function moduleSettingInteger(string $name, string $moduleId): IntegerSetting
     {
-        return $this->moduleSettingService->getBooleanSetting($name, $moduleId);
+        return $this->moduleSettingService->getIntegerSetting($name, $moduleId);
     }
 
     #[Query]
@@ -67,31 +76,16 @@ final class ModuleSettingController
         return $this->moduleSettingService->getStringSetting($name, $moduleId);
     }
 
+    /**
+     * @return SettingType[]
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function moduleSettingCollection(string $name, string $moduleId): StringSetting
+    public function moduleSettings(string $moduleId): array
     {
-        return $this->moduleSettingService->getCollectionSetting($name, $moduleId);
-    }
-
-    #[Mutation]
-    #[Logged]
-    #[HideIfUnauthorized]
-    #[Right('CHANGE_CONFIGURATION')]
-    public function moduleSettingIntegerChange(string $name, int $value, string $moduleId): IntegerSetting
-    {
-        return $this->moduleSettingService->changeIntegerSetting($name, $value, $moduleId);
-    }
-
-    #[Mutation]
-    #[Logged]
-    #[HideIfUnauthorized]
-    #[Right('CHANGE_CONFIGURATION')]
-    public function moduleSettingFloatChange(string $name, float $value, string $moduleId): FloatSetting
-    {
-        return $this->moduleSettingService->changeFloatSetting($name, $value, $moduleId);
+        return $this->moduleSettingService->getSettingsList($moduleId);
     }
 
     #[Mutation]
@@ -107,29 +101,35 @@ final class ModuleSettingController
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function moduleSettingStringChange(string $name, string $value, string $moduleId): StringSetting
+    public function moduleSettingCollectionChange(string $name, string $value, string $moduleId): StringSetting
     {
-        return $this->moduleSettingService->changeStringSetting($name, $value, $moduleId);
+        return $this->moduleSettingService->changeCollectionSetting($name, $value, $moduleId);
     }
 
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function moduleSettingCollectionChange(string $name, string $value, string $moduleId): StringSetting
+    public function moduleSettingFloatChange(string $name, float $value, string $moduleId): FloatSetting
     {
-        return $this->moduleSettingService->changeCollectionSetting($name, $value, $moduleId);
+        return $this->moduleSettingService->changeFloatSetting($name, $value, $moduleId);
     }
 
-    /**
-     * @return SettingType[]
-     */
-    #[Query]
+    #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
-    public function moduleSettings(string $moduleId): array
+    public function moduleSettingIntegerChange(string $name, int $value, string $moduleId): IntegerSetting
     {
-        return $this->moduleSettingService->getSettingsList($moduleId);
+        return $this->moduleSettingService->changeIntegerSetting($name, $value, $moduleId);
+    }
+
+    #[Mutation]
+    #[Logged]
+    #[HideIfUnauthorized]
+    #[Right('CHANGE_CONFIGURATION')]
+    public function moduleSettingStringChange(string $name, string $value, string $moduleId): StringSetting
+    {
+        return $this->moduleSettingService->changeStringSetting($name, $value, $moduleId);
     }
 }

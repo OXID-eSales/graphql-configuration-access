@@ -13,6 +13,9 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
+/**
+ * Contains type information of a setting
+ */
 #[Type]
 final class SettingType
 {
@@ -28,18 +31,18 @@ final class SettingType
         return $this->name;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    #[Field(description: 'This indicates if the type is supported by our queries and mutations')]
+    public function isSupported(): bool
+    {
+        return FieldType::validateFieldType($this->getType());
+    }
+
     #[Field]
     public function getType(): string
     {
         return $this->type;
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
-    #[Field]
-    public function isSupported(): bool
-    {
-        return FieldType::validateFieldType($this->getType());
     }
 }
