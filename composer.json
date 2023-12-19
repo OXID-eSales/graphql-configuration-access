@@ -52,7 +52,8 @@
         "static": [
             "@phpcs",
             "@phpstan",
-            "@phpmd"
+            "@phpmd",
+            "@deptrac"
         ],
 
         "phpunit": "vendor/bin/phpunit --bootstrap=/var/www/source/bootstrap.php --config=tests/",

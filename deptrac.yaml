@@ -1,0 +1,39 @@
+deptrac:
+  paths:
+    - ./src/
+  layers:
+    - name: Controller
+      collectors:
+        - type: classLike
+          value: OxidEsales\\.*GraphQL.*Controller\\.*
+    - name: Service
+      collectors:
+        - type: classLike
+          value: OxidEsales\\.*GraphQL.*Service\\.*
+    - name: Infrastructure
+      collectors:
+        - type: classLike
+          value: OxidEsales\\.*GraphQL.*Repository\\.*
+        - type: classLike
+          value: OxidEsales\\.*GraphQL.*Infrastructure\\.*
+    - name: InternalService
+      collectors:
+        - type: classLike
+          regex: OxidEsales\\Eshop.*\\Internal\\.*
+    - name: Core
+      collectors:
+        - type: classLike
+          regex: OxidEsales\\Eshop(\w+)?\\(?!Internal)
+
+  ruleset:
+    Controller:
+      - Service
+    Service:
+      - InternalService
+      - Infrastructure
+    Infrastructure:
+      - Core
+      - InternalService
+    Core: ~
+    InternalService: ~
+
