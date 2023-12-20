@@ -200,6 +200,13 @@ jobs:
             --workdir=/var/www/test-module \
             php composer phpcs
 
+      - name: Run deptrac
+        id: deptrac
+        if: always()
+        run: |
+          docker compose exec -Tw /var/www/test-module \
+            php bash -c "composer deptrac"
+
       - name: Stop containers
         if: always()
         run: |
