@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception;
 
-use Exception;
+use OxidEsales\GraphQL\Base\Exception\Error;
 
-final class InvalidCollectionException extends Exception
+final class InvalidCollectionException extends Error
 {
     public function __construct(string $value)
     {

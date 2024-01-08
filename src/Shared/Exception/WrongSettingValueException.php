@@ -9,6 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception;
 
-final class WrongSettingValueException extends \Exception
+use OxidEsales\GraphQL\Base\Exception\Error;
+
+final class WrongSettingValueException extends Error
 {
+    public function __construct()
+    {
+        parent::__construct('Wrong setting value');
+    }
 }

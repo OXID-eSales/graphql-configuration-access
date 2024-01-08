@@ -9,6 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception;
 
-final class CollectionEncodingException extends \Exception
+use OxidEsales\GraphQL\Base\Exception\Error;
+
+final class CollectionEncodingException extends Error
 {
+    public function __construct()
+    {
+        parent::__construct('Error encountered while encoding collection data');
+    }
 }
