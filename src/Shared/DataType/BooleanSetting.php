@@ -21,12 +21,18 @@ final class BooleanSetting
     ) {
     }
 
+    /**
+     * Field of Configuration Access module's BooleanSetting-Type
+     */
     #[Field]
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * Field of Configuration Access module's BooleanSetting-Type
+     */
     #[Field]
     public function getValue(): bool
     {

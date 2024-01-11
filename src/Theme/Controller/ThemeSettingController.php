@@ -31,6 +31,9 @@ final class ThemeSettingController
     ) {
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -40,6 +43,9 @@ final class ThemeSettingController
         return $this->themeSettingService->getAssocCollectionSetting($name, $themeId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -49,6 +55,9 @@ final class ThemeSettingController
         return $this->themeSettingService->getBooleanSetting($name, $themeId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -58,6 +67,9 @@ final class ThemeSettingController
         return $this->themeSettingService->getCollectionSetting($name, $themeId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -67,6 +79,9 @@ final class ThemeSettingController
         return $this->themeSettingService->getFloatSetting($name, $themeId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -76,6 +91,9 @@ final class ThemeSettingController
         return $this->themeSettingService->getIntegerSetting($name, $themeId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -85,6 +103,9 @@ final class ThemeSettingController
         return $this->themeSettingService->getSelectSetting($name, $themeId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -95,6 +116,7 @@ final class ThemeSettingController
     }
 
     /**
+     * Query of Configuration Access Module
      * @return SettingType[]
      */
     #[Query]
@@ -106,6 +128,9 @@ final class ThemeSettingController
         return $this->themeSettingService->getSettingsList($themeId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -115,6 +140,9 @@ final class ThemeSettingController
         return $this->themeSettingService->changeAssocCollectionSetting($name, $value, $themeId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -124,6 +152,9 @@ final class ThemeSettingController
         return $this->themeSettingService->changeBooleanSetting($name, $value, $themeId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -133,7 +164,9 @@ final class ThemeSettingController
         return $this->themeSettingService->changeCollectionSetting($name, $value, $themeId);
     }
 
-
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -142,6 +175,10 @@ final class ThemeSettingController
     {
         return $this->themeSettingService->changeFloatSetting($name, $value, $themeId);
     }
+
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -151,6 +188,9 @@ final class ThemeSettingController
         return $this->themeSettingService->changeIntegerSetting($name, $value, $themeId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -160,6 +200,9 @@ final class ThemeSettingController
         return $this->themeSettingService->changeSelectSetting($name, $value, $themeId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]

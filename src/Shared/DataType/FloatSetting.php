@@ -21,12 +21,18 @@ final class FloatSetting
     ) {
     }
 
+    /**
+     * Field of Configuration Access module's FloatSetting-Type
+     */
     #[Field]
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * Field of Configuration Access module's FloatSetting-Type
+     */
     #[Field]
     public function getValue(): float
     {

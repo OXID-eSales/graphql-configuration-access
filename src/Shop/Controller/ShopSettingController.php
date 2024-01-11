@@ -31,6 +31,9 @@ final class ShopSettingController
     ) {
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -40,6 +43,9 @@ final class ShopSettingController
         return $this->shopSettingService->getAssocCollectionSetting($name);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -49,6 +55,9 @@ final class ShopSettingController
         return $this->shopSettingService->getBooleanSetting($name);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -58,6 +67,9 @@ final class ShopSettingController
         return $this->shopSettingService->getCollectionSetting($name);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -67,6 +79,9 @@ final class ShopSettingController
         return $this->shopSettingService->getFloatSetting($name);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -76,6 +91,9 @@ final class ShopSettingController
         return $this->shopSettingService->getIntegerSetting($name);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -85,6 +103,9 @@ final class ShopSettingController
         return $this->shopSettingService->getSelectSetting($name);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[HideIfUnauthorized]
@@ -95,6 +116,7 @@ final class ShopSettingController
     }
 
     /**
+     * Query of Configuration Access Module
      * @return SettingType[]
      */
     #[Query]
@@ -106,6 +128,9 @@ final class ShopSettingController
         return $this->shopSettingService->getSettingsList();
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -115,6 +140,9 @@ final class ShopSettingController
         return $this->shopSettingService->changeAssocCollectionSetting($name, $value);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -124,6 +152,9 @@ final class ShopSettingController
         return $this->shopSettingService->changeBooleanSetting($name, $value);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -133,6 +164,9 @@ final class ShopSettingController
         return $this->shopSettingService->changeCollectionSetting($name, $value);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -142,6 +176,9 @@ final class ShopSettingController
         return $this->shopSettingService->changeFloatSetting($name, $value);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -151,6 +188,9 @@ final class ShopSettingController
         return $this->shopSettingService->changeIntegerSetting($name, $value);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
@@ -160,6 +200,9 @@ final class ShopSettingController
         return $this->shopSettingService->changeSelectSetting($name, $value);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[HideIfUnauthorized]
