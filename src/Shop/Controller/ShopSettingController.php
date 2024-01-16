@@ -15,7 +15,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingServiceInterface;
-use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
@@ -33,7 +32,6 @@ final class ShopSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingAssocCollection(string $name): StringSetting
     {
@@ -42,7 +40,6 @@ final class ShopSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingBoolean(string $name): BooleanSetting
     {
@@ -51,7 +48,6 @@ final class ShopSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingCollection(string $name): StringSetting
     {
@@ -60,7 +56,6 @@ final class ShopSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingFloat(string $name): FloatSetting
     {
@@ -69,7 +64,6 @@ final class ShopSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingInteger(string $name): IntegerSetting
     {
@@ -78,7 +72,6 @@ final class ShopSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingSelect(string $name): StringSetting
     {
@@ -87,7 +80,6 @@ final class ShopSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingString(string $name): StringSetting
     {
@@ -99,7 +91,6 @@ final class ShopSettingController
      */
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettings(): array
     {
@@ -108,7 +99,6 @@ final class ShopSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingAssocCollectionChange(string $name, string $value): StringSetting
     {
@@ -117,7 +107,6 @@ final class ShopSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingBooleanChange(string $name, bool $value): BooleanSetting
     {
@@ -126,7 +115,6 @@ final class ShopSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingCollectionChange(string $name, string $value): StringSetting
     {
@@ -135,7 +123,6 @@ final class ShopSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingFloatChange(string $name, float $value): FloatSetting
     {
@@ -144,7 +131,6 @@ final class ShopSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingIntegerChange(string $name, int $value): IntegerSetting
     {
@@ -153,7 +139,6 @@ final class ShopSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingSelectChange(string $name, string $value): StringSetting
     {
@@ -162,7 +147,6 @@ final class ShopSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function shopSettingStringChange(string $name, string $value): StringSetting
     {

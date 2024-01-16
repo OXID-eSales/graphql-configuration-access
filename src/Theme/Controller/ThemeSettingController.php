@@ -15,7 +15,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingServiceInterface;
-use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
@@ -33,7 +32,6 @@ final class ThemeSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingAssocCollection(string $name, string $themeId): StringSetting
     {
@@ -42,7 +40,6 @@ final class ThemeSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingBoolean(string $name, string $themeId): BooleanSetting
     {
@@ -51,7 +48,6 @@ final class ThemeSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingCollection(string $name, string $themeId): StringSetting
     {
@@ -60,7 +56,6 @@ final class ThemeSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingFloat(string $name, string $themeId): FloatSetting
     {
@@ -69,7 +64,6 @@ final class ThemeSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingInteger(string $name, string $themeId): IntegerSetting
     {
@@ -78,7 +72,6 @@ final class ThemeSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingSelect(string $name, string $themeId): StringSetting
     {
@@ -87,7 +80,6 @@ final class ThemeSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingString(string $name, string $themeId): StringSetting
     {
@@ -99,7 +91,6 @@ final class ThemeSettingController
      */
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettings(string $themeId): array
     {
@@ -108,7 +99,6 @@ final class ThemeSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingAssocCollectionChange(string $name, string $value, string $themeId): StringSetting
     {
@@ -117,7 +107,6 @@ final class ThemeSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingBooleanChange(string $name, bool $value, string $themeId): BooleanSetting
     {
@@ -126,7 +115,6 @@ final class ThemeSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingCollectionChange(string $name, string $value, string $themeId): StringSetting
     {
@@ -136,7 +124,6 @@ final class ThemeSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingFloatChange(string $name, float $value, string $themeId): FloatSetting
     {
@@ -144,7 +131,6 @@ final class ThemeSettingController
     }
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingIntegerChange(string $name, int $value, string $themeId): IntegerSetting
     {
@@ -153,7 +139,6 @@ final class ThemeSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingSelectChange(string $name, string $value, string $themeId): StringSetting
     {
@@ -162,7 +147,6 @@ final class ThemeSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function themeSettingStringChange(string $name, string $value, string $themeId): StringSetting
     {

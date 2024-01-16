@@ -15,7 +15,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
-use TheCodingMachine\GraphQLite\Annotations\HideIfUnauthorized;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
@@ -33,7 +32,6 @@ final class ModuleSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingBoolean(string $name, string $moduleId): BooleanSetting
     {
@@ -42,7 +40,6 @@ final class ModuleSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingCollection(string $name, string $moduleId): StringSetting
     {
@@ -51,7 +48,6 @@ final class ModuleSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingFloat(string $name, string $moduleId): FloatSetting
     {
@@ -60,7 +56,6 @@ final class ModuleSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingInteger(string $name, string $moduleId): IntegerSetting
     {
@@ -69,7 +64,6 @@ final class ModuleSettingController
 
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingString(string $name, string $moduleId): StringSetting
     {
@@ -81,7 +75,6 @@ final class ModuleSettingController
      */
     #[Query]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettings(string $moduleId): array
     {
@@ -90,7 +83,6 @@ final class ModuleSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingBooleanChange(string $name, bool $value, string $moduleId): BooleanSetting
     {
@@ -99,7 +91,6 @@ final class ModuleSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingCollectionChange(string $name, string $value, string $moduleId): StringSetting
     {
@@ -108,7 +99,6 @@ final class ModuleSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingFloatChange(string $name, float $value, string $moduleId): FloatSetting
     {
@@ -117,7 +107,6 @@ final class ModuleSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingIntegerChange(string $name, int $value, string $moduleId): IntegerSetting
     {
@@ -126,7 +115,6 @@ final class ModuleSettingController
 
     #[Mutation]
     #[Logged]
-    #[HideIfUnauthorized]
     #[Right('CHANGE_CONFIGURATION')]
     public function moduleSettingStringChange(string $name, string $value, string $moduleId): StringSetting
     {
