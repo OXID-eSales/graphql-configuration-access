@@ -1,3 +1,12 @@
+
+[![Development](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/development.yml/badge.svg?branch=b-7.0.x)](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/development.yml)
+[![Latest Version](https://img.shields.io/packagist/v/OXID-eSales/graphql-configuration-access?logo=composer&label=latest&include_prereleases&color=orange)](https://packagist.org/packages/oxid-esales/graphql-configuration-access)
+[![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/graphql-configuration-access)](https://github.com/oxid-esales/graphql-configuration-access)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_graphql-configuration-access&metric=alert_status)](https://sonarcloud.io/dashboard?id=OXID-eSales_graphql-configuration-access)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_graphql-configuration-access&metric=coverage)](https://sonarcloud.io/dashboard?id=OXID-eSales_graphql-configuration-access)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_graphql-configuration-access&metric=sqale_index)](https://sonarcloud.io/dashboard?id=OXID-eSales_graphql-configuration-access)
+
 # graphql-configuration-access
 OXAPI (GraphQL based) access to configuration settings
 
