@@ -21,12 +21,18 @@ final class IntegerSetting
     ) {
     }
 
+    /**
+     * Field of Configuration Access module's IntegerSetting-Type
+     */
     #[Field]
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * Field of Configuration Access module's IntegerSetting-Type
+     */
     #[Field]
     public function getValue(): int
     {

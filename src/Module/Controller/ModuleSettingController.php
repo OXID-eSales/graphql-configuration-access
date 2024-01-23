@@ -30,6 +30,9 @@ final class ModuleSettingController
     ) {
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -38,6 +41,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->getBooleanSetting($name, $moduleId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -46,6 +52,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->getCollectionSetting($name, $moduleId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -54,6 +63,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->getFloatSetting($name, $moduleId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -62,6 +74,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->getIntegerSetting($name, $moduleId);
     }
 
+    /**
+     * Query of Configuration Access Module
+     */
     #[Query]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -71,6 +86,7 @@ final class ModuleSettingController
     }
 
     /**
+     * Query of Configuration Access Module
      * @return SettingType[]
      */
     #[Query]
@@ -81,6 +97,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->getSettingsList($moduleId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -89,6 +108,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->changeBooleanSetting($name, $value, $moduleId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -97,6 +119,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->changeCollectionSetting($name, $value, $moduleId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -105,6 +130,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->changeFloatSetting($name, $value, $moduleId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
@@ -113,6 +141,9 @@ final class ModuleSettingController
         return $this->moduleSettingService->changeIntegerSetting($name, $value, $moduleId);
     }
 
+    /**
+     * Mutation of Configuration Access Module
+     */
     #[Mutation]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]

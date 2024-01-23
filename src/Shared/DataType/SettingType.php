@@ -25,6 +25,9 @@ final class SettingType
     ) {
     }
 
+    /**
+     * Field of Configuration Access module's BooleanSetting-Type
+     */
     #[Field]
     public function getName(): string
     {
@@ -32,14 +35,19 @@ final class SettingType
     }
 
     /**
+     * Field of Configuration Access module's BooleanSetting-Type.
+     * Indicates if the type is supported by our queries and mutations.
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    #[Field(description: 'This indicates if the type is supported by our queries and mutations')]
+    #[Field]
     public function isSupported(): bool
     {
         return FieldType::validateFieldType($this->getType());
     }
 
+    /**
+     * Field of Configuration Access module's BooleanSetting-Type
+     */
     #[Field]
     public function getType(): string
     {
