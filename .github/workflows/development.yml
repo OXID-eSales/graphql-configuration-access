@@ -52,7 +52,7 @@ env:
 
 jobs:
   install_shop_with_module:
-    runs-on: [self-hosted, x64]
+    runs-on: ubuntu-latest
     steps:
       - name: Clone testing environment
         run: git clone https://github.com/OXID-eSales/docker-eshop-sdk.git .
@@ -160,7 +160,7 @@ jobs:
 
   styles:
     needs: [ install_shop_with_module ]
-    runs-on: [self-hosted, x64]
+    runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
         uses: actions/cache@v3
@@ -242,7 +242,7 @@ jobs:
 
   unit_integration_tests:
     needs: [ install_shop_with_module ]
-    runs-on: [self-hosted, x64]
+    runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
         uses: actions/cache@v3
@@ -298,7 +298,7 @@ jobs:
 
   codeception_twig:
     needs: [ install_shop_with_module ]
-    runs-on: [self-hosted, x64]
+    runs-on: ubuntu-latest
     steps:
       - name: Load current installation from cache
         uses: actions/cache@v3
@@ -362,7 +362,7 @@ jobs:
   sonarcloud:
     needs: [ styles, unit_integration_tests ]
     if: ${{ always() && inputs.report_sonarcloud }}
-    runs-on: [self-hosted, x64]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout current module
         uses: actions/checkout@v4
