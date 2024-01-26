@@ -1,8 +1,8 @@
-name: Trigger schema workflow for storefront
+name: Trigger schema workflow
 
 on:
     push:
-        tags: [ v0.* ]
+        tags: [ v1.* ]
 
 jobs:
     documentation_schema:
