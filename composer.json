@@ -8,7 +8,7 @@
     "require": {
         "php": "^8.0",
         "doctrine/dbal": "^v2.7",
-        "oxid-esales/graphql-base": "^v8.0"
+        "oxid-esales/graphql-base": "dev-b-7.0.x"
     },
     "conflict": {
         "oxid-esales/oxideshop-ce": "<7.0",
@@ -20,7 +20,7 @@
         "phpunit/phpunit": "^9.5",
         "squizlabs/php_codesniffer": "3.*",
         "phpmd/phpmd": "^2.11",
-        "oxid-esales/oxideshop-ce": "^7.0",
+        "oxid-esales/oxideshop-ce": "dev-b-7.0.x",
         "qossmic/deptrac-shim": "^0.24.0",
         "codeception/module-rest": "*",
         "codeception/module-phpbrowser": "*",
