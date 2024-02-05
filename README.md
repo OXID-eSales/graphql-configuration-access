@@ -49,9 +49,6 @@ Switch to the shop root directory (the file `composer.json` and the directories 
 ```bash
 # Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 1.x version
 $ composer require oxid-esales/graphql-configuration-access ^1.0.0
-
-$ vendor/bin/oe-console oe:module:install-configuration source/modules/oe/graphql-base
-$ vendor/bin/oe-console oe:module:install-configuration source/modules/oe/graphql-configuration-access
 ```
 
 If you didn't have the `oxid-esales/graphql-base` module installed, composer will do that for you.
