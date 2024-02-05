@@ -22,7 +22,7 @@ final class FloatSetting
     }
 
     /**
-     * Field of Configuration Access module's StringSetting-Type
+     * Field of Configuration Access module's FloatSetting-Type
      */
     #[Field]
     public function getName(): string

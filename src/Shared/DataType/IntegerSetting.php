@@ -22,7 +22,7 @@ final class IntegerSetting
     }
 
     /**
-     * Field of Configuration Access module's StringSetting-Type
+     * Field of Configuration Access module's IntegerSetting-Type
      */
     #[Field]
     public function getName(): string

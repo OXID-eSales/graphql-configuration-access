@@ -26,7 +26,7 @@ final class SettingType
     }
 
     /**
-     * Field of Configuration Access module's StringSetting-Type
+     * Field of Configuration Access module's SettingType-Type
      */
     #[Field]
     public function getName(): string
@@ -35,7 +35,7 @@ final class SettingType
     }
 
     /**
-     * Field of Configuration Access module's BooleanSetting-Type.
+     * Field of Configuration Access module's SettingType-Type.
      * Indicates if the type is supported by our queries and mutations.
      * @SuppressWarnings(PHPMD.StaticAccess)
      */

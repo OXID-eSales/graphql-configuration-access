@@ -23,5 +23,8 @@
         <testsuite name="Unit">
             <directory>Unit/</directory>
         </testsuite>
+        <testsuite name="Integration">
+            <directory>Integration/</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
