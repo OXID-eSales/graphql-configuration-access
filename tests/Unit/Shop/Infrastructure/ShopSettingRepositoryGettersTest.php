@@ -44,7 +44,7 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
             );
 
         $sut = $this->getSut(
-            basicContext: $this->getBasicContextMock($shopId),
+            context: $this->getContextMock($shopId),
             shopSettingDao: $shopSettingDaoStub
         );
 

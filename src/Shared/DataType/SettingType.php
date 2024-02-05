@@ -26,7 +26,7 @@ final class SettingType
     }
 
     /**
-     * Field of Configuration Access module's BooleanSetting-Type
+     * Field of Configuration Access module's StringSetting-Type
      */
     #[Field]
     public function getName(): string
@@ -46,7 +46,7 @@ final class SettingType
     }
 
     /**
-     * Field of Configuration Access module's BooleanSetting-Type
+     * Field of Configuration Access module's StringSetting-Type
      */
     #[Field]
     public function getType(): string

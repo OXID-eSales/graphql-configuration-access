@@ -13,7 +13,7 @@ use Doctrine\DBAL\Connection;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\NoSettingsFoundForShopException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository;
@@ -148,11 +148,11 @@ class ShopSettingRepositoryTest extends IntegrationTestCase
 
     public function getSutForShop(int $shopId): ShopSettingRepository
     {
-        $basicContext = $this->createStub(BasicContextInterface::class);
-        $basicContext->method('getCurrentShopId')->willReturn($shopId);
+        $context = $this->createStub(ContextInterface::class);
+        $context->method('getCurrentShopId')->willReturn($shopId);
 
         $sut = new ShopSettingRepository(
-            basicContext: $basicContext,
+            context: $context,
             queryBuilderFactory: $this->get(QueryBuilderFactoryInterface::class),
             configurationSettingDao: $this->get(ShopConfigurationSettingDaoInterface::class)
         );

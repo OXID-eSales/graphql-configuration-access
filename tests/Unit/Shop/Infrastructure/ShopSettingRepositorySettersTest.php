@@ -35,7 +35,7 @@ class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
         $shopSettingDaoSpy->expects($this->once())->method('save')->with($settingToSave);
 
         $sut = $this->getSut(
-            basicContext: $this->getBasicContextMock($shopId),
+            context: $this->getContextMock($shopId),
             shopSettingDao: $shopSettingDaoSpy
         );
 
@@ -60,7 +60,7 @@ class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
         $shopSettingDaoSpy->expects($this->never())->method('save')->with($settingToSave);
 
         $sut = $this->getSut(
-            basicContext: $this->getBasicContextMock($shopId),
+            context: $this->getContextMock($shopId),
             shopSettingDao: $shopSettingDaoSpy
         );
 

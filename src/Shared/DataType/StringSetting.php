@@ -22,7 +22,7 @@ final class StringSetting
     }
 
     /**
-     * Field of Configuration Access module's BooleanSetting-Type
+     * Field of Configuration Access module's StringSetting-Type
      */
     #[Field]
     public function getName(): string
@@ -31,7 +31,7 @@ final class StringSetting
     }
 
     /**
-     * Field of Configuration Access module's BooleanSetting-Type
+     * Field of Configuration Access module's StringSetting-Type
      */
     #[Field]
     public function getValue(): string

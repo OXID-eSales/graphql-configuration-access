@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\{
     ModuleSettingServiceInterface as ShopModuleSettingServiceInterface};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
@@ -27,7 +27,7 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
         private CollectionEncodingServiceInterface $jsonService,
         private ShopModuleSettingServiceInterface $moduleSettingService,
         private ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        private BasicContextInterface $basicContext,
+        private ContextInterface $context,
     ) {
     }
 
@@ -117,7 +117,7 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
      */
     public function getSettingsList(string $moduleId): array
     {
-        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $this->basicContext->getCurrentShopId());
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $this->context->getCurrentShopId());
         $settingsList = $moduleConfiguration->getModuleSettings();
 
         $settingTypes = [];

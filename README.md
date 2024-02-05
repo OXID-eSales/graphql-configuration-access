@@ -37,3 +37,63 @@ enum FieldType {
   'aarr'
 }
 ```
+
+## Documentation
+
+* Full documentation can be found [here](https://docs.oxid-esales.com/interfaces/graphql/en/latest/).
+
+### Install
+
+Switch to the shop root directory (the file `composer.json` and the directories `source/` and `vendor/` are located there).
+
+```bash
+# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 1.x version
+$ composer require oxid-esales/graphql-configuration-access ^1.0.0
+
+$ vendor/bin/oe-console oe:module:install-configuration source/modules/oe/graphql-base
+$ vendor/bin/oe-console oe:module:install-configuration source/modules/oe/graphql-configuration-access
+```
+
+If you didn't have the `oxid-esales/graphql-base` module installed, composer will do that for you.
+
+After installing the module, you need to activate it, either via OXID eShop admin or CLI.
+
+```bash
+$ vendor/bin/oe-console oe:module:activate oe_graphql_base
+$ vendor/bin/oe-console oe:module:activate oe_graphql_configuration_access
+```
+
+### How to use
+
+A good starting point is to check the [How to use section in the GraphQL Base Module](https://github.com/OXID-eSales/graphql-base-module/#how-to-use)
+
+## Testing
+
+### Linting, syntax check, static analysis
+
+```bash
+$ composer update
+$ composer static
+```
+
+### Unit/Integration/Acceptance tests
+
+- install this module into a running OXID eShop
+- reset shop's database
+```bash
+$ bin/oe-console oe:database:reset --db-host=db-host --db-port=db-port --db-name=db-name --db-user=db-user --db-password=db-password --force
+```
+
+- run Unit tests
+```bash
+$ ./vendor/bin/phpunit -c vendor/oxid-esales/graphql-configuration-access/tests/phpunit.xml
+```
+
+- run Integration tests
+```bash
+$ ./vendor/bin/phpunit --bootstrap=./source/bootstrap.php -c vendor/oxid-esales/graphql-configuration-access/tests/phpintegration.xml
+```
+- run Acceptance tests
+```bash
+$ SELENIUM_SERVER_HOST=selenium MODULE_IDS=oe_graphql_base,oe_graphql_configuration_access vendor/bin/codecept run acceptance -c vendor/oxid-esales/graphql-configuration-access/tests/codeception.yml
+```

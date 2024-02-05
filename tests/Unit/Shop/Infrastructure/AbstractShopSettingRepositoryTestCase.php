@@ -10,9 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shop\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Infrastructure\AbstractDatabaseSettingsRepositoryTestCase;
@@ -20,12 +19,12 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Infrastructure\Abst
 abstract class AbstractShopSettingRepositoryTestCase extends AbstractDatabaseSettingsRepositoryTestCase
 {
     protected function getSut(
-        ?BasicContextInterface $basicContext = null,
+        ?ContextInterface $context = null,
         ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
         ?ShopConfigurationSettingDaoInterface $shopSettingDao = null,
     ): ShopSettingRepositoryInterface {
         return new ShopSettingRepository(
-            basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class),
+            context: $context ?? $this->createStub(ContextInterface::class),
             queryBuilderFactory: $queryBuilderFactory ?? $this->createStub(QueryBuilderFactoryInterface::class),
             configurationSettingDao: $shopSettingDao ?? $this->createStub(ShopConfigurationSettingDaoInterface::class),
         );

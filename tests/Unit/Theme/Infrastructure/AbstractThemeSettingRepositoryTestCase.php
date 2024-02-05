@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Infrastructure
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Infrastructure\AbstractDatabaseSettingsRepositoryTestCase;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,14 +21,14 @@ abstract class AbstractThemeSettingRepositoryTestCase extends AbstractDatabaseSe
 {
     protected function getSut(
         ?array $methods = null,
-        ?BasicContextInterface $basicContext = null,
+        ?ContextInterface $context = null,
         ?EventDispatcherInterface $eventDispatcher = null,
         ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
         ?ShopSettingEncoderInterface $settingEncoder = null
     ): MockObject|ThemeSettingRepository {
         $repository = $this->getMockBuilder(ThemeSettingRepository::class)
             ->setConstructorArgs([
-                $basicContext ?? $this->createMock(BasicContextInterface::class),
+                $context ?? $this->createMock(ContextInterface::class),
                 $eventDispatcher ?? $this->createMock(EventDispatcherInterface::class),
                 $queryBuilderFactory ?? $this->createMock(QueryBuilderFactoryInterface::class),
                 $settingEncoder ?? $this->createMock(ShopSettingEncoderInterface::class)

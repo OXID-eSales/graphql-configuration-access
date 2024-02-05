@@ -12,7 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Integration\Infrastructur
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository;
@@ -212,13 +212,13 @@ class ThemeSettingRepositoryTest extends IntegrationTestCase
     }
 
     private function getSut(
-        ?BasicContextInterface $basicContext = null,
+        ?ContextInterface $context = null,
         ?EventDispatcherInterface $eventDispatcher = null,
         ?QueryBuilderFactoryInterface $queryBuilderFactory = null,
         ?ShopSettingEncoderInterface $shopSettingEncoder = null
     ): ThemeSettingRepository {
         return new ThemeSettingRepository(
-            $basicContext ?? $this->get(BasicContextInterface::class),
+            $context ?? $this->get(ContextInterface::class),
             $eventDispatcher ?? $this->get(EventDispatcherInterface::class),
             $queryBuilderFactory ?? $this->get(QueryBuilderFactoryInterface::class),
             $shopSettingEncoder ?? $this->get(ShopSettingEncoderInterface::class)

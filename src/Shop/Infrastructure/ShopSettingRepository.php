@@ -13,7 +13,7 @@ use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\NoSettingsFoundForShopException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException;
@@ -22,7 +22,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingValueExc
 final class ShopSettingRepository implements ShopSettingRepositoryInterface
 {
     public function __construct(
-        private BasicContextInterface $basicContext,
+        private ContextInterface $context,
         private QueryBuilderFactoryInterface $queryBuilderFactory,
         private ShopConfigurationSettingDaoInterface $configurationSettingDao,
     ) {
@@ -113,12 +113,12 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
 
     private function getShopSetting(string $name): ShopConfigurationSetting
     {
-        return $this->configurationSettingDao->get($name, $this->basicContext->getCurrentShopId());
+        return $this->configurationSettingDao->get($name, $this->context->getCurrentShopId());
     }
 
     public function getSettingsList(): array
     {
-        $shopId = $this->basicContext->getCurrentShopId();
+        $shopId = $this->context->getCurrentShopId();
 
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder->select('c.oxvarname')
@@ -208,7 +208,7 @@ final class ShopSettingRepository implements ShopSettingRepositoryInterface
         $this->validateOriginalSettingType($name, $type);
 
         $setting = (new ShopConfigurationSetting())
-            ->setShopId($this->basicContext->getCurrentShopId())
+            ->setShopId($this->context->getCurrentShopId())
             ->setName($name)
             ->setType($type)
             ->setValue($value);

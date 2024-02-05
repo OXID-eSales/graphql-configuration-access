@@ -13,7 +13,7 @@ use Doctrine\DBAL\ForwardCompatibility\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\NoSettingsFoundForThemeException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\WrongSettingValueException;
@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 {
     public function __construct(
-        private BasicContextInterface $basicContext,
+        private ContextInterface $context,
         private EventDispatcherInterface $eventDispatcher,
         private QueryBuilderFactoryInterface $queryBuilderFactory,
         protected ShopSettingEncoderInterface $shopSettingEncoder
@@ -119,7 +119,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
     public function getSettingsList(string $themeId): array
     {
         $themeCondition = (!empty($themeId)) ? 'theme:' . $themeId : '';
-        $shopId = $this->basicContext->getCurrentShopId();
+        $shopId = $this->context->getCurrentShopId();
 
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder->select('c.oxvarname')
@@ -196,7 +196,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
                 'module' => 'theme:' . $theme,
                 'name' => $name,
                 'type' => $fieldType,
-                'shopId' => $this->basicContext->getCurrentShopId(),
+                'shopId' => $this->context->getCurrentShopId(),
             ]);
 
         /** @var Result $result */
@@ -212,7 +212,7 @@ class ThemeSettingRepository implements ThemeSettingRepositoryInterface
 
     protected function saveSettingValue(string $name, string $themeId, string $value): void
     {
-        $shopId = $this->basicContext->getCurrentShopId();
+        $shopId = $this->context->getCurrentShopId();
 
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder

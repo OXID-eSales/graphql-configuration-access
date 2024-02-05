@@ -13,9 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingService;
-use OxidEsales\GraphQL\ConfigurationAccess\Setting\Infrastructure\ModuleSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
@@ -307,7 +306,7 @@ class ModuleSettingServiceTest extends UnitTestCase
 
         $sut = $this->getSut(
             moduleConfigDao: $moduleConfigurationDao,
-            basicContext: $this->getBasicContextMock(3)
+            context: $this->getContextMock(3)
         );
 
         $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList($moduleId));
@@ -317,13 +316,13 @@ class ModuleSettingServiceTest extends UnitTestCase
         ?CollectionEncodingServiceInterface $jsonService = null,
         ?ModuleSettingServiceInterface $moduleSettingService = null,
         ?ModuleConfigurationDaoInterface $moduleConfigDao = null,
-        ?BasicContextInterface $basicContext = null,
+        ?ContextInterface $context = null,
     ): ModuleSettingService {
         return new ModuleSettingService(
             jsonService: $jsonService ?? $this->createStub(CollectionEncodingServiceInterface::class),
             moduleSettingService: $moduleSettingService ?? $this->createStub(ModuleSettingServiceInterface::class),
             moduleConfigurationDao: $moduleConfigDao ?? $this->createStub(ModuleConfigurationDaoInterface::class),
-            basicContext: $basicContext ?? $this->createStub(BasicContextInterface::class),
+            context: $context ?? $this->createStub(ContextInterface::class),
         );
     }
 

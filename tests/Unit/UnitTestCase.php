@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface;
@@ -28,12 +28,12 @@ class UnitTestCase extends TestCase
         return [$intSetting, $stringSetting, $arraySetting];
     }
 
-    protected function getBasicContextMock(int $shopId = 1): BasicContextInterface
+    protected function getContextMock(int $shopId = 1): ContextInterface
     {
-        $basicContext = $this->createMock(BasicContextInterface::class);
-        $basicContext->method('getCurrentShopId')->willReturn($shopId);
+        $context = $this->createMock(ContextInterface::class);
+        $context->method('getCurrentShopId')->willReturn($shopId);
 
-        return $basicContext;
+        return $context;
     }
 
     protected function getJsonEncodeServiceMock(
