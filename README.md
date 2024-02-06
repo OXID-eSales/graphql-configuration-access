@@ -81,16 +81,20 @@ $ composer static
 $ bin/oe-console oe:database:reset --db-host=db-host --db-port=db-port --db-name=db-name --db-user=db-user --db-password=db-password --force
 ```
 
+- run Unit + Integration tests
+```bash
+$ composer phpunit
+```
+
 - run Unit tests
 ```bash
 $ ./vendor/bin/phpunit -c vendor/oxid-esales/graphql-configuration-access/tests/phpunit.xml
 ```
-
 - run Integration tests
 ```bash
 $ ./vendor/bin/phpunit --bootstrap=./source/bootstrap.php -c vendor/oxid-esales/graphql-configuration-access/tests/phpintegration.xml
 ```
 - run Acceptance tests
 ```bash
-$ SELENIUM_SERVER_HOST=selenium MODULE_IDS=oe_graphql_base,oe_graphql_configuration_access vendor/bin/codecept run acceptance -c vendor/oxid-esales/graphql-configuration-access/tests/codeception.yml
+$ composer codeception
 ```
