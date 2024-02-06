@@ -4,6 +4,18 @@
     "type": "oxideshop-module",
     "keywords": ["oxid", "modules", "eShop", "GraphQL"],
     "homepage": "https://www.oxid-esales.com",
+    "authors": [
+        {
+            "name": "Marcel Manzel",
+            "email": "marcel.manzel@oxid-esales.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Anton Fedurtsya",
+            "email": "extern.anton.fedurtsya@oxid-esales.com",
+            "role": "Developer"
+        }
+    ],
     "license": ["proprietary"],
     "require": {
         "php": "^8.0",
@@ -67,7 +79,8 @@
     "config": {
         "allow-plugins": {
             "oxid-esales/oxideshop-unified-namespace-generator": true,
-            "oxid-esales/oxideshop-composer-plugin": true
+            "oxid-esales/oxideshop-composer-plugin": true,
+            "cyclonedx/cyclonedx-php-composer": true
         }
     }
 }

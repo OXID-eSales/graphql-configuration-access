@@ -2,3 +2,14 @@ name: SBOM generation
 
 on:
   workflow_dispatch:
+
+
+jobs:
+  generate_sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: generate sbom
+        uses: CycloneDX/gh-php-composer-generate-sbom@v1
