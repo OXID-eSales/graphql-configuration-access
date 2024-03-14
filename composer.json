@@ -37,7 +37,11 @@
         "codeception/module-rest": "*",
         "codeception/module-phpbrowser": "*",
         "codeception/module-db": "*",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "mikey179/vfsstream": "~1.6.8",
+        "codeception/codeception": "^5.0",
+        "oxid-esales/codeception-modules": "dev-b-7.0.x",
+        "codeception/module-asserts": "^3.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
