@@ -11,4 +11,5 @@ declare(strict_types=1);
 
 use Symfony\Component\Filesystem\Path;
 
-require_once Path::join((new \OxidEsales\Facts\Facts())->getShopRootPath(), 'source', 'bootstrap.php');
+$sourcePath = getenv('SHOP_ROOT_PATH') ?: (new \OxidEsales\Facts\Facts())->getShopRootPath();
+require_once Path::join($sourcePath, 'source', 'bootstrap.php');
