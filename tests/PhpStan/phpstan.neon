@@ -1,8 +1,9 @@
 parameters:
     checkMissingIterableValueType: false
     bootstrapFiles:
+        - ../../../../autoload.php
         - phpstan-bootstrap.php
     level: 8
     scanFiles:
-        - ../../vendor/oxid-esales/oxideshop-ce/source/oxfunctions.php
-        - ../../vendor/oxid-esales/oxideshop-ce/source/overridablefunctions.php
+        - ../../../oxideshop-ce/source/oxfunctions.php
+        - ../../../oxideshop-ce/source/overridablefunctions.php
