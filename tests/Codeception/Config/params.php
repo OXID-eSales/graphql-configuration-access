@@ -12,7 +12,11 @@ use OxidEsales\Facts\Config\ConfigFile;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
-$facts = new Facts(configFile: getConfigFile());
+if ($shopRootPath = getenv('SHOP_ROOT_PATH')){
+    include(Path::join($shopRootPath, 'source', 'bootstrap.php'));
+}
+
+$facts = new Facts();
 return [
     'SHOP_URL' => $facts->getShopUrl(),
     'SHOP_SOURCE_PATH' => $facts->getSourcePath(),
@@ -59,16 +63,10 @@ function getTestFixtureSqlFilePath(): string
 
 function getMysqlConfigPath()
 {
-    $configFile = getConfigFile();
+    $facts = new Facts();
+    $configFilePath = Path::join($facts->getSourcePath(), 'config.inc.php');
+    $configFile = new ConfigFile($configFilePath);
     $generator = new DatabaseDefaultsFileGenerator($configFile);
 
     return $generator->generate();
-}
-
-function getConfigFile(): ConfigFile
-{
-    $facts = new Facts();
-    $sourcePath = getenv('SHOP_ROOT_PATH') ?: $facts->getShopRootPath();
-    $configFilePath = Path::join($sourcePath, 'source', 'config.inc.php');
-    return new ConfigFile($configFilePath);
 }
