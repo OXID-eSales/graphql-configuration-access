@@ -1,7 +1,6 @@
 parameters:
     checkMissingIterableValueType: false
     bootstrapFiles:
-        - ../../../../autoload.php
         - phpstan-bootstrap.php
     level: 8
     scanFiles:

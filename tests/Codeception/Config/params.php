@@ -13,7 +13,7 @@ use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
 if ($shopRootPath = getenv('SHOP_ROOT_PATH')){
-    include(Path::join($shopRootPath, 'source', 'bootstrap.php'));
+    require_once(Path::join($shopRootPath, 'source', 'bootstrap.php'));
 }
 
 $facts = new Facts();
