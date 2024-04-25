@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Use PHPUnit 10 in composer.json
+- Updated the structure to Codeception 5
 
 ### Removed
 - PHP 8.0 support
