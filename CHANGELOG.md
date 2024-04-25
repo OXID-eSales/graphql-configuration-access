@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - Unreleased
 
+### Added
+- Php 8.2 support
+- Shop 7.1 dependencies file
+
 ### Changed
 - Use PHPUnit 10
 - Updated the structure to Codeception 5
