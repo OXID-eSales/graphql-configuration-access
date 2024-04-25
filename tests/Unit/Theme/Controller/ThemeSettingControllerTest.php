@@ -39,7 +39,7 @@ class ThemeSettingControllerTest extends TestCase
         $this->assertSame($expectedValue, $settingController->$controllerMethod(...$params));
     }
 
-    public function proxyTestDataProvider(): \Generator
+    public static function proxyTestDataProvider(): \Generator
     {
         $name = 'settingName';
 

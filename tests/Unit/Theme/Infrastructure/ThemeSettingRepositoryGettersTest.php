@@ -76,7 +76,7 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
         $sut->$repositoryMethod('NotExistingSetting', 'awesomeTheme');
     }
 
-    public function noSettingExceptionDataProvider(): \Generator
+    public static function noSettingExceptionDataProvider(): \Generator
     {
         yield 'getInteger' => ['repositoryMethod' => 'getInteger', 'fieldType' => FieldType::NUMBER];
         yield 'getFloat' => ['repositoryMethod' => 'getFloat', 'fieldType' => FieldType::NUMBER];

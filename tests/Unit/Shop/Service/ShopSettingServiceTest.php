@@ -44,7 +44,7 @@ class ShopSettingServiceTest extends UnitTestCase
         $this->assertEquals($expectedResult, $sut->$serviceMethod($name));
     }
 
-    public function getNotEncodableShopSettingDataProvider(): \Generator
+    public static function getNotEncodableShopSettingDataProvider(): \Generator
     {
         $name = 'settingName';
 
@@ -108,7 +108,7 @@ class ShopSettingServiceTest extends UnitTestCase
         );
     }
 
-    public function getEncodableShopSettingDataProvider(): \Generator
+    public static function getEncodableShopSettingDataProvider(): \Generator
     {
         yield 'getCollectionSetting' => [
             'repositoryMethod' => 'getCollection',

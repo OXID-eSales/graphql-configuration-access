@@ -26,7 +26,7 @@ class BooleanSettingTest extends TestCase
         $this->assertSame($value, $sut->getValue());
     }
 
-    public function booleanSettingDataProvider(): \Generator
+    public static function booleanSettingDataProvider(): \Generator
     {
         yield [uniqid(), true];
         yield [uniqid(), false];

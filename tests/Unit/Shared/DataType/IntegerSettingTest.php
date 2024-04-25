@@ -26,7 +26,7 @@ class IntegerSettingTest extends TestCase
         $this->assertSame($value, $sut->getValue());
     }
 
-    public function integerSettingDataProvider(): \Generator
+    public static function integerSettingDataProvider(): \Generator
     {
         yield "random integer" => [uniqid(), rand(1, 100)];
     }

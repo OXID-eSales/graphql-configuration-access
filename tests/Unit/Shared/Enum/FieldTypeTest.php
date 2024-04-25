@@ -36,7 +36,7 @@ class FieldTypeTest extends TestCase
         $this->assertContains($type, $enums);
     }
 
-    public function fieldTypesDataProvider(): \Generator
+    public static function fieldTypesDataProvider(): \Generator
     {
         yield [FieldType::ASSOCIATIVE_ARRAY];
         yield [FieldType::NUMBER];

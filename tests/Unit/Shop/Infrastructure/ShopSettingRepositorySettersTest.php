@@ -68,7 +68,7 @@ class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
         $sut->$method($settingName, $settingValue);
     }
 
-    public function shopSettingsSaveMethodsDataProvider(): \Generator
+    public static function shopSettingsSaveMethodsDataProvider(): \Generator
     {
         yield 'integer' => [
             'method' => 'saveIntegerSetting',

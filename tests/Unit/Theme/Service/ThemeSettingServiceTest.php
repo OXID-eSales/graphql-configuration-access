@@ -364,7 +364,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $settingService->changeAssocCollectionSetting($name, $value, 'awesomeTheme');
     }
 
-    public function invalidCollectionDataProvider(): array
+    public static function invalidCollectionDataProvider(): array
     {
         return [
             ['[2, "values"'],

@@ -77,7 +77,7 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
         $sut->$method('settingName');
     }
 
-    public function wrongSettingsTypeDataProvider(): \Generator
+    public static function wrongSettingsTypeDataProvider(): \Generator
     {
         yield [
             'method' => 'getInteger',

@@ -44,7 +44,7 @@ class JsonCollectionEncodingServiceTest extends TestCase
         $this->assertEquals($expectedResult, $sut->decodeStringCollectionToArray($value));
     }
 
-    public function jsonDecodeCollectionDataProvider(): \Generator
+    public static function jsonDecodeCollectionDataProvider(): \Generator
     {
         yield [
             'value' => '',

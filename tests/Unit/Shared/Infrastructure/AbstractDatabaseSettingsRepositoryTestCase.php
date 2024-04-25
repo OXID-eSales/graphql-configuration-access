@@ -15,7 +15,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
 abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
 {
-    public function possibleGetFloatValuesDataProvider(): \Generator
+    public static function possibleGetFloatValuesDataProvider(): \Generator
     {
         yield 'float regular' => [
             'method' => 'getFloat',
@@ -43,7 +43,7 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
         ];
     }
 
-    public function possibleGetAssocCollectionValuesDataProvider(): \Generator
+    public static function possibleGetAssocCollectionValuesDataProvider(): \Generator
     {
         yield 'empty array for assoc collection' => [
             'method' => 'getAssocCollection',
@@ -67,7 +67,7 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
         ];
     }
 
-    public function possibleGetSelectValuesDataProvider(): \Generator
+    public static function possibleGetSelectValuesDataProvider(): \Generator
     {
         yield [
             'method' => 'getSelect',
@@ -107,7 +107,7 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
         ];
     }
 
-    public function possibleGetBooleanValuesDataProvider(): \Generator
+    public static function possibleGetBooleanValuesDataProvider(): \Generator
     {
         yield 'boolean as positive int' => [
             'method' => 'getBoolean',
@@ -159,7 +159,7 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
         ];
     }
 
-    public function possibleGetIntegerValuesDataProvider(): \Generator
+    public static function possibleGetIntegerValuesDataProvider(): \Generator
     {
         yield 'int regular' => [
             'method' => 'getInteger',
@@ -176,7 +176,7 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
         ];
     }
 
-    public function possibleGetStringValuesDataProvider(): \Generator
+    public static function possibleGetStringValuesDataProvider(): \Generator
     {
         yield [
             'method' => 'getString',
@@ -216,7 +216,7 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
         ];
     }
 
-    public function possibleGetCollectionValuesDataProvider(): \Generator
+    public static function possibleGetCollectionValuesDataProvider(): \Generator
     {
         yield 'empty array collection' => [
             'method' => 'getCollection',
@@ -240,7 +240,7 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
         ];
     }
 
-    public function wrongSettingsValueDataProvider(): \Generator
+    public static function wrongSettingsValueDataProvider(): \Generator
     {
         yield [
             'method' => 'getInteger',

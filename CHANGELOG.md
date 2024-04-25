@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - Unreleased
 
 ### Changed
-- Use PHPUnit 10 in composer.json
+- Use PHPUnit 10
 - Updated the structure to Codeception 5
 
 ### Removed

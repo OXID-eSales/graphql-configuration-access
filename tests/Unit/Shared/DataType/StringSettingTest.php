@@ -26,7 +26,7 @@ class StringSettingTest extends TestCase
         $this->assertSame($value, $sut->getValue());
     }
 
-    public function stringSettingDataProvider(): \Generator
+    public static function stringSettingDataProvider(): \Generator
     {
         yield "random strings" => [uniqid(), uniqid()];
     }

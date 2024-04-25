@@ -26,7 +26,7 @@ class FloatSettingTest extends TestCase
         $this->assertSame($value, $sut->getValue());
     }
 
-    public function floatSettingDataProvider(): \Generator
+    public static function floatSettingDataProvider(): \Generator
     {
         yield "random float" => [uniqid(), rand(1, 100) / 10];
         yield "random integer" => [uniqid(), rand(1, 100)];

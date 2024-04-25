@@ -43,7 +43,7 @@ class SettingTypeTest extends TestCase
         $this->assertSame($expectation, $sut->isSupported());
     }
 
-    public function isSupportedDataProvider(): \Generator
+    public static function isSupportedDataProvider(): \Generator
     {
         yield 'not supported case' => ['settingType' => 'someRandomSettingId', 'expectation' => false];
         yield 'supported case' => ['settingType' => FieldType::ARRAY, 'expectation' => true];

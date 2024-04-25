@@ -66,7 +66,7 @@ class ShopSettingRepositoryTest extends IntegrationTestCase
         $sut->$getterMethod('NotExistant');
     }
 
-    public function exceptionGetterDataProvider(): \Generator
+    public static function exceptionGetterDataProvider(): \Generator
     {
         yield ['getInteger'];
         yield ['getFloat'];
@@ -89,7 +89,7 @@ class ShopSettingRepositoryTest extends IntegrationTestCase
         $sut->$setterMethod('NotExistant', $value);
     }
 
-    public function exceptionSetterDataProvider(): \Generator
+    public static function exceptionSetterDataProvider(): \Generator
     {
         yield [
             'setterMethod' => 'saveIntegerSetting',

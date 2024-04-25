@@ -39,7 +39,7 @@ class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTe
         $sut->$repositoryMethod($name, $value, $themeId);
     }
 
-    public function notExistingSettingCheckTriggerDataProvider(): \Generator
+    public static function notExistingSettingCheckTriggerDataProvider(): \Generator
     {
         yield "saveIntegerSetting" => [
             'repositoryMethod' => 'saveIntegerSetting',
