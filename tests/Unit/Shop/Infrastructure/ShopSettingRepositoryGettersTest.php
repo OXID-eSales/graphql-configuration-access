@@ -58,14 +58,14 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
     public function testGetShopSettingWrongData(
         string $method,
         string $type,
-        $value,
+        mixed $possibleValue,
         string $expectedException
     ): void {
         $shopSettingDaoStub = $this->createStub(ShopConfigurationSettingDaoInterface::class);
         $shopSettingDaoStub->method('get')->willReturn(
             $this->createConfiguredMock(ShopConfigurationSetting::class, [
                 'getType' => $type,
-                'getValue' => $value
+                'getValue' => $possibleValue
             ])
         );
 
@@ -82,42 +82,42 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
         yield [
             'method' => 'getInteger',
             'type' => 'wrong',
-            'value' => 'any',
+            'possibleValue' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
 
         yield [
             'method' => 'getFloat',
             'type' => 'wrong',
-            'value' => 'any',
+            'possibleValue' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
 
         yield [
             'method' => 'getBoolean',
             'type' => 'wrong',
-            'value' => 'any',
+            'possibleValue' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
 
         yield [
             'method' => 'getString',
             'type' => 'wrong',
-            'value' => 'any',
+            'possibleValue' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
 
         yield [
             'method' => 'getSelect',
             'type' => 'wrong',
-            'value' => 'any',
+            'possibleValue' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
 
         yield [
             'method' => 'getCollection',
             'type' => 'wrong',
-            'value' => 'any',
+            'possibleValue' => 'any',
             'expectedException' => WrongSettingTypeException::class
         ];
     }

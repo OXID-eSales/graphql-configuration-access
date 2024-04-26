@@ -245,35 +245,35 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
         yield [
             'method' => 'getInteger',
             'type' => FieldType::NUMBER,
-            'value' => 'any',
+            'possibleValue' => 'any',
             'expectedException' => WrongSettingValueException::class
         ];
 
         yield [
             'method' => 'getInteger',
             'type' => FieldType::NUMBER,
-            'value' => null,
+            'possibleValue' => null,
             'expectedException' => WrongSettingValueException::class
         ];
 
         yield [
             'method' => 'getInteger',
             'type' => FieldType::NUMBER,
-            'value' => 1.123,
+            'possibleValue' => 1.123,
             'expectedException' => WrongSettingValueException::class
         ];
 
         yield [
             'method' => 'getInteger',
             'type' => FieldType::NUMBER,
-            'value' => '1.123',
+            'possibleValue' => '1.123',
             'expectedException' => WrongSettingValueException::class
         ];
 
         yield [
             'method' => 'getFloat',
             'type' => FieldType::NUMBER,
-            'value' => 'any',
+            'possibleValue' => 'any',
             'expectedException' => WrongSettingValueException::class
         ];
 
@@ -281,84 +281,84 @@ abstract class AbstractDatabaseSettingsRepositoryTestCase extends UnitTestCase
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
             'possibleValue' => false,
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'empty string instead of collection' => [
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
             'possibleValue' => '',
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'string instead of collection' => [
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
             'possibleValue' => 'some string',
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'integer instead of collection' => [
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
             'possibleValue' => 123,
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'float instead of collection' => [
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
             'possibleValue' => 1.23,
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'null instead of collection' => [
             'method' => 'getCollection',
             'type' => FieldType::ARRAY,
             'possibleValue' => false,
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'empty string instead of assoc collection' => [
             'method' => 'getAssocCollection',
             'type' => FieldType::ASSOCIATIVE_ARRAY,
             'possibleValue' => '',
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'false as the error result of unserialize in assoc collection' => [
             'method' => 'getAssocCollection',
             'type' => FieldType::ASSOCIATIVE_ARRAY,
             'possibleValue' => false,
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'string instead of assoc collection' => [
             'method' => 'getAssocCollection',
             'type' => FieldType::ASSOCIATIVE_ARRAY,
             'possibleValue' => 'some string',
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'integer instead of assoc collection' => [
             'method' => 'getAssocCollection',
             'type' => FieldType::ASSOCIATIVE_ARRAY,
             'possibleValue' => 123,
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'float instead of assoc collection' => [
             'method' => 'getAssocCollection',
             'type' => FieldType::ASSOCIATIVE_ARRAY,
             'possibleValue' => 1.23,
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
 
         yield 'null instead of assoc collection' => [
             'method' => 'getAssocCollection',
             'type' => FieldType::ASSOCIATIVE_ARRAY,
             'possibleValue' => false,
-            'expectedResult' => WrongSettingValueException::class
+            'expectedException' => WrongSettingValueException::class
         ];
     }
 }

@@ -48,17 +48,17 @@ class JsonCollectionEncodingServiceTest extends TestCase
     {
         yield [
             'value' => '',
-            'result' => []
+            'expectedResult' => []
         ];
 
         yield [
             'value' => '["apple","banana"]',
-            'result' => ["apple", "banana"]
+            'expectedResult' => ["apple", "banana"]
         ];
 
         yield [
             'value' => '{"name":"John","age":30}',
-            'result' => ["name" => "John", "age" => 30]
+            'expectedResult' => ["name" => "John", "age" => 30]
         ];
     }
 

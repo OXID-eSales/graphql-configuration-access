@@ -14,6 +14,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\NoSettingsFoundForThemeException;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository
@@ -48,7 +49,7 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
     public function testGetThemeSettingWrongData(
         string $method,
         string $type,
-        mixed $value,
+        mixed $possibleValue,
         string $expectedException
     ): void {
         $name = uniqid();
@@ -57,7 +58,7 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
         $sut->expects($this->once())
             ->method('getSettingValue')
             ->with($name, $type, 'awesomeTheme')
-            ->willReturn($value);
+            ->willReturn($possibleValue);
 
         $this->expectException($expectedException);
         $sut->$method($name, 'awesomeTheme');
@@ -78,16 +79,13 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
 
     public static function noSettingExceptionDataProvider(): \Generator
     {
-        yield 'getInteger' => ['repositoryMethod' => 'getInteger', 'fieldType' => FieldType::NUMBER];
-        yield 'getFloat' => ['repositoryMethod' => 'getFloat', 'fieldType' => FieldType::NUMBER];
-        yield 'getBoolean' => ['repositoryMethod' => 'getBoolean', 'fieldType' => FieldType::BOOLEAN];
-        yield 'getString' => ['repositoryMethod' => 'getString', 'fieldType' => FieldType::STRING];
-        yield 'getSelect' => ['repositoryMethod' => 'getSelect', 'fieldType' => FieldType::SELECT];
-        yield 'getCollection' => ['repositoryMethod' => 'getCollection', 'fieldType' => FieldType::ARRAY];
-        yield 'getAssocCollection' => [
-            'repositoryMethod' => 'getAssocCollection',
-            'fieldType' => FieldType::ASSOCIATIVE_ARRAY
-        ];
+        yield 'getInteger' => ['repositoryMethod' => 'getInteger'];
+        yield 'getFloat' => ['repositoryMethod' => 'getFloat'];
+        yield 'getBoolean' => ['repositoryMethod' => 'getBoolean'];
+        yield 'getString' => ['repositoryMethod' => 'getString'];
+        yield 'getSelect' => ['repositoryMethod' => 'getSelect'];
+        yield 'getCollection' => ['repositoryMethod' => 'getCollection'];
+        yield 'getAssocCollection' => ['repositoryMethod' => 'getAssocCollection'];
     }
 
     public function testGetSettingsList(): void
