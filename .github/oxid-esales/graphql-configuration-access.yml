@@ -26,8 +26,6 @@ install_module:
     custom_script: |
         perl -pi -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1' source/source/.htaccess
         sed -i 's/<?php/<?php\n\nrequire(__DIR__ . "\/..\/c3.php");/' source/source/bootstrap.php
-    custom_script_container:
-        bin/oe-console oe:setup:demodata
 
 phpunit:
     matrix:
