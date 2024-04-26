@@ -1,6 +1,6 @@
-# {{ $ids := "oe_graphql_storefront" }}ids: {{ print $ids }}
+# {{ $ids := "oe_graphql_configuration_access" }}ids: {{ print $ids }}
 # {{ $org := "oxid-esales" }}organisation: {{ print $org }}
-# {{ $name := "graphql-storefront" }}name: {{ print $name }}
+# {{ $name := "graphql-configuration-access" }}name: {{ print $name }}
 prepare_shop:
     git:
         shop_ref: '{{ .Data.global.git.default_ref }}'
