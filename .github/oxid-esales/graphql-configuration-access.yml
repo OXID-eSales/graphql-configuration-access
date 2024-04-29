@@ -15,7 +15,7 @@ prepare_shop:
                     "codeception/c3": "^2.9",
                     "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
                     "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-                    "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+                    "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}"
                 },
                 "config":{
                     "allow-plugins":{
