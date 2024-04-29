@@ -7,24 +7,24 @@ prepare_shop:
     custom_ini:
         xdebug: 'xdebug.mode=debug,profile,coverage'
     composer:
-      transform: |
-        {
-            "require-dev": {
-                "codeception/module-rest": "^3.3",
-                "codeception/module-phpbrowser": "^3.0",
-                "codeception/c3": "^2.9",
-                "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
-                "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-                "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
-            },
-            "config":{
-                "allow-plugins":{
-                  "oxid-esales/oxideshop-composer-plugin": true,
-                  "oxid-esales/oxideshop-unified-namespace-generator": true,
-                  "codeception/c3": true
+        transform: |
+            {
+                "require-dev": {
+                    "codeception/module-rest": "^3.3",
+                    "codeception/module-phpbrowser": "^3.0",
+                    "codeception/c3": "^2.9",
+                    "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+                    "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
+                    "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+                },
+                "config":{
+                    "allow-plugins":{
+                      "oxid-esales/oxideshop-composer-plugin": true,
+                      "oxid-esales/oxideshop-unified-namespace-generator": true,
+                      "codeception/c3": true
+                    }
                 }
             }
-        }
 
 install_module:
     matrix:
