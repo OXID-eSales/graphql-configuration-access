@@ -37,7 +37,11 @@
         "codeception/module-rest": "*",
         "codeception/module-phpbrowser": "*",
         "codeception/module-db": "*",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "mikey179/vfsstream": "~1.6.8",
+        "codeception/codeception": "^5.0",
+        "oxid-esales/codeception-modules": "dev-b-7.0.x",
+        "codeception/module-asserts": "^3.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -69,20 +73,16 @@
             "@deptrac"
         ],
 
-        "phpunit": "vendor/bin/phpunit --bootstrap=/var/www/source/bootstrap.php --config=tests/ --testsuite=Unit",
+        "phpunit": "vendor/bin/phpunit --config=tests/ --testsuite=Unit",
         "phpintegration": "vendor/bin/phpunit --bootstrap=/var/www/source/bootstrap.php --config=tests/ --testsuite=Integration",
         "phpunit-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --bootstrap=/var/www/source/bootstrap.php --config=tests/ --coverage-html=tests/reports/coverage",
 
         "codeception": [
             "Composer\\Config::disableProcessTimeout",
-            "MODULE_IDS=oe_graphql_base,oe_graphql_configuration_access /var/www/vendor/bin/codecept run Acceptance -c /var/www/vendor/oxid-esales/graphql-configuration-access/tests/codeception.yml --no-redirect"
+            "MODULE_IDS=oe_graphql_base,oe_graphql_configuration_access SHOP_ROOT_PATH=/var/www vendor/bin/codecept run Acceptance -c /var/www/vendor/oxid-esales/graphql-configuration-access/tests/codeception.yml --no-redirect"
         ]
     },
     "config": {
-        "allow-plugins": {
-            "oxid-esales/oxideshop-unified-namespace-generator": true,
-            "oxid-esales/oxideshop-composer-plugin": true,
-            "cyclonedx/cyclonedx-php-composer": true
-        }
+        "allow-plugins": false
     }
 }

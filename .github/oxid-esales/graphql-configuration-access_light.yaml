@@ -11,16 +11,6 @@ install_shop_with_modules:
                     "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
                     "oxid-esales/developer-tools": "{{ .Data.global.composer.dev_ref }}",
                     "oxid-esales/graphql-configuration-access": "{{ .Data.global.composer.ref_name }}",
-                    "codeception/module-rest": "^3.3",
-                    "codeception/module-phpbrowser": "^3.0",
-                    "codeception/c3": "^2.9"
-                },
-                "config":{
-                    "allow-plugins":{
-                      "oxid-esales/oxideshop-composer-plugin": true,
-                      "oxid-esales/oxideshop-unified-namespace-generator": true,
-                      "codeception/c3": true
-                    }
                 },
                 "repositories": {
                     "oxid-esales/graphql-configuration-access": {
