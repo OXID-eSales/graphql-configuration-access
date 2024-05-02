@@ -44,7 +44,7 @@ runscript: &runscript
               "configuration_module:codeception"
             ]
     configuration_module:
-        path: 'vendor/oxid-esales/graphql-configuration-module'
+        path: 'vendor/oxid-esales/graphql-configuration-access'
 
 runslim:
     <<: *runscript
