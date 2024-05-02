@@ -1,0 +1,73 @@
+install_shop_with_modules:
+    cache:
+        prepared_shop: false
+    composer:
+        transform: |
+            {
+                "require": {
+                    "oxid-esales/oxideshop-ce": "{{ .Data.global.composer.dev_ref }}",
+                    "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+                    "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
+                    "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+                    "oxid-esales/developer-tools": "{{ .Data.global.composer.dev_ref }}",
+                    "oxid-esales/graphql-configuration-access": "{{ .Data.global.composer.ref_name }}",
+                    "codeception/module-rest": "^3.3",
+                    "codeception/module-phpbrowser": "^3.0",
+                    "codeception/c3": "^2.9"
+                },
+                "config":{
+                    "allow-plugins":{
+                      "oxid-esales/oxideshop-composer-plugin": true,
+                      "oxid-esales/oxideshop-unified-namespace-generator": true,
+                      "codeception/c3": true
+                    }
+                },
+                "repositories": {
+                    "oxid-esales/graphql-configuration-access": {
+                        "type": "git",
+                        "url": "https://github.com/OXID-eSales/graphql-configuration-access.git"
+                    }
+                }
+            }
+    custom_script_container: |
+        vendor/bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
+        vendor/bin/oe-console oe:module:activate oe_graphql_base
+        vendor/bin/oe-console oe:module:activate oe_graphql_configuration_access
+        vendor/bin/oe-console oe:theme:activate apex
+
+runscript: &runscript
+    matrix:
+        script: |
+            [
+              "configuration_module:phpunit",
+              "configuration_module:phpintegration",
+              "configuration_module:codeception"
+            ]
+    configuration_module:
+        path: 'vendor/oxid-esales/graphql-configuration-module'
+
+runslim:
+    <<: *runscript
+    matrix:
+        script: |
+            [
+              "configuration_module:phpcs",
+              "configuration_module:phpstan",
+              "configuration_module:phpmd",
+              "configuration_module:deptrac",
+            ]
+
+sonarcloud:
+    matrix:
+        testplan: '["-"]'
+    strip_path: '/var/www/vendor/oxid-esales/graphql-configuration-access/'
+    project_key: 'OXID-eSales_graphql-configuration-access'
+    project_name: 'oxid-esales/graphql-configuration-access'
+    parameters: |
+        -Dsonar.language=php
+        -Dsonar.scm.provider=git
+        -Dsonar.sources=src
+        -Dsonar.tests=tests
+
+finish:
+    slack_title: 'Configuration Access module ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
