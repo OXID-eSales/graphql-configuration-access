@@ -22,16 +22,16 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-    push_module_ee:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Trigger EE workflow and wait for results
-              uses: convictional/trigger-workflow-and-wait@v1.6.5
-              with:
-                  owner: oxid-esales
-                  repo: module-workflows
-                  github_user: ${{ secrets.CI_USER }}
-                  github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
-                  workflow_file_name: configuration_access_workflow.yml
-                  ref: "b-7.1.x-configuration_access_module-OXDEV-7732"
-                  client_payload: "{\"limit\": \"PHP8.2/MySQL8.0\", \"edition\": \"ee\", \"ref\": \"${{ github.ref_name }}\"}"
+  push_module_ee:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger EE workflow and wait for results
+        uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          owner: oxid-esales
+          repo: module-workflows
+          github_user: ${{ secrets.CI_USER }}
+          github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
+          workflow_file_name: configuration_access_workflow.yml
+          ref: "b-7.1.x-configuration_access_module-OXDEV-7732"
+          client_payload: "{\"limit\": \"PHP8.2/MySQL8.0\", \"edition\": \"ee\", \"ref\": \"${{ github.ref_name }}\"}"
