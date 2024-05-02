@@ -20,6 +20,7 @@ install_shop_with_modules:
                 }
             }
     custom_script_container: |
+        perl -pi -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1' source/.htaccess
         vendor/bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
         vendor/bin/oe-console oe:module:activate oe_graphql_base
         vendor/bin/oe-console oe:module:activate oe_graphql_configuration_access
