@@ -2,7 +2,9 @@ name: Auto trigger on push or pull requests
 
 on:
   pull_request: {}
-  push: {}
+  push:
+    branch:
+      - "b-7.1.x*"
 
 jobs:
   configuration_module_php82_mysql80:
