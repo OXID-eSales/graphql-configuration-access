@@ -8,11 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - PHP 8.2 support
-- Shop 7.1 dependencies file
+- Module activation dependency on GraphQL Base module
 
 ### Changed
-- Upgraded to PHPUnit 10
-- Updated the structure to Codeception 5
+- PHPUnit upgraded to version 10.x
+- Codeception tests structure updated to Codeception 5
 
 ### Removed
 - PHP 8.0 support

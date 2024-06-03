@@ -1,5 +1,5 @@
 
-[![Development](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/development.yml/badge.svg?branch=b-7.0.x)](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/development.yml)
+[![Development](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml/badge.svg?branch=b-7.0.x)](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml)
 [![Latest Version](https://img.shields.io/packagist/v/OXID-eSales/graphql-configuration-access?logo=composer&label=latest&include_prereleases&color=orange)](https://packagist.org/packages/oxid-esales/graphql-configuration-access)
 [![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/graphql-configuration-access)](https://github.com/oxid-esales/graphql-configuration-access)
 
