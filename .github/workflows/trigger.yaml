@@ -3,7 +3,7 @@ name: Auto trigger on push or pull requests
 on:
   pull_request: {}
   push:
-    branch:
+    branches:
       - "b-7.1.x*"
 
 jobs:
