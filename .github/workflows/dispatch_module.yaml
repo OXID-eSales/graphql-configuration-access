@@ -1,0 +1,4 @@
+name: Manual trigger on push or pull requests
+
+on:
+  workflow_dispatch:
