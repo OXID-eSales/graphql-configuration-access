@@ -1,4 +1,4 @@
-name: Manual trigger on push or pull requests
+name: Manual trigger for testing github actions development
 
 on:
   workflow_dispatch:
