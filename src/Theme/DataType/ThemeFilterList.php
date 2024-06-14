@@ -11,34 +11,46 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType;
 
 use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
+use TheCodingMachine\GraphQLite\Annotations\Factory;
 
-final class ThemeFilterList
+final class ThemeFilterList implements ThemeFilterListInterface
 {
-    /** @var ?StringFilter */
-    private $title;
-
-    /** @var ?BoolFilter */
-    private $active;
-
     public function __construct(
-        ?StringFilter $title = null,
-        ?BoolFilter $active = null
+        private readonly ?StringFilter $title = null,
+        private readonly ?BoolFilter $active = null
     ) {
-        $this->title = $title;
-        $this->active = $active;
+    }
+
+
+    public function filterThemeByTitle(ThemeDataType $theme): bool
+    {
+        $titleFilter = $this->title;
+        if ($titleFilter !== null && $titleFilter->contains() !== null) {
+            if (!str_contains($theme->getTitle(), $titleFilter->contains())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function filterThemeByStatus(ThemeDataType $theme): bool
+    {
+        $statusFilter = $this->active;
+        if ($statusFilter !== null && $statusFilter->equals() !== null) {
+            if ($theme->isActive() !== $statusFilter->equals()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
-     * @return array{
-     *                title: ?StringFilter,
-     *                active : ?BoolFilter,
-     *                }
+     * @Factory(name="ThemeFilterList", default=true)
      */
-    public function getFilters(): array
-    {
-        return [
-            'title' => $this->title,
-            'active' => $this->active,
-        ];
+    public static function createThemeFilterList(
+        ?StringFilter $title = null,
+        ?BoolFilter $active = null
+    ): self {
+        return new self($title, $active);
     }
 }
