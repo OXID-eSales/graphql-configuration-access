@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Theme;
+
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
+
+/**
+ * @group theme_list
+ * @group setting_access
+ * @group oe_graphql_configuration_access
+ */
+final class ThemeListCest extends BaseCest
+{
+    public function testThemeList(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+        $I->sendGQLQuery(
+            'query themeList {
+			  themesList(
+				filters: {
+				  active: {
+					  equals: true
+				  }
+				  title: {
+				  contains: "APEX Theme"
+				  }
+				}
+			  ) {
+				title
+				identifier
+				version
+				description
+				active
+			  }
+			}'
+        );
+        $I->seeResponseIsJson();
+        $result = $I->grabJsonResponseAsArray();
+        $I->assertArrayNotHasKey('errors', $result);
+        $themeList = $result['data']['themesList'];
+        $I->assertCount(1, $themeList);
+
+        $I->assertEquals("APEX Theme", $themeList[0]['title']);
+        $I->assertEquals("apex", $themeList[0]['identifier']);
+        $I->assertEquals("APEX - Bootstrap 5 TWIG Theme", $themeList[0]['description']);
+        $I->assertTrue($themeList[0]['active']);
+    }
+}
