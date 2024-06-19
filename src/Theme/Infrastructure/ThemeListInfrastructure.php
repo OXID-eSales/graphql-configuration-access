@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeNotFound;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 
 final class ThemeListInfrastructure implements ThemeListInfrastructureInterface
 {
@@ -20,19 +20,20 @@ final class ThemeListInfrastructure implements ThemeListInfrastructureInterface
     ) {
     }
 
-
     public function getThemes(): array
     {
         $coreThemeService = $this->coreThemeFactory->getClass();
         $themesList = $coreThemeService->getList();
 
+        if (empty($themesList)) {
+            throw new ThemesNotFound();
+        }
+
         $themesArray = [];
         foreach ($themesList as $theme) {
             $themesArray[] = $this->themeDataTypeFactory->createFromCoreTheme(theme: $theme);
         }
-        if (empty($themesList)) {
-            throw new ThemeNotFound();
-        }
+
         return $themesArray;
     }
 }
