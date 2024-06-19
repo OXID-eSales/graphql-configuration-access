@@ -10,11 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterListInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFiltersInterface;
 
 class ThemeFilterService implements ThemeFilterServiceInterface
 {
-    public function filterThemes(array $themes, ThemeFilterListInterface $filterList): array
+    public function filterThemes(array $themes, ThemeFiltersInterface $filterList): array
     {
         return array_filter($themes, function (ThemeDataType $theme) use ($filterList) {
             return $filterList->filterThemeByTitle($theme) && $filterList->filterThemeByStatus($theme);

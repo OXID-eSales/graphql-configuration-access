@@ -43,10 +43,10 @@ final class ThemeListCest extends BaseCest
             'query themeList {
 			  themesList(
 				filters: {
-				  active: {
+				  activeFilter: {
 					  equals: true
 				  }
-				  title: {
+				  titleFilter: {
 				  contains: "APEX Theme"
 				  }
 				}
