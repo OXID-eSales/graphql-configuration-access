@@ -13,6 +13,7 @@ use Codeception\Attribute\DataProvider;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
+ * @group theme_list
  * @group theme_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
@@ -80,6 +81,7 @@ final class NotAuthorizedAccessCest extends BaseCest
         yield ['queryName' => 'themeSettingSelect', 'field' => 'name', 'location' => 'theme'];
         yield ['queryName' => 'themeSettingCollection', 'field' => 'name', 'location' => 'theme'];
         yield ['queryName' => 'themeSettingAssocCollection', 'field' => 'name', 'location' => 'theme'];
+        yield ['queryName' => 'themeSettingAssocCollection', 'field' => 'name', 'location' => 'theme'];
     }
 
     protected function themeMutationsDataProvider(): \Generator
@@ -123,6 +125,7 @@ final class NotAuthorizedAccessCest extends BaseCest
         yield ['queryName' => 'themeSettings', 'field' => 'name', 'location' => 'theme'];
         yield ['queryName' => 'moduleSettings', 'field' => 'name', 'location' => 'module'];
         yield ['queryName' => 'shopSettings', 'field' => 'name', 'location' => 'shop'];
+        yield ['queryName' => 'themesList', 'field' => 'title', 'location' => ''];
     }
 
     protected function moduleGettersDataProvider(): \Generator

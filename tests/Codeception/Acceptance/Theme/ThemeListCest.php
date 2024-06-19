@@ -20,7 +20,23 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
  */
 final class ThemeListCest extends BaseCest
 {
-    public function testThemeList(AcceptanceTester $I): void
+    public function testThemeListAuthorized(AcceptanceTester $I): void
+    {
+        $I->login($this->getAdminUsername(), $this->getAdminPassword());
+
+        $result = $this->runThemeListQuery($I);
+
+        $I->assertArrayNotHasKey('errors', $result);
+        $themeList = $result['data']['themesList'];
+        $I->assertCount(1, $themeList);
+
+        $I->assertEquals("APEX Theme", $themeList[0]['title']);
+        $I->assertEquals("apex", $themeList[0]['identifier']);
+        $I->assertEquals("APEX - Bootstrap 5 TWIG Theme", $themeList[0]['description']);
+        $I->assertTrue($themeList[0]['active']);
+    }
+
+    public function runThemeListQuery(AcceptanceTester $I): array
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
         $I->sendGQLQuery(
@@ -43,15 +59,8 @@ final class ThemeListCest extends BaseCest
 			  }
 			}'
         );
-        $I->seeResponseIsJson();
-        $result = $I->grabJsonResponseAsArray();
-        $I->assertArrayNotHasKey('errors', $result);
-        $themeList = $result['data']['themesList'];
-        $I->assertCount(1, $themeList);
 
-        $I->assertEquals("APEX Theme", $themeList[0]['title']);
-        $I->assertEquals("apex", $themeList[0]['identifier']);
-        $I->assertEquals("APEX - Bootstrap 5 TWIG Theme", $themeList[0]['description']);
-        $I->assertTrue($themeList[0]['active']);
+        $I->seeResponseIsJson();
+        return $I->grabJsonResponseAsArray();
     }
 }
