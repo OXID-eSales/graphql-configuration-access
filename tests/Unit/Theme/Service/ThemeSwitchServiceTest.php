@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Service;
+
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructureInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSwitchService;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSwitchService
+ */
+class ThemeSwitchServiceTest extends TestCase
+{
+    /** @dataProvider switchThemeProvider */
+    public function testSwitchTheme(
+        string $identifier,
+        bool $expectedResult
+    ): void {
+        $themeSwitchInfrastructureMock = $this->createMock(ThemeSwitchInfrastructureInterface::class);
+        $themeSwitchInfrastructureMock
+            ->method('switchTheme')
+            ->with($identifier)
+            ->willReturn($expectedResult);
+
+        $themeSwitchInfrastructure = new ThemeSwitchService($themeSwitchInfrastructureMock);
+        $response = $themeSwitchInfrastructure->switchTheme($identifier);
+
+        $this->assertSame($expectedResult, $response);
+    }
+
+    public static function switchThemeProvider(): \Generator
+    {
+        yield 'test switch theme successful case' => [
+            'identifier' => 'validThemeId',
+            'expectedResult' => true
+        ];
+
+        yield 'test switch theme failure case' => [
+            'identifier' => 'invalidThemeId',
+            'expectedResult' => false
+        ];
+    }
+}
