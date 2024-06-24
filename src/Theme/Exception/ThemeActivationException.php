@@ -13,8 +13,8 @@ use OxidEsales\GraphQL\Base\Exception\NotFound;
 
 final class ThemeActivationException extends NotFound
 {
-    const THEME_NOT_ACTIVATED = "An error occurred while activating the theme.";
-    const THEME_NOT_EXIST = "The specified theme doesn't exist.";
+    public const THEME_NOT_ACTIVATED = "An error occurred while activating the theme.";
+    public const THEME_NOT_EXIST = "The specified theme doesn't exist.";
 
     public function __construct(string $message = null)
     {

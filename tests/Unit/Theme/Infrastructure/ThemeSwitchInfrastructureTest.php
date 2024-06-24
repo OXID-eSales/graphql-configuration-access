@@ -40,7 +40,11 @@ class ThemeSwitchInfrastructureTest extends TestCase
         $identifier = 'apex';
         $coreThemeMock = $this->createMock(Theme::class);
         $coreThemeMock->method('load')->with($identifier)->willReturn(true);
-        $coreThemeMock->method('activate')->will($this->throwException(new StandardException(ThemeActivationException::THEME_NOT_ACTIVATED)));
+        $coreThemeMock->method('activate')->will(
+            $this->throwException(
+                new StandardException(ThemeActivationException::THEME_NOT_ACTIVATED)
+            )
+        );
 
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(coreThemeMock: $coreThemeMock);
         $sut = $this->getSut($coreThemeFactoryMock);
