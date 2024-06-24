@@ -13,6 +13,8 @@ use Codeception\Attribute\DataProvider;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
+ * @group theme_switch
+ * @group theme_list
  * @group theme_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
@@ -66,6 +68,20 @@ final class NotAuthorizedAccessCest extends BaseCest
             field: $example['field'],
             value: $example['value'],
             location: $example['location']
+        );
+
+        $this->assertQueryNotFoundErrorInResult($I, $result);
+    }
+
+    #[DataProvider('themeMutationsReturnsBoolDataProvider')]
+    public function testSwitchThemeNotAuthorizedMutation(AcceptanceTester $I, \Codeception\Example $example): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+        $result = $this->runSimplifiedAccessCheckMutationForBool(
+            I: $I,
+            queryName: $example['queryName'],
+            field: $example['field'],
+            value: $example['value']
         );
 
         $this->assertQueryNotFoundErrorInResult($I, $result);
@@ -192,6 +208,15 @@ final class NotAuthorizedAccessCest extends BaseCest
         ];
     }
 
+    protected function themeMutationsReturnsBoolDataProvider(): \Generator
+    {
+        yield [
+            'queryName' => 'switchTheme',
+            'field' => 'identifier',
+            'value' => 'test'
+        ];
+    }
+
     private function runSimplifiedAccessCheckQuery(
         AcceptanceTester $I,
         string $queryName,
@@ -240,6 +265,24 @@ final class NotAuthorizedAccessCest extends BaseCest
                 ' . $queryName . '(' . implode(',', $parameters) . ') {
                     ' . $field . '
                 }
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        return $I->grabJsonResponseAsArray();
+    }
+
+    private function runSimplifiedAccessCheckMutationForBool(
+        AcceptanceTester $I,
+        string $queryName,
+        string $field,
+        mixed $value,
+    ): array {
+        $parameters = $field . ': "' . $value . '"';
+        $I->sendGQLQuery(
+            'mutation {
+                ' . $queryName . '(' . $parameters . ')
             }'
         );
 
