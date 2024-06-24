@@ -18,6 +18,7 @@ final class ThemeSwitchInfrastructure implements ThemeSwitchInfrastructureInterf
         private readonly CoreThemeFactoryInterface $coreThemeFactory
     ) {
     }
+
     public function switchTheme(string $identifier): bool
     {
         try {

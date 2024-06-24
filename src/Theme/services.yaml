@@ -25,8 +25,8 @@ services:
   OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService
 
-  OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructureInterface:
-    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructure
-
   OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSwitchServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSwitchService
+
+  OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructureInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructure
