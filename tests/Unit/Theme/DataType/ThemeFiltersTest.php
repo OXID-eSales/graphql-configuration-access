@@ -93,7 +93,13 @@ class ThemeFiltersTest extends TestCase
         $stringFilter = $this->createMock(StringFilter::class);
         $boolFilter = $this->createMock(BoolFilter::class);
 
-        $themeFilterListSpy = ThemeFilters::createThemeFilters($stringFilter, $boolFilter);
-        $this->assertInstanceOf(ThemeFilters::class, $themeFilterListSpy);
+        $themeFilterList = ThemeFilters::createThemeFilters($stringFilter, $boolFilter);
+        $this->assertInstanceOf(ThemeFilters::class, $themeFilterList);
+    }
+
+    public function testCreateThemeFilterListWithNull(): void
+    {
+        $themeFilterList = ThemeFilters::createThemeFilters(null, null);
+        $this->assertInstanceOf(ThemeFilters::class, $themeFilterList);
     }
 }
