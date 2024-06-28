@@ -22,6 +22,6 @@ class ThemesNotFoundTest extends TestCase
         $exception = new ThemesNotFound();
 
         $this->assertInstanceOf(ThemesNotFound::class, $exception);
-        $this->assertSame('Theme was not found.', $exception->getMessage());
+        $this->assertSame('No themes were found.', $exception->getMessage());
     }
 }
