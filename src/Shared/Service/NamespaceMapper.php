@@ -29,6 +29,7 @@ final class NamespaceMapper implements NamespaceMapperInterface
         return [
             self::SPACE . 'Shared\\DataType' => __DIR__ . '/../../Shared/DataType/',
             self::SPACE . 'Theme\\DataType' => __DIR__ . '/../../Theme/DataType/',
+            self::SPACE . 'Module\\DataType' => __DIR__ . '/../../Module/DataType/',
         ];
     }
 }
