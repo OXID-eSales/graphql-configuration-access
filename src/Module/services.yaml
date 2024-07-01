@@ -9,3 +9,6 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingService
+
+  OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleFilterServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleFilterService
