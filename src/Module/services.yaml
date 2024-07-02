@@ -15,3 +15,6 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactoryInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactory
+    
+  OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\CoreModuleFactoryInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\CoreModuleFactory
