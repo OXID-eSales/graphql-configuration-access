@@ -2,6 +2,12 @@ services:
   _defaults:
     public: false
     autowire: true
+    bind:
+      OxidEsales\Eshop\Core\Language: '@=service("OxidEsales\ConfigurationAccess\Core\Registry").getLang()'
+
+  OxidEsales\ConfigurationAccess\Core\Registry:
+    class: OxidEsales\Eshop\Core\Registry
+    public: true
 
   OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\:
     resource: 'Service/'
@@ -9,3 +15,6 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageServiceInnterface:
+    class: \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService
