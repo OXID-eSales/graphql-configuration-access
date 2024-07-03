@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
+
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFiltersInterface;
+
+interface ModuleListServiceInterface
+{
+    /**
+     * @return array<ModuleDataType>
+     */
+    public function getModuleList(ModuleFiltersInterface $filters): array;
+}
