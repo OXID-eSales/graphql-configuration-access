@@ -3,7 +3,7 @@ services:
     public: false
     autowire: true
     bind:
-      OxidEsales\Eshop\Core\Language: '@=service("OxidEsales\ConfigurationAccess\Core\Registry").getLang()'
+      OxidEsales\Eshop\Core\Language: '@=service("OxidEsales\\ConfigurationAccess\\Core\\Registry").getLang()'
 
   OxidEsales\ConfigurationAccess\Core\Registry:
     class: OxidEsales\Eshop\Core\Registry
