@@ -35,7 +35,6 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
         ];
         $expectedId = uniqid();
         $expectedVersion = uniqid();
-        $expectedLang = uniqid();
         $expectedThumbnail = uniqid();
         $expectedAuthor = uniqid();
         $expectedUrl = uniqid();
@@ -46,7 +45,6 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
         $moduleConfigMock->method('getVersion')->willReturn($expectedVersion);
         $moduleConfigMock->method('getTitle')->willReturn($titlesData);
         $moduleConfigMock->method('getDescription')->willReturn($descriptionData);
-        $moduleConfigMock->method('getLang')->willReturn($expectedLang);
         $moduleConfigMock->method('getThumbnail')->willReturn($expectedThumbnail);
         $moduleConfigMock->method('getAuthor')->willReturn($expectedAuthor);
         $moduleConfigMock->method('getUrl')->willReturn($expectedUrl);
@@ -68,7 +66,6 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
         $this->assertSame($expectedVersion, $moduleDataType->getVersion());
         $this->assertSame($expectedTitle, $moduleDataType->getTitle());
         $this->assertSame($expectedDescription, $moduleDataType->getDescription());
-        $this->assertSame($expectedLang, $moduleDataType->getLang());
         $this->assertSame($expectedThumbnail, $moduleDataType->getThumbnail());
         $this->assertSame($expectedAuthor, $moduleDataType->getAuthor());
         $this->assertSame($expectedUrl, $moduleDataType->getUrl());

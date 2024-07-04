@@ -23,7 +23,6 @@ class ModuleDataTypeTest extends UnitTestCase
         $id = uniqid();
         $version = uniqid();
         $description = uniqid();
-        $lang = uniqid();
         $thumbnail = uniqid();
         $author = uniqid();
         $url = uniqid();
@@ -35,7 +34,6 @@ class ModuleDataTypeTest extends UnitTestCase
             version: $version,
             title: $title,
             description: $description,
-            lang: $lang,
             thumbnail: $thumbnail,
             author: $author,
             url: $url,
@@ -47,7 +45,6 @@ class ModuleDataTypeTest extends UnitTestCase
         $this->assertSame($version, $moduleDataType->getVersion());
         $this->assertSame($title, $moduleDataType->getTitle());
         $this->assertSame($description, $moduleDataType->getDescription());
-        $this->assertSame($lang, $moduleDataType->getLang());
         $this->assertSame($thumbnail, $moduleDataType->getThumbnail());
         $this->assertSame($author, $moduleDataType->getAuthor());
         $this->assertSame($url, $moduleDataType->getUrl());

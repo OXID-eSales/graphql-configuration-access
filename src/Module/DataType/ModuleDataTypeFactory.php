@@ -33,7 +33,6 @@ class ModuleDataTypeFactory implements ModuleDataTypeFactoryInterface
             version: $moduleConfig->getVersion(),
             title: $title,
             description: $description,
-            lang: $moduleConfig->getLang(),
             thumbnail: $moduleConfig->getThumbnail(),
             author: $moduleConfig->getAuthor(),
             url: $moduleConfig->getUrl(),

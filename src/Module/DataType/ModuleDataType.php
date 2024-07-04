@@ -20,7 +20,6 @@ class ModuleDataType
         private readonly ?string $version,
         private readonly ?string $title,
         private readonly ?string $description,
-        private readonly ?string $lang,
         private readonly ?string $thumbnail,
         private readonly ?string $author,
         private readonly ?string $url,
@@ -75,12 +74,6 @@ class ModuleDataType
     public function getEmail(): ?string
     {
         return $this->email;
-    }
-
-    #[Field]
-    public function getLang(): ?string
-    {
-        return $this->lang;
     }
 
     #[Field]
