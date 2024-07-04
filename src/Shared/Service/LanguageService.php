@@ -23,6 +23,14 @@ class LanguageService implements LanguageServiceInterface
         $langId = $this->language->getBaseLanguage();
         $languageAbbr = $this->language->getLanguageAbbr(langId: $langId);
 
-        return $data[$languageAbbr] ?? null;
+        if (isset($data[$languageAbbr])) {
+            return $data[$languageAbbr];
+        }
+
+        if (isset($data['en'])) {
+            return $data['en'];
+        }
+
+        return null;
     }
 }

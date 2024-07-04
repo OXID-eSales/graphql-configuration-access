@@ -13,9 +13,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\LanguageWrapper;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\Eshop\Core\Language;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\LanguageWrapper;
- */
 class LanguageWrapperTest extends TestCase
 {
     public function testGetBaseLanguage(): void

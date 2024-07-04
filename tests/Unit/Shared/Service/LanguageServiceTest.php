@@ -13,9 +13,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\LanguageWrapperInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService;
- */
 class LanguageServiceTest extends TestCase
 {
     public function testFilterByLanguageAbbreviationCorrectLangValue()
@@ -36,8 +33,9 @@ class LanguageServiceTest extends TestCase
         $this->assertSame($actualResult, $expectedResult);
     }
 
-    public function testFilterByLanguageAbbreviationWrongLangValue()
+    public function testFilterByLanguageAbbreviationDefaultedToEnglish()
     {
+        $expectedResult = "Title in en language";
         $titlesData = [
             'de' => 'Title in de language',
             'en' => 'Title in en language',
@@ -46,6 +44,20 @@ class LanguageServiceTest extends TestCase
         $languageWrapperMock = $this->createMock(LanguageWrapperInterface::class);
         $languageWrapperMock->method('getBaseLanguage')->willReturn(2);
         $languageWrapperMock->method('getLanguageAbbr')->with(2)->willReturn('fr');
+
+        $languageService = new LanguageService($languageWrapperMock);
+        $actualResult = $languageService->filterByLanguageAbbreviation($titlesData);
+
+        $this->assertSame($expectedResult, $actualResult);
+    }
+
+    public function testFilterByLanguageAbbreviationReturnNull(): void
+    {
+        $titlesData = [];
+
+        $languageWrapperMock = $this->createMock(LanguageWrapperInterface::class);
+        $languageWrapperMock->method('getBaseLanguage')->willReturn(1);
+        $languageWrapperMock->method('getLanguageAbbr')->with(1)->willReturn('de');
 
         $languageService = new LanguageService($languageWrapperMock);
         $actualResult = $languageService->filterByLanguageAbbreviation($titlesData);
