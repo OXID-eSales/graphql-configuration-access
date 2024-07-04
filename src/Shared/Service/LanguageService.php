@@ -20,6 +20,7 @@ class LanguageService implements LanguageServiceInterface
 
     public function filterByLanguageAbbreviation(array $data): ?string
     {
+        /**  @var int|null $langId */
         $langId = $this->language->getBaseLanguage();
         $languageAbbr = $this->language->getLanguageAbbr(iLanguage: $langId);
 

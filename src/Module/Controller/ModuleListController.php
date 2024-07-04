@@ -33,6 +33,6 @@ final class ModuleListController
     #[Right('CHANGE_CONFIGURATION')]
     public function modulesList(?ModuleFilters $filters = null): array
     {
-        return $this->moduleListService->getModuleList($filters);
+        return $this->moduleListService->getModuleList($filters ?? new ModuleFilters());
     }
 }
