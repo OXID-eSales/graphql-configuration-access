@@ -64,6 +64,9 @@ abstract class ModuleSettingBaseCest extends BaseCest
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId(self::TEST_MODULE_ID)
+            ->setTitle(['de' => self::TEST_MODULE_TITLE, 'en' => self::TEST_MODULE_TITLE])
+            ->setLang('de')
+            ->setActivated(true)
             ->setModuleSource('testPath')
             ->addModuleSetting($integerSetting)
             ->addModuleSetting($floatSetting)

@@ -14,6 +14,9 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 abstract class BaseCest
 {
     public const TEST_MODULE_ID = 'awesomeModule';
+
+    public const TEST_MODULE_TITLE = 'Awesome Module';
+
     public const TEST_THEME_ID = 'awesomeTheme';
 
     private const AGENT_USERNAME = 'JanvierJaimesVelasquez@cuvox.de';

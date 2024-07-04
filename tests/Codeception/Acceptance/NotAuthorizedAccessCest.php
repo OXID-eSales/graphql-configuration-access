@@ -124,6 +124,7 @@ final class NotAuthorizedAccessCest extends BaseCest
         yield ['queryName' => 'moduleSettings', 'field' => 'name', 'location' => 'module'];
         yield ['queryName' => 'shopSettings', 'field' => 'name', 'location' => 'shop'];
         yield ['queryName' => 'themesList', 'field' => 'title', 'location' => ''];
+        yield ['queryName' => 'modulesList', 'field' => 'title', 'location' => ''];
     }
 
     protected function moduleGettersDataProvider(): \Generator
