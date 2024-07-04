@@ -9,20 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Service;
 
-use OxidEsales\Eshop\Core\Language;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\LanguageWrapperInterface;
 
 class LanguageService implements LanguageServiceInterface
 {
     public function __construct(
-        protected Language $language
+        private LanguageWrapperInterface $language
     ) {
     }
 
     public function filterByLanguageAbbreviation(array $data): ?string
     {
-        /**  @var int|null $langId */
         $langId = $this->language->getBaseLanguage();
-        $languageAbbr = $this->language->getLanguageAbbr(iLanguage: $langId);
+        $languageAbbr = $this->language->getLanguageAbbr(langId: $langId);
 
         return $data[$languageAbbr] ?? null;
     }

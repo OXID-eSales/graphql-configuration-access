@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+    bind:
+      OxidEsales\Eshop\Core\Language: '@=service("OxidEsales\\GraphQL\\ConfigurationAccess\\Shared\\Core\\Registry").getLang()'
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\Registry:
+    class: OxidEsales\Eshop\Core\Registry
+    public: true
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\LanguageWrapperInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\LanguageWrapper
