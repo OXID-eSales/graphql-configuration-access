@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Theme list and filtering option on basis of theme name and status
+- Module list and filtering option on basis of module name and status
 
 ## [1.1.0] - 2024-07-05
 This is stable release for v1.1.0. No changes have been made since v1.1.0-rc.1.
