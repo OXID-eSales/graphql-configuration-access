@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Exception;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ModuleActivationExceptionTest extends TestCase
 {
-    public function testActivationException(): void
+    public function testException(): void
     {
         $exception = new ModuleActivationException();
 
