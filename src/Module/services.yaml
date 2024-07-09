@@ -21,3 +21,6 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleSwitchInfrastructureInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleSwitchInfrastructure
+
+  OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSwitchServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSwitchService
