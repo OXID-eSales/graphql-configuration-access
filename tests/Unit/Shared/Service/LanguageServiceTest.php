@@ -9,10 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\LanguageWrapperInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\LanguageWrapperInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService
+ */
 class LanguageServiceTest extends TestCase
 {
     public function testFilterByLanguageAbbreviationCorrectLangValue()

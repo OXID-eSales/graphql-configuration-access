@@ -1,5 +1,5 @@
 imports:
-  - { resource: Core/services.yaml }
+  - { resource: Infrastructure/services.yaml }
 
 services:
   _defaults:

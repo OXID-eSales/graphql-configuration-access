@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\Core\LanguageWrapperInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\LanguageWrapperInterface;
 
 class LanguageService implements LanguageServiceInterface
 {

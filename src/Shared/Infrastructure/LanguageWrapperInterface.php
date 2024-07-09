@@ -1,6 +1,6 @@
 <?php
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Core;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure;
 
 interface LanguageWrapperInterface
 {
