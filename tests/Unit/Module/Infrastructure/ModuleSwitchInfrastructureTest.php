@@ -85,9 +85,10 @@ class ModuleSwitchInfrastructureTest extends UnitTestCase
 
     public static function exceptionDataProvider(): \Generator
     {
+        $moduleId = uniqid();
         yield 'test activate module throws exception' => [
             'method' => 'activate',
-            'moduleId' => uniqid(),
+            'moduleId' => $moduleId,
             'exceptionClass' => ModuleActivationException::class,
 
         ];

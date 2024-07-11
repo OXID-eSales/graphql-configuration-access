@@ -1,3 +1,6 @@
+parameters:
+  oxidesales.graphqlconfigurationaccess.modules_block_list: '../../../module_blocklist.yaml'
+
 services:
   _defaults:
     public: false
@@ -21,3 +24,11 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService
+
+  OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\YamlFileLoaderInfrastructureInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\YamlFileLoaderInfrastructure
+
+  OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistServiceInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistService
+    arguments:
+      $moduleBlocklist: '%oxidesales.graphqlconfigurationaccess.modules_block_list%'
