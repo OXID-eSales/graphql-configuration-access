@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.0] - Unreleased
 
 ### Added
+- Prevention of deactivation of certain modules mentioned in modules_blocklist.yaml.
 - Mutations to  activate and deactive a module.
 
 ## [1.2.0] - Unreleased
@@ -37,6 +38,7 @@ This is stable release for v1.1.0. No changes have been made since v1.1.0-rc.1.
 
 - Initial release
 
+[1.2.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.1.0-rc.1...v1.1.0
 [1.1.0-rc.1]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.0.0...v1.1.0-rc.1
 [1.0.0]: https://github.com/OXID-eSales/graphql-configuration-access/releases/tag/v1.0.0
