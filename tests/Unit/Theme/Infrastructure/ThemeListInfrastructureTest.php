@@ -15,6 +15,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactory
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,15 +27,8 @@ class ThemeListInfrastructureTest extends TestCase
     {
         $theme1 = $this->createThemeMock(uniqid(), uniqid(), uniqid(), uniqid(), true);
         $theme2 = $this->createThemeMock(uniqid(), uniqid(), uniqid(), uniqid(), false);
-        $expectedThemes = [$theme1, $theme2];
 
-        $coreThemeMock = $this->createMock(Theme::class);
-        $coreThemeMock->method('getList')
-            ->willReturn($expectedThemes);
-
-        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeMock);
-        $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
-        $themeDataTypeFactoryMock->method('createFromCoreTheme')->will($this->returnCallback(function (Theme $theme) {
+        $convertThemeCallback = function (Theme $theme) {
             return new ThemeDataType(
                 $theme->getInfo('title'),
                 $theme->getInfo('id'),
@@ -42,27 +36,31 @@ class ThemeListInfrastructureTest extends TestCase
                 $theme->getInfo('description'),
                 $theme->getInfo('active')
             );
-        }));
+        };
+        $theme1DataType = $convertThemeCallback($theme1);
+        $theme2DataType = $convertThemeCallback($theme2);
+
+        $coreThemeMock = $this->createMock(Theme::class);
+        $coreThemeMock->expects($this->once())->method('getList')
+            ->willReturn([$theme1, $theme2]);
+
+        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeMock);
+        $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
+        $themeDataTypeFactoryMock->expects($this->exactly(2))->method('createFromCoreTheme')
+            ->with($this->logicalOr($theme1, $theme2))
+            ->willReturnCallback($convertThemeCallback);
 
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock, themeDataTypeFactory: $themeDataTypeFactoryMock);
         $actualThemesArray = $sut->getThemes();
-        $actualTheme1 = $actualThemesArray[0];
-        $actualTheme2 = $actualThemesArray[1];
-
-        $this->assertCount(2, $actualThemesArray);
-        $this->assertInstanceOf(ThemeDataType::class, $actualTheme1);
-        $this->assertSame($theme1->getInfo('title'), $actualTheme1->getTitle());
-        $this->assertSame($theme2->getInfo('title'), $actualTheme2->getTitle());
-        $this->assertSame($theme1->getInfo('active'), $actualTheme1->isActive());
-        $this->assertSame($theme2->getInfo('active'), $actualTheme2->isActive());
+        $this->assertEquals([$theme1DataType, $theme2DataType], $actualThemesArray);
     }
 
     public function testGetThemesThrowsException(): void
     {
-        $coreThemeStub = $this->createMock(Theme::class);
-        $coreThemeStub->method('getList')
+        $coreThemeMock = $this->createMock(Theme::class);
+        $coreThemeMock->expects($this->once())->method('getList')
             ->willReturn([]);
-        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeStub);
+        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeMock);
 
         $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock, themeDataTypeFactory: $themeDataTypeFactoryMock);
@@ -77,9 +75,10 @@ class ThemeListInfrastructureTest extends TestCase
         string $version,
         string $description,
         bool $active
-    ) {
+    ): Theme|MockObject {
         $themeMock = $this->createMock(Theme::class);
-        $themeMock->method('getInfo')
+        $themeMock->expects($this->exactly(10))
+            ->method('getInfo')
             ->willReturnMap([
                 ['title', $title],
                 ['id', $id],
@@ -101,7 +100,7 @@ class ThemeListInfrastructureTest extends TestCase
         );
     }
 
-    private function getCoreThemeFactoryMock(mixed $returnValue): CoreThemeFactoryInterface
+    private function getCoreThemeFactoryMock(Theme $returnValue): CoreThemeFactoryInterface
     {
         $coreThemeFactoryMock = $this->createMock(CoreThemeFactoryInterface::class);
         $coreThemeFactoryMock->expects($this->once())

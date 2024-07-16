@@ -19,23 +19,69 @@ use PHPUnit\Framework\TestCase;
  */
 class ThemeFilterServiceTest extends TestCase
 {
-    public function testFilterThemes(): void
-    {
-        $theme1 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
-        $theme2 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), false);
-        $themesList = [$theme1,$theme2];
-
+    /** @dataProvider themeFilterResultProvider */
+    public function testFilterThemes(
+        array $themeList,
+        array $titleFilterResults,
+        array $statusFilterResults,
+        array $expectedThemeListResult
+    ): void {
         $themeFiltersMock = $this->createMock(ThemeFiltersInterface::class);
-        $themeFiltersMock->method('filterThemeByTitle')
-            ->willReturnCallback(function (ThemeDataType $theme) {
-                return str_contains($theme->getTitle(), 'Test');
+        $themeFiltersMock->expects($this->exactly(count($titleFilterResults)))->method('filterThemeByTitle')
+            ->willReturnCallback(function (ThemeDataType $theme) use (&$titleFilterResults) {
+                return array_shift($titleFilterResults);
             });
-        $themeFiltersMock->method('filterThemeByStatus')
-            ->willReturnCallback(function (ThemeDataType $theme) {
-                return $theme->isActive();
+        $themeFiltersMock->expects($this->exactly(count($statusFilterResults)))->method('filterThemeByStatus')
+            ->willReturnCallback(function (ThemeDataType $theme) use (&$statusFilterResults) {
+                return array_shift($statusFilterResults);
             });
 
         $themeFilterService = new ThemeFilterService();
-        $themeFilterService->filterThemes($themesList, $themeFiltersMock);
+        $themeListResult = $themeFilterService->filterThemes($themeList, $themeFiltersMock);
+        $this->assertCount(count($expectedThemeListResult), $themeListResult);
+        foreach ($expectedThemeListResult as $theme) {
+            $this->assertContains($theme, $themeListResult);
+        }
+    }
+
+    public static function themeFilterResultProvider(): \Generator
+    {
+        $theme1 = new ThemeDataType('theme1', uniqid(), uniqid(), uniqid(), true);
+        $theme2 = new ThemeDataType('theme2', uniqid(), uniqid(), uniqid(), false);
+
+        yield "filter with mixed results" => [
+            'themeList' => [$theme1, $theme2],
+            'titleFilterResults' => [false, true],
+            'statusFilterResults' => [false],
+            'expectedThemeListResult' => []
+        ];
+
+        yield "filter with all false" => [
+            'themeList' => [$theme1, $theme2],
+            'titleFilterResults' => [false, false],
+            'statusFilterResults' => [],
+            'expectedThemeListResult' => []
+        ];
+
+        yield "filter with first true" => [
+            'themeList' => [$theme1, $theme2],
+            'titleFilterResults' => [true, false],
+            'statusFilterResults' => [true],
+            'expectedThemeListResult' => [$theme1]
+        ];
+
+        yield "filter with seconde true" => [
+            'themeList' => [$theme1, $theme2],
+            'titleFilterResults' => [false, true],
+            'statusFilterResults' => [true],
+            'expectedThemeListResult' => [$theme2]
+        ];
+
+        yield "filter with all true" => [
+            'themeList' => [$theme1, $theme2],
+            'titleFilterResults' => [true, true],
+            'statusFilterResults' => [true, true],
+            'expectedThemeListResult' => [$theme1, $theme2]
+        ];
     }
 }
