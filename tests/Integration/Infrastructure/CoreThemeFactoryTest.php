@@ -25,6 +25,6 @@ class CoreThemeFactoryTest extends IntegrationTestCase
         $this->assertEquals(new Theme(), $theme);
 
         $anotherTheme = $coreThemeFactory->create();
-        $this->assertNotEquals($theme, $anotherTheme);
+        $this->assertNotSame($theme, $anotherTheme);
     }
 }
