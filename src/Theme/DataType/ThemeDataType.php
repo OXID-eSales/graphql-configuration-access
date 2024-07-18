@@ -13,7 +13,7 @@ use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 #[Type]
-class ThemeDataType
+final class ThemeDataType
 {
     public function __construct(
         private readonly string $title,
