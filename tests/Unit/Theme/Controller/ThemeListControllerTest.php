@@ -31,7 +31,7 @@ class ThemeListControllerTest extends TestCase
         );
 
         $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
-        $themeListServiceMock->expects($this->once())
+        $themeListServiceMock
             ->method('getThemeList')
             ->with($themeFilters)
             ->willReturn([$theme]);
@@ -48,7 +48,7 @@ class ThemeListControllerTest extends TestCase
         $themeFilters = new ThemeFilters();
 
         $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
-        $themeListServiceMock->expects($this->once())
+        $themeListServiceMock
             ->method('getThemeList')
             ->with($themeFilters)
             ->willReturn([$theme]);

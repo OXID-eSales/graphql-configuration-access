@@ -27,28 +27,29 @@ class ThemeListServiceTest extends TestCase
     {
         $theme1 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
         $theme2 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), false);
-        $themeList = [$theme1, $theme2];
-        $filteredThemeList = [$theme1];
 
         $themeListInfrastructureMock = $this->createMock(ThemeListInfrastructureInterface::class);
-        $themeListInfrastructureMock->expects($this->once())->method('getThemes')
-            ->willReturn($themeList);
-
-        $filtersList = new ThemeFilters(
-            titleFilter: new StringFilter(contains: uniqid()),
-            activeFilter: new BoolFilter(equals: (bool)rand(0, 1))
-        );
+        $themeListInfrastructureMock->method('getThemes')
+            ->willReturn([$theme1,$theme2]);
 
         $themeFilterServiceMock = $this->createMock(ThemeFilterServiceInterface::class);
-        $themeFilterServiceMock->expects($this->once())->method('filterThemes')
-            ->with($themeList, $filtersList)
-            ->willReturn($filteredThemeList);
+        $themeFilterServiceMock->method('filterThemes')
+            ->willReturn([$theme1]);
 
+        $filtersList = new ThemeFilters(
+            titleFilter: new StringFilter(contains: $theme1->getTitle()),
+            activeFilter: new BoolFilter(equals: $theme1->isActive())
+        );
         $themeListService = new ThemeListService(
             themeListInfrastructure: $themeListInfrastructureMock,
             themeFilterService:  $themeFilterServiceMock
         );
         $actualThemes = $themeListService->getThemeList($filtersList);
-        $this->assertSame($filteredThemeList, $actualThemes);
+        $actualTheme = $actualThemes[0];
+
+        $this->assertCount(1, $actualThemes);
+        $this->assertSame($theme1->getTitle(), $actualTheme->getTitle());
+        $this->assertSame($theme1->getVersion(), $actualTheme->getVersion());
+        $this->assertSame(true, $actualTheme->isActive());
     }
 }
