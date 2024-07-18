@@ -16,5 +16,5 @@ interface ThemeListRepositoryInterface
      * @throws ThemeNotFound
      * @return array<ThemeDataType>
      */
-    public function getThemes(?string $status, ?string $title): array;
+    public function getThemes(): array;
 }
