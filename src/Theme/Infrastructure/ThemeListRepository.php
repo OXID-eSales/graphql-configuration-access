@@ -9,28 +9,35 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
+use OxidEsales\Eshop\Core\Theme;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\OxNewFactoryInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeNotFound;
 
 final class ThemeListRepository implements ThemeListRepositoryInterface
 {
     public function __construct(
-        private readonly CoreThemeFactoryInterface $coreThemeFactory,
-        private readonly ThemeDataTypeFactoryInterface $themeDataTypeFactory
+        private readonly OxNewFactoryInterface $oxNewFactory
     ) {
     }
 
 
-    public function getThemes(): array
+    public function getThemes(?string $status, ?string $title): array
     {
-        $coreThemeService = $this->coreThemeFactory->getClass();
-        $themesList = $coreThemeService->getList();
+        $themeService = $this->oxNewFactory->getModel(Theme::class);
+        $themes = $themeService->getList();
 
         $themesArray = [];
-        foreach ($themesList as $theme) {
-            $themesArray[] = $this->themeDataTypeFactory->createFromCoreTheme(theme: $theme);
+        foreach ($themes as $theme) {
+            $themesArray[] = new ThemeDataType(
+                title: $theme->getInfo('title'),
+                identifier: $theme->getInfo('id'),
+                version: $theme->getInfo('version'),
+                description: $theme->getInfo('description'),
+                active: $theme->getInfo('active')
+            );
         }
-        if (empty($themesList)) {
+        if (empty($themesArray)) {
             throw new ThemeNotFound();
         }
         return $themesArray;
