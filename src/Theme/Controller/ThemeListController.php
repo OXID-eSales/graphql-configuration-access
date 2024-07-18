@@ -31,7 +31,7 @@ final class ThemeListController
     #[Query]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
-    public function themesList(?ThemeFilters $filters = null): array
+    public function themesList(?ThemeFilters $filters): array
     {
         return $this->themeListService->getThemeList($filters ?? new ThemeFilters());
     }
