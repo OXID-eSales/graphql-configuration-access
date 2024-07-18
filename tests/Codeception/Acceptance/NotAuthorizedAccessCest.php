@@ -13,7 +13,6 @@ use Codeception\Attribute\DataProvider;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
- * @group theme_list
  * @group theme_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
@@ -80,7 +79,6 @@ final class NotAuthorizedAccessCest extends BaseCest
         yield ['queryName' => 'themeSettingString', 'field' => 'name', 'location' => 'theme'];
         yield ['queryName' => 'themeSettingSelect', 'field' => 'name', 'location' => 'theme'];
         yield ['queryName' => 'themeSettingCollection', 'field' => 'name', 'location' => 'theme'];
-        yield ['queryName' => 'themeSettingAssocCollection', 'field' => 'name', 'location' => 'theme'];
         yield ['queryName' => 'themeSettingAssocCollection', 'field' => 'name', 'location' => 'theme'];
     }
 
