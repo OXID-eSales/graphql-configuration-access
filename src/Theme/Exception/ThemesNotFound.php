@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception;
 
 use OxidEsales\GraphQL\Base\Exception\NotFound;
 
-final class ThemeNotFound extends NotFound
+final class ThemesNotFound extends NotFound
 {
     public function __construct()
     {

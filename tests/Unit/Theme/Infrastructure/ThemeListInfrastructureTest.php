@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeNotFound;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure;
 use PHPUnit\Framework\TestCase;
 
@@ -74,7 +74,7 @@ class ThemeListInfrastructureTest extends TestCase
         $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock, themeDataTypeFactory: $themeDataTypeFactoryMock);
 
-        $this->expectException(ThemeNotFound::class);
+        $this->expectException(ThemesNotFound::class);
         $sut->getThemes();
     }
 
