@@ -15,6 +15,3 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListRepositoryInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListRepository
-
-  OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface:
-    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactory
