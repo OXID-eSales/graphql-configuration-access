@@ -22,84 +22,97 @@ class ThemeFiltersTest extends TestCase
 {
     /** @dataProvider themeByTitleDataProvider */
     public function testFilterThemeByTitle(
-        string $expectedThemeTitle,
         bool $expectedResult,
-        bool $enableFilters,
     ): void {
+        $title = uniqid();
         $stringFilterMock = $this->createMock(StringFilter::class);
-        $stringFilterMock->method('matches')->willReturn($expectedResult);
+        $stringFilterMock->expects($this->once())->method('matches')->with($title)->willReturn($expectedResult);
 
         $themeMock = $this->createMock(ThemeDataType::class);
-        $themeMock->method('getTitle')->willReturn($expectedThemeTitle);
+        $themeMock->expects($this->once())->method('getTitle')->willReturn($title);
 
-        $themeFilters = ($enableFilters) ? new ThemeFilters(titleFilter: $stringFilterMock) : new ThemeFilters();
+        $themeFilters = new ThemeFilters(titleFilter: $stringFilterMock);
         $this->assertEquals($expectedResult, $themeFilters->filterThemeByTitle($themeMock));
     }
 
     public static function themeByTitleDataProvider(): \Generator
     {
         yield "filter theme by titles matches" => [
-            'expectedThemeTitle' => 'test theme 1',
             'expectedResult' => true,
-            'enableFilters' => true
         ];
 
         yield "filter theme by titles do not matches" => [
-            'expectedThemeTitle' => 'random theme title',
             'expectedResult' => false,
-            'enableFilters' => true
         ];
+    }
 
-        yield "filter theme by title no filters" => [
-            'expectedThemeTitle' => 'test theme 1',
-            'expectedResult' => true,
-            'enableFilters' => false,
-        ];
+    public function testThemeFiltersWithoutFilter(): void
+    {
+        $themeMock = $this->createStub(ThemeDataType::class);
+
+        $themeFilters = new ThemeFilters();
+        $this->assertTrue($themeFilters->filterThemeByTitle($themeMock));
+        $this->assertTrue($themeFilters->filterThemeByStatus($themeMock));
     }
 
     /** @dataProvider themeByStatusDataProvider */
     public function testFilterThemeByStatus(
-        bool $expectedThemeStatus,
+        bool $filterStatus,
         bool $actualThemeStatus,
         bool $expectedResult
     ): void {
         $mockBoolFilter = $this->createMock(BoolFilter::class);
-        $mockBoolFilter->method('equals')->willReturn($expectedThemeStatus);
+        $mockBoolFilter->expects($this->exactly(2))->method('equals')->willReturn($filterStatus);
         $themeFilterList = new ThemeFilters(activeFilter: $mockBoolFilter);
 
         $mockThemeDataType = $this->createMock(ThemeDataType::class);
-        $mockThemeDataType->method('isActive')->willReturn($actualThemeStatus);
+        $mockThemeDataType->expects($this->once())->method('isActive')->willReturn($actualThemeStatus);
 
         $this->assertSame($expectedResult, $themeFilterList->filterThemeByStatus($mockThemeDataType));
     }
 
     public static function themeByStatusDataProvider(): \Generator
     {
-        yield "filter theme by providing same theme status" => [
-            'expectedThemeStatus' => true,
+        yield "filter theme by true with same theme status" => [
+            'filterStatus' => true,
             'actualThemeStatus' => true,
             'expectedResult' => true
         ];
 
-        yield "filter theme by providing different theme status" => [
-            'expectedThemeStatus' => true,
+        yield "filter theme by false with same theme status" => [
+            'filterStatus' => false,
             'actualThemeStatus' => false,
+            'expectedResult' => true
+        ];
+
+        yield "filter theme by true with different theme status" => [
+            'filterStatus' => true,
+            'actualThemeStatus' => false,
+            'expectedResult' => false
+        ];
+
+        yield "filter theme by false with different theme status" => [
+            'filterStatus' => false,
+            'actualThemeStatus' => true,
             'expectedResult' => false
         ];
     }
 
     public function testCreateThemeFilterList(): void
     {
-        $stringFilter = $this->createMock(StringFilter::class);
-        $boolFilter = $this->createMock(BoolFilter::class);
+        $stringFilter = $this->createStub(StringFilter::class);
+        $boolFilter = $this->createStub(BoolFilter::class);
 
-        $themeFilterList = ThemeFilters::createThemeFilters($stringFilter, $boolFilter);
-        $this->assertInstanceOf(ThemeFilters::class, $themeFilterList);
+        $expectedThemeFilters = new ThemeFilters(titleFilter: $stringFilter, activeFilter: $boolFilter);
+
+        $themeFilters = ThemeFilters::createThemeFilters($stringFilter, $boolFilter);
+        $this->assertEquals($expectedThemeFilters, $themeFilters);
     }
 
     public function testCreateThemeFilterListWithNull(): void
     {
-        $themeFilterList = ThemeFilters::createThemeFilters(null, null);
-        $this->assertInstanceOf(ThemeFilters::class, $themeFilterList);
+        $expectedThemeFilters = new ThemeFilters();
+        $themeFilters = ThemeFilters::createThemeFilters(null, null);
+        $this->assertEquals($expectedThemeFilters, $themeFilters);
     }
 }

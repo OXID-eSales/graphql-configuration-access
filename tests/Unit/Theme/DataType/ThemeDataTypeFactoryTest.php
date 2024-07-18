@@ -29,14 +29,14 @@ class ThemeDataTypeFactoryTest extends TestCase
         $expectedDescription = uniqid();
         $expectedActive = true;
 
-        $themeMock->method('getInfo')
-            ->will($this->returnValueMap([
+        $themeMock->expects($this->exactly(5))->method('getInfo')
+            ->willReturnMap([
                 ['title', $expectedTitle],
                 ['id', $expectedIdentifier],
                 ['version', $expectedVersion],
                 ['description', $expectedDescription],
                 ['active', $expectedActive],
-            ]));
+            ]);
 
         $factory = new ThemeDataTypeFactory();
         $themeDataType = $factory->createFromCoreTheme($themeMock);
