@@ -9,7 +9,3 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService
-
-  OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\OxNewFactoryInterface:
-    class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\OxNewFactory
-    public: true
