@@ -24,7 +24,3 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeFilterServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeFilterService
-
-  OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListServiceInterface:
-    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService
-    
