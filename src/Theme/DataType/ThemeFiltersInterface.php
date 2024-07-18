@@ -15,7 +15,7 @@ interface ThemeFiltersInterface
     public function filterThemeByTitle(ThemeDataType $theme): bool;
     public function filterThemeByStatus(ThemeDataType $theme): bool;
     public static function createThemeFilters(
-        ?StringFilter $titleFilter,
-        ?BoolFilter $activeFilter
+        ?StringFilter $titleFilter = null,
+        ?BoolFilter $activeFilter = null
     ): ThemeFilters;
 }

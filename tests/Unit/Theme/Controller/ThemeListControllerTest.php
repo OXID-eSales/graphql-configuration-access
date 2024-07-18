@@ -54,7 +54,7 @@ class ThemeListControllerTest extends TestCase
             ->willReturn([$theme]);
 
         $themeListController = new ThemeListController($themeListServiceMock);
-        $resultedThemeList = $themeListController->themesList(null);
+        $resultedThemeList = $themeListController->themesList($themeFilters);
 
         $this->assertSame($resultedThemeList, [$theme]);
     }

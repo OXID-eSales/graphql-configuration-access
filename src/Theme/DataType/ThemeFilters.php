@@ -46,8 +46,8 @@ final class ThemeFilters implements ThemeFiltersInterface
      * @Factory(name="ThemeFilters", default=true)
      */
     public static function createThemeFilters(
-        ?StringFilter $title,
-        ?BoolFilter $active
+        ?StringFilter $title = null,
+        ?BoolFilter $active = null
     ): self {
         return new self(titleFilter: $title, activeFilter: $active);
     }
