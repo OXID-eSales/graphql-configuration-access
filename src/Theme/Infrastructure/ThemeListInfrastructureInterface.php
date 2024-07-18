@@ -14,7 +14,7 @@ interface ThemeListInfrastructureInterface
 {
     /**
      * @return array<ThemeDataType>
-     * @throws ThemesNotFound
+     *@throws ThemesNotFound
      */
     public function getThemes(): array;
 }

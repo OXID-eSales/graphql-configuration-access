@@ -53,4 +53,9 @@ abstract class BaseCest
     {
         return self::ADMIN_PASSWORD;
     }
+
+    public function getThemeId(): string
+    {
+        return getenv('THEME_ID') ?: 'apex';
+    }
 }

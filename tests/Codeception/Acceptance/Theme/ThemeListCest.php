@@ -26,15 +26,30 @@ final class ThemeListCest extends BaseCest
 
         $result = $this->runThemeListQuery($I);
         $I->assertArrayNotHasKey('errors', $result);
+
+        $themeList = $result['data']['themesList'];
+
+        foreach ($themeList as $theme) {
+            $I->assertSame($this->getThemeId(), $theme['identifier']);
+            $I->assertTrue($theme['active']);
+        }
     }
 
-    private function runThemeListQuery(AcceptanceTester $I): array
+    public function runThemeListQuery(AcceptanceTester $I): array
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
+        $themeId = $this->getThemeId();
         $I->sendGQLQuery(
             'query themeList {
 			  themesList(
-				filters: null
+				filters: {
+				  active: {
+					equals: true
+				  }
+				  title: {
+				  	contains: "' . $themeId . '"
+				  }
+				}
 			  ) {
 				title
 				identifier
