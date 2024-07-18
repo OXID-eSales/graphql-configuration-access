@@ -36,6 +36,19 @@ class ThemeListInfrastructureTest extends IntegrationTestCase
         }
     }
 
+    public function testGetThemesThrowsException(): void
+    {
+        $coreThemeStub = $this->createMock(Theme::class);
+        $coreThemeStub->method('getList')
+            ->willReturn([]);
+        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeStub);
+
+        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
+
+        $this->expectException(ThemesNotFound::class);
+        $sut->getThemes();
+    }
+
     public function getSut(
         ?CoreThemeFactoryInterface $coreThemeFactory = null,
         ?ThemeDataTypeFactoryInterface $themeDataTypeFactory = null
@@ -44,5 +57,15 @@ class ThemeListInfrastructureTest extends IntegrationTestCase
             $coreThemeFactory ?? $this->get(CoreThemeFactoryInterface::class),
             $themeDataTypeFactory ?? $this->get(ThemeDataTypeFactoryInterface::class)
         );
+    }
+
+    private function getCoreThemeFactoryMock(mixed $returnValue): CoreThemeFactoryInterface
+    {
+        $coreThemeFactoryMock = $this->createMock(CoreThemeFactoryInterface::class);
+        $coreThemeFactoryMock->expects($this->once())
+            ->method('getClass')
+            ->willReturn($returnValue);
+
+        return $coreThemeFactoryMock;
     }
 }
