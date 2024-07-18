@@ -10,12 +10,12 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType;
 use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 
-interface ThemeFilterListInterface
+interface ThemeFiltersInterface
 {
     public function filterThemeByTitle(ThemeDataType $theme): bool;
     public function filterThemeByStatus(ThemeDataType $theme): bool;
-    public static function createThemeFilterList(
-        ?StringFilter $title = null,
-        ?BoolFilter $active = null
-    ): ThemeFilterList;
+    public static function createThemeFilters(
+        ?StringFilter $titleFilter = null,
+        ?BoolFilter $activeFilter = null
+    ): ThemeFilters;
 }

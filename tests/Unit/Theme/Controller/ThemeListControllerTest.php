@@ -13,7 +13,7 @@ use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeListController;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterList;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilters;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListServiceInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -29,9 +29,9 @@ class ThemeListControllerTest extends TestCase
         $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
         $themeListServiceMock->method('getThemeList')->willReturn([$theme1]);
 
-        $filtersList = new ThemeFilterList(
-            title: new StringFilter(contains: 'Test Theme 1'),
-            active: new BoolFilter(equals: true)
+        $filtersList = new ThemeFilters(
+            titleFilter: new StringFilter(contains: 'Test Theme 1'),
+            activeFilter: new BoolFilter(equals: true)
         );
 
         $themeListController = new ThemeListController($themeListServiceMock);
