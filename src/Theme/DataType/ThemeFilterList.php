@@ -13,18 +13,18 @@ use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
-final class ThemeFilters implements ThemeFiltersInterface
+final class ThemeFilterList implements ThemeFilterListInterface
 {
     public function __construct(
-        private readonly ?StringFilter $titleFilter = null,
-        private readonly ?BoolFilter $activeFilter = null
+        private readonly ?StringFilter $title = null,
+        private readonly ?BoolFilter $active = null
     ) {
     }
 
 
     public function filterThemeByTitle(ThemeDataType $theme): bool
     {
-        $titleFilter = $this->titleFilter;
+        $titleFilter = $this->title;
         if ($titleFilter !== null && $titleFilter->contains() !== null) {
             if (!str_contains($theme->getTitle(), $titleFilter->contains())) {
                 return false;
@@ -35,7 +35,7 @@ final class ThemeFilters implements ThemeFiltersInterface
 
     public function filterThemeByStatus(ThemeDataType $theme): bool
     {
-        $statusFilter = $this->activeFilter;
+        $statusFilter = $this->active;
         if ($statusFilter !== null && $statusFilter->equals() !== null) {
             if ($theme->isActive() !== $statusFilter->equals()) {
                 return false;
@@ -45,12 +45,12 @@ final class ThemeFilters implements ThemeFiltersInterface
     }
 
     /**
-     * @Factory(name="ThemeFilters", default=true)
+     * @Factory(name="ThemeFilterList", default=true)
      */
-    public static function createThemeFilters(
+    public static function createThemeFilterList(
         ?StringFilter $title = null,
         ?BoolFilter $active = null
     ): self {
-        return new self(titleFilter: $title, activeFilter: $active);
+        return new self($title, $active);
     }
 }

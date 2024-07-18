@@ -13,7 +13,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListServiceInterfa
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Query;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterList;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 
 final class ThemeListController
@@ -25,14 +25,14 @@ final class ThemeListController
 
     /**
      * Query of Configuration Access Module
-     * @param ThemeFilters|null $filters
+     * @param ThemeFilterList|null $filters
      * @return ThemeDataType[]
      */
     #[Query]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
-    public function themesList(?ThemeFilters $filters = null): array
+    public function themesList(?ThemeFilterList $filters = null): array
     {
-        return $this->themeListService->getThemeList($filters ?? new ThemeFilters());
+        return $this->themeListService->getThemeList($filters ?? new ThemeFilterList());
     }
 }

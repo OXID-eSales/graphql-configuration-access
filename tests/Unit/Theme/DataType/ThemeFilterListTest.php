@@ -12,13 +12,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\DataType;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterList;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilters
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterList
  */
-class ThemeFiltersTest extends TestCase
+class ThemeFilterListTest extends TestCase
 {
     /** @dataProvider themeByTitleDataProvider */
     public function testFilterThemeByTitle(
@@ -31,7 +31,7 @@ class ThemeFiltersTest extends TestCase
 
         $mockStringFilter = $this->createMock(StringFilter::class);
         $mockStringFilter->method('contains')->willReturn($expectedThemeTitle);
-        $themeFilterList = new ThemeFilters(titleFilter: $mockStringFilter);
+        $themeFilterList = new ThemeFilterList(title: $mockStringFilter);
 
         $this->assertEquals($expectedResult, $themeFilterList->filterThemeByTitle($mockThemeDataType));
     }
@@ -59,7 +59,7 @@ class ThemeFiltersTest extends TestCase
     ): void {
         $mockBoolFilter = $this->createMock(BoolFilter::class);
         $mockBoolFilter->method('equals')->willReturn($expectedThemeStatus);
-        $themeFilterList = new ThemeFilters(activeFilter: $mockBoolFilter);
+        $themeFilterList = new ThemeFilterList(active: $mockBoolFilter);
 
         $mockThemeDataType = $this->createMock(ThemeDataType::class);
         $mockThemeDataType->method('isActive')->willReturn($actualThemeStatus);
@@ -87,7 +87,7 @@ class ThemeFiltersTest extends TestCase
         $stringFilter = $this->createMock(StringFilter::class);
         $boolFilter = $this->createMock(BoolFilter::class);
 
-        $themeFilterListSpy = ThemeFilters::createThemeFilters($stringFilter, $boolFilter);
-        $this->assertInstanceOf(ThemeFilters::class, $themeFilterListSpy);
+        $themeFilterListSpy = ThemeFilterList::createThemeFilterList($stringFilter, $boolFilter);
+        $this->assertInstanceOf(ThemeFilterList::class, $themeFilterListSpy);
     }
 }

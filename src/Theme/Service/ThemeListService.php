@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterList;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 
@@ -24,7 +24,7 @@ final class ThemeListService implements ThemeListServiceInterface
     /**
      * @return ThemeDataType[]
      */
-    public function getThemeList(ThemeFiltersInterface $filters): array
+    public function getThemeList(ThemeFilterList $filters): array
     {
         $themesArray = $this->themeListRepository->getThemes();
         return $this->themeFilterService->filterThemes($themesArray, $filters);

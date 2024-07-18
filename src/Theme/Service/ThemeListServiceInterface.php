@@ -8,12 +8,12 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterList;
 
 interface ThemeListServiceInterface
 {
     /**
      * @return ThemeDataType[]
      */
-    public function getThemeList(ThemeFiltersInterface $filters): array;
+    public function getThemeList(ThemeFilterList $filters): array;
 }

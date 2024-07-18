@@ -8,14 +8,14 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterListInterface;
 
 interface ThemeFilterServiceInterface
 {
     /**
      * @param array<ThemeDataType> $themes
-     * @param ThemeFiltersInterface $filterList
+     * @param ThemeFilterListInterface $filterList
      * @return array<ThemeDataType>
      */
-    public function filterThemes(array $themes, ThemeFiltersInterface $filterList): array;
+    public function filterThemes(array $themes, ThemeFilterListInterface $filterList): array;
 }

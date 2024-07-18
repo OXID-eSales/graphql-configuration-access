@@ -12,7 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Service;
 use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterList;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeFilterServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService;
@@ -39,9 +39,9 @@ class ThemeListServiceTest extends TestCase
         $themeFilterServiceMock->method('filterThemes')
             ->willReturn([$theme1]);
 
-        $filtersList = new ThemeFilters(
-            titleFilter: new StringFilter(contains: self::THEME_TITLE),
-            activeFilter: new BoolFilter(equals: self::THEME_STATUS)
+        $filtersList = new ThemeFilterList(
+            title: new StringFilter(contains: self::THEME_TITLE),
+            active: new BoolFilter(equals: self::THEME_STATUS)
         );
         $themeListService = new ThemeListService(
             themeListRepository: $themeListRepositoryMock,

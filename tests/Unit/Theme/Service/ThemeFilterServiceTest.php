@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterListInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeFilterService;
 use PHPUnit\Framework\TestCase;
 
@@ -25,17 +25,17 @@ class ThemeFilterServiceTest extends TestCase
         $theme2 = new ThemeDataType('Test Theme 2', 'theme2', '2.1', 'Description 2', false);
         $themesList = [$theme1,$theme2];
 
-        $themeFiltersMock = $this->createMock(ThemeFiltersInterface::class);
-        $themeFiltersMock->method('filterThemeByTitle')
+        $themeFilterListMock = $this->createMock(ThemeFilterListInterface::class);
+        $themeFilterListMock->method('filterThemeByTitle')
             ->willReturnCallback(function (ThemeDataType $theme) {
                 return str_contains($theme->getTitle(), 'Test');
             });
-        $themeFiltersMock->method('filterThemeByStatus')
+        $themeFilterListMock->method('filterThemeByStatus')
             ->willReturnCallback(function (ThemeDataType $theme) {
                 return $theme->isActive();
             });
 
         $themeFilterService = new ThemeFilterService();
-        $themeFilterService->filterThemes($themesList, $themeFiltersMock);
+        $themeFilterService->filterThemes($themesList, $themeFilterListMock);
     }
 }
