@@ -14,14 +14,13 @@ use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryIn
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeNotFound;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListRepository;
-use PHPUnit\Framework\MockObject\MockObject;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListRepository
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure
  */
-class ThemeListRepositoryTest extends TestCase
+class ThemeListInfrastructureTest extends TestCase
 {
     public function notestGetThemesWithoutFilter(): void
     {
@@ -102,8 +101,8 @@ class ThemeListRepositoryTest extends TestCase
     private function getSut(
         CoreThemeFactoryInterface $coreThemeFactory = null,
         ThemeDataTypeFactoryInterface $themeDataTypeFactory = null
-    ): ThemeListRepository {
-        return new ThemeListRepository(
+    ): ThemeListInfrastructure {
+        return new ThemeListInfrastructure(
             coreThemeFactory: $coreThemeFactory ?? $this->createStub(CoreThemeFactoryInterface::class),
             themeDataTypeFactory: $themeDataTypeFactory ?? $this->createStub(ThemeDataTypeFactoryInterface::class)
         );

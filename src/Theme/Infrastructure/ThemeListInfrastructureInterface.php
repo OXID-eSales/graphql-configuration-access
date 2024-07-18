@@ -10,7 +10,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeNotFound;
 
-interface ThemeListRepositoryInterface
+interface ThemeListInfrastructureInterface
 {
     /**
      * @throws ThemeNotFound

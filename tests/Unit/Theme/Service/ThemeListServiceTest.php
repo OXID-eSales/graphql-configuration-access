@@ -13,7 +13,7 @@ use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilters;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListRepositoryInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructureInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeFilterServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService;
 use PHPUnit\Framework\TestCase;
@@ -31,8 +31,8 @@ class ThemeListServiceTest extends TestCase
         $theme1 = new ThemeDataType('Test Theme 1', 'theme1', '1.0', 'Description 1', true);
         $theme2 = new ThemeDataType('Test Theme 2', 'theme2', '2.1', 'Description 2', false);
 
-        $themeListRepositoryMock = $this->createMock(ThemeListRepositoryInterface::class);
-        $themeListRepositoryMock->method('getThemes')
+        $themeListInfrastructureMock = $this->createMock(ThemeListInfrastructureInterface::class);
+        $themeListInfrastructureMock->method('getThemes')
             ->willReturn([$theme1, $theme2]);
 
         $themeFilterServiceMock = $this->createMock(ThemeFilterServiceInterface::class);
@@ -44,7 +44,7 @@ class ThemeListServiceTest extends TestCase
             activeFilter: new BoolFilter(equals: self::THEME_STATUS)
         );
         $themeListService = new ThemeListService(
-            themeListRepository: $themeListRepositoryMock,
+            themeListInfrastructure: $themeListInfrastructureMock,
             themeFilterService:  $themeFilterServiceMock
         );
         $result = $themeListService->getThemeList($filtersList);
