@@ -23,31 +23,37 @@ class ThemeFiltersTest extends TestCase
     /** @dataProvider themeByTitleDataProvider */
     public function testFilterThemeByTitle(
         string $expectedThemeTitle,
-        string $actualThemeTitle,
-        bool $expectedResult
+        bool $expectedResult,
+        bool $enableFilters,
     ): void {
-        $mockThemeDataType = $this->createMock(ThemeDataType::class);
-        $mockThemeDataType->method('getTitle')->willReturn($actualThemeTitle);
+        $stringFilterMock = $this->createMock(StringFilter::class);
+        $stringFilterMock->method('matches')->willReturn($expectedResult);
 
-        $mockStringFilter = $this->createMock(StringFilter::class);
-        $mockStringFilter->method('contains')->willReturn($expectedThemeTitle);
-        $themeFilterList = new ThemeFilters(titleFilter: $mockStringFilter);
+        $themeMock = $this->createMock(ThemeDataType::class);
+        $themeMock->method('getTitle')->willReturn($expectedThemeTitle);
 
-        $this->assertEquals($expectedResult, $themeFilterList->filterThemeByTitle($mockThemeDataType));
+        $themeFilters = ($enableFilters) ? new ThemeFilters(titleFilter: $stringFilterMock) : new ThemeFilters();
+        $this->assertEquals($expectedResult, $themeFilters->filterThemeByTitle($themeMock));
     }
 
     public static function themeByTitleDataProvider(): \Generator
     {
-        yield "filter theme by providing same theme title" => [
+        yield "filter theme by titles matches" => [
             'expectedThemeTitle' => 'test theme 1',
-            'actualThemeTitle' => 'test theme 1',
-            'expectedResult' => true
+            'expectedResult' => true,
+            'enableFilters' => true
         ];
 
-        yield "filter theme by providing different theme title" => [
+        yield "filter theme by titles do not matches" => [
+            'expectedThemeTitle' => 'random theme title',
+            'expectedResult' => false,
+            'enableFilters' => true
+        ];
+
+        yield "filter theme by title no filters" => [
             'expectedThemeTitle' => 'test theme 1',
-            'actualThemeTitle' => 'test theme 2',
-            'expectedResult' => false
+            'expectedResult' => true,
+            'enableFilters' => false,
         ];
     }
 
@@ -64,7 +70,7 @@ class ThemeFiltersTest extends TestCase
         $mockThemeDataType = $this->createMock(ThemeDataType::class);
         $mockThemeDataType->method('isActive')->willReturn($actualThemeStatus);
 
-        $this->assertEquals($expectedResult, $themeFilterList->filterThemeByStatus($mockThemeDataType));
+        $this->assertSame($expectedResult, $themeFilterList->filterThemeByStatus($mockThemeDataType));
     }
 
     public static function themeByStatusDataProvider(): \Generator
