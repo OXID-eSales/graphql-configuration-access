@@ -21,6 +21,3 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactory
-
-  OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeFilterServiceInterface:
-    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeFilterService
