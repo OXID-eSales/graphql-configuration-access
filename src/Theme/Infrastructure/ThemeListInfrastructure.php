@@ -22,7 +22,7 @@ final class ThemeListInfrastructure implements ThemeListInfrastructureInterface
 
     public function getThemes(): array
     {
-        $coreThemeService = $this->coreThemeFactory->getClass();
+        $coreThemeService = $this->coreThemeFactory->create();
         $themesList = $coreThemeService->getList();
 
         if (empty($themesList)) {

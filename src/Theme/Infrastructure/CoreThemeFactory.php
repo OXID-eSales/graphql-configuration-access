@@ -16,7 +16,7 @@ class CoreThemeFactory implements CoreThemeFactoryInterface
     /**
      * @inheritDoc
      */
-    public function getClass(): Theme
+    public function create(): Theme
     {
         return oxNew(Theme::class);
     }
