@@ -22,46 +22,39 @@ use PHPUnit\Framework\TestCase;
  */
 class ThemeListInfrastructureTest extends TestCase
 {
-    public function notestGetThemesWithoutFilter(): void
+    public function testGetThemes(): void
     {
+        $theme1 = $this->createThemeMock(uniqid(), uniqid(), uniqid(), uniqid(), true);
+        $theme2 = $this->createThemeMock(uniqid(), uniqid(), uniqid(), uniqid(), false);
+        $expectedThemes = [$theme1, $theme2];
+
         $coreThemeMock = $this->createMock(Theme::class);
-
-        $theme1 = $this->createThemeMock('Test Theme 1', 'theme id 1', 'v1.0', 'test description 1', true);
-        $theme2 = $this->createThemeMock('Test Theme 2', 'theme id 2', 'v2.0', 'test description 2', false);
-
         $coreThemeMock->method('getList')
-            ->willReturn([$theme1, $theme2]);
-        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeMock);
+            ->willReturn($expectedThemes);
 
+        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeMock);
         $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
-        $themeDataTypeFactoryMock->method('createFromCoreTheme')->willReturn(
-            new ThemeDataType(
-                'Test Theme 1',
-                'theme1',
-                '1.0',
-                'Description 1',
-                true
-            )
-        );
+        $themeDataTypeFactoryMock->method('createFromCoreTheme')->will($this->returnCallback(function (Theme $theme) {
+            return new ThemeDataType(
+                $theme->getInfo('title'),
+                $theme->getInfo('id'),
+                $theme->getInfo('version'),
+                $theme->getInfo('description'),
+                $theme->getInfo('active')
+            );
+        }));
 
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock, themeDataTypeFactory: $themeDataTypeFactoryMock);
-        $result = $sut->getThemes();
+        $actualThemesArray = $sut->getThemes();
+        $actualTheme1 = $actualThemesArray[0];
+        $actualTheme2 = $actualThemesArray[1];
 
-        $this->assertCount(2, $result);
-        $this->assertInstanceOf(ThemeDataType::class, $result[0]);
-        $this->assertInstanceOf(ThemeDataType::class, $result[1]);
-
-        $this->assertSame('Test Theme 1', $result[0]->getTitle());
-        $this->assertSame('theme id 1', $result[0]->getIdentifier());
-        $this->assertSame('v1.0', $result[0]->getVersion());
-        $this->assertSame('test description 1', $result[0]->getDescription());
-        $this->assertTrue($result[0]->isActive());
-
-        $this->assertSame('Test Theme 2', $result[1]->getTitle());
-        $this->assertSame('theme id 2', $result[1]->getIdentifier());
-        $this->assertSame('v2.0', $result[1]->getVersion());
-        $this->assertSame('test description 2', $result[1]->getDescription());
-        $this->assertFalse($result[1]->isActive());
+        $this->assertCount(2, $actualThemesArray);
+        $this->assertInstanceOf(ThemeDataType::class, $actualTheme1);
+        $this->assertSame($theme1->getInfo('title'), $actualTheme1->getTitle());
+        $this->assertSame($theme2->getInfo('title'), $actualTheme2->getTitle());
+        $this->assertSame($theme1->getInfo('active'), $actualTheme1->isActive());
+        $this->assertSame($theme2->getInfo('active'), $actualTheme2->isActive());
     }
 
     public function testGetThemesThrowsException(): void

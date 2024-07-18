@@ -23,35 +23,33 @@ use PHPUnit\Framework\TestCase;
  */
 class ThemeListServiceTest extends TestCase
 {
-    private const THEME_TITLE = 'Test Theme 1';
-    private const THEME_STATUS = true;
-
     public function testGetThemeListWithFilters(): void
     {
-        $theme1 = new ThemeDataType('Test Theme 1', 'theme1', '1.0', 'Description 1', true);
-        $theme2 = new ThemeDataType('Test Theme 2', 'theme2', '2.1', 'Description 2', false);
+        $theme1 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
+        $theme2 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), false);
 
         $themeListInfrastructureMock = $this->createMock(ThemeListInfrastructureInterface::class);
         $themeListInfrastructureMock->method('getThemes')
-            ->willReturn([$theme1, $theme2]);
+            ->willReturn([$theme1,$theme2]);
 
         $themeFilterServiceMock = $this->createMock(ThemeFilterServiceInterface::class);
         $themeFilterServiceMock->method('filterThemes')
             ->willReturn([$theme1]);
 
         $filtersList = new ThemeFilters(
-            titleFilter: new StringFilter(contains: self::THEME_TITLE),
-            activeFilter: new BoolFilter(equals: self::THEME_STATUS)
+            titleFilter: new StringFilter(contains: $theme1->getTitle()),
+            activeFilter: new BoolFilter(equals: $theme1->isActive())
         );
         $themeListService = new ThemeListService(
             themeListInfrastructure: $themeListInfrastructureMock,
             themeFilterService:  $themeFilterServiceMock
         );
-        $result = $themeListService->getThemeList($filtersList);
+        $actualThemes = $themeListService->getThemeList($filtersList);
+        $actualTheme = $actualThemes[0];
 
-        $this->assertCount(1, $result);
-        $this->assertSame('Test Theme 1', $result[0]->getTitle());
-        $this->assertSame(true, $result[0]->isActive());
-        $this->assertSame('1.0', $result[0]->getVersion());
+        $this->assertCount(1, $actualThemes);
+        $this->assertSame($theme1->getTitle(), $actualTheme->getTitle());
+        $this->assertSame($theme1->getVersion(), $actualTheme->getVersion());
+        $this->assertSame(true, $actualTheme->isActive());
     }
 }

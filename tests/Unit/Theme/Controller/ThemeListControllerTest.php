@@ -22,22 +22,40 @@ use PHPUnit\Framework\TestCase;
  */
 class ThemeListControllerTest extends TestCase
 {
-    public function testThemesList(): void
+    public function testThemesListWithFilter(): void
     {
-        $theme1 = new ThemeDataType('Test Theme 1', 'theme1', '1.0', 'Description 1', true);
-
-        $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
-        $themeListServiceMock->method('getThemeList')->willReturn([$theme1]);
-
-        $filtersList = new ThemeFilters(
-            titleFilter: new StringFilter(contains: 'Test Theme 1'),
+        $theme = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
+        $themeFilters = new ThemeFilters(
+            titleFilter: new StringFilter(contains: $theme->getTitle()),
             activeFilter: new BoolFilter(equals: true)
         );
 
-        $themeListController = new ThemeListController($themeListServiceMock);
-        $resultedThemeList = $themeListController->themesList($filtersList);
+        $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
+        $themeListServiceMock
+            ->method('getThemeList')
+            ->with($themeFilters)
+            ->willReturn([$theme]);
 
-        $this->assertInstanceOf(ThemeDataType::class, $resultedThemeList[0]);
-        $this->assertEquals($resultedThemeList[0], $theme1);
+        $themeListController = new ThemeListController($themeListServiceMock);
+        $resultedThemeList = $themeListController->themesList($themeFilters);
+
+        $this->assertSame($resultedThemeList, [$theme]);
+    }
+
+    public function testThemesListWithoutFilter(): void
+    {
+        $theme = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
+        $themeFilters = new ThemeFilters();
+
+        $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
+        $themeListServiceMock
+            ->method('getThemeList')
+            ->with($themeFilters)
+            ->willReturn([$theme]);
+
+        $themeListController = new ThemeListController($themeListServiceMock);
+        $resultedThemeList = $themeListController->themesList($themeFilters);
+
+        $this->assertSame($resultedThemeList, [$theme]);
     }
 }
