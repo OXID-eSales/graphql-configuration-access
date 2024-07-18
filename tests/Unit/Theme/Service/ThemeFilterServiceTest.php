@@ -44,40 +44,44 @@ class ThemeFilterServiceTest extends TestCase
         }
     }
 
+    /**
+     * Keep in mind that the status filter check for a theme will not be done if title
+     * check is already false. Only if title check is true, the status check is done.
+     */
     public static function themeFilterResultProvider(): \Generator
     {
         $theme1 = new ThemeDataType('theme1', uniqid(), uniqid(), uniqid(), true);
         $theme2 = new ThemeDataType('theme2', uniqid(), uniqid(), uniqid(), false);
 
-        yield "filter with mixed results" => [
+        yield "filter with only second title check is true but status check is false" => [
             'themeList' => [$theme1, $theme2],
             'titleFilterResults' => [false, true],
             'statusFilterResults' => [false],
             'expectedThemeListResult' => []
         ];
 
-        yield "filter with all false" => [
+        yield "filter with both title checks are false and status check is not done at all" => [
             'themeList' => [$theme1, $theme2],
             'titleFilterResults' => [false, false],
             'statusFilterResults' => [],
             'expectedThemeListResult' => []
         ];
 
-        yield "filter with first true" => [
+        yield "filter with only first title and status check is true" => [
             'themeList' => [$theme1, $theme2],
             'titleFilterResults' => [true, false],
             'statusFilterResults' => [true],
             'expectedThemeListResult' => [$theme1]
         ];
 
-        yield "filter with seconde true" => [
+        yield "filter with only second title and status check is true" => [
             'themeList' => [$theme1, $theme2],
             'titleFilterResults' => [false, true],
             'statusFilterResults' => [true],
             'expectedThemeListResult' => [$theme2]
         ];
 
-        yield "filter with all true" => [
+        yield "filter with both title and status checks are true" => [
             'themeList' => [$theme1, $theme2],
             'titleFilterResults' => [true, true],
             'statusFilterResults' => [true, true],
