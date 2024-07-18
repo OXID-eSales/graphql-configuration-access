@@ -23,10 +23,10 @@ class ThemeDataTypeFactoryTest extends TestCase
     {
         $themeMock = $this->createMock(Theme::class);
 
-        $expectedTitle = uniqid();
-        $expectedIdentifier = uniqid();
-        $expectedVersion = uniqid();
-        $expectedDescription = uniqid();
+        $expectedTitle = 'Test Theme';
+        $expectedIdentifier = 'theme-id';
+        $expectedVersion = '1.0.0';
+        $expectedDescription = 'A test theme';
         $expectedActive = true;
 
         $themeMock->method('getInfo')

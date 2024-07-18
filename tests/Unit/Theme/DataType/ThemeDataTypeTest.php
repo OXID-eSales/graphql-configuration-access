@@ -19,10 +19,10 @@ class ThemeDataTypeTest extends TestCase
 {
     public function testThemeDataType(): void
     {
-        $name = uniqid();
-        $identifier = uniqid();
-        $version = uniqid();
-        $description = uniqid();
+        $name = 'test';
+        $identifier = 'test';
+        $version = '1.1';
+        $description = 'This is description of theme';
         $active = true;
 
         $sut = new ThemeDataType($name, $identifier, $version, $description, $active);

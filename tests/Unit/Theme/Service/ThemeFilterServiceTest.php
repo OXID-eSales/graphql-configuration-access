@@ -21,8 +21,8 @@ class ThemeFilterServiceTest extends TestCase
 {
     public function testFilterThemes(): void
     {
-        $theme1 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
-        $theme2 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), false);
+        $theme1 = new ThemeDataType('Test Theme 1', 'theme1', '1.0', 'Description 1', true);
+        $theme2 = new ThemeDataType('Test Theme 2', 'theme2', '2.1', 'Description 2', false);
         $themesList = [$theme1,$theme2];
 
         $themeFiltersMock = $this->createMock(ThemeFiltersInterface::class);
