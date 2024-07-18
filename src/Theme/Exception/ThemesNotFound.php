@@ -15,6 +15,6 @@ final class ThemesNotFound extends NotFound
 {
     public function __construct()
     {
-        parent::__construct(('No themes were found.'));
+        parent::__construct(('Theme was not found.'));
     }
 }
