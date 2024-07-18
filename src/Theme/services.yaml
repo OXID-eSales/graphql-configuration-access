@@ -18,3 +18,6 @@ services:
 
   OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactory
+
+  OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface:
+    class: OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactory
