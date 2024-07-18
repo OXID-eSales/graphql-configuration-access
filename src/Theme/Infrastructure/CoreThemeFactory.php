@@ -18,6 +18,11 @@ class CoreThemeFactory implements CoreThemeFactoryInterface
      */
     public function create(): Theme
     {
+        return $this->createTheme();
+    }
+
+    protected function createTheme(): Theme
+    {
         return oxNew(Theme::class);
     }
 }
