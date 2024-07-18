@@ -34,8 +34,6 @@ runscript: &runscript
               "configuration_module:phpintegration",
               "configuration_module:codeception"
             ]
-    composer:
-        early: true
     configuration_module:
         path: 'vendor/oxid-esales/graphql-configuration-access'
 
