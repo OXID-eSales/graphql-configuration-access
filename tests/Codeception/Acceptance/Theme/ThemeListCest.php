@@ -25,29 +25,29 @@ final class ThemeListCest extends BaseCest
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
         $result = $this->runThemeListQuery($I);
+
         $I->assertArrayNotHasKey('errors', $result);
-
         $themeList = $result['data']['themesList'];
+        $I->assertCount(1, $themeList);
 
-        foreach ($themeList as $theme) {
-            $I->assertSame($this->getThemeId(), $theme['identifier']);
-            $I->assertTrue($theme['active']);
-        }
+        $I->assertEquals("APEX Theme", $themeList[0]['title']);
+        $I->assertEquals("apex", $themeList[0]['identifier']);
+        $I->assertEquals("APEX - Bootstrap 5 TWIG Theme", $themeList[0]['description']);
+        $I->assertTrue($themeList[0]['active']);
     }
 
     public function runThemeListQuery(AcceptanceTester $I): array
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
-        $themeId = $this->getThemeId();
         $I->sendGQLQuery(
             'query themeList {
 			  themesList(
 				filters: {
-				  active: {
-					equals: true
+				  activeFilter: {
+					  equals: true
 				  }
-				  title: {
-				  	contains: "' . $themeId . '"
+				  titleFilter: {
+				  contains: "APEX Theme"
 				  }
 				}
 			  ) {
