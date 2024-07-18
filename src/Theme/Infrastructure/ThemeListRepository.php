@@ -12,7 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeNotFound;
 
-final class ThemeListInfrastructure implements ThemeListInfrastructureInterface
+final class ThemeListRepository implements ThemeListRepositoryInterface
 {
     public function __construct(
         private readonly CoreThemeFactoryInterface $coreThemeFactory,
