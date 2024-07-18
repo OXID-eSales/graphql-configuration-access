@@ -14,7 +14,6 @@ use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilterList;
-use TheCodingMachine\GraphQLite\Annotations\Right;
 
 final class ThemeListController
 {
@@ -30,7 +29,6 @@ final class ThemeListController
      */
     #[Query]
     #[Logged]
-    #[Right('CHANGE_CONFIGURATION')]
     public function themesList(?ThemeFilterList $filters = null): array
     {
         return $this->themeListService->getThemeList($filters ?? new ThemeFilterList());
