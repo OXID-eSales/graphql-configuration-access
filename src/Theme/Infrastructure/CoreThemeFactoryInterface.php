@@ -14,5 +14,5 @@ interface CoreThemeFactoryInterface
     /**
      * @return Theme
      */
-    public function create(): Theme;
+    public function getClass(): Theme;
 }
