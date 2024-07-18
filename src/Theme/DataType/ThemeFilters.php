@@ -21,13 +21,15 @@ final class ThemeFilters implements ThemeFiltersInterface
     ) {
     }
 
+
     public function filterThemeByTitle(ThemeDataType $theme): bool
     {
         $titleFilter = $this->titleFilter;
-        if ($titleFilter !== null) {
-            return $titleFilter->matches($theme->getTitle());
+        if ($titleFilter !== null && $titleFilter->contains() !== null) {
+            if (!str_contains($theme->getTitle(), $titleFilter->contains())) {
+                return false;
+            }
         }
-
         return true;
     }
 
