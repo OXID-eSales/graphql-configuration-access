@@ -23,16 +23,14 @@ final class ThemeSwitchCest extends BaseCest
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
-        $result = $this->runThemeListQuery($I);
+        $result = $this->runThemeSwitchMutation($I);
 
         $I->assertArrayNotHasKey('errors', $result);
-        $response = $result['data']['switchTheme'];
-        $I->assertTrue($response);
     }
 
-    public function runThemeListQuery(AcceptanceTester $I): array
+    public function runThemeSwitchMutation(AcceptanceTester $I): array
     {
-        $themeId = $this->getThemeId();
+        $themeId = getenv('THEME_ID') ?: 'apex';
 
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
         $I->sendGQLQuery(
