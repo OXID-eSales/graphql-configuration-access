@@ -29,7 +29,7 @@ class ThemeSwitchInfrastructureTest extends TestCase
         $coreThemeMock->expects($this->once())->method('activate');
 
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(coreThemeMock: $coreThemeMock);
-        $sut = $this->getSut($coreThemeFactoryMock);
+        $sut = $this->getSut( coreThemeFactory: $coreThemeFactoryMock);
 
         $serviceResponse = $sut->switchTheme($identifier);
         $this->assertTrue($serviceResponse);
@@ -46,7 +46,7 @@ class ThemeSwitchInfrastructureTest extends TestCase
             ));
 
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(coreThemeMock: $coreThemeMock);
-        $sut = $this->getSut($coreThemeFactoryMock);
+        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
 
         $this->expectException(ThemeActivationException::class);
         $this->expectExceptionMessage(ThemeActivationException::THEME_NOT_ACTIVATED);
