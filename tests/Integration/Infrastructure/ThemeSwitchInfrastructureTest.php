@@ -35,8 +35,7 @@ class ThemeSwitchInfrastructureTest extends IntegrationTestCase
         $identifier = 'invalidTheme';
         $this->expectException(ThemeActivationException::class);
 
-        $coreThemeFactory = new CoreThemeFactory();
-        $sut = $this->getSut($coreThemeFactory);
+        $sut = $this->getSut();
         $result = $sut->switchTheme($identifier);
 
         $this->assertTrue($result);
