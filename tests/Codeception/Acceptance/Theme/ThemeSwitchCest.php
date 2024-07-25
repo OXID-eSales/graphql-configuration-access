@@ -32,7 +32,6 @@ final class ThemeSwitchCest extends BaseCest
     {
         $themeId = getenv('THEME_ID') ?: 'apex';
 
-        $I->login($this->getAdminUsername(), $this->getAdminPassword());
         $I->sendGQLQuery(
             'mutation switchThemeCest{
 			  		switchTheme(identifier: "' . $themeId . '")

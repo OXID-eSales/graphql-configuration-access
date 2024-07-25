@@ -30,7 +30,6 @@ final class ThemeListCest extends BaseCest
 
     private function runThemeListQuery(AcceptanceTester $I): array
     {
-        $I->login($this->getAdminUsername(), $this->getAdminPassword());
         $I->sendGQLQuery(
             'query themeList {
 			  themesList(
