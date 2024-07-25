@@ -22,9 +22,7 @@ class ThemeSwitchInfrastructureTest extends IntegrationTestCase
 {
     public function testSwitchTheme()
     {
-        $coreThemeFactory = new coreThemeFactory();
-        $sut = $this->getSut($coreThemeFactory);
-
+        $sut = $this->getSut();
         $result = $sut->switchTheme($this->getThemeId());
 
         $this->assertTrue($result);
