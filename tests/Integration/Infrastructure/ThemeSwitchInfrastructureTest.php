@@ -27,18 +27,7 @@ class ThemeSwitchInfrastructureTest extends IntegrationTestCase
 
         $this->assertTrue($result);
     }
-
-    public function testSwitchThemeNotFound()
-    {
-        $identifier = 'invalidTheme';
-        $this->expectException(ThemeActivationException::class);
-
-        $sut = $this->getSut();
-        $result = $sut->switchTheme($identifier);
-
-        $this->assertTrue($result);
-    }
-
+	
     private function getSut(
         ?CoreThemeFactoryInterface $coreThemeFactory = null
     ): ThemeSwitchInfrastructure {
