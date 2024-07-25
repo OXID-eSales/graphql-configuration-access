@@ -18,12 +18,13 @@ use PHPUnit\Framework\TestCase;
 */
 class ThemeActivationExceptionTest extends TestCase
 {
+    private const THEME_NOT_ACTIVATED = "An error occurred while activating the theme.";
     public function testThemeActivationExceptionDefaultMessage()
     {
         $exception = new ThemeActivationException();
 
         $this->assertInstanceOf(ThemeActivationException::class, $exception);
-        $this->assertSame(ThemeActivationException::THEME_NOT_ACTIVATED, $exception->getMessage());
+        $this->assertSame(self::THEME_NOT_ACTIVATED, $exception->getMessage());
     }
 
     public function testThemeActivationExceptionWithMessage()

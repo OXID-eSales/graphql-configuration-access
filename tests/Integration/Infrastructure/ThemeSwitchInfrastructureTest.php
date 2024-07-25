@@ -27,7 +27,7 @@ class ThemeSwitchInfrastructureTest extends IntegrationTestCase
 
         $this->assertTrue($result);
     }
-	
+
     private function getSut(
         ?CoreThemeFactoryInterface $coreThemeFactory = null
     ): ThemeSwitchInfrastructure {

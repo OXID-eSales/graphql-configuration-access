@@ -21,6 +21,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ThemeSwitchInfrastructureTest extends TestCase
 {
+    private const THEME_NOT_ACTIVATED = "An error occurred while activating the theme.";
+    private const THEME_NOT_EXIST = "The specified theme doesn't exist.";
     public function testSwitchTheme(): void
     {
         $identifier = 'apex';
@@ -29,7 +31,7 @@ class ThemeSwitchInfrastructureTest extends TestCase
         $coreThemeMock->expects($this->once())->method('activate');
 
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(coreThemeMock: $coreThemeMock);
-        $sut = $this->getSut( coreThemeFactory: $coreThemeFactoryMock);
+        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
 
         $serviceResponse = $sut->switchTheme($identifier);
         $this->assertTrue($serviceResponse);
@@ -42,14 +44,14 @@ class ThemeSwitchInfrastructureTest extends TestCase
         $coreThemeMock->expects($this->once())->method('load')->with($identifier)->willReturn(true);
         $coreThemeMock->expects($this->once())->method('activate')
             ->will($this->throwException(
-                new StandardException(ThemeActivationException::THEME_NOT_ACTIVATED)
+                new StandardException(self::THEME_NOT_ACTIVATED)
             ));
 
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(coreThemeMock: $coreThemeMock);
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
 
         $this->expectException(ThemeActivationException::class);
-        $this->expectExceptionMessage(ThemeActivationException::THEME_NOT_ACTIVATED);
+        $this->expectExceptionMessage(self::THEME_NOT_ACTIVATED);
         $sut->switchTheme($identifier);
     }
 
@@ -62,7 +64,7 @@ class ThemeSwitchInfrastructureTest extends TestCase
         $sut = $this->getSut($coreThemeFactoryMock);
 
         $this->expectException(ThemeActivationException::class);
-        $this->expectExceptionMessage(ThemeActivationException::THEME_NOT_EXIST);
+        $this->expectExceptionMessage(self::THEME_NOT_EXIST);
         $sut->switchTheme('invalidThemeId');
     }
 

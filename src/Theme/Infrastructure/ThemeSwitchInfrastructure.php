@@ -14,6 +14,8 @@ use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeActivationExcept
 
 final class ThemeSwitchInfrastructure implements ThemeSwitchInfrastructureInterface
 {
+    private const THEME_NOT_EXIST = "The specified theme doesn't exist.";
+
     public function __construct(
         private readonly CoreThemeFactoryInterface $coreThemeFactory
     ) {
@@ -24,7 +26,7 @@ final class ThemeSwitchInfrastructure implements ThemeSwitchInfrastructureInterf
         try {
             $coreThemeService = $this->coreThemeFactory->create();
             if (!$coreThemeService->load($identifier)) {
-                throw new ThemeActivationException(ThemeActivationException::THEME_NOT_EXIST);
+                throw new ThemeActivationException(self::THEME_NOT_EXIST);
             }
             $coreThemeService->activate();
 
