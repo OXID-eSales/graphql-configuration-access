@@ -78,7 +78,7 @@ class ThemeSwitchInfrastructureTest extends TestCase
     {
         $coreThemeFactoryMock = $this->createMock(CoreThemeFactoryInterface::class);
         $coreThemeFactoryMock->expects($this->once())
-            ->method('getClass')
+            ->method('create')
             ->willReturn($coreThemeMock);
 
         return $coreThemeFactoryMock;
