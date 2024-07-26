@@ -20,9 +20,9 @@ class ThemeSwitchServiceTest extends TestCase
 {
     /** @dataProvider switchThemeProvider */
     public function testSwitchTheme(
-        string $identifier,
         bool $expectedResult
     ): void {
+        $identifier = uniqid();
         $themeSwitchInfrastructureMock = $this->createMock(ThemeSwitchInfrastructureInterface::class);
         $themeSwitchInfrastructureMock
             ->method('switchTheme')
@@ -38,12 +38,10 @@ class ThemeSwitchServiceTest extends TestCase
     public static function switchThemeProvider(): \Generator
     {
         yield 'test switch theme successful case' => [
-            'identifier' => 'validThemeId',
             'expectedResult' => true
         ];
 
         yield 'test switch theme failure case' => [
-            'identifier' => 'invalidThemeId',
             'expectedResult' => false
         ];
     }
