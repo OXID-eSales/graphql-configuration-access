@@ -14,6 +14,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeActivationExcept
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactory;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructure;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructure
@@ -38,6 +39,7 @@ class ThemeSwitchInfrastructureTest extends IntegrationTestCase
 
     private function getThemeId(): string
     {
-        return getenv('THEME_ID') ?: 'apex';
+        $shopAdapter = $this->get(ShopAdapterInterface::class);
+         return $shopAdapter->getActiveThemeId();
     }
 }
