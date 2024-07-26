@@ -36,7 +36,7 @@ final class NotAuthorizedAccessCest extends BaseCest
             isList: false
         );
 
-        $this->assertQueryNotFoundErrorInResult($I, $result);
+        $this->assertQueryFoundErrorInResult($I, $result);
     }
 
     #[DataProvider('listQueriesDataProvider')]
@@ -52,7 +52,7 @@ final class NotAuthorizedAccessCest extends BaseCest
             isList: true
         );
 
-        $this->assertQueryNotFoundErrorInResult($I, $result);
+        $this->assertQueryFoundErrorInResult($I, $result);
     }
 
     #[DataProvider('themeMutationsDataProvider')]
@@ -70,7 +70,7 @@ final class NotAuthorizedAccessCest extends BaseCest
             location: $example['location']
         );
 
-        $this->assertQueryNotFoundErrorInResult($I, $result);
+        $this->assertQueryFoundErrorInResult($I, $result);
     }
 
 
@@ -84,7 +84,7 @@ final class NotAuthorizedAccessCest extends BaseCest
         );
 
         $I->seeResponseIsJson();
-        $this->assertQueryNotFoundErrorInResult($I, $I->grabJsonResponseAsArray());
+        $this->assertQueryFoundErrorInResult($I, $I->grabJsonResponseAsArray());
     }
 
     protected function themeGettersDataProvider(): \Generator
@@ -273,7 +273,7 @@ final class NotAuthorizedAccessCest extends BaseCest
         };
     }
 
-    protected function assertQueryNotFoundErrorInResult(AcceptanceTester $I, array $result): void
+    protected function assertQueryFoundErrorInResult(AcceptanceTester $I, array $result): void
     {
         $errorMessage = $result['errors'][0]['message'];
         $I->assertSame(
