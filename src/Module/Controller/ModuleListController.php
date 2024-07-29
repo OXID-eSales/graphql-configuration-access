@@ -25,7 +25,6 @@ final class ModuleListController
 
     /**
      * Query of Configuration Access Module
-     * @param ModuleFilters|null $filters
      * @return ModuleDataType[]
      */
     #[Query]

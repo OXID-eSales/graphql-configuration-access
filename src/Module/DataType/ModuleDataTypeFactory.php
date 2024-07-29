@@ -23,16 +23,16 @@ class ModuleDataTypeFactory implements ModuleDataTypeFactoryInterface
         ModuleConfiguration $moduleConfig
     ): ModuleDataType {
         $titlesData = $moduleConfig->getTitle();
-        $title = $this->languageService->filterByLanguageAbbreviation(data: $titlesData);
+        $translatedTitle = $this->languageService->filterByLanguageAbbreviation(data: $titlesData);
 
-        $descriptionData = $moduleConfig->getDescription();
-        $description = $this->languageService->filterByLanguageAbbreviation(data: $descriptionData);
+        $description = $moduleConfig->getDescription();
+        $translatedDescription = $this->languageService->filterByLanguageAbbreviation(data: $description);
 
         return new ModuleDataType(
             id: $moduleConfig->getId(),
             version: $moduleConfig->getVersion(),
-            title: $title,
-            description: $description,
+            title: $translatedTitle,
+            description: $translatedDescription,
             thumbnail: $moduleConfig->getThumbnail(),
             author: $moduleConfig->getAuthor(),
             url: $moduleConfig->getUrl(),

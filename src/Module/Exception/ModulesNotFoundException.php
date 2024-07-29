@@ -15,6 +15,6 @@ final class ModulesNotFoundException extends NotFound
 {
     public function __construct()
     {
-        parent::__construct(('Modules was not found.'));
+        parent::__construct('Modules was not found.');
     }
 }
