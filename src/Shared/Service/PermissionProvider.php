@@ -17,7 +17,9 @@ final class PermissionProvider implements PermissionProviderInterface
     {
         return [
             'oxidadmin' => [
-                'CHANGE_CONFIGURATION'
+                'CHANGE_CONFIGURATION',
+                'LIST_THEMES',
+                'LIST_MODULES'
             ],
         ];
     }
