@@ -22,16 +22,13 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
 {
     public function testCreateFromCoreModule()
     {
-        $expectedTitle = 'Title in de language';
-        $expectedDescription = 'Description in de language';
-
         $titlesData = [
-            'de' => 'Title in de language',
-            'en' => 'Title in en language',
+            'de' => uniqid(),
+            'en' => uniqid(),
         ];
         $descriptionData = [
-            'de' => 'Description in de language',
-            'en' => 'Description in en language',
+            'de' => uniqid(),
+            'en' => uniqid(),
         ];
         $expectedId = uniqid();
         $expectedVersion = uniqid();
@@ -49,14 +46,14 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
         $moduleConfigMock->method('getAuthor')->willReturn($expectedAuthor);
         $moduleConfigMock->method('getUrl')->willReturn($expectedUrl);
         $moduleConfigMock->method('getEmail')->willReturn($expectedEmail);
-        $moduleConfigMock->method('isActivated')->willReturn(true);
+        $moduleConfigMock->method('isActivated')->willReturn((bool)random_int(0, 1));
 
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock
             ->method('filterByLanguageAbbreviation')
             ->willReturnMap([
-                [$titlesData, $expectedTitle],
-                [$descriptionData, $expectedDescription]
+                [$titlesData, $titlesData['de']],
+                [$descriptionData, $descriptionData['de']]
             ]);
 
         $moduleDataTypeFactory = new ModuleDataTypeFactory($languageServiceMock);
@@ -64,8 +61,8 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
 
         $this->assertSame($expectedId, $moduleDataType->getId());
         $this->assertSame($expectedVersion, $moduleDataType->getVersion());
-        $this->assertSame($expectedTitle, $moduleDataType->getTitle());
-        $this->assertSame($expectedDescription, $moduleDataType->getDescription());
+        $this->assertSame($titlesData['de'], $moduleDataType->getTitle());
+        $this->assertSame($descriptionData['de'], $moduleDataType->getDescription());
         $this->assertSame($expectedThumbnail, $moduleDataType->getThumbnail());
         $this->assertSame($expectedAuthor, $moduleDataType->getAuthor());
         $this->assertSame($expectedUrl, $moduleDataType->getUrl());

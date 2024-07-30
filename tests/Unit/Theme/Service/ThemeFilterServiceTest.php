@@ -50,8 +50,8 @@ class ThemeFilterServiceTest extends TestCase
      */
     public static function themeFilterResultProvider(): \Generator
     {
-        $theme1 = new ThemeDataType('theme1', uniqid(), uniqid(), uniqid(), true);
-        $theme2 = new ThemeDataType('theme2', uniqid(), uniqid(), uniqid(), false);
+        $theme1 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
+        $theme2 = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), false);
 
         yield "filter with only second title check is true but status check is false" => [
             'themeList' => [$theme1, $theme2],

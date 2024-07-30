@@ -27,7 +27,7 @@ class ModuleDataTypeTest extends UnitTestCase
         $author = uniqid();
         $url = uniqid();
         $email = uniqid();
-        $active = true;
+        $active = (bool)random_int(0, 1);
 
         $moduleDataType = new ModuleDataType(
             id: $id,

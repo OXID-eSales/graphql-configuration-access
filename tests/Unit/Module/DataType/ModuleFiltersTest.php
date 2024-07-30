@@ -22,15 +22,15 @@ class ModuleFiltersTest extends TestCase
 {
     /** @dataProvider moduleByTitleDataProvider */
     public function testFilterModuleByTitle(
-        string $expectedTitle,
         bool $expectedResult,
         bool $enableFilters,
     ): void {
+        $title = uniqid();
         $stringFilterMock = $this->createMock(StringFilter::class);
-        $stringFilterMock->method('matches')->willReturn($expectedResult);
+        $stringFilterMock->expects($this->once())->method('matches')->with($title)->willReturn($expectedResult);
 
         $moduleMock = $this->createMock(ModuleDataType::class);
-        $moduleMock->method('getTitle')->willReturn($expectedTitle);
+        $moduleMock->expects($this->once())->method('getTitle')->willReturn($title);
 
         $moduleFilters = ($enableFilters) ? new ModuleFilters(titleFilter: $stringFilterMock) : new ModuleFilters();
         $this->assertEquals($expectedResult, $moduleFilters->filterModuleByTitle($moduleMock));
@@ -38,14 +38,12 @@ class ModuleFiltersTest extends TestCase
 
     public static function moduleByTitleDataProvider(): \Generator
     {
-        yield "filter module by titles matches" => [
-            'expectedTitle' => 'test module 1',
+        yield "filter module by title matches" => [
             'expectedResult' => true,
             'enableFilters' => true
         ];
 
-        yield "filter module by titles do not matches" => [
-            'expectedTitle' => 'random module title',
+        yield "filter module by title do not matches" => [
             'expectedResult' => false,
             'enableFilters' => true
         ];
