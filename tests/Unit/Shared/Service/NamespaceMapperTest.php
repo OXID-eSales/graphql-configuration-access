@@ -46,8 +46,10 @@ class NamespaceMapperTest extends TestCase
         $expectedMapping = [
             $this->namespacePrefix . '\\Shared\\DataType' =>
                 $this->srcPath . '/Shared/Service/../../Shared/DataType/',
+            $this->namespacePrefix . '\\Theme\\DataType' =>
+                $this->srcPath . '/Theme/Service/../../Theme/DataType/',
             $this->namespacePrefix . '\\Module\\DataType' =>
-                $this->srcPath . '/Shared/Service/../../Module/DataType/',
+                $this->srcPath . '/Module/Service/../../Module/DataType/',
         ];
 
         $sut = $this->getSut();

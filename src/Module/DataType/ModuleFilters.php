@@ -24,7 +24,7 @@ class ModuleFilters implements ModuleFiltersInterface
     public function filterModuleByTitle(ModuleDataType $module): bool
     {
         $titleFilter = $this->titleFilter;
-        if ($titleFilter !== null && $module->getTitle() !== null) {
+        if ($titleFilter !== null) {
             return $titleFilter->matches($module->getTitle());
         }
 
