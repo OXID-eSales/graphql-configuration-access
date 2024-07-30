@@ -9,14 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFiltersInterface;
 
 class ModuleFilterService implements ModuleFilterServiceInterface
 {
     public function filterModules(array $modules, ModuleFiltersInterface $filterList): array
     {
-        return array_filter($modules, function (ModuleDataType $module) use ($filterList) {
+        return array_filter($modules, function (ModuleDataTypeInterface $module) use ($filterList) {
             return $filterList->filterModuleByTitle(module: $module)
                 && $filterList->filterModuleByStatus(module: $module);
         });

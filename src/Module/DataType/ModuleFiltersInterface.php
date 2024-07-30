@@ -12,8 +12,8 @@ use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 
 interface ModuleFiltersInterface
 {
-    public function filterModuleByTitle(ModuleDataType $module): bool;
-    public function filterModuleByStatus(ModuleDataType $module): bool;
+    public function filterModuleByTitle(ModuleDataTypeInterface $module): bool;
+    public function filterModuleByStatus(ModuleDataTypeInterface $module): bool;
     public static function createModuleFilters(
         ?StringFilter $titleFilter = null,
         ?BoolFilter $activeFilter = null

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Controller;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFilters;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
@@ -25,7 +25,7 @@ final class ModuleListController
 
     /**
      * Query of Configuration Access Module
-     * @return ModuleDataType[]
+     * @return ModuleDataTypeInterface[]
      */
     #[Query]
     #[Logged]

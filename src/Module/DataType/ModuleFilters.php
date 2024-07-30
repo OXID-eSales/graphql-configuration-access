@@ -21,7 +21,7 @@ class ModuleFilters implements ModuleFiltersInterface
     ) {
     }
 
-    public function filterModuleByTitle(ModuleDataType $module): bool
+    public function filterModuleByTitle(ModuleDataTypeInterface $module): bool
     {
         $titleFilter = $this->titleFilter;
         if ($titleFilter !== null) {
@@ -31,7 +31,7 @@ class ModuleFilters implements ModuleFiltersInterface
         return true;
     }
 
-    public function filterModuleByStatus(ModuleDataType $module): bool
+    public function filterModuleByStatus(ModuleDataTypeInterface $module): bool
     {
         $statusFilter = $this->activeFilter;
         if ($statusFilter !== null && $statusFilter->equals() !== null) {

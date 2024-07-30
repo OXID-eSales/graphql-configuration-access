@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\DataType;
 
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFilters;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +28,7 @@ class ModuleFiltersTest extends TestCase
         $stringFilterMock = $this->createMock(StringFilter::class);
         $stringFilterMock->expects($this->once())->method('matches')->with($title)->willReturn($expectedResult);
 
-        $moduleMock = $this->createMock(ModuleDataType::class);
+        $moduleMock = $this->createMock(ModuleDataTypeInterface::class);
         $moduleMock->expects($this->once())->method('getTitle')->willReturn($title);
 
         $themeFilters = new ModuleFilters(titleFilter: $stringFilterMock);
@@ -48,7 +48,7 @@ class ModuleFiltersTest extends TestCase
 
     public function testModuleFiltersWithoutFilter(): void
     {
-        $themeMock = $this->createStub(ModuleDataType::class);
+        $themeMock = $this->createStub(ModuleDataTypeInterface::class);
 
         $themeFilters = new ModuleFilters();
         $this->assertTrue($themeFilters->filterModuleByTitle($themeMock));
@@ -65,7 +65,7 @@ class ModuleFiltersTest extends TestCase
         $mockBoolFilter->expects($this->exactly(2))->method('equals')->willReturn($filterStatus);
         $moduleFilterList = new ModuleFilters(activeFilter: $mockBoolFilter);
 
-        $mockModuleDataType = $this->createMock(ModuleDataType::class);
+        $mockModuleDataType = $this->createMock(ModuleDataTypeInterface::class);
         $mockModuleDataType->expects($this->once())->method('isActive')->willReturn($actualStatus);
 
         $this->assertSame($expectedResult, $moduleFilterList->filterModuleByStatus($mockModuleDataType));

@@ -13,7 +13,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleListControlle
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFilters;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleListController
@@ -23,8 +23,8 @@ class ModuleListControllerTest extends UnitTestCase
     public function testModulesListWithFilters(): void
     {
         $filtersStub = $this->createStub(ModuleFilters::class);
-        $moduleStub1 = $this->createStub(ModuleDataType::class);
-        $moduleStub2 = $this->createStub(ModuleDataType::class);
+        $moduleStub1 = $this->createStub(ModuleDataTypeInterface::class);
+        $moduleStub2 = $this->createStub(ModuleDataTypeInterface::class);
         $filteredModules = [$moduleStub1, $moduleStub2];
 
         $moduleListServiceMock = $this->createMock(ModuleListServiceInterface::class);
