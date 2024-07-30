@@ -25,34 +25,31 @@ class ThemeListInfrastructureTest extends TestCase
 {
     public function testGetThemes(): void
     {
-        $theme1 = $this->createThemeMock(uniqid(), uniqid(), uniqid(), uniqid(), true);
-        $theme2 = $this->createThemeMock(uniqid(), uniqid(), uniqid(), uniqid(), false);
+        $theme1 = [
+            'title' => uniqid(),
+            'id' => uniqid(),
+            'version' => uniqid(),
+            'description' => uniqid(),
+            'active' => true
+        ];
 
-        $convertThemeCallback = function (Theme $theme) {
-            return new ThemeDataType(
-                $theme->getInfo('title'),
-                $theme->getInfo('id'),
-                $theme->getInfo('version'),
-                $theme->getInfo('description'),
-                $theme->getInfo('active')
-            );
-        };
-        $theme1DataType = $convertThemeCallback($theme1);
-        $theme2DataType = $convertThemeCallback($theme2);
+        $theme2 = [
+            'title' => uniqid(),
+            'id' => uniqid(),
+            'version' => uniqid(),
+            'description' => uniqid(),
+            'active' => false
+        ];
 
         $coreThemeMock = $this->createMock(Theme::class);
         $coreThemeMock->expects($this->once())->method('getList')
             ->willReturn([$theme1, $theme2]);
 
-        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeMock);
-        $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
-        $themeDataTypeFactoryMock->expects($this->exactly(2))->method('createFromCoreTheme')
-            ->with($this->logicalOr($theme1, $theme2))
-            ->willReturnCallback($convertThemeCallback);
+        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(returnValue: $coreThemeMock);
 
-        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock, themeDataTypeFactory: $themeDataTypeFactoryMock);
+        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
         $actualThemesArray = $sut->getThemes();
-        $this->assertEquals([$theme1DataType, $theme2DataType], $actualThemesArray);
+        $this->assertEquals([$theme1, $theme2], $actualThemesArray);
     }
 
     public function testGetThemesThrowsException(): void
@@ -60,43 +57,19 @@ class ThemeListInfrastructureTest extends TestCase
         $coreThemeMock = $this->createMock(Theme::class);
         $coreThemeMock->expects($this->once())->method('getList')
             ->willReturn([]);
-        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock($coreThemeMock);
+        $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(returnValue: $coreThemeMock);
 
-        $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
-        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock, themeDataTypeFactory: $themeDataTypeFactoryMock);
+        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
 
         $this->expectException(ThemesNotFound::class);
         $sut->getThemes();
     }
 
-    private function createThemeMock(
-        string $title,
-        string $id,
-        string $version,
-        string $description,
-        bool $active
-    ): Theme|MockObject {
-        $themeMock = $this->createMock(Theme::class);
-        $themeMock->expects($this->exactly(10))
-            ->method('getInfo')
-            ->willReturnMap([
-                ['title', $title],
-                ['id', $id],
-                ['version', $version],
-                ['description', $description],
-                ['active', $active]
-            ]);
-
-        return $themeMock;
-    }
-
     private function getSut(
-        CoreThemeFactoryInterface $coreThemeFactory = null,
-        ThemeDataTypeFactoryInterface $themeDataTypeFactory = null
+        CoreThemeFactoryInterface $coreThemeFactory = null
     ): ThemeListInfrastructure {
         return new ThemeListInfrastructure(
-            coreThemeFactory: $coreThemeFactory ?? $this->createStub(CoreThemeFactoryInterface::class),
-            themeDataTypeFactory: $themeDataTypeFactory ?? $this->createStub(ThemeDataTypeFactoryInterface::class)
+            coreThemeFactory: $coreThemeFactory ?? $this->createStub(CoreThemeFactoryInterface::class)
         );
     }
 
