@@ -11,11 +11,11 @@ interface ModuleDataTypeInterface
 {
     public function getId(): string;
 
-    public function getTitle(): ?string;
+    public function getTitle(): string;
 
-    public function getVersion(): ?string;
+    public function getVersion(): string;
 
-    public function getDescription(): ?string;
+    public function getDescription(): string;
 
     public function getThumbnail(): ?string;
 

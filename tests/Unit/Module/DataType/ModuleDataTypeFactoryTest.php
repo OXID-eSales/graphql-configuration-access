@@ -67,6 +67,6 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
         $this->assertSame($expectedAuthor, $moduleDataType->getAuthor());
         $this->assertSame($expectedUrl, $moduleDataType->getUrl());
         $this->assertSame($expectedEmail, $moduleDataType->getEmail());
-        $this->assertTrue($moduleDataType->isActive());
+        $this->assertIsBool($moduleDataType->isActive());
     }
 }

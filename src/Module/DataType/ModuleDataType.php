@@ -17,9 +17,9 @@ final class ModuleDataType implements ModuleDataTypeInterface
 {
     public function __construct(
         private readonly string $id,
-        private readonly ?string $version,
-        private readonly ?string $title,
-        private readonly ?string $description,
+        private readonly string $version,
+        private readonly string $title,
+        private readonly string $description,
         private readonly ?string $thumbnail,
         private readonly ?string $author,
         private readonly ?string $url,
@@ -35,19 +35,19 @@ final class ModuleDataType implements ModuleDataTypeInterface
     }
 
     #[Field]
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     #[Field]
-    public function getVersion(): ?string
+    public function getVersion(): string
     {
         return $this->version;
     }
 
     #[Field]
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
