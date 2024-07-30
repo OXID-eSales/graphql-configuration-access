@@ -37,11 +37,11 @@ class ThemeFiltersTest extends TestCase
 
     public static function themeByTitleDataProvider(): \Generator
     {
-        yield "filter theme by titles matches" => [
+        yield "filter theme by title match" => [
             'expectedResult' => true,
         ];
 
-        yield "filter theme by titles do not matches" => [
+        yield "filter theme by title do not match" => [
             'expectedResult' => false,
         ];
     }

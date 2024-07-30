@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Controller;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleListController;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFilters;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
@@ -23,39 +22,20 @@ class ModuleListControllerTest extends UnitTestCase
 {
     public function testModulesListWithFilters(): void
     {
-        $filtersMock = $this->createMock(ModuleFilters::class);
-        $moduleMock1 = $this->createMock(ModuleDataType::class);
-        $moduleMock2 = $this->createMock(ModuleDataType::class);
-        $filteredModules = [$moduleMock1, $moduleMock2];
+        $filtersStub = $this->createStub(ModuleFiltersInterface::class);
+        $moduleStub1 = $this->createStub(ModuleDataType::class);
+        $moduleStub2 = $this->createStub(ModuleDataType::class);
+        $filteredModules = [$moduleStub1, $moduleStub2];
 
         $moduleListServiceMock = $this->createMock(ModuleListServiceInterface::class);
-        $moduleListServiceMock
+        $moduleListServiceMock->expects($this->once())
             ->method('getModuleList')
-            ->with($filtersMock)
+            ->with($filtersStub)
             ->willReturn($filteredModules);
 
         $sut = new ModuleListController($moduleListServiceMock);
-        $actualModules = $sut->modulesList($filtersMock);
+        $actualModules = $sut->modulesList($filtersStub);
 
         $this->assertSame($filteredModules, $actualModules);
-    }
-
-    public function testModulesListWithoutFilters(): void
-    {
-        $filtersMock = $this->createMock(ModuleFilters::class);
-        $moduleMock1 = $this->createMock(ModuleDataType::class);
-        $moduleMock2 = $this->createMock(ModuleDataType::class);
-        $expectedModules = [$moduleMock1, $moduleMock2];
-
-        $moduleListServiceMock = $this->createMock(ModuleListServiceInterface::class);
-        $moduleListServiceMock
-            ->method('getModuleList')
-            ->with($filtersMock)
-            ->willReturn($expectedModules);
-
-        $sut = new ModuleListController($moduleListServiceMock);
-        $actualModules = $sut->modulesList($filtersMock);
-
-        $this->assertSame($expectedModules, $actualModules);
     }
 }

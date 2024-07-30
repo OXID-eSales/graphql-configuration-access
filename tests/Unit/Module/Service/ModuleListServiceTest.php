@@ -23,20 +23,20 @@ class ModuleListServiceTest extends UnitTestCase
 {
     public function testGetModuleListWithFilters(): void
     {
-        $filtersMock = $this->createMock(ModuleFiltersInterface::class);
-        $moduleMock1 = $this->createMock(ModuleDataType::class);
-        $moduleMock2 = $this->createMock(ModuleDataType::class);
-        $filteredModules = [$moduleMock1];
+        $filtersStub = $this->createStub(ModuleFiltersInterface::class);
+        $moduleStub1 = $this->createStub(ModuleDataType::class);
+        $moduleStub2 = $this->createStub(ModuleDataType::class);
+        $filteredModules = [$moduleStub1];
 
         $moduleListInfrastructureMock = $this->createMock(ModuleListInfrastructureInterface::class);
-        $moduleListInfrastructureMock->method('getModuleList')
-            ->willReturn([$moduleMock1, $moduleMock2]);
+        $moduleListInfrastructureMock->expects($this->once())->method('getModuleList')
+            ->willReturn([$moduleStub1, $moduleStub2]);
 
         $moduleFilterServiceMock = $this->createMock(ModuleFilterServiceInterface::class);
 
-        $moduleFilterServiceMock
+        $moduleFilterServiceMock->expects($this->once())
             ->method('filterModules')
-            ->with([$moduleMock1, $moduleMock2], $filtersMock)
+            ->with([$moduleStub1, $moduleStub2], $filtersStub)
             ->willReturn($filteredModules);
 
         $sut = $this->getSut(
@@ -44,28 +44,8 @@ class ModuleListServiceTest extends UnitTestCase
             moduleFilterServiceMock: $moduleFilterServiceMock
         );
 
-        $actualModules = $sut->getModuleList($filtersMock);
+        $actualModules = $sut->getModuleList($filtersStub);
         $this->assertSame($filteredModules, $actualModules);
-    }
-
-    public function testGetModuleListNoModules(): void
-    {
-        $filtersMock = $this->createMock(ModuleFiltersInterface::class);
-        $moduleListInfrastructureMock = $this->createMock(ModuleListInfrastructureInterface::class);
-        $moduleFilterServiceMock = $this->createMock(ModuleFilterServiceInterface::class);
-
-        $moduleFilterServiceMock
-            ->method('filterModules')
-            ->with([], $filtersMock)
-            ->willReturn([]);
-
-        $sut = $this->getSut(
-            moduleListInfrastructureMock: $moduleListInfrastructureMock,
-            moduleFilterServiceMock: $moduleFilterServiceMock
-        );
-
-        $actualModules = $sut->getModuleList($filtersMock);
-        $this->assertSame([], $actualModules);
     }
 
     public function getSut(

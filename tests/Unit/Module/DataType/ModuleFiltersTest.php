@@ -23,7 +23,6 @@ class ModuleFiltersTest extends TestCase
     /** @dataProvider moduleByTitleDataProvider */
     public function testFilterModuleByTitle(
         bool $expectedResult,
-        bool $enableFilters,
     ): void {
         $title = uniqid();
         $stringFilterMock = $this->createMock(StringFilter::class);
@@ -32,56 +31,69 @@ class ModuleFiltersTest extends TestCase
         $moduleMock = $this->createMock(ModuleDataType::class);
         $moduleMock->expects($this->once())->method('getTitle')->willReturn($title);
 
-        $moduleFilters = ($enableFilters) ? new ModuleFilters(titleFilter: $stringFilterMock) : new ModuleFilters();
-        $this->assertEquals($expectedResult, $moduleFilters->filterModuleByTitle($moduleMock));
+        $themeFilters = new ModuleFilters(titleFilter: $stringFilterMock);
+        $this->assertEquals($expectedResult, $themeFilters->filterModuleByTitle($moduleMock));
     }
 
     public static function moduleByTitleDataProvider(): \Generator
     {
         yield "filter module by title matches" => [
             'expectedResult' => true,
-            'enableFilters' => true
         ];
 
         yield "filter module by title do not matches" => [
             'expectedResult' => false,
-            'enableFilters' => true
         ];
+    }
 
-        yield "filter module by title no filters" => [
-            'expectedTitle' => 'test module 1',
-            'expectedResult' => true,
-            'enableFilters' => false,
-        ];
+    public function testModuleFiltersWithoutFilter(): void
+    {
+        $themeMock = $this->createStub(ModuleDataType::class);
+
+        $themeFilters = new ModuleFilters();
+        $this->assertTrue($themeFilters->filterModuleByTitle($themeMock));
+        $this->assertTrue($themeFilters->filterModuleByStatus($themeMock));
     }
 
     /** @dataProvider moduleByStatusDataProvider */
     public function testFilterModuleByStatus(
-        bool $expectedStatus,
+        bool $filterStatus,
         bool $actualStatus,
         bool $expectedResult
     ): void {
         $mockBoolFilter = $this->createMock(BoolFilter::class);
-        $mockBoolFilter->method('equals')->willReturn($expectedStatus);
+        $mockBoolFilter->expects($this->exactly(2))->method('equals')->willReturn($filterStatus);
         $moduleFilterList = new ModuleFilters(activeFilter: $mockBoolFilter);
 
         $mockModuleDataType = $this->createMock(ModuleDataType::class);
-        $mockModuleDataType->method('isActive')->willReturn($actualStatus);
+        $mockModuleDataType->expects($this->once())->method('isActive')->willReturn($actualStatus);
 
         $this->assertSame($expectedResult, $moduleFilterList->filterModuleByStatus($mockModuleDataType));
     }
 
     public static function moduleByStatusDataProvider(): \Generator
     {
-        yield "filter module by providing same module status" => [
-            'expectedStatus' => true,
+        yield "filter module by true with same module status" => [
+            'filterStatus' => true,
             'actualStatus' => true,
             'expectedResult' => true
         ];
 
-        yield "filter module by providing different module status" => [
-            'expectedStatus' => true,
+        yield "filter module by false with same module status" => [
+            'filterStatus' => false,
             'actualStatus' => false,
+            'expectedResult' => true
+        ];
+
+        yield "filter module by true with different module status" => [
+            'filterStatus' => true,
+            'actualStatus' => false,
+            'expectedResult' => false
+        ];
+
+        yield "filter module by false with different theme status" => [
+            'filterStatus' => false,
+            'actualStatus' => true,
             'expectedResult' => false
         ];
     }
@@ -89,9 +101,18 @@ class ModuleFiltersTest extends TestCase
     public function testCreateModuleFilterList(): void
     {
         $stringFilter = $this->createMock(StringFilter::class);
-        $boolFilter = $this->createMock(BoolFilter::class);
+        $boolFilter = $this->createStub(BoolFilter::class);
 
-        $moduleFilterListSpy = ModuleFilters::createModuleFilters($stringFilter, $boolFilter);
-        $this->assertInstanceOf(ModuleFilters::class, $moduleFilterListSpy);
+        $expectedModuleFilters = new ModuleFilters(titleFilter: $stringFilter, activeFilter: $boolFilter);
+
+        $moduleFilters = ModuleFilters::createModuleFilters($stringFilter, $boolFilter);
+        $this->assertEquals($expectedModuleFilters, $moduleFilters);
+    }
+
+    public function testCreateModuleFilterListWithNull(): void
+    {
+        $expectedThemeFilters = new ModuleFilters();
+        $themeFilters = ModuleFilters::createModuleFilters(null, null);
+        $this->assertEquals($expectedThemeFilters, $themeFilters);
     }
 }
