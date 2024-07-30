@@ -28,13 +28,18 @@ class ModuleListServiceTest extends UnitTestCase
     public function testGetModuleListWithFilters(): void
     {
         $filtersStub = $this->createStub(ModuleFiltersInterface::class);
-        $moduleStub1 = $this->createStub(ModuleDataType::class);
-        $moduleStub2 = $this->createStub(ModuleDataType::class);
+
+        $moduleStub1 = $this->createStub(ModuleDataTypeInterface::class);
+        $moduleStub2 = $this->createStub(ModuleDataTypeInterface::class);
         $filteredModules = [$moduleStub1];
+
+        $moduleConfigStub1 = $this->createMock(ModuleConfiguration::class);
+        $moduleConfigStub2 = $this->createMock(ModuleConfiguration::class);
+        $modules = [$moduleConfigStub1, $moduleConfigStub2];
 
         $moduleListInfrastructureMock = $this->createMock(ModuleListInfrastructureInterface::class);
         $moduleListInfrastructureMock->expects($this->once())->method('getModuleList')
-            ->willReturn([$moduleStub1, $moduleStub2]);
+            ->willReturn($modules);
 
         $moduleFilterServiceMock = $this->createMock(ModuleFilterServiceInterface::class);
 
@@ -46,7 +51,7 @@ class ModuleListServiceTest extends UnitTestCase
         $moduleDataTypeFactoryMock = $this->createMock(ModuleDataTypeFactoryInterface::class);
         $moduleDataTypeFactoryMock
             ->method('createFromCoreModule')
-            ->willReturnOnConsecutiveCalls($moduleDataTypeMock1, $moduleDataTypeMock2);
+            ->willReturnOnConsecutiveCalls($moduleStub1, $moduleStub2);
 
         $sut = $this->getSut(
             moduleListInfrastructureMock: $moduleListInfrastructureMock,
