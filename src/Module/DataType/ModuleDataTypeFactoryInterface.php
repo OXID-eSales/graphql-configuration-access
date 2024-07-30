@@ -11,5 +11,5 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ModuleDataTypeFactoryInterface
 {
-    public function createFromCoreModule(ModuleConfiguration $moduleConfig): ModuleDataType;
+    public function createFromCoreModule(ModuleConfiguration $moduleConfig): ModuleDataTypeInterface;
 }

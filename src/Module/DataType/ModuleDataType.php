@@ -13,7 +13,7 @@ use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 #[Type]
-class ModuleDataType
+final class ModuleDataType implements ModuleDataTypeInterface
 {
     public function __construct(
         private readonly string $id,

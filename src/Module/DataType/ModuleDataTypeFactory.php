@@ -21,7 +21,7 @@ class ModuleDataTypeFactory implements ModuleDataTypeFactoryInterface
 
     public function createFromCoreModule(
         ModuleConfiguration $moduleConfig
-    ): ModuleDataType {
+    ): ModuleDataTypeInterface {
         $titlesData = $moduleConfig->getTitle();
         $translatedTitle = $this->languageService->filterByLanguageAbbreviation(data: $titlesData);
 
