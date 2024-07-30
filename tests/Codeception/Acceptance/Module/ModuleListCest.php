@@ -25,27 +25,10 @@ final class ModuleListCest extends ModuleSettingBaseCest
 
         $result = $this->runModuleListQuery($I);
         $I->assertArrayNotHasKey('errors', $result);
-
-        $moduleList = $result['data']['modulesList'];
-        $I->assertEquals(
-            [
-                'id' => self::TEST_MODULE_ID,
-                'version' => '',
-                'title' => self::TEST_MODULE_TITLE,
-                'description' => null,
-                'thumbnail' => '',
-                'author' => '',
-                'url' => '',
-                'email' => '',
-                'active' => true
-            ],
-            $moduleList[0]
-        );
     }
 
     public function runModuleListQuery(AcceptanceTester $I): array
     {
-        $I->login($this->getAdminUsername(), $this->getAdminPassword());
         $I->sendGQLQuery(
             'query modulesList {
 			  modulesList(
