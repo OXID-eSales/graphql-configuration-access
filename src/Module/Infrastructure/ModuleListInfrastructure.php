@@ -16,14 +16,12 @@ use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModulesNotFoundExcep
 class ModuleListInfrastructure implements ModuleListInfrastructureInterface
 {
     public function __construct(
-        private readonly ModuleDataTypeFactoryInterface $moduleDataTypeFactory,
         private readonly ShopConfigurationDaoBridgeInterface $shopConfigurationDaoBridge
     ) {
     }
 
     public function getModuleList(): array
     {
-        $modules = [];
         $shopConfiguration = $this->shopConfigurationDaoBridge->get();
         $moduleConfigurations = $shopConfiguration->getModuleConfigurations();
 
@@ -31,10 +29,6 @@ class ModuleListInfrastructure implements ModuleListInfrastructureInterface
             throw new ModulesNotFoundException();
         }
 
-        foreach ($moduleConfigurations as $moduleConfig) {
-            $modules[] = $this->moduleDataTypeFactory->createFromCoreModule($moduleConfig);
-        }
-
-        return $modules;
+        return $moduleConfigurations;
     }
 }

@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructure;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModulesNotFoundException;
 
@@ -25,25 +25,12 @@ class ModuleListInfrastructureTest extends UnitTestCase
 {
     public function testGetModuleList()
     {
-        $moduleConfigId = 'awesomeModule';
         $moduleConfigurationMock = $this->createMock(ModuleConfiguration::class);
-        $moduleDataTypeMock = $this->createMock(ModuleDataType::class);
-
-        $moduleDataTypeFactoryMock = $this->createMock(ModuleDataTypeFactoryInterface::class);
-        $moduleDataTypeFactoryMock
-            ->method('createFromCoreModule')
-            ->with($moduleConfigurationMock)
-            ->willReturn($moduleDataTypeMock);
-
-        $moduleConfigMock = $this->createMock(ModuleConfiguration::class);
-        $moduleConfigMock
-            ->method('getId')
-            ->willReturn($moduleConfigId);
 
         $shopConfigurationMock = $this->createMock(ShopConfiguration::class);
         $shopConfigurationMock
             ->method('getModuleConfigurations')
-            ->willReturn([$moduleConfigMock]);
+            ->willReturn([$moduleConfigurationMock]);
 
         $shopConfigurationDaoBridgeMock = $this->createMock(ShopConfigurationDaoBridgeInterface::class);
         $shopConfigurationDaoBridgeMock
@@ -51,14 +38,13 @@ class ModuleListInfrastructureTest extends UnitTestCase
             ->willReturn($shopConfigurationMock);
 
         $sut = $this->getSut(
-            moduleDataTypeFactoryMock: $moduleDataTypeFactoryMock,
             shopConfigurationDaoBridgeMock: $shopConfigurationDaoBridgeMock
         );
 
         $result = $sut->getModuleList();
 
         $this->assertCount(1, $result);
-        $this->assertSame($moduleDataTypeMock, $result[0]);
+        $this->assertSame([$moduleConfigurationMock], $result);
     }
 
     public function testGetModuleListThrowsException()
@@ -78,11 +64,9 @@ class ModuleListInfrastructureTest extends UnitTestCase
     }
 
     public function getSut(
-        ?ModuleDataTypeFactoryInterface $moduleDataTypeFactoryMock = null,
         ?ShopConfigurationDaoBridgeInterface $shopConfigurationDaoBridgeMock = null
     ): ModuleListInfrastructure {
         return new ModuleListInfrastructure(
-            $moduleDataTypeFactoryMock ?? $this->createMock(ModuleDataTypeFactoryInterface::class),
             $shopConfigurationDaoBridgeMock ?? $this->createMock(ShopConfigurationDaoBridgeInterface::class)
         );
     }

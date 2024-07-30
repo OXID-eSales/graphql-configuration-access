@@ -9,12 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleFilterServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListService;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructureInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListService
@@ -39,9 +43,15 @@ class ModuleListServiceTest extends UnitTestCase
             ->with([$moduleStub1, $moduleStub2], $filtersStub)
             ->willReturn($filteredModules);
 
+        $moduleDataTypeFactoryMock = $this->createMock(ModuleDataTypeFactoryInterface::class);
+        $moduleDataTypeFactoryMock
+            ->method('createFromCoreModule')
+            ->willReturnOnConsecutiveCalls($moduleDataTypeMock1, $moduleDataTypeMock2);
+
         $sut = $this->getSut(
             moduleListInfrastructureMock: $moduleListInfrastructureMock,
-            moduleFilterServiceMock: $moduleFilterServiceMock
+            moduleFilterServiceMock: $moduleFilterServiceMock,
+            moduleDataTypeFactoryMock: $moduleDataTypeFactoryMock
         );
 
         $actualModules = $sut->getModuleList($filtersStub);
@@ -50,11 +60,13 @@ class ModuleListServiceTest extends UnitTestCase
 
     public function getSut(
         ?ModuleListInfrastructureInterface $moduleListInfrastructureMock = null,
-        ?ModuleFilterServiceInterface $moduleFilterServiceMock = null
+        ?ModuleFilterServiceInterface $moduleFilterServiceMock = null,
+        ?ModuleDataTypeFactoryInterface $moduleDataTypeFactoryMock = null
     ): ModuleListService {
         return new ModuleListService(
             $moduleListInfrastructureMock ?? $this->createMock(ModuleListInfrastructureInterface::class),
-            $moduleFilterServiceMock ?? $this->createMock(ModuleFilterServiceInterface::class)
+            $moduleFilterServiceMock ?? $this->createMock(ModuleFilterServiceInterface::class),
+            $moduleDataTypeFactoryMock ?? $this->createMock(ModuleDataTypeFactoryInterface::class)
         );
     }
 }
