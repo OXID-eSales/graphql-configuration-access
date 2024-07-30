@@ -18,7 +18,9 @@ class PermissionProviderTest extends TestCase
     {
         $expectedPermissions = [
             'oxidadmin' => [
-                'CHANGE_CONFIGURATION'
+                'CHANGE_CONFIGURATION',
+                'LIST_THEMES',
+                'LIST_MODULES'
             ],
         ];
 

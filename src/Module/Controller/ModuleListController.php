@@ -29,7 +29,7 @@ final class ModuleListController
      */
     #[Query]
     #[Logged]
-    #[Right('CHANGE_CONFIGURATION')]
+    #[Right('LIST_MODULES')]
     public function modulesList(?ModuleFilters $filters = null): array
     {
         return $this->moduleListService->getModuleList($filters ?? new ModuleFilters());
