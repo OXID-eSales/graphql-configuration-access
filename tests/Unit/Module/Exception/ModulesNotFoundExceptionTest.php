@@ -22,6 +22,6 @@ class ModulesNotFoundExceptionTest extends TestCase
         $exception = new ModulesNotFoundException();
 
         $this->assertInstanceOf(ModulesNotFoundException::class, $exception);
-        $this->assertSame('Modules was not found.', $exception->getMessage());
+        $this->assertSame('Modules were not found.', $exception->getMessage());
     }
 }

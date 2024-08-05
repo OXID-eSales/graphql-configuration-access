@@ -43,7 +43,6 @@ class ModuleListInfrastructureTest extends UnitTestCase
 
         $result = $sut->getModuleList();
 
-        $this->assertCount(1, $result);
         $this->assertSame([$moduleConfigurationMock], $result);
     }
 

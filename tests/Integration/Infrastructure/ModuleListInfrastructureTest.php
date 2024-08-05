@@ -11,49 +11,44 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Integration\Infrastructur
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructure;
 
 class ModuleListInfrastructureTest extends IntegrationTestCase
 {
     public function testGetModuleList()
     {
-        $moduleConfigId = 'awesomeModuleId';
-        $moduleConfigMock = $this->createMock(ModuleConfiguration::class);
-        $moduleConfigMock
-            ->method('getId')
-            ->willReturn($moduleConfigId);
-        $moduleConfigMock
-            ->method('isActivated')
-            ->willReturn(true);
+        /** @var ShopConfigurationDaoBridgeInterface $shopConfigurationDaoBridge */
+        $shopConfigurationDaoBridge = $this->get(ShopConfigurationDaoBridgeInterface::class);
+        $shopConfiguration = $shopConfigurationDaoBridge->get();
 
-        $shopConfigurationMock = $this->createMock(ShopConfiguration::class);
-        $shopConfigurationMock
-            ->method('getModuleConfigurations')
-            ->willReturn([$moduleConfigMock]);
+        $moduleConfiguration1 = new ModuleConfiguration();
+        $moduleConfiguration1->setId('firstModule');
+        $moduleConfiguration1->setModuleSource('test');
 
-        $shopConfigurationDaoBridgeMock = $this->createMock(ShopConfigurationDaoBridgeInterface::class);
-        $shopConfigurationDaoBridgeMock
-            ->method('get')
-            ->willReturn($shopConfigurationMock);
+        $moduleConfiguration2 = new ModuleConfiguration();
+        $moduleConfiguration2->setId('secondModule');
+        $moduleConfiguration2->setModuleSource('test1');
 
-        $sut = $this->getSut(shopConfigurationDaoBridge: $shopConfigurationDaoBridgeMock);
+        $shopConfiguration
+            ->addModuleConfiguration($moduleConfiguration1)
+            ->addModuleConfiguration($moduleConfiguration2);
+        $shopConfigurationDaoBridge->save($shopConfiguration);
+
+        $sut = new ModuleListInfrastructure(
+            $shopConfigurationDaoBridge
+        );
         $modulesList = $sut->getModuleList();
-
-        $this->assertIsArray($modulesList);
-        $this->assertSame($moduleConfigId, $modulesList[0]->getId());
-        $this->assertTrue($modulesList[0]->isActive());
+        $this->assertEquals([
+            $moduleConfiguration1->getId() => $moduleConfiguration1,
+            $moduleConfiguration2->getId() => $moduleConfiguration2
+        ], $modulesList);
     }
 
-    public function getSut(
-        ?ModuleDataTypeFactoryInterface $moduleDataTypeFactory = null,
-        ?ShopConfigurationDaoBridgeInterface $shopConfigurationDaoBridge = null
-    ): ModuleListInfrastructure {
+    public function getSut(): ModuleListInfrastructure
+    {
         return new ModuleListInfrastructure(
-            $moduleDataTypeFactory ?? $this->get(ModuleDataTypeFactoryInterface::class),
-            $shopConfigurationDaoBridge ?? $this->get(ShopConfigurationDaoBridgeInterface::class)
+            $this->get(ShopConfigurationDaoBridgeInterface::class)
         );
     }
 }
