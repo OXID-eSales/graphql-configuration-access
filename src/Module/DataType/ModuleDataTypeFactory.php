@@ -23,10 +23,16 @@ class ModuleDataTypeFactory implements ModuleDataTypeFactoryInterface
         ModuleConfiguration $moduleConfig
     ): ModuleDataTypeInterface {
         $titlesData = $moduleConfig->getTitle();
-        $translatedTitle = $this->languageService->filterByLanguageAbbreviation(data: $titlesData);
+        $translatedTitle = $this->languageService->filterByLanguageAbbreviation(
+            data: $titlesData,
+            defaultLang: $moduleConfig->getLang()
+        );
 
         $description = $moduleConfig->getDescription();
-        $translatedDescription = $this->languageService->filterByLanguageAbbreviation(data: $description);
+        $translatedDescription = $this->languageService->filterByLanguageAbbreviation(
+            data: $description,
+            defaultLang: $moduleConfig->getLang()
+        );
 
         return new ModuleDataType(
             id: $moduleConfig->getId(),
@@ -37,7 +43,7 @@ class ModuleDataTypeFactory implements ModuleDataTypeFactoryInterface
             author: $moduleConfig->getAuthor(),
             url: $moduleConfig->getUrl(),
             email: $moduleConfig->getEmail(),
-            active: (bool) $moduleConfig->isActivated(),
+            active: $moduleConfig->isActivated(),
         );
     }
 }
