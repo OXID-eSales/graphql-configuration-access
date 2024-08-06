@@ -9,5 +9,5 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Service;
 
 interface LanguageServiceInterface
 {
-    public function filterByLanguageAbbreviation(array $data): ?string;
+    public function filterByLanguageAbbreviation(array $data, string $defaultLang): string;
 }

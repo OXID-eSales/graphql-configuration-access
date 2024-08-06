@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\DataType;
 
-use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactory;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService;
@@ -36,24 +35,29 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
         $expectedAuthor = uniqid();
         $expectedUrl = uniqid();
         $expectedEmail = uniqid();
+        $expectedLang = uniqid();
+        $expectedIsActivated = (bool)random_int(0, 1);
 
-        $moduleConfigMock = $this->createMock(ModuleConfiguration::class);
-        $moduleConfigMock->method('getId')->willReturn($expectedId);
-        $moduleConfigMock->method('getVersion')->willReturn($expectedVersion);
-        $moduleConfigMock->method('getTitle')->willReturn($titlesData);
-        $moduleConfigMock->method('getDescription')->willReturn($descriptionData);
-        $moduleConfigMock->method('getThumbnail')->willReturn($expectedThumbnail);
-        $moduleConfigMock->method('getAuthor')->willReturn($expectedAuthor);
-        $moduleConfigMock->method('getUrl')->willReturn($expectedUrl);
-        $moduleConfigMock->method('getEmail')->willReturn($expectedEmail);
-        $moduleConfigMock->method('isActivated')->willReturn((bool)random_int(0, 1));
+        $moduleConfigMock = $this->createConfiguredStub(ModuleConfiguration::class, [
+            'getId' => $expectedId,
+            'getVersion' => $expectedVersion,
+            'getTitle' => $titlesData,
+            'getDescription' => $descriptionData,
+            'getThumbnail' => $expectedThumbnail,
+            'getAuthor' => $expectedAuthor,
+            'getUrl' => $expectedUrl,
+            'getEmail' => $expectedEmail,
+            'isActivated' => $expectedIsActivated,
+            'getLang' => $expectedLang
+        ]);
 
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock
+            ->expects($this->exactly(2))
             ->method('filterByLanguageAbbreviation')
             ->willReturnMap([
-                [$titlesData, $titlesData['de']],
-                [$descriptionData, $descriptionData['de']]
+                [$titlesData, $expectedLang, $titlesData['de']],
+                [$descriptionData, $expectedLang, $descriptionData['de']]
             ]);
 
         $moduleDataTypeFactory = new ModuleDataTypeFactory($languageServiceMock);
@@ -67,6 +71,6 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
         $this->assertSame($expectedAuthor, $moduleDataType->getAuthor());
         $this->assertSame($expectedUrl, $moduleDataType->getUrl());
         $this->assertSame($expectedEmail, $moduleDataType->getEmail());
-        $this->assertIsBool($moduleDataType->isActive());
+        $this->assertSame($expectedIsActivated, $moduleDataType->isActive());
     }
 }

@@ -14,23 +14,23 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\LanguageWrapper
 class LanguageService implements LanguageServiceInterface
 {
     public function __construct(
-        private LanguageWrapperInterface $languageWrapper
+        private LanguageWrapperInterface $language
     ) {
     }
 
-    public function filterByLanguageAbbreviation(array $data): ?string
+    public function filterByLanguageAbbreviation(array $data, string $defaultLang): string
     {
-        $langId = $this->languageWrapper->getBaseLanguage();
-        $languageAbbr = $this->languageWrapper->getLanguageAbbr(langId: $langId);
+        $languageAbbr = $this->language->getCurrentLanguageAbbr();
 
         if (isset($data[$languageAbbr])) {
             return $data[$languageAbbr];
         }
 
-        if (isset($data['en'])) {
-            return $data['en'];
+        if (isset($data[$defaultLang])) {
+            return $data[$defaultLang];
         }
 
-        return null;
+        $dataReversed = array_reverse($data);
+        return array_pop($dataReversed);
     }
 }

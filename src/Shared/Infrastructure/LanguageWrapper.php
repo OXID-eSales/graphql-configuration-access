@@ -18,15 +18,9 @@ class LanguageWrapper implements LanguageWrapperInterface
     ) {
     }
 
-    public function getBaseLanguage(): int
+    public function getCurrentLanguageAbbr(): string
     {
-        /**  @var int|null $langId */
-        $langId = $this->language->getBaseLanguage();
-        return (int)$langId;
-    }
-
-    public function getLanguageAbbr(?int $langId = null): string
-    {
-        return $this->language->getLanguageAbbr(iLanguage: $langId);
+        $this->language->getLanguageAbbr();
+        return $this->language->getLanguageAbbr();
     }
 }

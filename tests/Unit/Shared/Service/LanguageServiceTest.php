@@ -20,51 +20,53 @@ class LanguageServiceTest extends TestCase
 {
     public function testFilterByLanguageAbbreviationCorrectLangValue()
     {
-        $expectedResult = "Title in de language";
         $titlesData = [
             'de' => 'Title in de language',
             'en' => 'Title in en language',
         ];
+        $expectedExistingLanguageAbbreviation = 'de';
 
         $languageWrapperMock = $this->createMock(LanguageWrapperInterface::class);
-        $languageWrapperMock->method('getBaseLanguage')->willReturn(1);
-        $languageWrapperMock->method('getLanguageAbbr')->with(1)->willReturn('de');
+        $languageWrapperMock->method('getCurrentLanguageAbbr')
+            ->willReturn($expectedExistingLanguageAbbreviation);
 
         $languageService = new LanguageService($languageWrapperMock);
-        $actualResult = $languageService->filterByLanguageAbbreviation($titlesData);
+        $actualResult = $languageService->filterByLanguageAbbreviation($titlesData, 'en');
 
-        $this->assertSame($actualResult, $expectedResult);
+        $this->assertSame($titlesData[$expectedExistingLanguageAbbreviation], $actualResult);
     }
 
     public function testFilterByLanguageAbbreviationDefaultedToEnglish()
     {
-        $expectedResult = "Title in en language";
+        $titlesData = [
+            'de' => 'Title in de language',
+            'en' => 'Title in en language',
+        ];
+        $defaultLangAbbr = 'en';
+
+        $languageWrapperMock = $this->createMock(LanguageWrapperInterface::class);
+        $languageWrapperMock->method('getCurrentLanguageAbbr')->willReturn('fr');
+
+        $languageService = new LanguageService($languageWrapperMock);
+        $actualResult = $languageService->filterByLanguageAbbreviation($titlesData, $defaultLangAbbr);
+
+        $this->assertSame($titlesData[$defaultLangAbbr], $actualResult);
+    }
+
+    public function testFilterByLanguageAbbreviationDefaultedToFirstInArray()
+    {
         $titlesData = [
             'de' => 'Title in de language',
             'en' => 'Title in en language',
         ];
 
         $languageWrapperMock = $this->createMock(LanguageWrapperInterface::class);
-        $languageWrapperMock->method('getBaseLanguage')->willReturn(2);
-        $languageWrapperMock->method('getLanguageAbbr')->with(2)->willReturn('fr');
+        $languageWrapperMock->expects($this->once())
+            ->method('getCurrentLanguageAbbr')->willReturn('pl');
 
         $languageService = new LanguageService($languageWrapperMock);
-        $actualResult = $languageService->filterByLanguageAbbreviation($titlesData);
+        $actualResult = $languageService->filterByLanguageAbbreviation($titlesData, 'fr');
 
-        $this->assertSame($expectedResult, $actualResult);
-    }
-
-    public function testFilterByLanguageAbbreviationReturnNull(): void
-    {
-        $titlesData = [];
-
-        $languageWrapperMock = $this->createMock(LanguageWrapperInterface::class);
-        $languageWrapperMock->method('getBaseLanguage')->willReturn(1);
-        $languageWrapperMock->method('getLanguageAbbr')->with(1)->willReturn('de');
-
-        $languageService = new LanguageService($languageWrapperMock);
-        $actualResult = $languageService->filterByLanguageAbbreviation($titlesData);
-
-        $this->assertNull($actualResult);
+        $this->assertSame($titlesData['de'], $actualResult);
     }
 }

@@ -18,28 +18,16 @@ use OxidEsales\Eshop\Core\Language;
  */
 class LanguageWrapperTest extends TestCase
 {
-    public function testGetBaseLanguage(): void
+    public function testGetCurrentLanguageAbbr(): void
     {
-        $expectedLangId = 1;
-        $languageMock = $this->createPartialMock(Language::class, ['getBaseLanguage']);
-        $languageMock->method('getBaseLanguage')->willReturn($expectedLangId);
+        $langAbbr = uniqid();
+        $languageMock = $this->createConfiguredStub(Language::class, [
+            'getLanguageAbbr' => $langAbbr,
+        ]);
 
         $languageWrapper = new LanguageWrapper($languageMock);
-        $actualLangId = $languageWrapper->getBaseLanguage();
+        $actualLangAbbr = $languageWrapper->getCurrentLanguageAbbr();
 
-        $this->assertSame($expectedLangId, $actualLangId);
-    }
-
-    public function testGetLanguageAbbr(): void
-    {
-        $langId = 1;
-        $expectedLangAbbr = uniqid();
-        $languageMock = $this->createPartialMock(Language::class, ['getLanguageAbbr']);
-        $languageMock->method('getLanguageAbbr')->willReturn($expectedLangAbbr);
-
-        $languageWrapper = new LanguageWrapper($languageMock);
-        $actualLangAbbr = $languageWrapper->getLanguageAbbr($langId);
-
-        $this->assertSame($expectedLangAbbr, $actualLangAbbr);
+        $this->assertSame($langAbbr, $actualLangAbbr);
     }
 }
