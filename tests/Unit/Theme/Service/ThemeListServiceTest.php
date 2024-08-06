@@ -39,8 +39,12 @@ class ThemeListServiceTest extends TestCase
 
         $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
         $themeDataTypeFactoryMock
+            ->expects($this->exactly(2))
             ->method('createFromCoreTheme')
-            ->willReturnOnConsecutiveCalls($themeList[0], $themeList[1]);
+            ->willReturnMap([
+                [$themes[0], $themeList[0]],
+                [$themes[1], $themeList[1]]
+            ]);
 
         $filtersList = new ThemeFilters(
             titleFilter: new StringFilter(contains: uniqid()),

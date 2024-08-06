@@ -36,10 +36,10 @@ class ThemeListInfrastructureTest extends IntegrationTestCase
         }
     }
 
-    public function getSut(): ThemeListInfrastructure {
+    public function getSut(): ThemeListInfrastructure
+    {
         return new ThemeListInfrastructure(
-			$this->get(CoreThemeFactoryInterface::class),
-            $this->get(ThemeDataTypeFactoryInterface::class)
+            $this->get(CoreThemeFactoryInterface::class),
         );
     }
 }

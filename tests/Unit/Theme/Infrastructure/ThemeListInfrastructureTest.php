@@ -25,21 +25,8 @@ class ThemeListInfrastructureTest extends TestCase
 {
     public function testGetThemes(): void
     {
-        $theme1 = [
-            'title' => uniqid(),
-            'id' => uniqid(),
-            'version' => uniqid(),
-            'description' => uniqid(),
-            'active' => true
-        ];
-
-        $theme2 = [
-            'title' => uniqid(),
-            'id' => uniqid(),
-            'version' => uniqid(),
-            'description' => uniqid(),
-            'active' => false
-        ];
+        $theme1 = $this->createStub(Theme::class);
+        $theme2 = $this->createStub(Theme::class);
 
         $coreThemeMock = $this->createMock(Theme::class);
         $coreThemeMock->expects($this->once())->method('getList')
@@ -49,7 +36,7 @@ class ThemeListInfrastructureTest extends TestCase
 
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
         $actualThemesArray = $sut->getThemes();
-        $this->assertEquals([$theme1, $theme2], $actualThemesArray);
+        $this->assertSame([$theme1, $theme2], $actualThemesArray);
     }
 
     public function testGetThemesThrowsException(): void
