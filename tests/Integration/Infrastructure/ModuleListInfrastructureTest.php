@@ -38,7 +38,7 @@ class ModuleListInfrastructureTest extends IntegrationTestCase
         $sut = new ModuleListInfrastructure(
             $shopConfigurationDaoBridge
         );
-        $modulesList = $sut->getModuleList();
+        $modulesList = $sut->getModuleConfigurations();
         $this->assertEquals([
             $moduleConfiguration1->getId() => $moduleConfiguration1,
             $moduleConfiguration2->getId() => $moduleConfiguration2

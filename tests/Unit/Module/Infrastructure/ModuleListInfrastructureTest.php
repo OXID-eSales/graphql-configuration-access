@@ -41,7 +41,7 @@ class ModuleListInfrastructureTest extends UnitTestCase
             shopConfigurationDaoBridgeMock: $shopConfigurationDaoBridgeMock
         );
 
-        $result = $sut->getModuleList();
+        $result = $sut->getModuleConfigurations();
 
         $this->assertSame([$moduleConfigurationMock], $result);
     }
@@ -59,7 +59,7 @@ class ModuleListInfrastructureTest extends UnitTestCase
             shopConfigurationDaoBridgeMock: $shopConfigurationDaoBridgeMock
         );
 
-        $sut->getModuleList();
+        $sut->getModuleConfigurations();
     }
 
     public function getSut(

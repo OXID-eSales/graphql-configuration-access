@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType;
+
+use TheCodingMachine\GraphQLite\Annotations\Field;
+use TheCodingMachine\GraphQLite\Annotations\Type;
+
+#[Type]
+abstract class AbstractComponentDataType implements ComponentDataTypeInterface
+{
+    public function __construct(
+        private readonly string $id,
+        private readonly string $title,
+        private readonly string $version,
+        private readonly string $description,
+        private readonly bool $active
+    ) {
+    }
+
+    #[Field]
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    #[Field]
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    #[Field]
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
+    #[Field]
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    #[Field]
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+}

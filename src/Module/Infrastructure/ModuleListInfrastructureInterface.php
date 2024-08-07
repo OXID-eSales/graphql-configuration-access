@@ -16,5 +16,5 @@ interface ModuleListInfrastructureInterface
      * @return array<ModuleConfiguration>
      * @throws ModulesNotFoundException
      */
-    public function getModuleList(): array;
+    public function getModuleConfigurations(): array;
 }

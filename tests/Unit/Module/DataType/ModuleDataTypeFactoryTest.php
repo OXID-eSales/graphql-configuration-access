@@ -61,7 +61,7 @@ class ModuleDataTypeFactoryTest extends UnitTestCase
             ]);
 
         $moduleDataTypeFactory = new ModuleDataTypeFactory($languageServiceMock);
-        $moduleDataType = $moduleDataTypeFactory->createFromCoreModule(moduleConfig: $moduleConfigMock);
+        $moduleDataType = $moduleDataTypeFactory->createFromModuleConfiguration(moduleConfig: $moduleConfigMock);
 
         $this->assertSame($expectedId, $moduleDataType->getId());
         $this->assertSame($expectedVersion, $moduleDataType->getVersion());

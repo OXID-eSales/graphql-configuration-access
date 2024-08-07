@@ -10,12 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Infrastructure;
 
 use OxidEsales\Eshop\Core\Theme;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -29,9 +26,7 @@ class ThemeListInfrastructureTest extends TestCase
         $theme2 = $this->createStub(Theme::class);
 
         $coreThemeMock = $this->createMock(Theme::class);
-        $coreThemeMock->expects($this->once())->method('getList')
-            ->willReturn([$theme1, $theme2]);
-
+        $coreThemeMock->method('getList')->willReturn([$theme1, $theme2]);
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(returnValue: $coreThemeMock);
 
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
@@ -42,8 +37,7 @@ class ThemeListInfrastructureTest extends TestCase
     public function testGetThemesThrowsException(): void
     {
         $coreThemeMock = $this->createMock(Theme::class);
-        $coreThemeMock->expects($this->once())->method('getList')
-            ->willReturn([]);
+        $coreThemeMock->method('getList')->willReturn([]);
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(returnValue: $coreThemeMock);
 
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
@@ -53,18 +47,17 @@ class ThemeListInfrastructureTest extends TestCase
     }
 
     private function getSut(
-        CoreThemeFactoryInterface $coreThemeFactory = null
+        CoreThemeFactoryInterface $coreThemeFactory
     ): ThemeListInfrastructure {
         return new ThemeListInfrastructure(
-            coreThemeFactory: $coreThemeFactory ?? $this->createStub(CoreThemeFactoryInterface::class)
+            coreThemeFactory: $coreThemeFactory
         );
     }
 
     private function getCoreThemeFactoryMock(Theme $returnValue): CoreThemeFactoryInterface
     {
         $coreThemeFactoryMock = $this->createMock(CoreThemeFactoryInterface::class);
-        $coreThemeFactoryMock->expects($this->once())
-            ->method('create')
+        $coreThemeFactoryMock->method('create')
             ->willReturn($returnValue);
 
         return $coreThemeFactoryMock;

@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Module\DataType;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType;
 
 use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
-class ModuleFilters implements ModuleFiltersInterface
+class ComponentFilters implements ComponentFiltersInterface
 {
     public function __construct(
         private readonly ?StringFilter $titleFilter = null,
@@ -21,31 +21,36 @@ class ModuleFilters implements ModuleFiltersInterface
     ) {
     }
 
-    public function filterModuleByTitle(ModuleDataTypeInterface $module): bool
+    private function filterComponentByTitle(string $title): bool
     {
         $titleFilter = $this->titleFilter;
         if ($titleFilter !== null) {
-            return $titleFilter->matches($module->getTitle());
+            return $titleFilter->matches($title);
         }
 
         return true;
     }
 
-    public function filterModuleByStatus(ModuleDataTypeInterface $module): bool
+    private function filterComponentByStatus(bool $status): bool
     {
         $statusFilter = $this->activeFilter;
-        if ($statusFilter !== null && $statusFilter->equals() !== null) {
-            if ($module->isActive() !== $statusFilter->equals()) {
-                return false;
-            }
+        if ($statusFilter !== null && $status !== $statusFilter->equals()) {
+            return false;
         }
+
         return true;
+    }
+
+    public function filterComponent(ComponentDataTypeInterface $component): bool
+    {
+        return $this->filterComponentByTitle($component->getTitle())
+            && $this->filterComponentByStatus($component->isActive());
     }
 
     /**
-     * @Factory(name="ModuleFilters", default=true)
+     * @Factory(name="ComponentFilters", default=true)
      */
-    public static function createModuleFilters(
+    public static function createComponentFilters(
         ?StringFilter $title = null,
         ?BoolFilter $active = null
     ): self {

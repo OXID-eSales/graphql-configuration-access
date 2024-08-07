@@ -7,13 +7,13 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFiltersInterface;
 
 interface ModuleListServiceInterface
 {
     /**
      * @return array<ModuleDataTypeInterface>
      */
-    public function getModuleList(ModuleFiltersInterface $filters): array;
+    public function getModuleList(ComponentFiltersInterface $filters): array;
 }

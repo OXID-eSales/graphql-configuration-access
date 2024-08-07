@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
 /**
@@ -19,10 +20,6 @@ class ModuleDataTypeTest extends UnitTestCase
 {
     public function testModuleDataType(): void
     {
-        $title = uniqid();
-        $id = uniqid();
-        $version = uniqid();
-        $description = uniqid();
         $thumbnail = uniqid();
         $author = uniqid();
         $url = uniqid();
@@ -30,21 +27,18 @@ class ModuleDataTypeTest extends UnitTestCase
         $active = (bool)random_int(0, 1);
 
         $moduleDataType = new ModuleDataType(
-            id: $id,
-            version: $version,
-            title: $title,
-            description: $description,
+            id: uniqid(),
+            title: uniqid(),
+            version: uniqid(),
+            description: uniqid(),
+            active: $active,
             thumbnail: $thumbnail,
             author: $author,
             url: $url,
-            email: $email,
-            active: $active
+            email: $email
         );
 
-        $this->assertSame($id, $moduleDataType->getId());
-        $this->assertSame($version, $moduleDataType->getVersion());
-        $this->assertSame($title, $moduleDataType->getTitle());
-        $this->assertSame($description, $moduleDataType->getDescription());
+        $this->assertInstanceOf(ComponentDataTypeInterface::class, $moduleDataType);
         $this->assertSame($thumbnail, $moduleDataType->getThumbnail());
         $this->assertSame($author, $moduleDataType->getAuthor());
         $this->assertSame($url, $moduleDataType->getUrl());

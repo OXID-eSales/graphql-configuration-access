@@ -9,11 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListServiceInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Query;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilters;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 
 final class ThemeListController
@@ -25,14 +26,13 @@ final class ThemeListController
 
     /**
      * Query of Configuration Access Module
-     * @param ThemeFilters|null $filters
-     * @return ThemeDataType[]
+     * @return ThemeDataTypeInterface[]
      */
     #[Query]
     #[Logged]
     #[Right('LIST_THEMES')]
-    public function themesList(?ThemeFilters $filters): array
+    public function themesList(?ComponentFiltersInterface $filters): array
     {
-        return $this->themeListService->getThemeList($filters ?? new ThemeFilters());
+        return $this->themeListService->getThemeList($filters ?? new ComponentFilters());
     }
 }

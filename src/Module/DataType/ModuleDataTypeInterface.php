@@ -7,16 +7,10 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\DataType;
 
-interface ModuleDataTypeInterface
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
+
+interface ModuleDataTypeInterface extends ComponentDataTypeInterface
 {
-    public function getId(): string;
-
-    public function getTitle(): string;
-
-    public function getVersion(): string;
-
-    public function getDescription(): string;
-
     public function getThumbnail(): ?string;
 
     public function getAuthor(): ?string;

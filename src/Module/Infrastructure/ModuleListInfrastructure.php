@@ -20,7 +20,7 @@ class ModuleListInfrastructure implements ModuleListInfrastructureInterface
     ) {
     }
 
-    public function getModuleList(): array
+    public function getModuleConfigurations(): array
     {
         $shopConfiguration = $this->shopConfigurationDaoBridge->get();
         $moduleConfigurations = $shopConfiguration->getModuleConfigurations();

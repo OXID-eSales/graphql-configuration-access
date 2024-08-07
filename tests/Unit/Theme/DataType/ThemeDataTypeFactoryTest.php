@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\DataType;
 
 use OxidEsales\Eshop\Core\Theme;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactory;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,15 +24,15 @@ class ThemeDataTypeFactoryTest extends TestCase
         $themeMock = $this->createMock(Theme::class);
 
         $expectedTitle = uniqid();
-        $expectedIdentifier = uniqid();
+        $expectedId = uniqid();
         $expectedVersion = uniqid();
         $expectedDescription = uniqid();
         $expectedActive = true;
 
-        $themeMock->expects($this->exactly(5))->method('getInfo')
+        $themeMock->method('getInfo')
             ->willReturnMap([
                 ['title', $expectedTitle],
-                ['id', $expectedIdentifier],
+                ['id', $expectedId],
                 ['version', $expectedVersion],
                 ['description', $expectedDescription],
                 ['active', $expectedActive],
@@ -43,7 +43,7 @@ class ThemeDataTypeFactoryTest extends TestCase
 
         $this->assertInstanceOf(ThemeDataType::class, $themeDataType);
         $this->assertEquals($expectedTitle, $themeDataType->getTitle());
-        $this->assertEquals($expectedIdentifier, $themeDataType->getIdentifier());
+        $this->assertEquals($expectedId, $themeDataType->getId());
         $this->assertEquals($expectedVersion, $themeDataType->getVersion());
         $this->assertEquals($expectedDescription, $themeDataType->getDescription());
         $this->assertTrue($themeDataType->isActive());

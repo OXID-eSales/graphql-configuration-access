@@ -9,14 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Integration\Infrastructure;
 
+use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructureInterface;
-use OxidEsales\Eshop\Core\Theme;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure
@@ -32,7 +28,7 @@ class ThemeListInfrastructureTest extends IntegrationTestCase
         $this->assertIsArray($themesArray);
 
         foreach ($themesArray as $theme) {
-            $this->assertInstanceOf(ThemeDataType::class, $theme);
+            $this->assertInstanceOf(Theme::class, $theme);
         }
     }
 

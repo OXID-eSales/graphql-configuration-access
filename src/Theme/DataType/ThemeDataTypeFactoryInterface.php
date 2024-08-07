@@ -11,5 +11,5 @@ use OxidEsales\Eshop\Core\Theme;
 
 interface ThemeDataTypeFactoryInterface
 {
-    public function createFromCoreTheme(Theme $theme): ThemeDataType;
+    public function createFromCoreTheme(Theme $theme): ThemeDataTypeInterface;
 }

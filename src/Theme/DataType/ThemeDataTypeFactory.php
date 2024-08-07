@@ -17,8 +17,8 @@ class ThemeDataTypeFactory implements ThemeDataTypeFactoryInterface
         Theme $theme
     ): ThemeDataType {
         return new ThemeDataType(
+            id: $theme->getInfo('id'),
             title: $theme->getInfo('title'),
-            identifier: $theme->getInfo('id'),
             version: $theme->getInfo('version'),
             description: $theme->getInfo('description'),
             active: $theme->getInfo('active')

@@ -19,7 +19,7 @@ class ModuleDataTypeFactory implements ModuleDataTypeFactoryInterface
     ) {
     }
 
-    public function createFromCoreModule(
+    public function createFromModuleConfiguration(
         ModuleConfiguration $moduleConfig
     ): ModuleDataTypeInterface {
         $titlesData = $moduleConfig->getTitle();
@@ -36,14 +36,14 @@ class ModuleDataTypeFactory implements ModuleDataTypeFactoryInterface
 
         return new ModuleDataType(
             id: $moduleConfig->getId(),
-            version: $moduleConfig->getVersion(),
             title: $translatedTitle,
+            version: $moduleConfig->getVersion(),
             description: $translatedDescription,
+            active: $moduleConfig->isActivated(),
             thumbnail: $moduleConfig->getThumbnail(),
             author: $moduleConfig->getAuthor(),
             url: $moduleConfig->getUrl(),
-            email: $moduleConfig->getEmail(),
-            active: $moduleConfig->isActivated(),
+            email: $moduleConfig->getEmail()
         );
     }
 }

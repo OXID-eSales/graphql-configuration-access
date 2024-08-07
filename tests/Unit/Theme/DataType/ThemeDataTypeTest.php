@@ -9,26 +9,28 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\DataType;
 
-use PHPUnit\Framework\TestCase;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\AbstractComponentDataType
  */
 class ThemeDataTypeTest extends TestCase
 {
     public function testThemeDataType(): void
     {
         $name = uniqid();
-        $identifier = uniqid();
+        $id = uniqid();
         $version = uniqid();
         $description = uniqid();
         $active = true;
 
-        $sut = new ThemeDataType($name, $identifier, $version, $description, $active);
+        $sut = new ThemeDataType($id, $name, $version, $description, $active);
 
+        $this->assertInstanceOf(ComponentDataTypeInterface::class, $sut);
         $this->assertSame($name, $sut->getTitle());
-        $this->assertSame($identifier, $sut->getIdentifier());
+        $this->assertSame($id, $sut->getId());
         $this->assertSame($version, $sut->getVersion());
         $this->assertSame($description, $sut->getDescription());
         $this->assertSame($active, $sut->isActive());

@@ -9,11 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Controller;
 
-use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
-use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeListController;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListServiceInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -24,11 +23,8 @@ class ThemeListControllerTest extends TestCase
 {
     public function testThemesListWithFilter(): void
     {
-        $theme = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
-        $themeFilters = new ThemeFilters(
-            titleFilter: new StringFilter(contains: $theme->getTitle()),
-            activeFilter: new BoolFilter(equals: true)
-        );
+        $theme = $this->createStub(ThemeDataTypeInterface::class);
+        $themeFilters = $this->createStub(ComponentFiltersInterface::class);
 
         $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
         $themeListServiceMock->expects($this->once())
@@ -39,13 +35,13 @@ class ThemeListControllerTest extends TestCase
         $themeListController = new ThemeListController($themeListServiceMock);
         $resultedThemeList = $themeListController->themesList($themeFilters);
 
-        $this->assertSame($resultedThemeList, [$theme]);
+        $this->assertSame([$theme], $resultedThemeList);
     }
 
     public function testThemesListWithoutFilter(): void
     {
-        $theme = new ThemeDataType(uniqid(), uniqid(), uniqid(), uniqid(), true);
-        $themeFilters = new ThemeFilters();
+        $theme = $this->createStub(ThemeDataTypeInterface::class);
+        $themeFilters = new ComponentFilters();
 
         $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
         $themeListServiceMock->expects($this->once())

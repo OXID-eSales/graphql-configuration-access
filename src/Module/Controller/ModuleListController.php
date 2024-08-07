@@ -10,8 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Controller;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleFilters;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
@@ -30,8 +31,8 @@ final class ModuleListController
     #[Query]
     #[Logged]
     #[Right('LIST_MODULES')]
-    public function modulesList(?ModuleFilters $filters = null): array
+    public function modulesList(?ComponentFiltersInterface $filters): array
     {
-        return $this->moduleListService->getModuleList($filters ?? new ModuleFilters());
+        return $this->moduleListService->getModuleList($filters ?? new ComponentFilters());
     }
 }
