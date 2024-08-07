@@ -31,7 +31,7 @@ final class ThemeListController
     #[Query]
     #[Logged]
     #[Right('LIST_THEMES')]
-    public function themesList(?ComponentFiltersInterface $filters): array
+    public function themesList(?ComponentFilters $filters): array
     {
         return $this->themeListService->getThemeList($filters ?? new ComponentFilters());
     }

@@ -37,7 +37,7 @@ final class ThemeListCest extends BaseCest
 				filters: null
 			  ) {
 				title
-				identifier
+				id
 				version
 				description
 				active

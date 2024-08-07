@@ -24,7 +24,7 @@ class ThemeListControllerTest extends TestCase
     public function testThemesListWithFilter(): void
     {
         $theme = $this->createStub(ThemeDataTypeInterface::class);
-        $themeFilters = $this->createStub(ComponentFiltersInterface::class);
+        $themeFilters = $this->createStub(ComponentFilters::class);
 
         $themeListServiceMock = $this->createMock(ThemeListServiceInterface::class);
         $themeListServiceMock->expects($this->once())

@@ -13,5 +13,8 @@ services:
   OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService
 
-  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageServiceInnterface:
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageServiceInterface:
     class: \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService
+
+  OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterServiceInterface:
+    class: \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterService

@@ -23,7 +23,7 @@ class ModuleListControllerTest extends UnitTestCase
 {
     public function testModulesListWithFilters(): void
     {
-        $filtersStub = $this->createStub(ComponentFiltersInterface::class);
+        $filtersStub = $this->createStub(ComponentFilters::class);
         $moduleStub1 = $this->createStub(ModuleDataTypeInterface::class);
         $moduleStub2 = $this->createStub(ModuleDataTypeInterface::class);
         $filteredModules = [$moduleStub1, $moduleStub2];

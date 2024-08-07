@@ -9,15 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Module;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
-
-use function PHPUnit\Framework\assertCount;
 
 /**
  * @group module_list
  * @group oe_graphql_configuration_access
  */
-final class ModuleListCest extends ModuleSettingBaseCest
+final class ModuleListCest extends BaseCest
 {
     public function testModuleListAuthorized(AcceptanceTester $I): void
     {
