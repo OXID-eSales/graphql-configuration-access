@@ -28,7 +28,6 @@ final class ThemeListService implements ThemeListServiceInterface
         $themesArray =  [];
         $themesList = $this->themeListInfrastructure->getThemes();
         foreach ($themesList as $theme) {
-            /** @var Theme $theme  */
             $themesArray[] = $this->themeDataTypeFactory->createFromCoreTheme(theme: $theme);
         }
 

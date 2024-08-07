@@ -7,13 +7,13 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
+use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 
 interface ThemeListInfrastructureInterface
 {
     /**
-     * @return array<ThemeDataType>
+     * @return array<Theme>
      * @throws ThemesNotFound
      */
     public function getThemes(): array;

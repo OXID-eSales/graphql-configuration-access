@@ -53,10 +53,4 @@ final class ModuleDataType extends AbstractComponentDataType implements ModuleDa
     {
         return $this->email;
     }
-
-    #[Field]
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
 }
