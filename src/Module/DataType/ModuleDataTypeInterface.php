@@ -15,16 +15,16 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
 interface ModuleDataTypeInterface extends ComponentDataTypeInterface
 {
     #[Field]
-    public function getThumbnail(): ?string;
+    public function getThumbnail(): string;
 
     #[Field]
-    public function getAuthor(): ?string;
+    public function getAuthor(): string;
 
     #[Field]
-    public function getUrl(): ?string;
+    public function getUrl(): string;
 
     #[Field]
-    public function getEmail(): ?string;
+    public function getEmail(): string;
 
     #[Field]
     public function getLang(): string;

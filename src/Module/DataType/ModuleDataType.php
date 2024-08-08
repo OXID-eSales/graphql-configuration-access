@@ -25,35 +25,35 @@ final class ModuleDataType extends AbstractComponentDataType implements ModuleDa
         string $version,
         string $description,
         bool $active,
-        private readonly ?string $thumbnail,
-        private readonly ?string $author,
-        private readonly ?string $url,
-        private readonly ?string $email,
+        private readonly string $thumbnail,
+        private readonly string $author,
+        private readonly string $url,
+        private readonly string $email,
         private readonly string $lang
     ) {
         parent::__construct($id, $title, $version, $description, $active);
     }
 
     #[Field]
-    public function getThumbnail(): ?string
+    public function getThumbnail(): string
     {
         return $this->thumbnail;
     }
 
     #[Field]
-    public function getAuthor(): ?string
+    public function getAuthor(): string
     {
         return $this->author;
     }
 
     #[Field]
-    public function getUrl(): ?string
+    public function getUrl(): string
     {
         return $this->url;
     }
 
     #[Field]
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
