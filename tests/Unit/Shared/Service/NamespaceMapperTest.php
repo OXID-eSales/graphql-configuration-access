@@ -14,25 +14,24 @@ use PHPUnit\Framework\TestCase;
 
 class NamespaceMapperTest extends TestCase
 {
-    protected string $namespacePrefix;
+    private const NAMESPACE_PREFIX = '\\OxidEsales\\GraphQL\\ConfigurationAccess';
 
-    protected string $srcPath;
+    private static string $srcPath;
 
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        $this->srcPath = $this->getSrcDirectoryPath();
-        $this->namespacePrefix = '\\OxidEsales\\GraphQL\\ConfigurationAccess';
+        self::$srcPath = self::getSrcDirectoryPath();
     }
 
     public function testGetControllerNamespaceMapping(): void
     {
         $expectedMapping = [
-            $this->namespacePrefix . '\\Module\\Controller' =>
-                $this->srcPath . '/Shared/Service/../../Module/Controller/',
-            $this->namespacePrefix . '\\Shop\\Controller' =>
-                $this->srcPath . '/Shared/Service/../../Shop/Controller/',
-            $this->namespacePrefix . '\\Theme\\Controller' =>
-                $this->srcPath . '/Shared/Service/../../Theme/Controller/',
+            self::NAMESPACE_PREFIX . '\\Module\\Controller' =>
+                self::$srcPath . '/Shared/Service/../../Module/Controller/',
+            self::NAMESPACE_PREFIX . '\\Shop\\Controller' =>
+                self::$srcPath . '/Shared/Service/../../Shop/Controller/',
+            self::NAMESPACE_PREFIX . '\\Theme\\Controller' =>
+                self::$srcPath . '/Shared/Service/../../Theme/Controller/',
         ];
 
         $sut = $this->getSut();
@@ -44,12 +43,12 @@ class NamespaceMapperTest extends TestCase
     public function testGetTypeNamespaceMapping(): void
     {
         $expectedMapping = [
-            $this->namespacePrefix . '\\Shared\\DataType' =>
-                $this->srcPath . '/Shared/Service/../../Shared/DataType/',
-            $this->namespacePrefix . '\\Theme\\DataType' =>
-                $this->srcPath . '/Shared/Service/../../Theme/DataType/',
-            $this->namespacePrefix . '\\Module\\DataType' =>
-                $this->srcPath . '/Shared/Service/../../Module/DataType/',
+            self::NAMESPACE_PREFIX . '\\Shared\\DataType' =>
+                self::$srcPath . '/Shared/Service/../../Shared/DataType/',
+            self::NAMESPACE_PREFIX . '\\Theme\\DataType' =>
+                self::$srcPath . '/Shared/Service/../../Theme/DataType/',
+            self::NAMESPACE_PREFIX . '\\Module\\DataType' =>
+                self::$srcPath . '/Shared/Service/../../Module/DataType/',
         ];
 
         $sut = $this->getSut();
@@ -58,7 +57,7 @@ class NamespaceMapperTest extends TestCase
         $this->assertSame($expectedMapping, $actualMapping);
     }
 
-    private function getSrcDirectoryPath(): string
+    private static function getSrcDirectoryPath(): string
     {
         $testsDir = 'tests';
         $currentPath = __DIR__;
