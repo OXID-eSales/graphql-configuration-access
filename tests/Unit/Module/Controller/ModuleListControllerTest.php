@@ -12,7 +12,6 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Controller;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleListController;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 

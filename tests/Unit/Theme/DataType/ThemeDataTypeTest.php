@@ -24,7 +24,7 @@ class ThemeDataTypeTest extends TestCase
         $id = uniqid();
         $version = uniqid();
         $description = uniqid();
-        $active = true;
+        $active = (bool)random_int(0, 1);
 
         $sut = new ThemeDataType($id, $name, $version, $description, $active);
 

@@ -27,5 +27,5 @@ interface ModuleDataTypeInterface extends ComponentDataTypeInterface
     public function getEmail(): ?string;
 
     #[Field]
-    public function isActive(): bool;
+    public function getLang(): string;
 }

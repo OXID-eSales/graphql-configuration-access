@@ -16,6 +16,9 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
 #[Type]
 final class ModuleDataType extends AbstractComponentDataType implements ModuleDataTypeInterface
 {
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
     public function __construct(
         string $id,
         string $title,
@@ -25,7 +28,8 @@ final class ModuleDataType extends AbstractComponentDataType implements ModuleDa
         private readonly ?string $thumbnail,
         private readonly ?string $author,
         private readonly ?string $url,
-        private readonly ?string $email
+        private readonly ?string $email,
+        private readonly string $lang
     ) {
         parent::__construct($id, $title, $version, $description, $active);
     }
@@ -52,5 +56,11 @@ final class ModuleDataType extends AbstractComponentDataType implements ModuleDa
     public function getEmail(): ?string
     {
         return $this->email;
+    }
+
+    #[Field]
+    public function getLang(): string
+    {
+        return $this->lang;
     }
 }

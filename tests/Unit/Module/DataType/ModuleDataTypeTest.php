@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\DataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use phpDocumentor\Reflection\DocBlock\Description;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType
@@ -24,18 +25,19 @@ class ModuleDataTypeTest extends UnitTestCase
         $author = uniqid();
         $url = uniqid();
         $email = uniqid();
-        $active = (bool)random_int(0, 1);
+        $lang = uniqid();
 
         $moduleDataType = new ModuleDataType(
             id: uniqid(),
             title: uniqid(),
             version: uniqid(),
             description: uniqid(),
-            active: $active,
+            active: false,
             thumbnail: $thumbnail,
             author: $author,
             url: $url,
-            email: $email
+            email: $email,
+            lang: $lang
         );
 
         $this->assertInstanceOf(ComponentDataTypeInterface::class, $moduleDataType);
@@ -43,6 +45,6 @@ class ModuleDataTypeTest extends UnitTestCase
         $this->assertSame($author, $moduleDataType->getAuthor());
         $this->assertSame($url, $moduleDataType->getUrl());
         $this->assertSame($email, $moduleDataType->getEmail());
-        $this->assertSame($active, $moduleDataType->isActive());
+        $this->assertSame($lang, $moduleDataType->getLang());
     }
 }

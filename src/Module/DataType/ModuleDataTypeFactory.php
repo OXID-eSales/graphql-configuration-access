@@ -43,7 +43,8 @@ class ModuleDataTypeFactory implements ModuleDataTypeFactoryInterface
             thumbnail: $moduleConfig->getThumbnail(),
             author: $moduleConfig->getAuthor(),
             url: $moduleConfig->getUrl(),
-            email: $moduleConfig->getEmail()
+            email: $moduleConfig->getEmail(),
+            lang: $moduleConfig->getLang()
         );
     }
 }
