@@ -34,7 +34,7 @@ class ModuleListControllerTest extends UnitTestCase
             ->willReturn($filteredModules);
 
         $sut = new ModuleListController($moduleListServiceMock);
-        $actualModules = $sut->modulesList($filtersStub);
+        $actualModules = $sut->modules($filtersStub);
 
         $this->assertSame($filteredModules, $actualModules);
     }
@@ -50,7 +50,7 @@ class ModuleListControllerTest extends UnitTestCase
             ->willReturn([$moduleStub]);
 
         $sut = new ModuleListController($moduleListServiceSpy);
-        $resultModuleList = $sut->modulesList(null);
+        $resultModuleList = $sut->modules(null);
 
         $this->assertSame($resultModuleList, [$moduleStub]);
     }

@@ -30,7 +30,7 @@ final class ModuleListCest extends BaseCest
     {
         $I->sendGQLQuery(
             'query modulesList {
-			  modulesList(
+			  modules(
 				filters: {
 				  title: {
 					contains: "' . self::TEST_MODULE_TITLE . '"

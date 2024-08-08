@@ -30,7 +30,7 @@ final class ModuleListController
     #[Query]
     #[Logged]
     #[Right('LIST_MODULES')]
-    public function modulesList(?ComponentFilters $filters): array
+    public function modules(?ComponentFilters $filters): array
     {
         return $this->moduleListService->getModuleList($filters ?? new ComponentFilters());
     }
