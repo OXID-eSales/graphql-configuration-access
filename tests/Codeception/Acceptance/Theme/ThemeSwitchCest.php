@@ -31,7 +31,7 @@ final class ThemeSwitchCest extends BaseCest
 
     public function runThemeSwitchMutation(AcceptanceTester $I): array
     {
-        $themeId = $this->getThemeId();
+        $themeId = $this->getCurrentThemeId();
 
         $I->sendGQLQuery(
             'mutation switchThemeCest{
@@ -43,7 +43,7 @@ final class ThemeSwitchCest extends BaseCest
         return $I->grabJsonResponseAsArray();
     }
 
-    private function getThemeId(): string
+    private function getCurrentThemeId(): string
     {
         $shopAdapter = $this->get(ShopAdapterInterface::class);
         return $shopAdapter->getActiveThemeId();

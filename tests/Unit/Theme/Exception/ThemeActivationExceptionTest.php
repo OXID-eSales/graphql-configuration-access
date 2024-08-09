@@ -18,18 +18,19 @@ use PHPUnit\Framework\TestCase;
 */
 class ThemeActivationExceptionTest extends TestCase
 {
-    private const THEME_NOT_ACTIVATED = "An error occurred while activating the theme.";
+    private const THEME_NOT_ACTIVATED_MESSAGE = "An error occurred while activating the theme.";
+
     public function testThemeActivationExceptionDefaultMessage()
     {
         $exception = new ThemeActivationException();
 
         $this->assertInstanceOf(ThemeActivationException::class, $exception);
-        $this->assertSame(self::THEME_NOT_ACTIVATED, $exception->getMessage());
+        $this->assertSame(self::THEME_NOT_ACTIVATED_MESSAGE, $exception->getMessage());
     }
 
     public function testThemeActivationExceptionWithMessage()
     {
-        $message = 'This is just a message';
+        $message = uniqid();
         $exception = new ThemeActivationException($message);
 
         $this->assertInstanceOf(ThemeActivationException::class, $exception);

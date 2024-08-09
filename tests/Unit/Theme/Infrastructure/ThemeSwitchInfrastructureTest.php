@@ -61,7 +61,7 @@ class ThemeSwitchInfrastructureTest extends TestCase
         $coreThemeMock->method('load')->willReturn(false);
 
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(coreThemeMock: $coreThemeMock);
-        $sut = $this->getSut($coreThemeFactoryMock);
+        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
 
         $this->expectException(ThemeActivationException::class);
         $this->expectExceptionMessage(self::THEME_NOT_EXIST);
@@ -69,14 +69,14 @@ class ThemeSwitchInfrastructureTest extends TestCase
     }
 
     private function getSut(
-        CoreThemeFactoryInterface $coreThemeFactory = null,
+        CoreThemeFactoryInterface $coreThemeFactory,
     ): ThemeSwitchInfrastructure {
         return new ThemeSwitchInfrastructure(
-            coreThemeFactory: $coreThemeFactory ?? $this->createStub(ThemeSwitchInfrastructure::class),
+            coreThemeFactory: $coreThemeFactory,
         );
     }
 
-    private function getCoreThemeFactoryMock($coreThemeMock): CoreThemeFactoryInterface
+    private function getCoreThemeFactoryMock(Theme $coreThemeMock): CoreThemeFactoryInterface
     {
         $coreThemeFactoryMock = $this->createMock(CoreThemeFactoryInterface::class);
         $coreThemeFactoryMock->expects($this->once())

@@ -264,12 +264,12 @@ final class NotAuthorizedAccessCest extends BaseCest
         return $I->grabJsonResponseAsArray();
     }
 
-    private function getLocationParameterString(string $location): ?string
+    private function getLocationParameterString(string $location): string
     {
         return match ($location) {
             'module' => 'moduleId: "testModule"',
             'theme' => 'themeId: "testTheme"',
-            default => null
+            default => ''
         };
     }
 
