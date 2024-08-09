@@ -9,13 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Theme;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
  * @group theme_switch
- * @group setting_access
  * @group oe_graphql_configuration_access
  */
 final class ThemeSwitchCest extends BaseCest
@@ -29,7 +28,7 @@ final class ThemeSwitchCest extends BaseCest
         $I->assertArrayNotHasKey('errors', $result);
     }
 
-    public function runThemeSwitchMutation(AcceptanceTester $I): array
+    private function runThemeSwitchMutation(AcceptanceTester $I): array
     {
         $themeId = $this->getCurrentThemeId();
 
@@ -45,7 +44,7 @@ final class ThemeSwitchCest extends BaseCest
 
     private function getCurrentThemeId(): string
     {
-        $shopAdapter = $this->get(ShopAdapterInterface::class);
-        return $shopAdapter->getActiveThemeId();
+        $theme = new Theme();
+        return $theme->getActiveThemeId();
     }
 }
