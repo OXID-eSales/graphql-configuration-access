@@ -13,7 +13,7 @@ use OxidEsales\GraphQL\Base\Exception\NotFound;
 
 final class ModuleActivationException extends NotFound
 {
-    public const EXCEPTION_MESSAGE = "An error occurred while activating the module.";
+    private const EXCEPTION_MESSAGE = "An error occurred while activating the module.";
 
     public function __construct()
     {
