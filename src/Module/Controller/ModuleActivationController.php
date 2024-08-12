@@ -28,7 +28,7 @@ class ModuleActivationController
      */
     #[Mutation]
     #[Logged]
-    #[Right('CHANGE_CONFIGURATION')]
+    #[Right('ACTIVATE_MODULE')]
     public function activateModule(string $moduleId): bool
     {
         return $this->moduleActivationService->activateModule(moduleId: $moduleId);
@@ -41,7 +41,7 @@ class ModuleActivationController
      */
     #[Mutation]
     #[Logged]
-    #[Right('CHANGE_CONFIGURATION')]
+    #[Right('ACTIVATE_MODULE')]
     public function deactivateModule(string $moduleId): bool
     {
         return $this->moduleActivationService->deactivateModule(moduleId: $moduleId);
