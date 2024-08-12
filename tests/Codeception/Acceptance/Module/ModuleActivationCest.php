@@ -10,18 +10,19 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\Module;
 
 use Codeception\Attribute\DataProvider;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\Acceptance\BaseCest;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 
 /**
- * @group module_switch
+ * @group module_activation
  * @group theme_switch
  * @group setting_access
  * @group oe_graphql_configuration_access
  */
-final class ModuleSwitchCest extends ModuleSettingBaseCest
+final class ModuleActivationCest extends BaseCest
 {
-    #[DataProvider('moduleSwitchDataProvider')]
-    public function testModuleSwitchAuthorized(AcceptanceTester $I, \Codeception\Example $example): void
+    #[DataProvider('moduleDeActivationDataProvider')]
+    public function testModuleActivationAuthorized(AcceptanceTester $I, \Codeception\Example $example): void
     {
         $I->login($this->getAdminUsername(), $this->getAdminPassword());
 
@@ -52,7 +53,7 @@ final class ModuleSwitchCest extends ModuleSettingBaseCest
         return $I->grabJsonResponseAsArray();
     }
 
-    protected function moduleSwitchDataProvider(): \Generator
+    protected function moduleDeActivationDataProvider(): \Generator
     {
         yield ['queryName' => 'activateModule', 'field' => 'moduleId'];
         yield ['queryName' => 'deactivateModule', 'field' => 'moduleId'];

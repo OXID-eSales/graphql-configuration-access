@@ -15,7 +15,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 /**
  * @group theme_switch
  * @group theme_list
- * @group module_switch
+ * @group module_activation
  * @group theme_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
@@ -72,6 +72,53 @@ final class NotAuthorizedAccessCest extends BaseCest
         );
 
         $this->assertQueryNotFoundErrorInResult($I, $result);
+    }
+
+    #[DataProvider('mutationsReturnsBoolDataProvider')]
+    public function testMutationsReturnsBoolNotAuthorized(AcceptanceTester $I, \Codeception\Example $example): void
+    {
+        $I->login($this->getAgentUsername(), $this->getAgentPassword());
+        $result = $this->runSimplifiedAccessCheckMutationForBool(
+            I: $I,
+            queryName: $example['queryName'],
+            field: $example['field'],
+            value: $example['value']
+        );
+
+        $this->assertQueryNotFoundErrorInResult($I, $result);
+    }
+
+    private function runSimplifiedAccessCheckMutationForBool(
+        AcceptanceTester $I,
+        string $queryName,
+        string $field,
+        mixed $value,
+    ): array {
+        $parameters = $field . ': "' . $value . '"';
+        $I->sendGQLQuery(
+            'mutation {
+                ' . $queryName . '(' . $parameters . ')
+            }'
+        );
+
+        $I->seeResponseIsJson();
+
+        return $I->grabJsonResponseAsArray();
+    }
+
+    protected function mutationsReturnsBoolDataProvider(): \Generator
+    {
+        yield [
+            'queryName' => 'activateModule',
+            'field' => 'moduleId',
+            'value' => 'test'
+        ];
+
+        yield [
+            'queryName' => 'deactivateModule',
+            'field' => 'moduleId',
+            'value' => 'test'
+        ];
     }
 
     protected function themeGettersDataProvider(): \Generator

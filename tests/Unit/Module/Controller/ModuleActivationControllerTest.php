@@ -9,14 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Controller;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleSwitchController;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleActivationController;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationServiceInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleSwitchController
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleActivationController
  */
-class ModuleSwitchControllerTest extends TestCase
+class ModuleActivationControllerTest extends TestCase
 {
     public function testActivateModule(): void
     {
@@ -51,10 +51,10 @@ class ModuleSwitchControllerTest extends TestCase
     }
 
     public function getSut(
-    ): ModuleSwitchController {
-        return new ModuleSwitchController(
         ModuleActivationServiceInterface $moduleActivationService = null
-            moduleService: $moduleActivationService
+    ): ModuleActivationController {
+        return new ModuleActivationController(
+            moduleActivationService: $moduleActivationService
         );
     }
 }

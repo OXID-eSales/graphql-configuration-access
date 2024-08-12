@@ -9,15 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Controller;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSwitchServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 
-class ModuleSwitchController
+class ModuleActivationController
 {
     public function __construct(
-        private readonly ModuleActivationServiceInterface $moduleService
+        private readonly ModuleActivationServiceInterface $moduleActivationService
     ) {
     }
 
@@ -31,7 +31,7 @@ class ModuleSwitchController
     #[Right('CHANGE_CONFIGURATION')]
     public function activateModule(string $moduleId): bool
     {
-        return $this->moduleSwitchService->activateModule(moduleId: $moduleId);
+        return $this->moduleActivationService->activateModule(moduleId: $moduleId);
     }
 
     /**
@@ -44,6 +44,6 @@ class ModuleSwitchController
     #[Right('CHANGE_CONFIGURATION')]
     public function deactivateModule(string $moduleId): bool
     {
-        return $this->moduleSwitchService->deactivateModule(moduleId: $moduleId);
+        return $this->moduleActivationService->deactivateModule(moduleId: $moduleId);
     }
 }
