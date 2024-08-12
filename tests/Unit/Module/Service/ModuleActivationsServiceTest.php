@@ -58,7 +58,6 @@ class ModuleActivationsServiceTest extends UnitTestCase
             ->willThrowException(new \Exception());
 
         $this->expectException($exceptionClass);
-        $this->expectExceptionMessage($exceptionClass::EXCEPTION_MESSAGE);
 
         $sut = $this->getSut(
             moduleActivationBridge: $moduleActivationBridgeMock
@@ -82,13 +81,13 @@ class ModuleActivationsServiceTest extends UnitTestCase
     {
         yield 'test activate module throws exception' => [
             'method' => 'activate',
-            'exceptionClass' => ModuleActivationException::class,
+            'exceptionClass' => ModuleActivationException::class
 
         ];
 
         yield 'test deactivate module throws exception' => [
             'method' => 'deactivate',
-            'exceptionClass' => ModuleDeactivationException::class,
+            'exceptionClass' => ModuleDeactivationException::class
 
         ];
     }

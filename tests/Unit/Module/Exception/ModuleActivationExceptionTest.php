@@ -25,12 +25,4 @@ final class ModuleActivationExceptionTest extends TestCase
         $this->assertInstanceOf(ModuleActivationException::class, $exception);
         $this->assertSame('An error occurred while activating the module.', $exception->getMessage());
     }
-
-    public function testDeactivationException(): void
-    {
-        $exception = new ModuleDeactivationException();
-
-        $this->assertInstanceOf(ModuleDeactivationException::class, $exception);
-        $this->assertSame('An error occurred while deactivating the module.', $exception->getMessage());
-    }
 }

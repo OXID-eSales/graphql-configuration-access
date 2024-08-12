@@ -17,11 +17,11 @@ use PHPUnit\Framework\TestCase;
  */
 final class ModuleDeactivationExceptionTest extends TestCase
 {
-    public function testException(): void
+    public function testDeactivationException(): void
     {
         $exception = new ModuleDeactivationException();
 
         $this->assertInstanceOf(ModuleDeactivationException::class, $exception);
-        $this->assertSame(ModuleDeactivationException::EXCEPTION_MESSAGE, $exception->getMessage());
+        $this->assertSame('An error occurred while deactivating the module.', $exception->getMessage());
     }
 }
