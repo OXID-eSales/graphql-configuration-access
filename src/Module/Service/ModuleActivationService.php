@@ -27,8 +27,9 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function activateModule(string $moduleId): bool
     {
+        $shopId = $this->context->getCurrentShopId();
+
         try {
-            $shopId = $this->context->getCurrentShopId();
             $this->moduleActivationBridge->activate(moduleId: $moduleId, shopId: $shopId);
         } catch (\Exception $exception) {
             throw new ModuleActivationException();
@@ -42,8 +43,9 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function deactivateModule(string $moduleId): bool
     {
+        $shopId = $this->context->getCurrentShopId();
+
         try {
-            $shopId = $this->context->getCurrentShopId();
             $this->moduleActivationBridge->deactivate(moduleId: $moduleId, shopId: $shopId);
         } catch (\Exception $exception) {
             throw new ModuleDeactivationException();
