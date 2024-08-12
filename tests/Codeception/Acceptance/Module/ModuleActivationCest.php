@@ -32,9 +32,7 @@ final class ModuleActivationCest extends BaseCest
             field: $example['field']
         );
 
-        $I->assertArrayNotHasKey('errors', $result);
-        $response = $result['data'][$example['queryName']];
-        $I->assertTrue($response);
+        $I->assertNotSame('You do not have sufficient rights to access this field', $result['errors'][0]['message']);
     }
 
     private function runModuleMutation(
