@@ -22,6 +22,6 @@ final class ModuleActivationExceptionTest extends TestCase
         $exception = new ModuleActivationException();
 
         $this->assertInstanceOf(ModuleActivationException::class, $exception);
-        $this->assertSame(ModuleActivationException::EXCEPTION_MESSAGE, $exception->getMessage());
+        $this->assertSame('An error occurred while activating the module.', $exception->getMessage());
     }
 }
