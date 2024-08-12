@@ -26,16 +26,16 @@ class ModuleActivationsServiceTest extends UnitTestCase
      */
     public function testModuleActivationAndDeactivation(
         string $method,
-        string $moduleId,
-        int $shopId
     ): void {
+        $shopId = 1;
+        $moduleId = uniqid();
         $moduleActivationBridgeMock = $this->createMock(ModuleActivationBridgeInterface::class);
         $moduleActivationBridgeMock
             ->method($method)
             ->with($moduleId, $shopId);
 
         $sut = $this->getSut(
-            context: $this->getContextMock(),
+            context: $this->getContextMock($shopId),
             moduleActivationBridge: $moduleActivationBridgeMock
         );
 
@@ -49,10 +49,9 @@ class ModuleActivationsServiceTest extends UnitTestCase
      */
     public function testModuleActivationAndDeactivationExceptions(
         string $method,
-        string $moduleId,
         mixed $exceptionClass
     ): void {
-
+        $moduleId = uniqid();
         $moduleActivationBridgeMock = $this->createMock(ModuleActivationBridgeInterface::class);
         $moduleActivationBridgeMock
             ->method($method)
@@ -72,14 +71,10 @@ class ModuleActivationsServiceTest extends UnitTestCase
     {
         yield 'test activate module' => [
             'method' => 'activate',
-            'moduleId' => uniqid(),
-            'shopId' => 1
         ];
 
         yield 'test deactivate module' => [
             'method' => 'deactivate',
-            'moduleId' => uniqid(),
-            'shopId' => 1
         ];
     }
 
@@ -87,14 +82,12 @@ class ModuleActivationsServiceTest extends UnitTestCase
     {
         yield 'test activate module throws exception' => [
             'method' => 'activate',
-            'moduleId' => uniqid(),
             'exceptionClass' => ModuleActivationException::class,
 
         ];
 
         yield 'test deactivate module throws exception' => [
             'method' => 'deactivate',
-            'moduleId' => uniqid(),
             'exceptionClass' => ModuleDeactivationException::class,
 
         ];
