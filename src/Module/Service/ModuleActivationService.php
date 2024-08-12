@@ -7,14 +7,14 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
 
-class ModuleSwitchInfrastructure implements ModuleSwitchInfrastructureInterface
+class ModuleActivationService implements ModuleActivationServiceInterface
 {
     public function __construct(
         private readonly ContextInterface $context,

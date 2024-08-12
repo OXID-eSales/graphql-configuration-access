@@ -7,19 +7,19 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Service;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleSwitchInfrastructure;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleSwitchInfrastructure
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService
  */
-class ModuleSwitchInfrastructureTest extends UnitTestCase
+class ModuleActivationsServiceTest extends UnitTestCase
 {
     /**
      * @dataProvider activationDataProvider
@@ -103,8 +103,8 @@ class ModuleSwitchInfrastructureTest extends UnitTestCase
     public function getSut(
         ContextInterface $context = null,
         ModuleActivationBridgeInterface $moduleActivationBridge = null
-    ): ModuleSwitchInfrastructure {
-        return new ModuleSwitchInfrastructure(
+    ): ModuleActivationService {
+        return new ModuleActivationService(
             context: $context
                 ??  $this->createStub(ContextInterface::class),
             moduleActivationBridge: $moduleActivationBridge

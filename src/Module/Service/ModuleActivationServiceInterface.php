@@ -5,12 +5,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
 
-interface ModuleSwitchInfrastructureInterface
+interface ModuleActivationServiceInterface
 {
     /**
      * @throws ModuleActivationException

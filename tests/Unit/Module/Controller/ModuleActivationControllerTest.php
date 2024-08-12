@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Controller;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleSwitchController;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSwitchServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationServiceInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,13 +22,13 @@ class ModuleSwitchControllerTest extends TestCase
     {
         $moduleId = 'testModuleId';
 
-        $moduleSwitchServiceMock = $this->createMock(ModuleSwitchServiceInterface::class);
-        $moduleSwitchServiceMock
+        $moduleActivationServiceMock = $this->createMock(ModuleActivationServiceInterface::class);
+        $moduleActivationServiceMock
             ->method('activateModule')
             ->with($moduleId)
             ->willReturn(true);
 
-        $sut = $this->getSut(moduleSwitchService: $moduleSwitchServiceMock);
+        $sut = $this->getSut(moduleActivationService: $moduleActivationServiceMock);
 
         $result = $sut->activateModule($moduleId);
         $this->assertTrue($result);
@@ -38,24 +38,23 @@ class ModuleSwitchControllerTest extends TestCase
     {
         $moduleId = 'testModuleId';
 
-        $moduleSwitchServiceMock = $this->createMock(ModuleSwitchServiceInterface::class);
-        $moduleSwitchServiceMock
+        $moduleActivationServiceMock = $this->createMock(ModuleActivationServiceInterface::class);
+        $moduleActivationServiceMock
             ->method('deactivateModule')
             ->with($moduleId)
             ->willReturn(true);
 
-        $sut = $this->getSut(moduleSwitchService: $moduleSwitchServiceMock);
+        $sut = $this->getSut(moduleActivationService: $moduleActivationServiceMock);
 
         $result = $sut->deactivateModule($moduleId);
         $this->assertTrue($result);
     }
 
     public function getSut(
-        ModuleSwitchServiceInterface $moduleSwitchService = null
     ): ModuleSwitchController {
         return new ModuleSwitchController(
-            moduleSwitchService: $moduleSwitchService
-            ?? $this->createStub(ModuleSwitchServiceInterface::class)
+        ModuleActivationServiceInterface $moduleActivationService = null
+            moduleService: $moduleActivationService
         );
     }
 }

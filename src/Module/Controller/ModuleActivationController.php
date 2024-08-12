@@ -17,7 +17,7 @@ use TheCodingMachine\GraphQLite\Annotations\Right;
 class ModuleSwitchController
 {
     public function __construct(
-        private readonly ModuleSwitchServiceInterface $moduleSwitchService
+        private readonly ModuleActivationServiceInterface $moduleService
     ) {
     }
 
