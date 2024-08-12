@@ -19,8 +19,5 @@ services:
   OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListService
 
-  OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleSwitchInfrastructureInterface:
-    class: OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleSwitchInfrastructure
-
   OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationServiceInterface:
     class: OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService
