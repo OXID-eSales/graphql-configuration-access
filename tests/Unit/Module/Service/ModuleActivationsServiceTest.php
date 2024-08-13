@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
 /**
@@ -33,6 +34,12 @@ class ModuleActivationsServiceTest extends UnitTestCase
         $moduleActivationBridgeMock
             ->method($method)
             ->with($moduleId, $shopId);
+
+        $moduleBlocklistServiceMock = $this->createMock(ModuleBlocklistServiceInterface::class);
+        $moduleBlocklistServiceMock
+            ->method('isModuleBlocked')
+            ->with($moduleId)
+            ->willReturn(false);
 
         $sut = $this->getSut(
             context: $this->getContextMock($shopId),
@@ -94,13 +101,16 @@ class ModuleActivationsServiceTest extends UnitTestCase
 
     public function getSut(
         ContextInterface $context = null,
-        ModuleActivationBridgeInterface $moduleActivationBridge = null
+        ModuleActivationBridgeInterface $moduleActivationBridge = null,
+        ModuleBlocklistServiceInterface $moduleBlocklistService = null
     ): ModuleActivationService {
         return new ModuleActivationService(
             context: $context
                 ??  $this->createStub(ContextInterface::class),
             moduleActivationBridge: $moduleActivationBridge
-                ??  $this->createStub(ModuleActivationBridgeInterface::class)
+                ??  $this->createStub(ModuleActivationBridgeInterface::class),
+            moduleBlocklistService: $moduleBlocklistService
+                ??  $this->createStub(ModuleBlocklistServiceInterface::class)
         );
     }
 }

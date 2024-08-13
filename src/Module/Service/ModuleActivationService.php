@@ -18,7 +18,8 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 {
     public function __construct(
         private readonly ContextInterface $context,
-        private readonly ModuleActivationBridgeInterface $moduleActivationBridge
+        private readonly ModuleActivationBridgeInterface $moduleActivationBridge,
+        private readonly ModuleBlocklistServiceInterface $moduleBlocklistService
     ) {
     }
 
@@ -43,6 +44,12 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function deactivateModule(string $moduleId): bool
     {
+        if ($this->moduleBlocklistService->isModuleBlocked($moduleId)) {
+            throw new ModuleDeactivationException(
+                sprintf(ModuleDeactivationException::BLOCKED_MODULE_MESSAGE, $moduleId)
+            );
+        }
+
         $shopId = $this->context->getCurrentShopId();
 
         try {

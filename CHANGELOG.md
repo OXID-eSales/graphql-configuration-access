@@ -3,11 +3,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [1.2.0] - Unreleased
-
-### Added
-- Prevention of deactivation of certain modules mentioned in modules_blocklist.yaml.
-- Mutations to  activate and deactive a module.
 
 ## [1.2.0] - Unreleased
 
@@ -16,16 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Module list and filtering option on basis of module name and status
 - Activation of given theme by themeId
 - Mutations to activate and deactive a module.
+- Prevention of deactivation of certain modules mentioned in modules_blocklist.yaml.
 
 ## [1.1.0] - 2024-07-05
 This is stable release for v1.1.0. No changes have been made since v1.1.0-rc.1.
 
 ## [1.1.0-rc.1] - 2024-05-30
-[.gitignore](.gitignore)
 ### Added
 - PHP 8.2 support
 - Module activation dependency on GraphQL Base module
--  Activate a given  theme by themeId.
 
 ### Changed
 - PHPUnit upgraded to version 10.x
