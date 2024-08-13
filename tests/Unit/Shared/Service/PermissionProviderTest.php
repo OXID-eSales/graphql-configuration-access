@@ -20,7 +20,8 @@ class PermissionProviderTest extends TestCase
             'oxidadmin' => [
                 'CHANGE_CONFIGURATION',
                 'LIST_THEMES',
-                'LIST_MODULES'
+                'LIST_MODULES',
+                'ACTIVATE_MODULE'
             ],
         ];
 

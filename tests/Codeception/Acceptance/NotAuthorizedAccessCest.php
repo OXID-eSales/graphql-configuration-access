@@ -15,6 +15,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Codeception\AcceptanceTester;
 /**
  * @group theme_switch
  * @group theme_list
+ * @group module_activation
  * @group theme_setting
  * @group setting_access
  * @group oe_graphql_configuration_access
@@ -36,7 +37,7 @@ final class NotAuthorizedAccessCest extends BaseCest
             isList: false
         );
 
-        $this->assertQueryFoundErrorInResult($I, $result);
+        $this->assertQueryNotFoundErrorInResult($I, $result);
     }
 
     #[DataProvider('listQueriesDataProvider')]
@@ -52,7 +53,7 @@ final class NotAuthorizedAccessCest extends BaseCest
             isList: true
         );
 
-        $this->assertQueryFoundErrorInResult($I, $result);
+        $this->assertQueryNotFoundErrorInResult($I, $result);
     }
 
     #[DataProvider('themeMutationsDataProvider')]
@@ -70,21 +71,54 @@ final class NotAuthorizedAccessCest extends BaseCest
             location: $example['location']
         );
 
-        $this->assertQueryFoundErrorInResult($I, $result);
+        $this->assertQueryNotFoundErrorInResult($I, $result);
     }
 
-
-    public function testSwitchThemeNotAuthorizedMutation(AcceptanceTester $I): void
+    #[DataProvider('mutationsReturnsBoolDataProvider')]
+    public function testMutationsReturnsBoolNotAuthorized(AcceptanceTester $I, \Codeception\Example $example): void
     {
         $I->login($this->getAgentUsername(), $this->getAgentPassword());
+        $result = $this->runSimplifiedAccessCheckMutationForBool(
+            I: $I,
+            queryName: $example['queryName'],
+            field: $example['field'],
+            value: $example['value']
+        );
+
+        $this->assertQueryNotFoundErrorInResult($I, $result);
+    }
+
+    private function runSimplifiedAccessCheckMutationForBool(
+        AcceptanceTester $I,
+        string $queryName,
+        string $field,
+        mixed $value,
+    ): array {
+        $parameters = $field . ': "' . $value . '"';
         $I->sendGQLQuery(
             'mutation {
-                switchTheme(identifier : "test")
+                ' . $queryName . '(' . $parameters . ')
             }'
         );
 
         $I->seeResponseIsJson();
-        $this->assertQueryFoundErrorInResult($I, $I->grabJsonResponseAsArray());
+
+        return $I->grabJsonResponseAsArray();
+    }
+
+    protected function mutationsReturnsBoolDataProvider(): \Generator
+    {
+        yield [
+            'queryName' => 'activateModule',
+            'field' => 'moduleId',
+            'value' => 'test'
+        ];
+
+        yield [
+            'queryName' => 'deactivateModule',
+            'field' => 'moduleId',
+            'value' => 'test'
+        ];
     }
 
     protected function themeGettersDataProvider(): \Generator
@@ -139,8 +173,6 @@ final class NotAuthorizedAccessCest extends BaseCest
         yield ['queryName' => 'themeSettings', 'field' => 'name', 'location' => 'theme'];
         yield ['queryName' => 'moduleSettings', 'field' => 'name', 'location' => 'module'];
         yield ['queryName' => 'shopSettings', 'field' => 'name', 'location' => 'shop'];
-        yield ['queryName' => 'themesList', 'field' => 'title', 'location' => ''];
-        yield ['queryName' => 'modules', 'field' => 'title', 'location' => ''];
     }
 
     protected function moduleGettersDataProvider(): \Generator
@@ -264,16 +296,16 @@ final class NotAuthorizedAccessCest extends BaseCest
         return $I->grabJsonResponseAsArray();
     }
 
-    private function getLocationParameterString(string $location): string
+    private function getLocationParameterString(string $location): ?string
     {
         return match ($location) {
             'module' => 'moduleId: "testModule"',
             'theme' => 'themeId: "testTheme"',
-            default => ''
+            default => null
         };
     }
 
-    protected function assertQueryFoundErrorInResult(AcceptanceTester $I, array $result): void
+    protected function assertQueryNotFoundErrorInResult(AcceptanceTester $I, array $result): void
     {
         $errorMessage = $result['errors'][0]['message'];
         $I->assertSame(
