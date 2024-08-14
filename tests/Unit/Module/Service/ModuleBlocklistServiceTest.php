@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleBlockListException;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\YamlFileLoaderInfrastructureInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistService;
 use PHPUnit\Framework\TestCase;
 
@@ -26,16 +26,23 @@ class ModuleBlocklistServiceTest extends TestCase
         string $moduleId,
         bool $expectedResult
     ): void {
+        $reflector = new \ReflectionClass(ModuleBlocklistService::class);
+        $classFilePath = pathinfo($reflector->getFileName())['dirname'];
         $filePath = 'testFilePath.yaml';
         $expectedData = ['modules' => ['module1', 'module2']];
 
-        $yamlFileLoaderMock = $this->createMock(YamlFileLoaderInfrastructureInterface::class);
-        $yamlFileLoaderMock
-            ->method('load')
-            ->with($this->stringContains($filePath))
+        $configWrapperMock = $this->createMock(DIConfigWrapper::class);
+        $configWrapperMock
+            ->method('getConfigAsArray')
             ->willReturn($expectedData);
 
-        $sut = $this->getSut(moduleBlockList: $filePath, yamlFileLoader: $yamlFileLoaderMock);
+        $projectYamlDaoMock = $this->createMock(ProjectYamlDaoInterface::class);
+        $projectYamlDaoMock
+            ->method('loadDIConfigFile')
+            ->with($classFilePath . '/../' . $filePath)
+            ->willReturn($configWrapperMock);
+
+        $sut = $this->getSut(moduleBlockListPath: $filePath, projectYamlDao: $projectYamlDaoMock);
         $actualResult = $sut->isModuleBlocked(moduleId: $moduleId);
 
         $this->assertSame($expectedResult, $actualResult);
@@ -54,29 +61,13 @@ class ModuleBlocklistServiceTest extends TestCase
         ];
     }
 
-    public function testGetModuleBlocklistThrowsExceptionOnFailure(): void
-    {
-        $moduleId = uniqid();
-        $yamlFileLoaderMock = $this->createMock(YamlFileLoaderInfrastructureInterface::class);
-        $yamlFileLoaderMock
-            ->method('load')
-            ->will($this->throwException(new \Exception('Failed to load YAML file')));
-
-        $this->expectException(ModuleBlockListException::class);
-
-        $sut = $this->getSut(yamlFileLoader: $yamlFileLoaderMock);
-        $sut->isModuleBlocked(moduleId: $moduleId);
-    }
-
     private function getSut(
-        string $moduleBlockList = null,
-        YamlFileLoaderInfrastructureInterface $yamlFileLoader = null
+        string $moduleBlockListPath,
+        ProjectYamlDaoInterface $projectYamlDao
     ): ModuleBlocklistService {
         return new ModuleBlocklistService(
-            moduleBlocklist: $moduleBlockList
-            ?? 'testFilePath.yaml',
-            yamlFileLoader: $yamlFileLoader
-            ?? $this->createStub(YamlFileLoaderInfrastructureInterface::class)
+            moduleBlocklistPath: $moduleBlockListPath,
+            projectYamlDao: $projectYamlDao
         );
     }
 }

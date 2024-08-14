@@ -9,29 +9,22 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleBlockListException;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\YamlFileLoaderInfrastructureInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 
 class ModuleBlocklistService implements ModuleBlocklistServiceInterface
 {
     public function __construct(
-        private readonly string $moduleBlocklist,
-        private readonly YamlFileLoaderInfrastructureInterface $yamlFileLoader
+        private readonly string $moduleBlocklistPath,
+        private readonly ProjectYamlDaoInterface $projectYamlDao
     ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isModuleBlocked(string $moduleId): bool
     {
-        try {
-            $resolvedPath = dirname(__FILE__) . '/' . $this->moduleBlocklist;
-            $blocklistData = $this->yamlFileLoader->load($resolvedPath);
+        $resolvedPath = dirname(__FILE__) . '/../' . $this->moduleBlocklistPath;
+        $configWrapper = $this->projectYamlDao->loadDIConfigFile($resolvedPath);
+        $blocklistData = $configWrapper->getConfigAsArray();
 
-            return in_array($moduleId, $blocklistData['modules'], true);
-        } catch (\Exception $e) {
-            throw new ModuleBlockListException();
-        }
+        return in_array($moduleId, $blocklistData['modules'], true);
     }
 }
