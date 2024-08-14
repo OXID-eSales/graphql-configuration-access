@@ -63,11 +63,13 @@ class ModuleActivationsServiceTest extends UnitTestCase
         $moduleActivationBridgeMock = $this->createMock(ModuleActivationBridgeInterface::class);
         $moduleActivationBridgeMock
             ->method($method)
+            ->with($moduleId, 1)
             ->willThrowException(new \Exception());
 
         $this->expectException($exceptionClass);
 
         $sut = $this->getSut(
+            $this->getContextMock(),
             moduleActivationBridge: $moduleActivationBridgeMock
         );
 
@@ -76,9 +78,11 @@ class ModuleActivationsServiceTest extends UnitTestCase
 
     public function testModuleDeactivationBlockedException()
     {
+        $moduleId = uniqid();
         $moduleBlockListServiceMock = $this->createMock(ModuleBlocklistServiceInterface::class);
         $moduleBlockListServiceMock
             ->method('isModuleBlocked')
+            ->with($moduleId)
             ->willReturn(true);
 
         $sut = $this->getSut(
@@ -86,7 +90,7 @@ class ModuleActivationsServiceTest extends UnitTestCase
         );
 
         $this->expectException(ModuleDeactivationBlockedException::class);
-        $sut->deactivateModule(uniqid());
+        $sut->deactivateModule($moduleId);
     }
 
     public static function activationDataProvider(): \Generator
