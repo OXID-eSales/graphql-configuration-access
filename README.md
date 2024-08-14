@@ -64,6 +64,12 @@ $ vendor/bin/oe-console oe:module:activate oe_graphql_configuration_access
 
 A good starting point is to check the [How to use section in the GraphQL Base Module](https://github.com/OXID-eSales/graphql-base-module/#how-to-use)
 
+## Blocking modules from deactivation via GraphQL
+
+The file module_blockilst.yaml contains a list of modules which are necessary to handle configurations or de/activate
+modules via GraphQL or should be blocked for deactivation via GraphQL in general. Modules like ``oe_graphql_base`` and
+``oe_graphql_configuration_access`` are listed there.
+
 ## Testing
 
 ### Linting, syntax check, static analysis
