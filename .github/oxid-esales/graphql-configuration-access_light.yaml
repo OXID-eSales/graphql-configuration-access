@@ -59,6 +59,7 @@ sonarcloud:
         -Dsonar.scm.provider=git
         -Dsonar.sources=src
         -Dsonar.tests=tests
+        -Dsonar.php.phpstan.reportPaths=tests/Reports/phpstan.report.json
 
 finish:
     slack_title: 'Configuration Access module ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
