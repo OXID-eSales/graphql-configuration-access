@@ -14,13 +14,9 @@ use OxidEsales\GraphQL\Base\Exception\Error;
 final class ModuleDeactivationException extends Error
 {
     private const EXCEPTION_MESSAGE = "An error occurred while deactivating the module.";
-    public const BLOCKED_MODULE_MESSAGE = 'Module "%s" is in the blocklist and cannot be deactivated.';
 
-    public function __construct(string $message = null)
+    public function __construct()
     {
-        if (empty($message)) {
-            $message = self::EXCEPTION_MESSAGE;
-        }
-        parent::__construct($message);
+        parent::__construct(self::EXCEPTION_MESSAGE);
     }
 }

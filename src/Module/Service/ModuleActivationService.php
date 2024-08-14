@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationBlockedException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
 
 class ModuleActivationService implements ModuleActivationServiceInterface
@@ -45,9 +46,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     public function deactivateModule(string $moduleId): bool
     {
         if ($this->moduleBlocklistService->isModuleBlocked($moduleId)) {
-            throw new ModuleDeactivationException(
-                sprintf(ModuleDeactivationException::BLOCKED_MODULE_MESSAGE, $moduleId)
-            );
+            throw new ModuleDeactivationBlockedException($moduleId);
         }
 
         $shopId = $this->context->getCurrentShopId();

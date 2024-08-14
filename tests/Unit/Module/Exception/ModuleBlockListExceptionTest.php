@@ -22,6 +22,6 @@ final class ModuleBlockListExceptionTest extends TestCase
         $exception = new ModuleBlockListException();
 
         $this->assertInstanceOf(ModuleBlockListException::class, $exception);
-        $this->assertSame(ModuleBlockListException::EXCEPTION_MESSAGE, $exception->getMessage());
+        $this->assertSame('Failed to load module blocklist from YAML file.', $exception->getMessage());
     }
 }

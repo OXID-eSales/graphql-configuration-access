@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Service;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationBlockedException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistServiceInterface;
@@ -71,6 +72,21 @@ class ModuleActivationsServiceTest extends UnitTestCase
         );
 
         ($method === 'activate') ? $sut->activateModule($moduleId) : $sut->deactivateModule($moduleId);
+    }
+
+    public function testModuleDeactivationBlockedException()
+    {
+        $moduleBlockListServiceMock = $this->createMock(ModuleBlocklistServiceInterface::class);
+        $moduleBlockListServiceMock
+            ->method('isModuleBlocked')
+            ->willReturn(true);
+
+        $sut = $this->getSut(
+            moduleBlocklistService: $moduleBlockListServiceMock
+        );
+
+        $this->expectException(ModuleDeactivationBlockedException::class);
+        $sut->deactivateModule(uniqid());
     }
 
     public static function activationDataProvider(): \Generator
