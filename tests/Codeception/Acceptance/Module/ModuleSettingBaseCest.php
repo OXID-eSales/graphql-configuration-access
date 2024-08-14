@@ -96,6 +96,8 @@ abstract class ModuleSettingBaseCest extends BaseCest
     {
         $shopConfiguration = $this->getShopConfiguration();
         $shopConfiguration->deleteModuleConfiguration($moduleId);
+        $shopConfigurationDao = $this->getShopConfigurationDao();
+        $shopConfigurationDao->save($shopConfiguration, 1);
     }
 
     protected function getShopConfigurationDao(): ShopConfigurationDao
