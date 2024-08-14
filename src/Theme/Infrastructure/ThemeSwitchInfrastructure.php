@@ -21,11 +21,11 @@ final class ThemeSwitchInfrastructure implements ThemeSwitchInfrastructureInterf
     ) {
     }
 
-    public function switchTheme(string $identifier): bool
+    public function switchTheme(string $themeId): bool
     {
         try {
             $coreThemeService = $this->coreThemeFactory->create();
-            if (!$coreThemeService->load($identifier)) {
+            if (!$coreThemeService->load($themeId)) {
                 throw new ThemeActivationException(self::THEME_NOT_EXIST);
             }
             $coreThemeService->activate();

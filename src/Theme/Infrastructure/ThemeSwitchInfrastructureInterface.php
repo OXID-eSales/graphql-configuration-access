@@ -14,5 +14,5 @@ interface ThemeSwitchInfrastructureInterface
     /**
      *@throws ThemeActivationException
      */
-    public function switchTheme(string $identifier): bool;
+    public function switchTheme(string $themeId): bool;
 }

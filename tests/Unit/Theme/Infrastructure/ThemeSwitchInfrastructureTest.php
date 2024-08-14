@@ -25,23 +25,23 @@ class ThemeSwitchInfrastructureTest extends TestCase
     private const THEME_NOT_EXIST = "The specified theme doesn't exist.";
     public function testSwitchTheme(): void
     {
-        $identifier = 'apex';
+        $themeId = 'apex';
         $coreThemeMock = $this->createMock(Theme::class);
-        $coreThemeMock->expects($this->once())->method('load')->with($identifier)->willReturn(true);
+        $coreThemeMock->expects($this->once())->method('load')->with($themeId)->willReturn(true);
         $coreThemeMock->expects($this->once())->method('activate');
 
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(coreThemeMock: $coreThemeMock);
         $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
 
-        $serviceResponse = $sut->switchTheme($identifier);
+        $serviceResponse = $sut->switchTheme($themeId);
         $this->assertTrue($serviceResponse);
     }
 
     public function testThemeNotActivatedException(): void
     {
-        $identifier = 'apex';
+        $themeId = 'apex';
         $coreThemeMock = $this->createMock(Theme::class);
-        $coreThemeMock->expects($this->once())->method('load')->with($identifier)->willReturn(true);
+        $coreThemeMock->expects($this->once())->method('load')->with($themeId)->willReturn(true);
         $coreThemeMock->expects($this->once())->method('activate')
             ->will($this->throwException(
                 new StandardException(self::THEME_NOT_ACTIVATED)
@@ -52,7 +52,7 @@ class ThemeSwitchInfrastructureTest extends TestCase
 
         $this->expectException(ThemeActivationException::class);
         $this->expectExceptionMessage(self::THEME_NOT_ACTIVATED);
-        $sut->switchTheme($identifier);
+        $sut->switchTheme($themeId);
     }
 
     public function testThemeNotFoundException(): void

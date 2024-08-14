@@ -9,5 +9,5 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Service;
 
 interface ThemeSwitchServiceInterface
 {
-    public function switchTheme(string $identifier): bool;
+    public function switchTheme(string $themeId): bool;
 }

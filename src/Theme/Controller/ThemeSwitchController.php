@@ -23,14 +23,14 @@ final class ThemeSwitchController
 
     /**
      * Mutation of Configuration Access Module
-     * @param string $identifier
+     * @param string $themeId
      * @return bool
      */
     #[Mutation]
     #[Logged]
     #[Right('CHANGE_CONFIGURATION')]
-    public function switchTheme(string $identifier): bool
+    public function switchTheme(string $themeId): bool
     {
-        return $this->themeSwitchService->switchTheme($identifier);
+        return $this->themeSwitchService->switchTheme($themeId);
     }
 }

@@ -17,8 +17,8 @@ final class ThemeSwitchService implements ThemeSwitchServiceInterface
         private readonly ThemeSwitchInfrastructureInterface $themeSwitchInfrastructure
     ) {
     }
-    public function switchTheme(string $identifier): bool
+    public function switchTheme(string $themeId): bool
     {
-        return $this->themeSwitchInfrastructure->switchTheme(identifier: $identifier);
+        return $this->themeSwitchInfrastructure->switchTheme(themeId: $themeId);
     }
 }
