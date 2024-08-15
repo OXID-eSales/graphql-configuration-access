@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Service;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationBlockedException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationBlockedException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService;
@@ -26,7 +27,7 @@ class ModuleActivationsServiceTest extends UnitTestCase
     /**
      * @dataProvider activationDataProvider
      */
-    public function testModuleActivationAndDeactivation(
+    public function testModuleActivationAndDeactivationSuccess(
         string $method,
     ): void {
         $shopId = 1;
@@ -55,7 +56,7 @@ class ModuleActivationsServiceTest extends UnitTestCase
     /**
      * @dataProvider exceptionDataProvider
      */
-    public function testModuleActivationAndDeactivationExceptions(
+    public function testModuleActivationAndDeactivationThrowsExceptions(
         string $method,
         mixed $exceptionClass
     ): void {
@@ -76,8 +77,13 @@ class ModuleActivationsServiceTest extends UnitTestCase
         ($method === 'activate') ? $sut->activateModule($moduleId) : $sut->deactivateModule($moduleId);
     }
 
-    public function testModuleDeactivationBlockedException()
-    {
+    /**
+     * @dataProvider moduleBlockedExceptionDataProvider
+     */
+    public function testModuleActivationAndDeactivationBlockedException(
+        string $method,
+        mixed $exceptionClass
+    ) {
         $moduleId = uniqid();
         $moduleBlockListServiceMock = $this->createMock(ModuleBlocklistServiceInterface::class);
         $moduleBlockListServiceMock
@@ -89,8 +95,23 @@ class ModuleActivationsServiceTest extends UnitTestCase
             moduleBlocklistService: $moduleBlockListServiceMock
         );
 
-        $this->expectException(ModuleDeactivationBlockedException::class);
-        $sut->deactivateModule($moduleId);
+        $this->expectException($exceptionClass);
+        ($method === 'activate') ? $sut->activateModule($moduleId) : $sut->deactivateModule($moduleId);
+    }
+
+    public static function moduleBlockedExceptionDataProvider(): \Generator
+    {
+        yield 'test activate module blocked exception' => [
+            'method' => 'activate',
+            'exceptionClass' => ModuleActivationBlockedException::class
+
+        ];
+
+        yield 'test deactivate module blocked exception' => [
+            'method' => 'deactivate',
+            'exceptionClass' => ModuleDeactivationBlockedException::class
+
+        ];
     }
 
     public static function activationDataProvider(): \Generator
