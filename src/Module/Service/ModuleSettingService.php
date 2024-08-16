@@ -33,7 +33,10 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function getIntegerSetting(string $name, string $moduleId): IntegerSetting
     {
-        return new IntegerSetting($name, $this->moduleSettingService->getInteger($name, $moduleId));
+        return new IntegerSetting(
+            $name,
+            $this->moduleSettingService->getInteger($name, $moduleId)
+        );
     }
 
     public function getFloatSetting(string $name, string $moduleId): FloatSetting
