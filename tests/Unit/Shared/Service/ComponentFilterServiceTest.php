@@ -15,7 +15,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterService
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeFilterService
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ComponentFilterService
  */
 class ComponentFilterServiceTest extends TestCase
 {
