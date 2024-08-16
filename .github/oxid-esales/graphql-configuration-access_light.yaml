@@ -44,9 +44,9 @@ runslim:
     matrix:
         script: |
             [
-              "configuration_module:phpcs",
-              "configuration_module:phpstan",
-              "configuration_module:phpmd",
+              "configuration_module:phpcs-report",
+              "configuration_module:phpstan-report",
+              "configuration_module:phpmd-report",
               "configuration_module:deptrac",
             ]
 
@@ -61,7 +61,7 @@ sonarcloud:
         -Dsonar.scm.provider=git
         -Dsonar.sources=src
         -Dsonar.tests=tests
-        -Dsonar.php.phpstan.reportPaths=tests/Reports/phpstan.report.json
+        -Dsonar.php.phpstan.reportPaths=coverage-reports/phpstan.report.json
 
 finish:
     slack_title: 'Configuration Access module ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
