@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+/* Random comment for testing purpose */
+
 declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Controller;
