@@ -34,7 +34,7 @@ final class ThemeSwitchCest extends BaseCest
 
         $I->sendGQLQuery(
             'mutation switchThemeCest{
-			  		switchTheme(identifier: "' . $themeId . '")
+			  		switchTheme(themeId: "' . $themeId . '")
 				}'
         );
 

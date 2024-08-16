@@ -22,15 +22,15 @@ class ThemeSwitchServiceTest extends TestCase
     public function testSwitchTheme(
         bool $expectedResult
     ): void {
-        $identifier = uniqid();
+        $themeId = uniqid();
         $themeSwitchInfrastructureMock = $this->createMock(ThemeSwitchInfrastructureInterface::class);
         $themeSwitchInfrastructureMock
             ->method('switchTheme')
-            ->with($identifier)
+            ->with($themeId)
             ->willReturn($expectedResult);
 
         $themeSwitchInfrastructure = new ThemeSwitchService($themeSwitchInfrastructureMock);
-        $response = $themeSwitchInfrastructure->switchTheme($identifier);
+        $response = $themeSwitchInfrastructure->switchTheme($themeId);
 
         $this->assertSame($expectedResult, $response);
     }

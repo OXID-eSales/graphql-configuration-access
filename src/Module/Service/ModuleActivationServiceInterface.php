@@ -9,6 +9,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationException;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationBlockedException;
 
 interface ModuleActivationServiceInterface
 {
@@ -19,6 +20,7 @@ interface ModuleActivationServiceInterface
 
     /**
      * @throws ModuleDeactivationException
+     * @throws ModuleDeactivationBlockedException
      */
     public function deactivateModule(string $moduleId): bool;
 }

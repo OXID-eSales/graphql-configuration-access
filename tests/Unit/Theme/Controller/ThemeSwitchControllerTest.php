@@ -20,17 +20,17 @@ class ThemeSwitchControllerTest extends TestCase
 {
     /** @dataProvider switchThemeProvider */
     public function testSwitchTheme(
-        string $identifier,
+        string $themeId,
         bool $expectedResult
     ): void {
         $themeSwitchServiceMock = $this->createMock(ThemeSwitchServiceInterface::class);
         $themeSwitchServiceMock
             ->method('switchTheme')
-            ->with($identifier)
+            ->with($themeId)
             ->willReturn($expectedResult);
 
         $themeSwitchController = new ThemeSwitchController($themeSwitchServiceMock);
-        $response = $themeSwitchController->switchTheme($identifier);
+        $response = $themeSwitchController->switchTheme($themeId);
 
         $this->assertSame($expectedResult, $response);
     }
@@ -38,12 +38,12 @@ class ThemeSwitchControllerTest extends TestCase
     public static function switchThemeProvider(): \Generator
     {
         yield 'test switch theme successful case' => [
-            'identifier' => 'validThemeId',
+            'themeId' => 'validThemeId',
             'expectedResult' => true
         ];
 
         yield 'test switch theme failure case' => [
-            'identifier' => 'invalidThemeId',
+            'themeId' => 'invalidThemeId',
             'expectedResult' => false
         ];
     }

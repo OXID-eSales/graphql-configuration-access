@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Exception;
 
-use OxidEsales\GraphQL\Base\Exception\NotFound;
+use OxidEsales\GraphQL\Base\Exception\Error;
 
-final class ModuleActivationException extends NotFound
+final class ModuleActivationException extends Error
 {
     private const EXCEPTION_MESSAGE = "An error occurred while activating the module.";
 

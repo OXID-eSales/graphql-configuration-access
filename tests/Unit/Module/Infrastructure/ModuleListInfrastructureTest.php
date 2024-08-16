@@ -11,10 +11,8 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Infrastructur
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructure;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModulesNotFoundException;
 

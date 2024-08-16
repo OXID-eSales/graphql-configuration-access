@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ModuleDeactivationExceptionTest extends TestCase
 {
-    public function testDeactivationException(): void
+    public function testException(): void
     {
         $exception = new ModuleDeactivationException();
 

@@ -15,13 +15,4 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
 #[Type]
 class ThemeDataType extends AbstractComponentDataType implements ThemeDataTypeInterface
 {
-    public function __construct(
-        string $id,
-        string $title,
-        string $version,
-        string $description,
-        bool $active
-    ) {
-        parent::__construct($id, $title, $version, $description, $active);
-    }
 }
