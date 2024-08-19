@@ -21,6 +21,12 @@ class ComponentFilters implements ComponentFiltersInterface
     ) {
     }
 
+    /**
+     * TODO: This method can be refactored after the chain-of-responsibility-pattern
+     * Therefore classes like TitleFilter or ActiveFilter with the Component as argument can check if a specific
+     * property of the Component fits to a specific filter (String and BoolFilter). As a result we have an iterable list
+     * with filters which checks different fields.
+     */
     private function filterComponentByTitle(string $title): bool
     {
         $titleFilter = $this->titleFilter;
@@ -31,6 +37,12 @@ class ComponentFilters implements ComponentFiltersInterface
         return true;
     }
 
+    /**
+     * TODO: This method can be refactored after the chain-of-responsibility-pattern
+     * Therefore classes like TitleFilter or ActiveFilter with the Component as argument can check if a specific
+     * property of the Component fits to a specific filter (String and BoolFilter). As a result we have an iterable list
+     * with filters which checks different fields.
+     */
     private function filterComponentByStatus(bool $status): bool
     {
         $statusFilter = $this->activeFilter;

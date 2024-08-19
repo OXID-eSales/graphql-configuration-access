@@ -172,6 +172,10 @@ class ComponentFiltersTest extends TestCase
 
     private static function getComponentFiltersMethod($name)
     {
+        /*
+         * TODO: This should be removed if ComponentFilters::filterComponentByTitle and filterComponentByStatus
+         * were refactored
+         */
         $class = new ReflectionClass(ComponentFilters::class);
         $method = $class->getMethod($name);
         return $method;
