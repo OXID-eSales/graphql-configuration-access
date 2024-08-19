@@ -11,6 +11,7 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -48,12 +49,12 @@ class ComponentFiltersTest extends TestCase
 
     public function testComponentFiltersWithoutFilter(): void
     {
-        $themeFilters = new ComponentFilters();
+        $componentFilters = new ComponentFilters();
         $filterComponentByTitleMethod = $this->getComponentFiltersMethod('filterComponentByTitle');
         $filterComponentByStatusMethod = $this->getComponentFiltersMethod('filterComponentByStatus');
 
-        $this->assertTrue($filterComponentByTitleMethod->invoke($themeFilters, uniqid()));
-        $this->assertTrue($filterComponentByStatusMethod->invoke($themeFilters, (bool)random_int(0, 1)));
+        $this->assertTrue($filterComponentByTitleMethod->invoke($componentFilters, uniqid()));
+        $this->assertTrue($filterComponentByStatusMethod->invoke($componentFilters, (bool)random_int(0, 1)));
     }
 
     /** @dataProvider componentByStatusDataProvider */
@@ -94,6 +95,59 @@ class ComponentFiltersTest extends TestCase
         yield "filter component by false with different theme status" => [
             'filterStatus' => false,
             'actualStatus' => true,
+            'expectedResult' => false
+        ];
+    }
+
+    /** @dataProvider filterProvider */
+    public function testFilterComponent(
+        string $title,
+        bool $isActive,
+        StringFilter $stringFilter,
+        BoolFilter $boolFilter,
+        bool $expectedResult
+    ): void {
+        $sut = new ComponentFilters($stringFilter, $boolFilter);
+
+        $componentStub = $this->createConfiguredStub(ComponentDataTypeInterface::class, [
+            'getTitle' => $title,
+            'isActive' => $isActive,
+        ]);
+        $result = $sut->filterComponent($componentStub);
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    public static function filterProvider(): \Generator
+    {
+        yield "title and active-filter are true" => [
+            'title' => 'testTitle',
+            'isActive' => false,
+            'stringFilter' => new StringFilter(equals: 'testTitle'),
+            'boolFilter' => new BoolFilter(false),
+            'expectedResult' => true
+        ];
+
+        yield "title and active-filter are false" => [
+            'title' => 'testTitle',
+            'isActive' => true,
+            'stringFilter' => new StringFilter(equals: 'notTestTitle'),
+            'boolFilter' => new BoolFilter(false),
+            'expectedResult' => false
+        ];
+
+        yield "title-filter is true but active-filter are false" => [
+            'title' => 'testTitle',
+            'isActive' => true,
+            'stringFilter' => new StringFilter(equals: 'testTitle'),
+            'boolFilter' => new BoolFilter(false),
+            'expectedResult' => false
+        ];
+
+        yield "title-filter is false but active-filter are true" => [
+            'title' => 'testTitle',
+            'isActive' => true,
+            'stringFilter' => new StringFilter(equals: 'notTestTitle'),
+            'boolFilter' => new BoolFilter(true),
             'expectedResult' => false
         ];
     }
