@@ -18,12 +18,12 @@
     ],
     "license": ["proprietary"],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "doctrine/dbal": "^v2.7",
         "oxid-esales/graphql-base": "dev-b-7.2.x"
     },
     "conflict": {
-        "oxid-esales/oxideshop-ce": "<7.1",
+        "oxid-esales/oxideshop-ce": "<7.2",
         "oxid-esales/graphql-catalogue": "*",
         "oxid-esales/graphql-account": "*",
         "oxid-esales/graphql-checkout": "*"
