@@ -25,8 +25,10 @@ class ThemeDataTypeTest extends TestCase
         $version = uniqid();
         $description = uniqid();
         $active = (bool)random_int(0, 1);
+        $parentTheme = uniqid();
+        $parentVersions = [uniqid(), uniqid()];
 
-        $sut = new ThemeDataType($id, $name, $version, $description, $active);
+        $sut = new ThemeDataType($id, $name, $version, $description, $active, $parentTheme, $parentVersions);
 
         $this->assertInstanceOf(ComponentDataTypeInterface::class, $sut);
         $this->assertSame($name, $sut->getTitle());
@@ -34,5 +36,7 @@ class ThemeDataTypeTest extends TestCase
         $this->assertSame($version, $sut->getVersion());
         $this->assertSame($description, $sut->getDescription());
         $this->assertSame($active, $sut->isActive());
+        $this->assertSame($parentTheme, $sut->getParentTheme());
+        $this->assertSame($parentVersions, $sut->getParentVersions());
     }
 }

@@ -40,6 +40,8 @@ final class ThemeListCest extends BaseCest
 				version
 				description
 				active
+				parentTheme
+				parentVersions
 			  }
 			}'
         );
