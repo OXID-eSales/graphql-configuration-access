@@ -57,10 +57,10 @@ sonarcloud:
     project_key: 'OXID-eSales_graphql-configuration-access'
     project_name: 'oxid-esales/graphql-configuration-access'
     parameters: |
-        -Dsonar.language=php
-        -Dsonar.scm.provider=git
-        -Dsonar.sources=src
-        -Dsonar.tests=tests
+        -Dsonar.language=php \
+        -Dsonar.scm.provider=git \
+        -Dsonar.sources=src \
+        -Dsonar.tests=tests \
         -Dsonar.php.phpstan.reportPaths=coverage-reports/phpstan.report.json
 
 finish:

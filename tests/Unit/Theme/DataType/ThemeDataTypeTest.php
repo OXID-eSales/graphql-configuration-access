@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\AbstractComponentDataType
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType
  */
 class ThemeDataTypeTest extends TestCase
 {
