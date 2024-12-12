@@ -39,4 +39,20 @@ class ThemeDataTypeTest extends TestCase
         $this->assertSame($parentTheme, $sut->getParentTheme());
         $this->assertSame($parentVersions, $sut->getParentVersions());
     }
+
+    public function testThemeDataTypeWithNullableValues(): void
+    {
+        $name = uniqid();
+        $id = uniqid();
+        $version = uniqid();
+        $description = uniqid();
+        $active = (bool)random_int(0, 1);
+        $parentTheme = null;
+        $parentVersions = null;
+
+        $sut = new ThemeDataType($id, $name, $version, $description, $active, $parentTheme, $parentVersions);
+
+        $this->assertNull($sut->getParentTheme());
+        $this->assertNull($sut->getParentVersions());
+    }
 }

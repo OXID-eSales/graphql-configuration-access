@@ -51,5 +51,7 @@ class ThemeDataTypeFactoryTest extends TestCase
         $this->assertEquals($expectedVersion, $themeDataType->getVersion());
         $this->assertEquals($expectedDescription, $themeDataType->getDescription());
         $this->assertTrue($themeDataType->isActive());
+        $this->assertEquals($expectedParentTheme, $themeDataType->getParentTheme());
+        $this->assertEquals($expectedParentVersions, $themeDataType->getParentVersions());
     }
 }
