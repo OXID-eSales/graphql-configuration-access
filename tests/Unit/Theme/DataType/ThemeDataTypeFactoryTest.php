@@ -28,6 +28,8 @@ class ThemeDataTypeFactoryTest extends TestCase
         $expectedVersion = uniqid();
         $expectedDescription = uniqid();
         $expectedActive = true;
+        $expectedParentTheme = uniqid();
+        $expectedParentVersions = [uniqid(), uniqid()];
 
         $themeMock->method('getInfo')
             ->willReturnMap([
@@ -36,6 +38,8 @@ class ThemeDataTypeFactoryTest extends TestCase
                 ['version', $expectedVersion],
                 ['description', $expectedDescription],
                 ['active', $expectedActive],
+                ['parentTheme', $expectedParentTheme],
+                ['parentVersions', $expectedParentVersions],
             ]);
 
         $factory = new ThemeDataTypeFactory();
@@ -47,5 +51,7 @@ class ThemeDataTypeFactoryTest extends TestCase
         $this->assertEquals($expectedVersion, $themeDataType->getVersion());
         $this->assertEquals($expectedDescription, $themeDataType->getDescription());
         $this->assertTrue($themeDataType->isActive());
+        $this->assertEquals($expectedParentTheme, $themeDataType->getParentTheme());
+        $this->assertEquals($expectedParentVersions, $themeDataType->getParentVersions());
     }
 }

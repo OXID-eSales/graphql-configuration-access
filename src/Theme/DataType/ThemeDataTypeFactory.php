@@ -21,7 +21,9 @@ class ThemeDataTypeFactory implements ThemeDataTypeFactoryInterface
             title: $theme->getInfo('title'),
             version: $theme->getInfo('version'),
             description: $theme->getInfo('description'),
-            active: $theme->getInfo('active')
+            active: $theme->getInfo('active'),
+            parentTheme: $theme->getInfo('parentTheme'),
+            parentVersions: $theme->getInfo('parentVersions'),
         );
     }
 }
