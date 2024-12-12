@@ -35,7 +35,7 @@ class ThemeDataType extends AbstractComponentDataType implements ThemeDataTypeIn
     }
 
     /**
-     * @inheritDoc
+     * @return ?string[]
      */
     #[Field]
     public function getParentVersions(): ?array
