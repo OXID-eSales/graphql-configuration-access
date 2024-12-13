@@ -48,7 +48,8 @@ class BeforeModuleDeactivationTest extends TestCase
         ]);
 
         $this->expectException(ModuleSetupValidationException::class);
-        $this->expectExceptionMessage((new ModuleSetupValidationException($dependency))->getMessage());
+        $this->expectExceptionMessage((new ModuleSetupValidationException('Module with id "' . $dependency .
+            '" cannot be deactivated while GraphQL Configuration Access module is active.'))->getMessage());
 
         $sut = new BeforeModuleDeactivation($dependencies);
         $sut->handle($beforeModuleDeactivationEvent);
