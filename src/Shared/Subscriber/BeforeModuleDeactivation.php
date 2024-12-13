@@ -16,6 +16,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class BeforeModuleDeactivation implements EventSubscriberInterface
 {
+    /**
+     * @param string[] $dependencies
+     */
     public function __construct(
         private array $dependencies
     ) {
