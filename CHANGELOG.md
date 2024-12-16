@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Move ModuleDataType generation to Infrastructure
+- Move ThemeDataType generation to Infrastructure
 
 ## [1.2.0] - 2024-11-27
 This is the stable release of v1.2.0. No changes have been made since v1.2.0-rc.1.

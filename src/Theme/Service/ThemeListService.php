@@ -11,26 +11,20 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterServiceInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructureInterface;
 
 final class ThemeListService implements ThemeListServiceInterface
 {
     public function __construct(
         private readonly ThemeListInfrastructureInterface $themeListInfrastructure,
-        private readonly ComponentFilterServiceInterface $componentFilterService,
-        private readonly ThemeDataTypeFactoryInterface $themeDataTypeFactory
+        private readonly ComponentFilterServiceInterface $componentFilterService
     ) {
     }
 
     public function getThemeList(ComponentFiltersInterface $filters): array
     {
-        $themesArray =  [];
-        $themesList = $this->themeListInfrastructure->getThemes();
-        foreach ($themesList as $theme) {
-            $themesArray[] = $this->themeDataTypeFactory->createFromCoreTheme(theme: $theme);
-        }
+        $themeDataTypes = $this->themeListInfrastructure->getThemes();
 
-        return $this->componentFilterService->filterComponents($themesArray, $filters);
+        return $this->componentFilterService->filterComponents($themeDataTypes, $filters);
     }
 }

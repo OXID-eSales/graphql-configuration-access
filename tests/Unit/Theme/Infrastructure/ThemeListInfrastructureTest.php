@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Infrastructure;
 
 use OxidEsales\Eshop\Core\Theme;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure;
@@ -24,14 +26,22 @@ class ThemeListInfrastructureTest extends TestCase
     {
         $theme1 = $this->createStub(Theme::class);
         $theme2 = $this->createStub(Theme::class);
+        $themeDataType1 = $this->createStub(ThemeDataType::class);
+        $themeDataType2 = $this->createStub(ThemeDataType::class);
 
         $coreThemeMock = $this->createMock(Theme::class);
         $coreThemeMock->method('getList')->willReturn([$theme1, $theme2]);
         $coreThemeFactoryMock = $this->getCoreThemeFactoryMock(returnValue: $coreThemeMock);
 
-        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock);
+        $themeDataTypeFactory = $this->createMock(ThemeDataTypeFactoryInterface::class);
+        $themeDataTypeFactory->method('createFromCoreTheme')->willReturnMap([
+            [$theme1, $themeDataType1],
+            [$theme2, $themeDataType2]
+        ]);
+
+        $sut = $this->getSut(coreThemeFactory: $coreThemeFactoryMock, themeDataTypeFactory: $themeDataTypeFactory);
         $actualThemesArray = $sut->getThemes();
-        $this->assertSame([$theme1, $theme2], $actualThemesArray);
+        $this->assertSame([$themeDataType1, $themeDataType2], $actualThemesArray);
     }
 
     public function testGetThemesThrowsException(): void
@@ -47,10 +57,12 @@ class ThemeListInfrastructureTest extends TestCase
     }
 
     private function getSut(
-        CoreThemeFactoryInterface $coreThemeFactory
+        CoreThemeFactoryInterface $coreThemeFactory = null,
+        ThemeDataTypeFactoryInterface $themeDataTypeFactory = null
     ): ThemeListInfrastructure {
         return new ThemeListInfrastructure(
-            coreThemeFactory: $coreThemeFactory
+            coreThemeFactory: $coreThemeFactory ?? $this->createStub(CoreThemeFactoryInterface::class),
+            themeDataTypeFactory: $themeDataTypeFactory ?? $this->createStub(ThemeDataTypeFactoryInterface::class)
         );
     }
 

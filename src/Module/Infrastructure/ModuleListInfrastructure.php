@@ -30,10 +30,10 @@ class ModuleListInfrastructure implements ModuleListInfrastructureInterface
             throw new ModulesNotFoundException();
         }
 
-        $modulesArray = [];
+        $moduleDatatypes = [];
         foreach ($moduleConfigurations as $moduleConfig) {
-            $modulesArray[] = $this->moduleDataTypeFactory->createFromModuleConfiguration($moduleConfig);
+            $moduleDatatypes[] = $this->moduleDataTypeFactory->createFromModuleConfiguration($moduleConfig);
         }
-        return $modulesArray;
+        return $moduleDatatypes;
     }
 }

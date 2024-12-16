@@ -25,37 +25,24 @@ class ThemeListServiceTest extends TestCase
 {
     public function testGetThemeListWithFilters(): void
     {
-        $theme1 = $this->createStub(Theme::class);
-        $theme2 = $this->createStub(Theme::class);
-        $themes = [$theme1, $theme2];
         $themeDataType1 = $this->createStub(ThemeDataTypeInterface::class);
         $themeDataType2 = $this->createStub(ThemeDataTypeInterface::class);
-        $themeList = [$themeDataType1, $themeDataType2];
+        $themes = [$themeDataType1, $themeDataType2];
         $filteredThemeList = [$themeDataType1];
 
         $themeListInfrastructureMock = $this->createMock(ThemeListInfrastructureInterface::class);
         $themeListInfrastructureMock->method('getThemes')->willReturn($themes);
 
-        $themeDataTypeFactoryMock = $this->createMock(ThemeDataTypeFactoryInterface::class);
-        $themeDataTypeFactoryMock
-            ->expects($this->exactly(2))
-            ->method('createFromCoreTheme')
-            ->willReturnMap([
-                [$theme1, $themeDataType1],
-                [$theme2, $themeDataType2]
-            ]);
-
         $componentFiltersStub = $this->createStub(ComponentFiltersInterface::class);
 
         $componentFilterServiceMock = $this->createMock(ComponentFilterServiceInterface::class);
         $componentFilterServiceMock->method('filterComponents')
-            ->with($themeList, $componentFiltersStub)
+            ->with($themes, $componentFiltersStub)
             ->willReturn($filteredThemeList);
 
         $themeListService = new ThemeListService(
             themeListInfrastructure: $themeListInfrastructureMock,
             componentFilterService:  $componentFilterServiceMock,
-            themeDataTypeFactory:  $themeDataTypeFactoryMock
         );
         $actualThemes = $themeListService->getThemeList($componentFiltersStub);
         $this->assertSame($filteredThemeList, $actualThemes);
