@@ -9,8 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Integration\Infrastructure;
 
-use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure;
 
@@ -28,7 +29,7 @@ class ThemeListInfrastructureTest extends IntegrationTestCase
         $this->assertIsArray($themesArray);
 
         foreach ($themesArray as $theme) {
-            $this->assertInstanceOf(Theme::class, $theme);
+            $this->assertInstanceOf(ThemeDataTypeInterface::class, $theme);
         }
     }
 
@@ -36,6 +37,7 @@ class ThemeListInfrastructureTest extends IntegrationTestCase
     {
         return new ThemeListInfrastructure(
             $this->get(CoreThemeFactoryInterface::class),
+            $this->get(ThemeDataTypeFactoryInterface::class)
         );
     }
 }
