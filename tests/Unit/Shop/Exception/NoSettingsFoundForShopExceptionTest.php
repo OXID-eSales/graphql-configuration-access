@@ -7,13 +7,14 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Exception;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shop\Exception;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\NoSettingsFoundForShopException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\NoSettingsFoundForShopException
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\NoSettingsFoundException
  */
 class NoSettingsFoundForShopExceptionTest extends TestCase
 {

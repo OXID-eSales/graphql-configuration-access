@@ -30,32 +30,20 @@ class ModuleListServiceTest extends UnitTestCase
         $moduleStub2 = $this->createStub(ModuleDataTypeInterface::class);
         $filteredModules = [$moduleStub1];
 
-        $moduleConfigStub1 = $this->createStub(ModuleConfiguration::class);
-        $moduleConfigStub2 = $this->createStub(ModuleConfiguration::class);
-        $modulesConfigurations = [$moduleConfigStub1, $moduleConfigStub2];
+        $modulesConfigurations = [$moduleStub1, $moduleStub2];
 
         $moduleListInfrastructureMock = $this->createMock(ModuleListInfrastructureInterface::class);
-        $moduleListInfrastructureMock->method('getModuleConfigurations')
+        $moduleListInfrastructureMock->method('getModuleList')
             ->willReturn($modulesConfigurations);
 
         $componentFilterServiceMock = $this->createMock(ComponentFilterServiceInterface::class);
         $componentFilterServiceMock->method('filterComponents')
-            ->with([$moduleStub1, $moduleStub2], $filtersStub)
+            ->with($modulesConfigurations, $filtersStub)
             ->willReturn($filteredModules);
-
-        $moduleDataTypeFactoryMock = $this->createMock(ModuleDataTypeFactoryInterface::class);
-        $moduleDataTypeFactoryMock
-            ->expects($this->exactly(2))
-            ->method('createFromModuleConfiguration')
-            ->willReturnMap([
-                [$moduleConfigStub1, $moduleStub1],
-                [$moduleConfigStub2, $moduleStub2]
-            ]);
 
         $sut = new ModuleListService(
             moduleListInfrastructure: $moduleListInfrastructureMock,
             componentFilterService: $componentFilterServiceMock,
-            moduleDataTypeFactory: $moduleDataTypeFactoryMock
         );
 
         $actualModules = $sut->getModuleList($filtersStub);

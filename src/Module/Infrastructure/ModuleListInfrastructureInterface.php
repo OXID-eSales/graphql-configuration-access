@@ -7,14 +7,14 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModulesNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
 interface ModuleListInfrastructureInterface
 {
     /**
-     * @return array<ModuleConfiguration>
      * @throws ModulesNotFoundException
+     * @return array<ModuleDataTypeInterface>
      */
-    public function getModuleConfigurations(): array;
+    public function getModuleList(): array;
 }

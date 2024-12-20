@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New `parentTheme` and `parentVersions` fields in the `ThemeDataType`
 
+### Changed
+- Move ModuleDataType generation to Infrastructure
+- Move ThemeDataType generation to Infrastructure
+
 ## [1.2.0] - 2024-11-27
 This is the stable release of v1.2.0. No changes have been made since v1.2.0-rc.1.
 
@@ -40,6 +44,7 @@ This is stable release for v1.1.0. No changes have been made since v1.1.0-rc.1.
 
 - Initial release
 
+[2.0.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.2.0...b-7.2.x
 [1.2.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.2.0-rc.1...v1.2.0
 [1.2.0-rc.1]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.1.0...v1.2.0-rc.1
 [1.1.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.1.0-rc.1...v1.1.0
