@@ -51,6 +51,13 @@
             "OxidEsales\\GraphQL\\ConfigurationAccess\\Tests\\": "tests"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "OxidEsales\\GraphQL\\StorefrontAdministration\\Tests\\": "./tests",
+            "OxidEsales\\EshopCommunity\\Tests\\": "./vendor/oxid-esales/oxideshop-ce/tests",
+            "OxidEsales\\GraphQL\\Base\\Tests\\": "./vendor/oxid-esales/graphql-base/tests"
+        }
+    },
     "scripts": {
         "post-install-cmd": "git-hooks/init.sh",
         "post-update-cmd": "git-hooks/init.sh",
