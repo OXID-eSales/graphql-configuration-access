@@ -47,8 +47,8 @@ enum FieldType {
 Switch to the shop root directory (the file `composer.json` and the directories `source/` and `vendor/` are located there).
 
 ```bash
-# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 1.x version
-$ composer require oxid-esales/graphql-configuration-access ^1.2.0
+# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 2.x version
+$ composer require oxid-esales/graphql-configuration-access ^2.0.0
 ```
 
 If you didn't have the `oxid-esales/graphql-base` module installed, composer will do that for you.

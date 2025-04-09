@@ -8,7 +8,7 @@ jobs:
   configuration_module_php82_mysql80:
     uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/7.2.x.yaml,~/defaults/php8.2_mysql8.0_only.yaml,~/graphql-configuration-access_light.yaml'
+      testplan: '~/defaults/7.3.x.yaml,~/defaults/php8.2_mysql8.0_only.yaml,~/graphql-configuration-access_light.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
@@ -33,5 +33,5 @@ jobs:
           github_user: ${{ secrets.CI_USER }}
           github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
           workflow_file_name: configuration_access_workflow.yaml
-          ref: "b-7.2.x"
+          ref: "b-7.3.x-prepare-for-7.3-OXDEV-8626"
           client_payload: "{\"limit\": \"PHP8.2/MySQL8.0\", \"edition\": \"ee\", \"ref\": \"${{ github.ref_name }}\"}"
