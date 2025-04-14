@@ -15,7 +15,7 @@ install:
                     "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
                     "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
                     "oxid-esales/developer-tools": "{{ .Data.global.composer.dev_ref }}"
-                },
+                }
             }
     custom_script_container: |
         perl -pi -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1' source/.htaccess
