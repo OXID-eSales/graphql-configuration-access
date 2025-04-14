@@ -64,7 +64,7 @@ sonarcloud:
     project_key: 'OXID-eSales_graphql-configuration-access'
     project_name: 'oxid-esales/graphql-configuration-access'
     git:
-        repository: 'oxid-esales/graphql-storefront'
+        repository: 'oxid-esales/graphql-configuration-access'
         ref: {{.Data.custom.module_ref}}
     parameters: |
         -Dsonar.language=php \
