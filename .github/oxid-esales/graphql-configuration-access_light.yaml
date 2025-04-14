@@ -1,6 +1,11 @@
-install_shop_with_modules:
+install:
     cache:
         prepared_shop: false
+    git:
+        repository: 'OXID-eSales/graphql-configuration-access'
+        ref: &ref '{{ .Github.RefName }}'
+        shop_url: 'https://github.com/OXID-eSales/graphql-configuration-access.git'
+        shop_ref: *ref
     composer:
         transform: |
             {
@@ -21,10 +26,19 @@ install_shop_with_modules:
             }
     custom_script_container: |
         perl -pi -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1' source/.htaccess
+
         vendor/bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
+        vendor/bin/oe-console oe:module:install ./
+        vendor/bin/oe-eshop-doctrine_migration migrations:migrate
+        vendor/bin/oe-eshop-db_views_generate
+
         vendor/bin/oe-console oe:module:activate oe_graphql_base
         vendor/bin/oe-console oe:module:activate oe_graphql_configuration_access
         vendor/bin/oe-console oe:theme:activate apex
+
+install_shop_with_modules:
+    composer:
+        root_url: ''
 
 runscript: &runscript
     matrix:
@@ -37,7 +51,7 @@ runscript: &runscript
     composer:
         early: true
     configuration_module:
-        path: 'vendor/oxid-esales/graphql-configuration-access'
+        path: ''
 
 runslim:
     <<: *runscript
@@ -53,9 +67,12 @@ runslim:
 sonarcloud:
     matrix:
         testplan: '["-"]'
-    strip_path: '/var/www/vendor/oxid-esales/graphql-configuration-access/'
+    strip_path: '/var/www/'
     project_key: 'OXID-eSales_graphql-configuration-access'
     project_name: 'oxid-esales/graphql-configuration-access'
+    git:
+        repository: 'oxid-esales/graphql-storefront'
+        ref: {{.Data.custom.module_ref}}
     parameters: |
         -Dsonar.language=php \
         -Dsonar.scm.provider=git \
