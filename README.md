@@ -40,7 +40,7 @@ enum FieldType {
 
 ## Branch compatibility
 
-* b-7.3.x branch is compatible with OXID eShop compilation b-7.3.x (which uses `graphql-base` b-7.3.x branch)
+* 2.1.x versions (or b-7.3.x branch) are compatible with OXID eShop compilation b-7.3.x (which uses `graphql-base` 11.x version resp. b-7.3.x branch)
 * 1.2.x + 2.0.x versions (or b-7.2.x branch) are compatible with OXID eShop compilation b-7.2.x (which uses `graphql-base` 10.x version resp. b-7.2.x branch)
 * 1.1.x versions (or b-7.1.x branch) are compatible with OXID eShop compilation b-7.1.x (which uses `graphql-base` 9.x version resp. b-7.1.x branch)
 
