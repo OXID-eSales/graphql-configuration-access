@@ -40,6 +40,7 @@ enum FieldType {
 
 ## Branch compatibility
 
+* b-7.4.x branch is compatible with OXID eShop compilation b-7.4.x (which uses `graphql-base` b-7.4.x branch)
 * 2.1.x versions (or b-7.3.x branch) are compatible with OXID eShop compilation b-7.3.x (which uses `graphql-base` 11.x version resp. b-7.3.x branch)
 * 1.2.x + 2.0.x versions (or b-7.2.x branch) are compatible with OXID eShop compilation b-7.2.x (which uses `graphql-base` 10.x version resp. b-7.2.x branch)
 * 1.1.x versions (or b-7.1.x branch) are compatible with OXID eShop compilation b-7.1.x (which uses `graphql-base` 9.x version resp. b-7.1.x branch)
@@ -125,7 +126,7 @@ echo MyProject && git clone https://github.com/OXID-eSales/docker-eshop-sdk.git 
 
 2. Clone the repository to the source directory
 ```shell
-git clone --recurse-submodules https://github.com/OXID-eSales/graphql-configuration-access.git --branch=b-7.3.x ./source
+git clone --recurse-submodules https://github.com/OXID-eSales/graphql-configuration-access.git --branch=b-7.4.x ./source
 ```
 
 3. Run the recipe to setup the development environment
