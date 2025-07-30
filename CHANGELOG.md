@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2025-07-30
+
+### Fixed
+- Use `deptrac/deptrac`as new deptrac composer package. The configuration was adjusted.
+
 ## [2.1.0] - 2025-06-11
 This is stable release for v2.1.0. No changes have been made since v2.1.0-rc.1.
 
@@ -53,6 +58,7 @@ This is stable release for v1.1.0. No changes have been made since v1.1.0-rc.1.
 
 - Initial release
 
+[2.1.1]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v2.1.0-rc.1...v2.1.0
 [2.1.0-rc.1]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v2.0.0...v2.1.0-rc.1
 [2.0.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.2.0...v2.0.0
