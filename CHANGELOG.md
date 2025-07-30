@@ -58,6 +58,7 @@ This is stable release for v1.1.0. No changes have been made since v1.1.0-rc.1.
 
 - Initial release
 
+[2.1.1]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v2.1.0-rc.1...v2.1.0
 [2.1.0-rc.1]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v2.0.0...v2.1.0-rc.1
 [2.0.0]: https://github.com/OXID-eSales/graphql-configuration-access/compare/v1.2.0...v2.0.0
