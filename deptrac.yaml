@@ -19,11 +19,11 @@ deptrac:
     - name: InternalService
       collectors:
         - type: classLike
-          regex: OxidEsales\\Eshop.*\\Internal\\.*
+          value: OxidEsales\\Eshop.*\\Internal\\.*
     - name: Core
       collectors:
         - type: classLike
-          regex: OxidEsales\\Eshop(\w+)?\\(?!Internal)
+          value: OxidEsales\\Eshop(\w+)?\\(?!Internal)
 
   ruleset:
     Controller:
