@@ -3,7 +3,7 @@
 namespace OxidEsales\GraphQL\ConfigurationAccess\Shared\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFiltersInterface;
 
 interface ComponentFilterServiceInterface
 {

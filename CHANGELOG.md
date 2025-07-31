@@ -4,10 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - Unreleased
+
+### Added
+`TitleFilter` and `ActiveFilter` for separating functionality of `ComponentFilters`
+
+### Changed
+- `ComponentFilters` is now in `Filter` subnamespace of `Datatype` namespace
+
 ## [2.1.1] - 2025-07-30
 
 ### Fixed
-- Use `deptrac/deptrac`as new deptrac composer package. The configuration was adjusted.
+- Use `deptrac/deptrac` as new deptrac composer package. The configuration was adjusted.
 
 ## [2.1.0] - 2025-06-11
 This is stable release for v2.1.0. No changes have been made since v2.1.0-rc.1.

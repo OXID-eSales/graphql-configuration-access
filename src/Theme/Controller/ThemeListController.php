@@ -9,8 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\Logged;

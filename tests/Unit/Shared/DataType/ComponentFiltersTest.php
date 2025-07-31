@@ -9,175 +9,97 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
-use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
-use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ActiveFilter;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\TitleFilter;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 /**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters
+ * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters
  */
 class ComponentFiltersTest extends TestCase
 {
-    /** @dataProvider componentByTitleDataProvider */
-    public function testFilterComponentByTitle(
-        bool $expectedResult,
-    ): void {
+    /** @dataProvider filtersMatchesDataProvider */
+    public function testFilterComponent(bool $titleFilterResult, bool $activeFilterResult, bool $result): void
+    {
+        $component = $this->createStub(ComponentDataTypeInterface::class);
+        $titleFilterMock = $this->createMock(TitleFilter::class);
+        $titleFilterMock->expects($this->once())->method('componentMatches')
+            ->with($component)
+            ->willReturn($titleFilterResult);
+        $activeFilterMock = $this->createMock(ActiveFilter::class);
+        $activeFilterMock->expects(($titleFilterResult ? $this->once() : $this->never()))->method('componentMatches')
+            ->with($component)
+            ->willReturn($activeFilterResult);
 
-        $title = uniqid();
-        $stringFilterMock = $this->createMock(StringFilter::class);
-        $stringFilterMock->method('matches')->with($title)->willReturn($expectedResult);
-
-        $componentFilters = new ComponentFilters(titleFilter: $stringFilterMock);
-        $filterComponentByTitleMethod = $this->getComponentFiltersMethod('filterComponentByTitle');
-
-        $this->assertEquals($expectedResult, $filterComponentByTitleMethod->invoke($componentFilters, $title));
+        $componentFilters = new ComponentFilters(titleFilter: $titleFilterMock, activeFilter: $activeFilterMock);
+        $this->assertSame($result, $componentFilters->filterComponent($component));
     }
 
-    public static function componentByTitleDataProvider(): \Generator
+    public function testFilterComponentWithOneFilter(): void
     {
-        yield "filter component by title matches" => [
-            'expectedResult' => true,
+        $isMatching = (bool)random_int(0, 1);
+        $component = $this->createStub(ComponentDataTypeInterface::class);
+        $activeFilterMock = $this->createMock(ActiveFilter::class);
+        $activeFilterMock->expects($this->once())->method('componentMatches')->with($component)->willReturn(
+            $isMatching
+        );
+
+        $componentFilters = new ComponentFilters(titleFilter: null, activeFilter: $activeFilterMock);
+        $this->assertSame($isMatching, $componentFilters->filterComponent($component));
+    }
+
+    public static function filtersMatchesDataProvider(): \Generator
+    {
+        yield "both filters matches" => [
+            'titleFilterResult' => true,
+            'activeFilterResult' => true,
+            'result' => true
         ];
 
-        yield "filter component by title do not matches" => [
-            'expectedResult' => false,
+        yield "only title filter matches" => [
+            'titleFilterResult' => true,
+            'activeFilterResult' => false,
+            'result' => false
+        ];
+
+        yield "only active filter matches" => [
+            'titleFilterResult' => false,
+            'activeFilterResult' => true,
+            'result' => false
+        ];
+
+        yield "both filters are not matching" => [
+            'titleFilterResult' => false,
+            'activeFilterResult' => false,
+            'result' => false
         ];
     }
 
     public function testComponentFiltersWithoutFilter(): void
     {
+        $component = $this->createStub(ComponentDataTypeInterface::class);
         $componentFilters = new ComponentFilters();
-        $filterComponentByTitleMethod = $this->getComponentFiltersMethod('filterComponentByTitle');
-        $filterComponentByStatusMethod = $this->getComponentFiltersMethod('filterComponentByStatus');
 
-        $this->assertTrue($filterComponentByTitleMethod->invoke($componentFilters, uniqid()));
-        $this->assertTrue($filterComponentByStatusMethod->invoke($componentFilters, (bool)random_int(0, 1)));
-    }
-
-    /** @dataProvider componentByStatusDataProvider */
-    public function testFilterComponentByStatus(
-        bool $filterStatus,
-        bool $actualStatus,
-        bool $expectedResult
-    ): void {
-        $boolFilterStub = $this->createConfiguredStub(BoolFilter::class, [
-            'equals' => $filterStatus
-        ]);
-
-        $componentFilters = new ComponentFilters(activeFilter: $boolFilterStub);
-        $filterComponentByStatusMethod = $this->getComponentFiltersMethod('filterComponentByStatus');
-        $this->assertEquals($expectedResult, $filterComponentByStatusMethod->invoke($componentFilters, $actualStatus));
-    }
-
-    public static function componentByStatusDataProvider(): \Generator
-    {
-        yield "filter component by true with same module status" => [
-            'filterStatus' => true,
-            'actualStatus' => true,
-            'expectedResult' => true
-        ];
-
-        yield "filter component by false with same module status" => [
-            'filterStatus' => false,
-            'actualStatus' => false,
-            'expectedResult' => true
-        ];
-
-        yield "filter component by true with different module status" => [
-            'filterStatus' => true,
-            'actualStatus' => false,
-            'expectedResult' => false
-        ];
-
-        yield "filter component by false with different theme status" => [
-            'filterStatus' => false,
-            'actualStatus' => true,
-            'expectedResult' => false
-        ];
-    }
-
-    /** @dataProvider filterProvider */
-    public function testFilterComponent(
-        string $title,
-        bool $isActive,
-        StringFilter $stringFilter,
-        BoolFilter $boolFilter,
-        bool $expectedResult
-    ): void {
-        $sut = new ComponentFilters($stringFilter, $boolFilter);
-
-        $componentStub = $this->createConfiguredStub(ComponentDataTypeInterface::class, [
-            'getTitle' => $title,
-            'isActive' => $isActive,
-        ]);
-        $result = $sut->filterComponent($componentStub);
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    public static function filterProvider(): \Generator
-    {
-        yield "title and active-filter are true" => [
-            'title' => 'testTitle',
-            'isActive' => false,
-            'stringFilter' => new StringFilter(equals: 'testTitle'),
-            'boolFilter' => new BoolFilter(false),
-            'expectedResult' => true
-        ];
-
-        yield "title and active-filter are false" => [
-            'title' => 'testTitle',
-            'isActive' => true,
-            'stringFilter' => new StringFilter(equals: 'notTestTitle'),
-            'boolFilter' => new BoolFilter(false),
-            'expectedResult' => false
-        ];
-
-        yield "title-filter is true but active-filter are false" => [
-            'title' => 'testTitle',
-            'isActive' => true,
-            'stringFilter' => new StringFilter(equals: 'testTitle'),
-            'boolFilter' => new BoolFilter(false),
-            'expectedResult' => false
-        ];
-
-        yield "title-filter is false but active-filter are true" => [
-            'title' => 'testTitle',
-            'isActive' => true,
-            'stringFilter' => new StringFilter(equals: 'notTestTitle'),
-            'boolFilter' => new BoolFilter(true),
-            'expectedResult' => false
-        ];
+        $this->assertTrue($componentFilters->filterComponent($component));
     }
 
     public function testCreateModuleFilterList(): void
     {
-        $stringFilter = $this->createStub(StringFilter::class);
-        $boolFilter = $this->createStub(BoolFilter::class);
+        $titleFilter = $this->createStub(TitleFilter::class);
+        $activeFilter = $this->createStub(ActiveFilter::class);
 
-        $expectedComponentFilters = new ComponentFilters(titleFilter: $stringFilter, activeFilter: $boolFilter);
+        $expectedComponentFilters = new ComponentFilters(titleFilter: $titleFilter, activeFilter: $activeFilter);
 
-        $componentFilters = ComponentFilters::createComponentFilters($stringFilter, $boolFilter);
+        $componentFilters = ComponentFilters::createComponentFilters($titleFilter, $activeFilter);
         $this->assertEquals($expectedComponentFilters, $componentFilters);
     }
 
     public function testCreateModuleFilterListWithNull(): void
     {
         $expectedComponentFilters = new ComponentFilters();
-        $componentFilters = ComponentFilters::createComponentFilters(null, null);
+        $componentFilters = ComponentFilters::createComponentFilters();
         $this->assertEquals($expectedComponentFilters, $componentFilters);
-    }
-
-    private static function getComponentFiltersMethod($name)
-    {
-        /*
-         * TODO: This should be removed if ComponentFilters::filterComponentByTitle and filterComponentByStatus
-         * were refactored
-         */
-        $class = new ReflectionClass(ComponentFilters::class);
-        $method = $class->getMethod($name);
-        return $method;
     }
 }

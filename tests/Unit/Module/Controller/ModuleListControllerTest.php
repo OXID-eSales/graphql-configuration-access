@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Controller;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleListController;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFilters;
-use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters;
+use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleListController

@@ -7,8 +7,8 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFiltersInterface;
 
 interface ModuleListServiceInterface
 {

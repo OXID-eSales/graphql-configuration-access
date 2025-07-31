@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterService;
 use PHPUnit\Framework\TestCase;
 

@@ -9,14 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactoryInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListService;
-use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructureInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructureInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListService;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListService

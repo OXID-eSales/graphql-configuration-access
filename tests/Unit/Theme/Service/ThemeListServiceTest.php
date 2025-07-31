@@ -9,14 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterServiceInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructureInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService;
 use PHPUnit\Framework\TestCase;
-use OxidEsales\Eshop\Core\Theme;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService

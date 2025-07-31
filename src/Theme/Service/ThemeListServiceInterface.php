@@ -7,7 +7,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Theme\Service;
 
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentFiltersInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeInterface;
 
 interface ThemeListServiceInterface
