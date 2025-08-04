@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
+namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType\Filter;
 
+use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
+use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ActiveFilter;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters;
-use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\TitleFilter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,31 +23,21 @@ class ComponentFiltersTest extends TestCase
     /** @dataProvider filtersMatchesDataProvider */
     public function testFilterComponent(bool $titleFilterResult, bool $activeFilterResult, bool $result): void
     {
-        $component = $this->createStub(ComponentDataTypeInterface::class);
-        $titleFilterMock = $this->createMock(TitleFilter::class);
-        $titleFilterMock->expects($this->once())->method('componentMatches')
-            ->with($component)
+        $component = $this->createConfiguredStub(ComponentDataTypeInterface::class, [
+            'getTitle' => $filteredTitle = uniqid(),
+            'isActive' => $filteredIsActive = (bool)random_int(0, 1),
+        ]);
+        $titleFilterMock = $this->createMock(StringFilter::class);
+        $titleFilterMock->expects($this->once())->method('matches')
+            ->with($filteredTitle)
             ->willReturn($titleFilterResult);
-        $activeFilterMock = $this->createMock(ActiveFilter::class);
-        $activeFilterMock->expects(($titleFilterResult ? $this->once() : $this->never()))->method('componentMatches')
-            ->with($component)
+        $activeFilterMock = $this->createMock(BoolFilter::class);
+        $activeFilterMock->expects(($titleFilterResult ? $this->once() : $this->never()))->method('matches')
+            ->with($filteredIsActive)
             ->willReturn($activeFilterResult);
 
         $componentFilters = new ComponentFilters(titleFilter: $titleFilterMock, activeFilter: $activeFilterMock);
         $this->assertSame($result, $componentFilters->filterComponent($component));
-    }
-
-    public function testFilterComponentWithOneFilter(): void
-    {
-        $isMatching = (bool)random_int(0, 1);
-        $component = $this->createStub(ComponentDataTypeInterface::class);
-        $activeFilterMock = $this->createMock(ActiveFilter::class);
-        $activeFilterMock->expects($this->once())->method('componentMatches')->with($component)->willReturn(
-            $isMatching
-        );
-
-        $componentFilters = new ComponentFilters(titleFilter: null, activeFilter: $activeFilterMock);
-        $this->assertSame($isMatching, $componentFilters->filterComponent($component));
     }
 
     public static function filtersMatchesDataProvider(): \Generator
@@ -77,6 +67,22 @@ class ComponentFiltersTest extends TestCase
         ];
     }
 
+    public function testFilterComponentWithOneFilter(): void
+    {
+        $isMatching = (bool)random_int(0, 1);
+        $component = $this->createConfiguredStub(
+            ComponentDataTypeInterface::class,
+            ['isActive' => $isActive = (bool)random_int(0, 1)]
+        );
+        $activeFilterMock = $this->createMock(BoolFilter::class);
+        $activeFilterMock->expects($this->once())->method('matches')->with($isActive)->willReturn(
+            $isMatching
+        );
+
+        $componentFilters = new ComponentFilters(titleFilter: null, activeFilter: $activeFilterMock);
+        $this->assertSame($isMatching, $componentFilters->filterComponent($component));
+    }
+
     public function testComponentFiltersWithoutFilter(): void
     {
         $component = $this->createStub(ComponentDataTypeInterface::class);
@@ -87,8 +93,8 @@ class ComponentFiltersTest extends TestCase
 
     public function testCreateModuleFilterList(): void
     {
-        $titleFilter = $this->createStub(TitleFilter::class);
-        $activeFilter = $this->createStub(ActiveFilter::class);
+        $titleFilter = $this->createStub(StringFilter::class);
+        $activeFilter = $this->createStub(BoolFilter::class);
 
         $expectedComponentFilters = new ComponentFilters(titleFilter: $titleFilter, activeFilter: $activeFilter);
 
