@@ -1,74 +1,68 @@
 install:
-    cache:
-        prepared_shop: false
-    git:
-        repository: 'OXID-eSales/graphql-configuration-access'
-        ref: &ref '{{ .Github.RefName }}'
-        shop_url: 'https://github.com/OXID-eSales/graphql-configuration-access.git'
-        shop_ref: *ref
-    composer:
-        transform: |
-            {
-                "require": {
-                    "oxid-esales/oxideshop-ce": "{{ .Data.global.composer.dev_ref }}",
-                    "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
-                    "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-                    "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
-                    "oxid-esales/developer-tools": "{{ .Data.global.composer.dev_ref }}"
-                }
-            }
-    custom_script_container: |
-        perl -pi -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1' source/.htaccess
+  cache:
+    prepared_shop: false
+  composer:
+    root_url: ''
+    transform: |
+      {
+        "require": {
+          "oxid-esales/oxideshop-ce": "{{ .Data.install.composer.dev_ref }}",
+          "oxid-esales/twig-component": "{{ .Data.install.composer.dev_ref }}",
+          "oxid-esales/twig-admin-theme": "{{ .Data.install.composer.dev_ref }}",
+          "oxid-esales/apex-theme": "{{ .Data.install.composer.dev_ref }}",
+          "oxid-esales/developer-tools": "{{ .Data.install.composer.dev_ref }}"
+        }
+      }
+  custom_script_container: |
+    perl -pi -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1' source/.htaccess
 
-        vendor/bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
-        vendor/bin/oe-console oe:module:install ./
-        vendor/bin/oe-eshop-doctrine_migration migrations:migrate
-        vendor/bin/oe-eshop-db_views_generate
+    vendor/bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
+    vendor/bin/oe-console oe:module:install ./
+    vendor/bin/oe-eshop-doctrine_migration migrations:migrate
+    vendor/bin/oe-eshop-db_views_generate
 
-        vendor/bin/oe-console oe:module:activate oe_graphql_base
-        vendor/bin/oe-console oe:module:activate oe_graphql_configuration_access
-        vendor/bin/oe-console oe:theme:activate apex
-
-install_shop_with_modules:
-    composer:
-        root_url: ''
+    vendor/bin/oe-console oe:module:activate oe_graphql_base
+    vendor/bin/oe-console oe:module:activate oe_graphql_configuration_access
+    vendor/bin/oe-console oe:theme:activate apex
 
 runscript: &runscript
-    matrix:
-        script: |
-            [
-              "configuration_module:phpunit",
-              "configuration_module:phpintegration",
-              "configuration_module:codeception"
-            ]
-    composer:
-        early: true
-    configuration_module:
-        path: ''
+  matrix:
+    script: |
+      [
+        "report:tests-unit",
+        "report:tests-integration",
+        "no_report:tests-codeception"
+      ]
+  report:
+    path: ''
+  no_report:
+    path: ''
+    coverage_prefix: ''
 
 runslim:
-    <<: *runscript
-    matrix:
-        script: |
-            [
-              "configuration_module:phpcs-report",
-              "configuration_module:phpstan-report",
-              "configuration_module:phpmd-report",
-              "configuration_module:deptrac",
-            ]
+  <<: *runscript
+  matrix:
+    script: |
+      [
+        "report:phpstan-report",
+        "no_report:phpmd-report",
+        "no_report:phpcs-report",
+        "no_report:deptrac"
+      ]
 
 sonarcloud:
-    matrix:
-        testplan: '["-"]'
-    strip_path: '/var/www/'
-    project_key: 'OXID-eSales_graphql-configuration-access'
-    project_name: 'oxid-esales/graphql-configuration-access'
-    parameters: |
-        -Dsonar.language=php \
-        -Dsonar.scm.provider=git \
-        -Dsonar.sources=src \
-        -Dsonar.tests=tests \
-        -Dsonar.php.phpstan.reportPaths=coverage-reports/phpstan.report.json
+  matrix:
+    testplan: '["-"]'
+  strip_path: '/var/www/'
+  organization: 'oxid-esales'
+  project_key: 'OXID-eSales_graphql-configuration-access'
+  project_name: 'oxid-esales/graphql-configuration-access'
+  target_branch: 'b-7.4.x'
+  parameters: >
+    -Dsonar.language=php
+    -Dsonar.scm.provider=git
+    -Dsonar.sources=src
+    -Dsonar.tests=tests
 
 finish:
-    slack_title: 'Configuration Access module ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
+  slack_title: 'Configuration Access module ({{ .Data.install.git.ref }}) by {{ .Github.Actor }}'
