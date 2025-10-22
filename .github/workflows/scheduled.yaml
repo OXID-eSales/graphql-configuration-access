@@ -1,8 +1,7 @@
 name: schedule
 
 on:
-  schedule:
-    - cron: '50 4 */7 * *'
+  push: {}
 
 jobs:
   call_matrix:
@@ -33,7 +32,7 @@ jobs:
           github_user: ${{ secrets.CI_USER }}
           github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
           workflow_file_name: configuration_access_workflow.yaml
-          ref: "b-7.4.x"
+          ref: "b-7.4.x-compatibility-with-7.4.x-OXDEV-8815"
           client_payload: "{\"limit\": \"PHP8.2/MySQL8.0\", \"edition\": \"pe\", \"ref\": \"${{ github.ref_name }}\"}"
 
   push_module_ee:
@@ -47,5 +46,5 @@ jobs:
           github_user: ${{ secrets.CI_USER }}
           github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
           workflow_file_name: configuration_access_workflow.yaml
-          ref: "b-7.4.x"
+          ref: "b-7.4.x-compatibility-with-7.4.x-OXDEV-8815"
           client_payload: "{\"limit\": \"PHP8.3/MySQL8.0\", \"edition\": \"ee\", \"ref\": \"${{ github.ref_name }}\"}"
