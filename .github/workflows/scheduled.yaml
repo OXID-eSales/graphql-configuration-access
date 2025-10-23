@@ -3,7 +3,6 @@ name: schedule
 on:
   push: {}
 
-
 jobs:
   call_matrix:
     uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v5
