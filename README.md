@@ -115,7 +115,7 @@ $ composer codeception
 # Development installation on OXID eShop SDK
 
 The installation instructions below are shown for the current [SDK](https://github.com/OXID-eSales/docker-eshop-sdk)
-for shop 7.3. Make sure your system meets the requirements of the SDK.
+for shop 7.4. Make sure your system meets the requirements of the SDK.
 
 0. Ensure all docker containers are down to avoid port conflicts
 
