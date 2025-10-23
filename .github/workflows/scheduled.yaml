@@ -33,7 +33,7 @@ jobs:
           github_token: ${{ secrets.GH_CI_JENKINS_TOKEN }}
           workflow_file_name: configuration_access_workflow.yaml
           ref: "b-7.4.x-compatibility-with-7.4.x-OXDEV-8815"
-          client_payload: "{\"limit\": \"PHP8.3/MariaDb11\", \"edition\": \"pe\", \"ref\": \"${{ github.ref_name }}\"}"
+          client_payload: "{\"limit\": \"PHP8.3/mariadb11\", \"edition\": \"pe\", \"ref\": \"${{ github.ref_name }}\"}"
 
   push_module_ee:
     runs-on: ubuntu-latest
