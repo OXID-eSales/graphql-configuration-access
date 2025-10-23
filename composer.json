@@ -41,8 +41,7 @@
         "mikey179/vfsstream": "^1.6",
         "codeception/codeception": "^5.1",
         "oxid-esales/codeception-modules": "dev-b-7.4.x",
-        "codeception/module-asserts": "^3.0",
-        "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-b-7.4.x"
+        "codeception/module-asserts": "^3.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
