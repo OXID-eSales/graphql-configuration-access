@@ -1,5 +1,5 @@
 
-[![Development](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml/badge.svg?branch=b-7.0.x)](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml)
+[![Development](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml/badge.svg?branch=b-7.4.x)](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml)
 [![Latest Version](https://img.shields.io/packagist/v/OXID-eSales/graphql-configuration-access?logo=composer&label=latest&include_prereleases&color=orange)](https://packagist.org/packages/oxid-esales/graphql-configuration-access)
 [![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/graphql-configuration-access)](https://github.com/oxid-esales/graphql-configuration-access)
 
@@ -40,7 +40,7 @@ enum FieldType {
 
 ## Branch compatibility
 
-* b-7.4.x branch is compatible with OXID eShop compilation b-7.4.x (which uses `graphql-base` b-7.4.x branch)
+* 3.0.x versions (or b-7.4.x branch) are compatible with OXID eShop compilation b-7.4.x (which uses `graphql-base` 12.x version resp. b-7.4.x branch)
 * 2.1.x versions (or b-7.3.x branch) are compatible with OXID eShop compilation b-7.3.x (which uses `graphql-base` 11.x version resp. b-7.3.x branch)
 * 1.2.x + 2.0.x versions (or b-7.2.x branch) are compatible with OXID eShop compilation b-7.2.x (which uses `graphql-base` 10.x version resp. b-7.2.x branch)
 * 1.1.x versions (or b-7.1.x branch) are compatible with OXID eShop compilation b-7.1.x (which uses `graphql-base` 9.x version resp. b-7.1.x branch)
@@ -54,8 +54,8 @@ enum FieldType {
 Switch to the shop root directory (the file `composer.json` and the directories `source/` and `vendor/` are located there).
 
 ```bash
-# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 2.x version
-$ composer require oxid-esales/graphql-configuration-access ^2.0.0
+# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 3.x version for OXID 7.4
+$ composer require oxid-esales/graphql-configuration-access ^3.0.0
 ```
 
 If you didn't have the `oxid-esales/graphql-base` module installed, composer will do that for you.
