@@ -40,6 +40,7 @@ enum FieldType {
 
 ## Branch compatibility
 
+* 4.x versions (or b-7.5.x branch) are compatible with OXID eShop compilation b-7.5.x (which uses `graphql-base` 13.x version resp. b-7.5.x branch)
 * 3.0.x versions (or b-7.4.x branch) are compatible with OXID eShop compilation b-7.4.x (which uses `graphql-base` 12.x version resp. b-7.4.x branch)
 * 2.1.x versions (or b-7.3.x branch) are compatible with OXID eShop compilation b-7.3.x (which uses `graphql-base` 11.x version resp. b-7.3.x branch)
 * 1.2.x + 2.0.x versions (or b-7.2.x branch) are compatible with OXID eShop compilation b-7.2.x (which uses `graphql-base` 10.x version resp. b-7.2.x branch)
@@ -54,8 +55,8 @@ enum FieldType {
 Switch to the shop root directory (the file `composer.json` and the directories `source/` and `vendor/` are located there).
 
 ```bash
-# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 3.x version for OXID 7.4
-$ composer require oxid-esales/graphql-configuration-access ^3.0.0
+# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 4.x version for OXID 7.5
+$ composer require oxid-esales/graphql-configuration-access ^4.0.0
 ```
 
 If you didn't have the `oxid-esales/graphql-base` module installed, composer will do that for you.
@@ -115,7 +116,7 @@ $ composer codeception
 # Development installation on OXID eShop SDK
 
 The installation instructions below are shown for the current [SDK](https://github.com/OXID-eSales/docker-eshop-sdk)
-for shop 7.4. Make sure your system meets the requirements of the SDK.
+for shop 7.5. Make sure your system meets the requirements of the SDK.
 
 0. Ensure all docker containers are down to avoid port conflicts
 
@@ -126,7 +127,7 @@ echo MyProject && git clone https://github.com/OXID-eSales/docker-eshop-sdk.git 
 
 2. Clone the repository to the source directory
 ```shell
-git clone --recurse-submodules https://github.com/OXID-eSales/graphql-configuration-access.git --branch=b-7.4.x ./source
+git clone --recurse-submodules https://github.com/OXID-eSales/graphql-configuration-access.git --branch=b-7.5.x ./source
 ```
 
 3. Run the recipe to setup the development environment
