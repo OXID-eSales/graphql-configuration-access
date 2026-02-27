@@ -11,11 +11,11 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Infrastructur
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\LanguageWrapper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use OxidEsales\Eshop\Core\Language;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\LanguageWrapper
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\LanguageWrapper::class)]
 class LanguageWrapperTest extends TestCase
 {
     public function testGetCurrentLanguageAbbr(): void

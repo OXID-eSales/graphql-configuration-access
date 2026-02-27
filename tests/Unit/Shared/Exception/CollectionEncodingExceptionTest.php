@@ -11,10 +11,10 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Exception;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\CollectionEncodingException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\CollectionEncodingException
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\CollectionEncodingException::class)]
 class CollectionEncodingExceptionTest extends TestCase
 {
     public function testExceptionMessage()

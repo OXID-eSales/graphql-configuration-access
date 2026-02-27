@@ -13,10 +13,10 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\CollectionEncodingEx
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\JsonCollectionEncodingService::class)]
 class JsonCollectionEncodingServiceTest extends TestCase
 {
     public function testJsonEncodeArray(): void
@@ -36,7 +36,7 @@ class JsonCollectionEncodingServiceTest extends TestCase
         $sut->encodeArrayToString($value);
     }
 
-    /** @dataProvider jsonDecodeCollectionDataProvider */
+    #[DataProvider('jsonDecodeCollectionDataProvider')]
     public function testJsonDecodeCollection(string $value, array $expectedResult): void
     {
         $sut = new JsonCollectionEncodingService();

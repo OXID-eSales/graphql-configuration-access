@@ -13,13 +13,16 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSet
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository::class)]
 class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTestCase
 {
-    /** @dataProvider shopSettingsSaveMethodsDataProvider */
+    #[DataProvider('shopSettingsSaveMethodsDataProvider')]
     public function testSetShopSetting(
         string $method,
         $settingValue,
@@ -42,7 +45,7 @@ class ShopSettingRepositorySettersTest extends AbstractShopSettingRepositoryTest
         $sut->$method($settingName, $settingValue);
     }
 
-    /** @dataProvider shopSettingsSaveMethodsDataProvider */
+    #[DataProvider('shopSettingsSaveMethodsDataProvider')]
     public function testSetShopIsNotCalledOnOriginalSettingTypeMissmatch(
         string $method,
         $settingValue,

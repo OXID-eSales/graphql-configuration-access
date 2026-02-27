@@ -11,15 +11,16 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Infrastructure
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\NoSettingsFoundForThemeException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository::class)]
 class ThemeSettingRepositorySettersTest extends AbstractThemeSettingRepositoryTestCase
 {
-    /**
-     * @dataProvider notExistingSettingCheckTriggerDataProvider
-     */
+    #[DataProvider('notExistingSettingCheckTriggerDataProvider')]
     public function testSetterThrowsExceptionOnNotExistingSetting(
         string $repositoryMethod,
         mixed $value,

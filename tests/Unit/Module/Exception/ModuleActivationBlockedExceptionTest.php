@@ -11,10 +11,10 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Exception;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationBlockedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationBlockedException
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleActivationBlockedException::class)]
 final class ModuleActivationBlockedExceptionTest extends TestCase
 {
     public function testException(): void

@@ -11,13 +11,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting::class)]
 class StringSettingTest extends TestCase
 {
-    /** @dataProvider stringSettingDataProvider */
+    #[DataProvider('stringSettingDataProvider')]
     public function testStringSetting(string $name, $value): void
     {
         $sut = new StringSetting($name, $value);

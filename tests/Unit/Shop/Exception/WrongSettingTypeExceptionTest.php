@@ -12,10 +12,10 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shop\Exception;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\NoSettingsFoundForShopException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException::class)]
 class WrongSettingTypeExceptionTest extends TestCase
 {
     public function testExceptionMessage(): void

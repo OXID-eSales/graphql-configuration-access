@@ -11,13 +11,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Enum;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType::class)]
 class FieldTypeTest extends TestCase
 {
-    /** @dataProvider fieldTypesDataProvider */
+    #[DataProvider('fieldTypesDataProvider')]
     public function testValidType(string $type): void
     {
         $this->assertTrue(FieldType::validateFieldType($type));
@@ -28,7 +28,7 @@ class FieldTypeTest extends TestCase
         $this->assertFalse(FieldType::validateFieldType('INVALID_FIELDTYPE'));
     }
 
-    /** @dataProvider fieldTypesDataProvider */
+    #[DataProvider('fieldTypesDataProvider')]
     public function testGetEnums(string $type): void
     {
         $enums = FieldType::getEnums();

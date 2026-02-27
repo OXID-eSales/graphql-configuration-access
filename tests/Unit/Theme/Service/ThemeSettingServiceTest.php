@@ -17,13 +17,15 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Exception\InvalidCollectionException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingService;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingService
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingService::class)]
 class ThemeSettingServiceTest extends UnitTestCase
 {
     public function testGetThemeSettingInteger(): void
@@ -334,9 +336,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $this->assertSame($getterValue, $selectSetting->getValue());
     }
 
-    /**
-     * @dataProvider invalidCollectionDataProvider
-     */
+    #[DataProvider('invalidCollectionDataProvider')]
     public function testChangeThemeSettingInvalidCollection($value): void
     {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);
@@ -349,9 +349,7 @@ class ThemeSettingServiceTest extends UnitTestCase
         $settingService->changeCollectionSetting($name, $value, 'awesomeTheme');
     }
 
-    /**
-     * @dataProvider invalidCollectionDataProvider
-     */
+    #[DataProvider('invalidCollectionDataProvider')]
     public function testChangeThemeSettingInvalidAssocCollection($value): void
     {
         $repository = $this->createMock(ThemeSettingRepositoryInterface::class);

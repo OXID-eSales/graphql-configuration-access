@@ -63,6 +63,5 @@ jobs:
       CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
       CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
       CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
-      enterprise_github_token: ${{ secrets.enterprise_github_token }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

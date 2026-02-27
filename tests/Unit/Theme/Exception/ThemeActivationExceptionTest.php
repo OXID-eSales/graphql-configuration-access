@@ -12,10 +12,10 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Exception;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeActivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
-* @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeActivationException
-*/
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeActivationException::class)]
 class ThemeActivationExceptionTest extends TestCase
 {
     private const THEME_NOT_ACTIVATED_MESSAGE = "An error occurred while activating the theme.";

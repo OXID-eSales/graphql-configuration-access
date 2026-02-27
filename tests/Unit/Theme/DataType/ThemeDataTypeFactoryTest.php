@@ -12,11 +12,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\DataType;
 use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactory;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataType;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactory
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactory::class)]
 class ThemeDataTypeFactoryTest extends TestCase
 {
     public function testCreateThemeDataType(): void

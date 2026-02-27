@@ -11,13 +11,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting::class)]
 class BooleanSettingTest extends TestCase
 {
-    /** @dataProvider booleanSettingDataProvider */
+    #[DataProvider('booleanSettingDataProvider')]
     public function testBooleanSetting(string $name, bool $value): void
     {
         $sut = new BooleanSetting($name, $value);

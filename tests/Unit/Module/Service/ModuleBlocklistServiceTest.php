@@ -12,16 +12,16 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Service;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistService
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistService::class)]
 class ModuleBlocklistServiceTest extends TestCase
 {
-    /**
-     * @dataProvider blockListDataProvider
-     */
+    #[DataProvider('blockListDataProvider')]
     public function testIsModuleBlocked(
         string $moduleId,
         bool $expectedResult

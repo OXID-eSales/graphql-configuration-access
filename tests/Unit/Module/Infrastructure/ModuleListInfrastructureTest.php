@@ -15,12 +15,14 @@ use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactory
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructure;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModulesNotFoundException;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructure
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\Infrastructure\ModuleListInfrastructure::class)]
 class ModuleListInfrastructureTest extends UnitTestCase
 {
     public function testGetModuleList()

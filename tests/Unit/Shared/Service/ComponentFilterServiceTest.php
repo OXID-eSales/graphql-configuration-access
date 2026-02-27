@@ -12,14 +12,16 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Service;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFiltersInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterService
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterService::class)]
 class ComponentFilterServiceTest extends TestCase
 {
-    /** @dataProvider componentFilterResultProvider */
+    #[DataProvider('componentFilterResultProvider')]
     public function testFilterThemes(
         array $componentList,
         array $filterResults,

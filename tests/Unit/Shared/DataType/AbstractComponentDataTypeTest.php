@@ -11,10 +11,10 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\AbstractComponentDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType::class)]
 class AbstractComponentDataTypeTest extends UnitTestCase
 {
     public function testAbstractComponentDataType(): void

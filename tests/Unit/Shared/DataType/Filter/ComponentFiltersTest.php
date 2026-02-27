@@ -13,14 +13,16 @@ use OxidEsales\GraphQL\Base\DataType\Filter\BoolFilter;
 use OxidEsales\GraphQL\Base\DataType\Filter\StringFilter;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters::class)]
 class ComponentFiltersTest extends TestCase
 {
-    /** @dataProvider filtersMatchesDataProvider */
+    #[DataProvider('filtersMatchesDataProvider')]
     public function testFilterComponent(bool $titleFilterResult, bool $activeFilterResult, bool $result): void
     {
         $component = $this->createConfiguredStub(ComponentDataTypeInterface::class, [
@@ -93,13 +95,19 @@ class ComponentFiltersTest extends TestCase
 
     public function testCreateModuleFilterList(): void
     {
-        $titleFilter = $this->createStub(StringFilter::class);
-        $activeFilter = $this->createStub(BoolFilter::class);
+        $titleFilter = $this->createMock(StringFilter::class);
+        $titleFilter->expects($this->once())->method('matches')->with('Test Title')->willReturn(true);
 
-        $expectedComponentFilters = new ComponentFilters(titleFilter: $titleFilter, activeFilter: $activeFilter);
+        $activeFilter = $this->createMock(BoolFilter::class);
+        $activeFilter->expects($this->once())->method('matches')->with(true)->willReturn(true);
 
         $componentFilters = ComponentFilters::createComponentFilters($titleFilter, $activeFilter);
-        $this->assertEquals($expectedComponentFilters, $componentFilters);
+
+        $component = $this->createStub(ComponentDataTypeInterface::class);
+        $component->method('getTitle')->willReturn('Test Title');
+        $component->method('isActive')->willReturn(true);
+
+        $this->assertTrue($componentFilters->filterComponent($component));
     }
 
     public function testCreateModuleFilterListWithNull(): void

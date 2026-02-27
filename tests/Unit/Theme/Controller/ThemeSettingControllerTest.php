@@ -18,13 +18,13 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeSettingController;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSettingServiceInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeSettingController
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeSettingController::class)]
 class ThemeSettingControllerTest extends TestCase
 {
-    /** @dataProvider proxyTestDataProvider */
+    #[DataProvider('proxyTestDataProvider')]
     public function testControllerProxiesParametersToServiceAndReturnsItsResult(
         string $controllerMethod,
         string $serviceMethod,

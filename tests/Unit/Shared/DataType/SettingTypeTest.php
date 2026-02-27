@@ -12,10 +12,10 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\SettingType::class)]
 class SettingTypeTest extends TestCase
 {
     public function testGetters(): void
@@ -32,7 +32,7 @@ class SettingTypeTest extends TestCase
         $this->assertEquals($settingType, $sut->getType());
     }
 
-    /** @dataProvider isSupportedDataProvider */
+    #[DataProvider('isSupportedDataProvider')]
     public function testIsSupported(string $settingType, bool $expectation): void
     {
         $sut = new SettingType(

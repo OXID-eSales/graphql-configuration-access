@@ -12,21 +12,16 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shop\Infrastructure;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\WrongSettingTypeException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository::class)]
 class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTestCase
 {
-    /**
-     * @dataProvider possibleGetIntegerValuesDataProvider
-     * @dataProvider possibleGetFloatValuesDataProvider
-     * @dataProvider possibleGetBooleanValuesDataProvider
-     * @dataProvider possibleGetStringValuesDataProvider
-     * @dataProvider possibleGetSelectValuesDataProvider
-     * @dataProvider possibleGetCollectionValuesDataProvider
-     * @dataProvider possibleGetAssocCollectionValuesDataProvider
-     */
+    #[DataProvider('allGetValuesDataProvider')]
     public function testGetShopSetting($method, $type, $possibleValue, $expectedResult): void
     {
         $settingName = 'settingName';
@@ -51,10 +46,7 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
         $this->assertSame($expectedResult, $sut->$method($settingName));
     }
 
-    /**
-     * @dataProvider wrongSettingsTypeDataProvider
-     * @dataProvider wrongSettingsValueDataProvider
-     */
+    #[DataProvider('wrongSettingsDataProvider')]
     public function testGetShopSettingWrongData(
         string $method,
         string $type,
@@ -75,6 +67,41 @@ class ShopSettingRepositoryGettersTest extends AbstractShopSettingRepositoryTest
 
         $this->expectException($expectedException);
         $sut->$method('settingName');
+    }
+
+    public static function allGetValuesDataProvider(): \Generator
+    {
+        foreach (self::possibleGetIntegerValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetFloatValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetBooleanValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetStringValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetSelectValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetCollectionValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetAssocCollectionValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+    }
+
+    public static function wrongSettingsDataProvider(): \Generator
+    {
+        foreach (self::wrongSettingsTypeDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::wrongSettingsValueDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
     }
 
     public static function wrongSettingsTypeDataProvider(): \Generator

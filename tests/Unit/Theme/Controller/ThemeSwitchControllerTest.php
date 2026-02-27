@@ -12,13 +12,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Controller;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeSwitchController;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeSwitchServiceInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeSwitchController
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeSwitchController::class)]
 class ThemeSwitchControllerTest extends TestCase
 {
-    /** @dataProvider switchThemeProvider */
+    #[DataProvider('switchThemeProvider')]
     public function testSwitchTheme(
         string $themeId,
         bool $expectedResult

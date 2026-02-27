@@ -22,11 +22,13 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\StringSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\String\UnicodeString;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingService
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingService::class)]
 class ModuleSettingServiceTest extends UnitTestCase
 {
     public function testGetModuleSettingInteger(): void

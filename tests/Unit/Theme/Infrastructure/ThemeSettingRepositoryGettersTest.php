@@ -12,22 +12,18 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Theme\Infrastructure
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Shared\Enum\FieldType;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\NoSettingsFoundForThemeException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSettingRepository::class)]
 class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTestCase
 {
-    /**
-     * @dataProvider possibleGetIntegerValuesDataProvider
-     * @dataProvider possibleGetFloatValuesDataProvider
-     * @dataProvider possibleGetBooleanValuesDataProvider
-     * @dataProvider possibleGetStringValuesDataProvider
-     * @dataProvider possibleGetSelectValuesDataProvider
-     * @dataProvider possibleGetCollectionValuesDataProvider
-     * @dataProvider possibleGetAssocCollectionValuesDataProvider
-     */
+    #[DataProvider('allGetValuesDataProvider')]
     public function testGetThemeSetting(string $method, string $type, mixed $possibleValue, mixed $expectedResult): void
     {
         $name = uniqid();
@@ -41,9 +37,7 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
         $this->assertEquals($expectedResult, $sut->$method($name, 'awesomeTheme'));
     }
 
-    /**
-     * @dataProvider wrongSettingsValueDataProvider
-     */
+    #[DataProvider('wrongSettingsValueDataProvider')]
     public function testGetThemeSettingWrongData(
         string $method,
         string $type,
@@ -62,9 +56,7 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
         $sut->$method($name, 'awesomeTheme');
     }
 
-    /**
-     * @dataProvider noSettingExceptionDataProvider
-     */
+    #[DataProvider('noSettingExceptionDataProvider')]
     public function testGetNoThemeSetting(string $repositoryMethod): void
     {
         $sut = $this->getSut(
@@ -73,6 +65,31 @@ class ThemeSettingRepositoryGettersTest extends AbstractThemeSettingRepositoryTe
 
         $this->expectException(NoSettingsFoundForThemeException::class);
         $sut->$repositoryMethod('NotExistingSetting', 'awesomeTheme');
+    }
+
+    public static function allGetValuesDataProvider(): \Generator
+    {
+        foreach (self::possibleGetIntegerValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetFloatValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetBooleanValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetStringValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetSelectValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetCollectionValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
+        foreach (self::possibleGetAssocCollectionValuesDataProvider() as $key => $data) {
+            yield $key => $data;
+        }
     }
 
     public static function noSettingExceptionDataProvider(): \Generator

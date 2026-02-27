@@ -14,11 +14,13 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\ComponentFilterService
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructureInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListService::class)]
 class ThemeListServiceTest extends TestCase
 {
     public function testGetThemeListWithFilters(): void

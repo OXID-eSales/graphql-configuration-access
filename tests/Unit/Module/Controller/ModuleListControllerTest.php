@@ -14,10 +14,10 @@ use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeInterfa
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleListServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\Filter\ComponentFilters;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleListController
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleListController::class)]
 class ModuleListControllerTest extends UnitTestCase
 {
     public function testModulesListWithFilters(): void

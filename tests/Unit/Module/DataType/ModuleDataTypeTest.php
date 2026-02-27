@@ -12,11 +12,11 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\DataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\ComponentDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use phpDocumentor\Reflection\DocBlock\Description;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataType::class)]
 class ModuleDataTypeTest extends UnitTestCase
 {
     public function testModuleDataType(): void

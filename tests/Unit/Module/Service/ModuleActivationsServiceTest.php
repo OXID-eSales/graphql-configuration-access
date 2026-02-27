@@ -18,15 +18,15 @@ use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleDeactivationEx
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleBlocklistServiceInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationService::class)]
 class ModuleActivationsServiceTest extends UnitTestCase
 {
-    /**
-     * @dataProvider activationDataProvider
-     */
+    #[DataProvider('activationDataProvider')]
     public function testModuleActivationAndDeactivationSuccess(
         string $method,
     ): void {
@@ -53,9 +53,7 @@ class ModuleActivationsServiceTest extends UnitTestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @dataProvider exceptionDataProvider
-     */
+    #[DataProvider('exceptionDataProvider')]
     public function testModuleActivationAndDeactivationThrowsExceptions(
         string $method,
         mixed $exceptionClass
@@ -77,9 +75,7 @@ class ModuleActivationsServiceTest extends UnitTestCase
         ($method === 'activate') ? $sut->activateModule($moduleId) : $sut->deactivateModule($moduleId);
     }
 
-    /**
-     * @dataProvider moduleBlockedExceptionDataProvider
-     */
+    #[DataProvider('moduleBlockedExceptionDataProvider')]
     public function testModuleActivationAndDeactivationBlockedException(
         string $method,
         mixed $exceptionClass
@@ -141,9 +137,9 @@ class ModuleActivationsServiceTest extends UnitTestCase
     }
 
     public function getSut(
-        ContextInterface $context = null,
-        ModuleActivationBridgeInterface $moduleActivationBridge = null,
-        ModuleBlocklistServiceInterface $moduleBlocklistService = null
+        ?ContextInterface $context = null,
+        ?ModuleActivationBridgeInterface $moduleActivationBridge = null,
+        ?ModuleBlocklistServiceInterface $moduleBlocklistService = null
     ): ModuleActivationService {
         return new ModuleActivationService(
             context: $context

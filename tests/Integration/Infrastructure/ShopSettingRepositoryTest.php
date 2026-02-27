@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Exception\NoSettingsFoundForShopException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepository
@@ -54,9 +55,7 @@ class ShopSettingRepositoryTest extends IntegrationTestCase
         $sut->getSettingsList();
     }
 
-    /**
-     * @dataProvider exceptionGetterDataProvider
-     */
+    #[DataProvider('exceptionGetterDataProvider')]
     public function testGetterExceptionIfSettingNotExist(string $getterMethod): void
     {
         $sut = $this->getSutForShop(2);
@@ -77,9 +76,7 @@ class ShopSettingRepositoryTest extends IntegrationTestCase
         yield ['getAssocCollection'];
     }
 
-    /**
-     * @dataProvider exceptionSetterDataProvider
-     */
+    #[DataProvider('exceptionSetterDataProvider')]
     public function testSetterExceptionIfSettingNotExist(string $setterMethod, mixed $value): void
     {
         $sut = $this->getSutForShop(2);

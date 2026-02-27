@@ -11,13 +11,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting::class)]
 class IntegerSettingTest extends TestCase
 {
-    /** @dataProvider integerSettingDataProvider */
+    #[DataProvider('integerSettingDataProvider')]
     public function testIntegerSetting(string $name, int $value): void
     {
         $sut = new IntegerSetting($name, $value);

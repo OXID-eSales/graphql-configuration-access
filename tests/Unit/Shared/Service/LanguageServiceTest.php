@@ -11,11 +11,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\Service;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Infrastructure\LanguageWrapperInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService::class)]
 class LanguageServiceTest extends TestCase
 {
     public function testFilterByLanguageAbbreviationCorrectLangValue()

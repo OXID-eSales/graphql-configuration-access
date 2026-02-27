@@ -11,13 +11,13 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Shared\DataType;
 
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting::class)]
 class FloatSettingTest extends TestCase
 {
-    /** @dataProvider floatSettingDataProvider */
+    #[DataProvider('floatSettingDataProvider')]
     public function testFloatSetting(string $name, float $value): void
     {
         $sut = new FloatSetting($name, $value);

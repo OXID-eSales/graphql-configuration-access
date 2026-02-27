@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [4.0.0] - Unreleased
 
 ### Changed
-- Updated to work with OXID eShop 7.5.x
+- Updated to work with OXID eShop 7.5.x and PHPUnit 12.5
 - Minimum PHP version is now 8.3, tested up to PHP 8.5
 
 ## [3.0.0] - 2025-11-06

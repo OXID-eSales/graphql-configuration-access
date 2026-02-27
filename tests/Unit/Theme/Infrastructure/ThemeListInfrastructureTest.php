@@ -15,11 +15,13 @@ use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeFactoryIn
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemesNotFound;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeListInfrastructure::class)]
 class ThemeListInfrastructureTest extends TestCase
 {
     public function testGetThemes(): void
@@ -57,8 +59,8 @@ class ThemeListInfrastructureTest extends TestCase
     }
 
     private function getSut(
-        CoreThemeFactoryInterface $coreThemeFactory = null,
-        ThemeDataTypeFactoryInterface $themeDataTypeFactory = null
+        ?CoreThemeFactoryInterface $coreThemeFactory = null,
+        ?ThemeDataTypeFactoryInterface $themeDataTypeFactory = null
     ): ThemeListInfrastructure {
         return new ThemeListInfrastructure(
             coreThemeFactory: $coreThemeFactory ?? $this->createStub(CoreThemeFactoryInterface::class),

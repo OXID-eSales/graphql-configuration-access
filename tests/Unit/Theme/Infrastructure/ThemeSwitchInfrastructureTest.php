@@ -14,11 +14,13 @@ use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Exception\ThemeActivationException;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\CoreThemeFactoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructure;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructure
- */
+#[AllowMockObjectsWithoutExpectations]
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Infrastructure\ThemeSwitchInfrastructure::class)]
 class ThemeSwitchInfrastructureTest extends TestCase
 {
     private const THEME_NOT_ACTIVATED = "An error occurred while activating the theme.";

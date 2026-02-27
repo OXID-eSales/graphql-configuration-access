@@ -13,10 +13,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactory;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\LanguageService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactory
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\DataType\ModuleDataTypeFactory::class)]
 class ModuleDataTypeFactoryTest extends UnitTestCase
 {
     public function testCreateFromCoreModule()

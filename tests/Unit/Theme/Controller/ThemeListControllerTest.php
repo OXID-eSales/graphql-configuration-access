@@ -14,10 +14,10 @@ use OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeListController;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\DataType\ThemeDataTypeInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Theme\Service\ThemeListServiceInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeListController
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Theme\Controller\ThemeListController::class)]
 class ThemeListControllerTest extends TestCase
 {
     public function testThemesListWithFilter(): void

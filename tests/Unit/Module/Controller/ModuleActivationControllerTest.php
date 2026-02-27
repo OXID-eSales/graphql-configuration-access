@@ -12,10 +12,10 @@ namespace OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\Module\Controller;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleActivationController;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleActivationServiceInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleActivationController
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Module\Controller\ModuleActivationController::class)]
 class ModuleActivationControllerTest extends TestCase
 {
     public function testActivateModule(): void
@@ -51,7 +51,7 @@ class ModuleActivationControllerTest extends TestCase
     }
 
     public function getSut(
-        ModuleActivationServiceInterface $moduleActivationService = null
+        ?ModuleActivationServiceInterface $moduleActivationService = null
     ): ModuleActivationController {
         return new ModuleActivationController(
             moduleActivationService: $moduleActivationService

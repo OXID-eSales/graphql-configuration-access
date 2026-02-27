@@ -18,13 +18,13 @@ use OxidEsales\GraphQL\ConfigurationAccess\Shared\Service\CollectionEncodingServ
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Infrastructure\ShopSettingRepositoryInterface;
 use OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingService
- */
+#[CoversClass(\OxidEsales\GraphQL\ConfigurationAccess\Shop\Service\ShopSettingService::class)]
 class ShopSettingServiceTest extends UnitTestCase
 {
-    /** @dataProvider getNotEncodableShopSettingDataProvider */
+    #[DataProvider('getNotEncodableShopSettingDataProvider')]
     public function testGetNotEncodableShopSetting(
         string $repositoryMethod,
         mixed $repositoryResult,
@@ -84,7 +84,7 @@ class ShopSettingServiceTest extends UnitTestCase
         ];
     }
 
-    /** @dataProvider getEncodableShopSettingDataProvider */
+    #[DataProvider('getEncodableShopSettingDataProvider')]
     public function testGetEncodableShopSetting(
         string $repositoryMethod,
         mixed $repositoryResult,
