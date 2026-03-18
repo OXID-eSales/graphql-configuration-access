@@ -41,7 +41,8 @@
         "mikey179/vfsstream": "^1.6",
         "codeception/codeception": "^5.1",
         "oxid-esales/codeception-modules": "dev-b-7.5.x",
-        "codeception/module-asserts": "^3.0"
+        "codeception/module-asserts": "^3.0",
+        "symfony/process": "^6.4"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
