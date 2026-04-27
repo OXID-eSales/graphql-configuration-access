@@ -19,5 +19,5 @@ services:
     tags: [ 'graphql_permission_provider' ]
 
   OxidEsales\GraphQL\ConfigurationAccess\DependencyCheckTrigger:
-    alias: OxidEsales\GraphQL\Base\Framework\GraphQLQueryHandler
+    alias: OxidEsales\GraphQL\Base\Framework\GraphQLQueryHandlerInterface
     public: true
