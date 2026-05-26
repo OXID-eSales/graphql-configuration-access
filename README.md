@@ -1,5 +1,5 @@
 
-[![Development](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml/badge.svg?branch=b-7.5.x)](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml)
+[![Development](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml/badge.svg?branch=b-7.6.x)](https://github.com/OXID-eSales/graphql-configuration-access/actions/workflows/trigger.yml)
 [![Latest Version](https://img.shields.io/packagist/v/OXID-eSales/graphql-configuration-access?logo=composer&label=latest&include_prereleases&color=orange)](https://packagist.org/packages/oxid-esales/graphql-configuration-access)
 [![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/graphql-configuration-access)](https://github.com/oxid-esales/graphql-configuration-access)
 
@@ -40,6 +40,7 @@ enum FieldType {
 
 ## Branch compatibility
 
+* b-7.6.x branch is compatible with OXID eShop compilation b-7.6.x (which uses `graphql-base` 14.x version resp. b-7.6.x branch)
 * 4.x versions (or b-7.5.x branch) are compatible with OXID eShop compilation b-7.5.x (which uses `graphql-base` 13.x version resp. b-7.5.x branch)
 * 3.0.x versions (or b-7.4.x branch) are compatible with OXID eShop compilation b-7.4.x (which uses `graphql-base` 12.x version resp. b-7.4.x branch)
 * 2.1.x versions (or b-7.3.x branch) are compatible with OXID eShop compilation b-7.3.x (which uses `graphql-base` 11.x version resp. b-7.3.x branch)
