@@ -50,9 +50,7 @@ class ComponentFilters implements ComponentFiltersInterface
         return true;
     }
 
-    /**
-     * @Factory(name="ComponentFilters", default=true)
-     */
+    #[Factory(name: 'ComponentFilters', default: true)]
     public static function createComponentFilters(
         ?StringFilter $title = null,
         ?BoolFilter $active = null
