@@ -7,6 +7,7 @@
 
 namespace OxidEsales\GraphQL\ConfigurationAccess\Module\Service;
 
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleNotFoundException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
@@ -37,6 +38,7 @@ interface ModuleSettingServiceInterface
 
     /**
      * @return SettingType[]
+     * @throws ModuleNotFoundException
      */
     public function getSettingsList(string $moduleId): array;
 }

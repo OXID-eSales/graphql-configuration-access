@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleNotFoundException;
 use OxidEsales\GraphQL\ConfigurationAccess\Module\Service\ModuleSettingService;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
@@ -25,6 +26,7 @@ use OxidEsales\GraphQL\ConfigurationAccess\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\String\UnicodeString;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -297,6 +299,9 @@ class ModuleSettingServiceTest extends UnitTestCase
         ];
 
         $moduleConfigurationDao = $this->createMock(ModuleConfigurationDaoInterface::class);
+        $moduleConfigurationDao->method('exists')
+            ->with($moduleId, $shopId)
+            ->willReturn(true);
         $moduleConfigurationDao->expects($this->once())
             ->method('get')
             ->with($moduleId, $shopId)
@@ -312,6 +317,29 @@ class ModuleSettingServiceTest extends UnitTestCase
         );
 
         $this->assertEquals($this->getSettingTypeList(), $sut->getSettingsList($moduleId));
+    }
+
+    #[Test]
+    public function getSettingsListThrowsExceptionWhenModuleNotFound(): void
+    {
+        $shopId = rand();
+        $moduleId = uniqid();
+
+        $moduleConfigurationDaoMock = $this->createMock(ModuleConfigurationDaoInterface::class);
+        $moduleConfigurationDaoMock->method('exists')
+            ->with($moduleId, $shopId)
+            ->willReturn(false);
+        $moduleConfigurationDaoMock->expects($this->never())
+            ->method('get');
+
+        $sut = $this->getSut(
+            moduleConfigDao: $moduleConfigurationDaoMock,
+            context: $this->getContextMock($shopId)
+        );
+
+        $this->expectExceptionObject(new ModuleNotFoundException($moduleId));
+
+        $sut->getSettingsList($moduleId);
     }
 
     private function getSut(

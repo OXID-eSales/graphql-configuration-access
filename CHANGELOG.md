@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update module to work with OXID eShop 7.6
 
+### Fixed
+- `moduleSettings` query now throws a client aware `ModuleNotFoundException` instead of an internal
+  server error when the given module id does not exist
+
 ## [4.0.0] - 2026-05-06
 
 ### Changed

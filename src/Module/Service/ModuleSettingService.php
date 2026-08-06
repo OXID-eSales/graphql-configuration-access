@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\{
     ModuleSettingServiceInterface as ShopModuleSettingServiceInterface};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\GraphQL\ConfigurationAccess\Module\Exception\ModuleNotFoundException;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\BooleanSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\FloatSetting;
 use OxidEsales\GraphQL\ConfigurationAccess\Shared\DataType\IntegerSetting;
@@ -114,10 +115,17 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     /**
      * @return SettingType[]
+     * @throws ModuleNotFoundException
      */
     public function getSettingsList(string $moduleId): array
     {
-        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $this->context->getCurrentShopId());
+        $shopId = $this->context->getCurrentShopId();
+
+        if (!$this->moduleConfigurationDao->exists($moduleId, $shopId)) {
+            throw new ModuleNotFoundException($moduleId);
+        }
+
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
         $settingsList = $moduleConfiguration->getModuleSettings();
 
         $settingTypes = [];
