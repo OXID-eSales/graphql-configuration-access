@@ -5,7 +5,7 @@ on:
     - cron: '50 4 */7 * *'
 
 jobs:
-  matrix_75x_weekly:
+  matrix_76x_weekly:
     uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v5
     with:
       testplan: '~/defaults/7.6.x.yaml,~/defaults/php8.3_mysql8.0_only.yaml,~/graphql-configuration-access_light.yaml'
