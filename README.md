@@ -40,8 +40,8 @@ enum FieldType {
 
 ## Branch compatibility
 
-* b-7.6.x branch is compatible with OXID eShop compilation b-7.6.x (which uses `graphql-base` 14.x version resp. b-7.6.x branch)
-* 4.x versions (or b-7.5.x branch) are compatible with OXID eShop compilation b-7.5.x (which uses `graphql-base` 13.x version resp. b-7.5.x branch)
+* 4.1.x versions (or b-7.6.x branch) are compatible with OXID eShop compilation b-7.6.x (which uses `graphql-base` 14.x version resp. b-7.6.x branch)
+* 4.0.x versions (or b-7.5.x branch) are compatible with OXID eShop compilation b-7.5.x (which uses `graphql-base` 13.x version resp. b-7.5.x branch)
 * 3.0.x versions (or b-7.4.x branch) are compatible with OXID eShop compilation b-7.4.x (which uses `graphql-base` 12.x version resp. b-7.4.x branch)
 * 2.1.x versions (or b-7.3.x branch) are compatible with OXID eShop compilation b-7.3.x (which uses `graphql-base` 11.x version resp. b-7.3.x branch)
 * 1.2.x + 2.0.x versions (or b-7.2.x branch) are compatible with OXID eShop compilation b-7.2.x (which uses `graphql-base` 10.x version resp. b-7.2.x branch)
@@ -56,8 +56,8 @@ enum FieldType {
 Switch to the shop root directory (the file `composer.json` and the directories `source/` and `vendor/` are located there).
 
 ```bash
-# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 4.x version for OXID 7.5
-$ composer require oxid-esales/graphql-configuration-access ^4.0.0
+# Install desired version of oxid-esales/graphql-configuration-access module, in this case - latest released 4.1.x version for OXID 7.6
+$ composer require oxid-esales/graphql-configuration-access ^4.1.0
 ```
 
 If you didn't have the `oxid-esales/graphql-base` module installed, composer will do that for you.
