@@ -34,6 +34,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function getIntegerSetting(string $name, string $moduleId): IntegerSetting
     {
+        $this->assertModuleExists($moduleId);
+
         return new IntegerSetting(
             $name,
             $this->moduleSettingService->getInteger($name, $moduleId)
@@ -42,6 +44,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function getFloatSetting(string $name, string $moduleId): FloatSetting
     {
+        $this->assertModuleExists($moduleId);
+
         return new FloatSetting(
             $name,
             $this->moduleSettingService->getFloat($name, $moduleId)
@@ -50,6 +54,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function getBooleanSetting(string $name, string $moduleId): BooleanSetting
     {
+        $this->assertModuleExists($moduleId);
+
         return new BooleanSetting(
             $name,
             $this->moduleSettingService->getBoolean($name, $moduleId)
@@ -58,6 +64,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function getStringSetting(string $name, string $moduleId): StringSetting
     {
+        $this->assertModuleExists($moduleId);
+
         return new StringSetting(
             $name,
             (string)$this->moduleSettingService->getString($name, $moduleId)
@@ -66,6 +74,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function getCollectionSetting(string $name, string $moduleId): StringSetting
     {
+        $this->assertModuleExists($moduleId);
+
         $collection = $this->moduleSettingService->getCollection($name, $moduleId);
 
         return new StringSetting(
@@ -76,6 +86,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function changeIntegerSetting(string $name, int $value, string $moduleId): IntegerSetting
     {
+        $this->assertModuleExists($moduleId);
+
         $this->moduleSettingService->saveInteger($name, $value, $moduleId);
 
         return $this->getIntegerSetting($name, $moduleId);
@@ -83,6 +95,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function changeFloatSetting(string $name, float $value, string $moduleId): FloatSetting
     {
+        $this->assertModuleExists($moduleId);
+
         $this->moduleSettingService->saveFloat($name, $value, $moduleId);
 
         return $this->getFloatSetting($name, $moduleId);
@@ -90,6 +104,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function changeBooleanSetting(string $name, bool $value, string $moduleId): BooleanSetting
     {
+        $this->assertModuleExists($moduleId);
+
         $this->moduleSettingService->saveBoolean($name, $value, $moduleId);
 
         return $this->getBooleanSetting($name, $moduleId);
@@ -97,6 +113,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function changeStringSetting(string $name, string $value, string $moduleId): StringSetting
     {
+        $this->assertModuleExists($moduleId);
+
         $this->moduleSettingService->saveString($name, $value, $moduleId);
 
         return $this->getStringSetting($name, $moduleId);
@@ -104,6 +122,8 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
 
     public function changeCollectionSetting(string $name, string $value, string $moduleId): StringSetting
     {
+        $this->assertModuleExists($moduleId);
+
         $this->moduleSettingService->saveCollection(
             $name,
             $this->jsonService->decodeStringCollectionToArray($value),
@@ -119,13 +139,9 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
      */
     public function getSettingsList(string $moduleId): array
     {
-        $shopId = $this->context->getCurrentShopId();
+        $this->assertModuleExists($moduleId);
 
-        if (!$this->moduleConfigurationDao->exists($moduleId, $shopId)) {
-            throw new ModuleNotFoundException($moduleId);
-        }
-
-        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
+        $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $this->context->getCurrentShopId());
         $settingsList = $moduleConfiguration->getModuleSettings();
 
         $settingTypes = [];
@@ -135,5 +151,17 @@ final class ModuleSettingService implements ModuleSettingServiceInterface
         }
 
         return $settingTypes;
+    }
+
+    /**
+     * @throws ModuleNotFoundException
+     */
+    private function assertModuleExists(string $moduleId): void
+    {
+        $shopId = $this->context->getCurrentShopId();
+
+        if (!$this->moduleConfigurationDao->exists($moduleId, $shopId)) {
+            throw new ModuleNotFoundException($moduleId);
+        }
     }
 }
