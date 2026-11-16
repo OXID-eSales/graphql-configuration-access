@@ -351,9 +351,17 @@ class ModuleSettingServiceTest extends UnitTestCase
         return new ModuleSettingService(
             jsonService: $jsonService ?? $this->createStub(CollectionEncodingServiceInterface::class),
             moduleSettingService: $moduleSettingService ?? $this->createStub(ModuleSettingServiceInterface::class),
-            moduleConfigurationDao: $moduleConfigDao ?? $this->createStub(ModuleConfigurationDaoInterface::class),
+            moduleConfigurationDao: $moduleConfigDao ?? $this->getExistingModuleDaoStub(),
             context: $context ?? $this->createStub(ContextInterface::class),
         );
+    }
+
+    private function getExistingModuleDaoStub(): ModuleConfigurationDaoInterface
+    {
+        $dao = $this->createStub(ModuleConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+
+        return $dao;
     }
 
     private function getShopModuleSettingServiceMethodStub(
@@ -368,5 +376,48 @@ class ModuleSettingServiceTest extends UnitTestCase
             ->with($name, $moduleId)
             ->willReturn($shopServiceReturn);
         return $moduleSettingService;
+    }
+
+    #[DataProvider('unknownGetterDataProvider')]
+    public function testThrowsExceptionForUnknownModule(string $method, array $arguments): void
+    {
+        $moduleConfigurationDao = $this->createMock(ModuleConfigurationDaoInterface::class);
+        $moduleConfigurationDao->method('exists')
+            ->with('notExistingModule', 1)
+            ->willReturn(false);
+        $moduleConfigurationDao->expects($this->never())->method('get');
+
+        $shopModuleSettingService = $this->createMock(ModuleSettingServiceInterface::class);
+        $shopModuleSettingService->expects($this->never())->method($this->anything());
+
+        $context = $this->createStub(ContextInterface::class);
+        $context->method('getCurrentShopId')->willReturn(1);
+
+        $sut = new ModuleSettingService(
+            jsonService: $this->createStub(CollectionEncodingServiceInterface::class),
+            moduleSettingService: $shopModuleSettingService,
+            moduleConfigurationDao: $moduleConfigurationDao,
+            context: $context,
+        );
+
+        $this->expectException(ModuleNotFoundException::class);
+        $sut->$method(...$arguments);
+    }
+
+    public static function unknownGetterDataProvider(): \Generator
+    {
+        $module = 'notExistingModule';
+
+        yield 'getInteger' => ['getIntegerSetting', ['anySetting', $module]];
+        yield 'getFloat' => ['getFloatSetting', ['anySetting', $module]];
+        yield 'getBoolean' => ['getBooleanSetting', ['anySetting', $module]];
+        yield 'getString' => ['getStringSetting', ['anySetting', $module]];
+        yield 'getCollection' => ['getCollectionSetting', ['anySetting', $module]];
+        yield 'changeInteger' => ['changeIntegerSetting', ['anySetting', 123, $module]];
+        yield 'changeFloat' => ['changeFloatSetting', ['anySetting', 1.23, $module]];
+        yield 'changeBoolean' => ['changeBooleanSetting', ['anySetting', true, $module]];
+        yield 'changeString' => ['changeStringSetting', ['anySetting', 'value', $module]];
+        yield 'changeCollection' => ['changeCollectionSetting', ['anySetting', '[]', $module]];
+        yield 'settingsList' => ['getSettingsList', [$module]];
     }
 }
